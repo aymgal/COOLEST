@@ -1,8 +1,11 @@
+# Single mass profile
+
 from lensmodelapi.parameter import NonLinearParameter
 
 
 __all__ = ['SIE', 'ExternalShearEllipticity', 'ExternalShearAngleStrength']
 SUPPORTED_PROFILES = __all__
+
 
 class _MassProfileBase(object):
 

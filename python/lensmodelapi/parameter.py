@@ -1,4 +1,4 @@
-# Mass Model
+# Single parameter of a profile
 
 class ParameterBase(object):
 

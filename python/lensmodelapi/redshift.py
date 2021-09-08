@@ -1,4 +1,4 @@
-
+# Single redshift plane
 
 class Redshift(object):
 

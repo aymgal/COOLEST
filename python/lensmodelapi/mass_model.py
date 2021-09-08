@@ -1,3 +1,5 @@
+# Light model, as an ensemble of light profiles
+
 from lensmodelapi import mass_profile
 
 
@@ -11,8 +13,3 @@ class MassModel(object):
                 raise ValueError("Profile '{name}' is not supported.")
             self.profiles.append(getattr(mass_profile, name))
         
-
-# class Substructure(MassModel):
-
-#     def __init__(self):
-#         super().__init__()

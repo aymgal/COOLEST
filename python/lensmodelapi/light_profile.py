@@ -1,3 +1,5 @@
+# Single light profile
+
 from lensmodelapi.parameter import NonLinearParameter, LinearParameter, LinearParameterSet
 
 

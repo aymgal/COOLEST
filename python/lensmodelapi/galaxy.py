@@ -1,3 +1,5 @@
+# Single galaxy, acting as source or a lens
+
 from lensmodelapi.redshift import Redshift
 from lensmodelapi.light_model import LightModel
 from lensmodelapi.mass_model import MassModel
