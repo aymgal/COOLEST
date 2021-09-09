@@ -1,0 +1,24 @@
+from typing import List
+
+from lensmodelapi.galaxy import Galaxy
+
+
+class GalaxyList(list):
+
+    def __init__(self,
+                 galaxies: List[Galaxy]):
+        list.__init__(self, galaxies)
+
+    def num_sources():
+        count = 0
+        for g in self:
+            if g.type() == 'source':
+                count += 1
+        return count
+
+    def num_lenses():
+        count = 0
+        for g in self:
+            if g.type() == 'lens':
+                count += 1
+        return count

@@ -1,11 +1,12 @@
 # Single galaxy, acting as source or a lens
 
+from typing import List
+
 from lensmodelapi.redshift import Redshift
-from lensmodelapi.light_model import LightModel
-from lensmodelapi.mass_model import MassModel
+from lensmodelapi.model import LightModel, MassModel
 
 
-class GalaxyBase(object):
+class Galaxy(object):
 
     def __init__(self,
                  name: str,
@@ -16,20 +17,28 @@ class GalaxyBase(object):
         self.light_model = light_model
         self._type = None
 
-    def galaxy_type(self):
+    def type(self):
         return self._type
 
 
-class LensGalaxy(object):
+class LensGalaxy(Galaxy):
 
-    def __init__(self, mass_model: MassModel, *args, **kwargs):
-        super().__init__(self, *args, **kwargs)
+    def __init__(self, 
+                 name: str,
+                 redshift: Redshift,
+                 light_model: LightModel,
+                 mass_model: MassModel) -> None:
+        super().__init__(name, redshift, light_model)
         self.mass_model = mass_model
         self._type = 'lens'
 
 
-class SourceGalaxy(object):
+class SourceGalaxy(Galaxy):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(self, *args, **kwargs)
+    def __init__(self, 
+                 name: str,
+                 redshift: Redshift,
+                 light_model: LightModel) -> None:
+        super().__init__(name, redshift, light_model)
         self._type = 'source'
+        

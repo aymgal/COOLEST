@@ -5,7 +5,6 @@ __all__ = [
     'LinearParameter', 
     'LinearParameterSet',
     'HyperParameter',
-    'ParameterList',
 ]
 
 class Parameter(object):
@@ -24,7 +23,8 @@ class Parameter(object):
         self.min_value = min_value
         self.max_value = max_value
         if latex_name is None:
-            self.latex_name = name
+            latex_name = name
+        self.latex_name = latex_name
         self.value = default_value
         self._type = None
         self._id = None
@@ -53,21 +53,6 @@ class Parameter(object):
         return self._type
 
 
-class ParameterList(list):
-
-    def __init__(self, *args, **kwargs):
-        list.__init__(self, *args, **kwargs)
-
-    def total_num_params(self):
-        count = 0
-        for p in self:
-            if isinstance(p, (NonLinearParameter, LinearParameter)):
-                count += 1
-            elif isinstance(p, LinearParameterSet):
-                count += p.num_values
-        return count
-
-
 class NonLinearParameter(Parameter):
 
     def __init__(self, *args, **kwargs):
@@ -85,7 +70,9 @@ class LinearParameter(Parameter):
 class LinearParameterSet(Parameter):
     """Typically for pixelated profiles"""
 
-    def __init__(self, num_values, *args, **kwargs):
+    def __init__(self, 
+                 num_values: int, 
+                 *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.num_values = num_values
         self._type = 'linear_set'
@@ -98,3 +85,4 @@ class HyperParameter(Parameter):
         super().__init__(*args, **kwargs)
         self.profile_id = profile_id
         self._type = 'hyper'
+        

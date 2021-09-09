@@ -1,18 +1,18 @@
 # Single mass profile
 
-from lensmodelapi.profile_base import Profile
-from lensmodelapi.parameter import NonLinearParameter, HyperParameter
+from lensmodelapi.profile import MassProfile
+from lensmodelapi.parameter_list import ParameterList
+from lensmodelapi.parameter import NonLinearParameter
 
 
-__all__ = ['SIE', 'ExternalShearEllipticity', 'ExternalShearAngleStrength']
+__all__ = [
+    'SIE', 
+    'PEMD',
+    'SPEMD',
+    'ExternalShearEllipticity', 
+    'ExternalShearAngleStrength',
+]
 SUPPORTED_PROFILES = __all__
-
-
-class MassProfile(Profile):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._type = 'mass'
 
 
 class SIE(MassProfile):
@@ -42,7 +42,7 @@ class SIE(MassProfile):
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
         ])
-        super(name, description, parameters)
+        super().__init__(name, description, parameters)
 
 
 class PEMD(MassProfile):
@@ -76,7 +76,47 @@ class PEMD(MassProfile):
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
         ])
-        super(name, description, parameters)
+        super().__init__(name, description, parameters)
+
+
+class SPEMD(MassProfile):
+    
+    def __init__(self):
+        name = 'SPEMD'
+        description = "Softened powerlaw elliptical mass distribution"
+        parameters = ParameterList([
+            NonLinearParameter('gamma',
+                               "Mass density slope at Einstein radius",
+                               min_value=1.0,
+                               max_value=3.0,
+                               latex_name=r"$\theta_{\rm E}$"),
+            NonLinearParameter('theta_E',
+                               "Einstein radius",
+                               min_value=0.0,
+                               latex_name=r"$\theta_{\rm E}$"),
+            NonLinearParameter('r_core',
+                               "Core radius",
+                               min_value=0.0,
+                               latex_name=r"$\theta_{\rm E}$"),
+            NonLinearParameter('e1',
+                               "Complex ellipticity component 1",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_1$"),
+            NonLinearParameter('e2',
+                               "Complex ellipticity component 2",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_2$"),
+            NonLinearParameter('center_x',
+                               "Profile center along x coordinates",
+                               latex_name=r"$x_0$"),
+            NonLinearParameter('center_y',
+                               "Profile center along y coordinates",
+                               latex_name=r"$y_0$")
+        ])
+        super().__init__(name, description, parameters)
+
 
 
 class ExternalShearEllipticity(MassProfile):
@@ -106,7 +146,7 @@ class ExternalShearEllipticity(MassProfile):
                                default_value=0.0,
                                latex_name=r"$y_0$")
         ])
-        super(name, description, parameters)
+        super().__init__(name, description, parameters)
 
 
 class ExternalShearAngleStrength(MassProfile):
@@ -136,4 +176,4 @@ class ExternalShearAngleStrength(MassProfile):
                                default_value=0.0,
                                latex_name=r"$y_0$")
         ])
-        super(name, description, parameters)
+        super().__init__(name, description, parameters)
