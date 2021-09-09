@@ -1,6 +1,7 @@
 # Single parameter of a profile
 
 __all__ = [
+    'Parameter',
     'NonLinearParameter', 
     'LinearParameter', 
     'LinearParameterSet',

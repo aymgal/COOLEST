@@ -1,4 +1,4 @@
-# Single light profile
+__author__ = 'aymgal'
 
 from lensmodelapi.profile import LightProfile
 from lensmodelapi.parameter_list import ParameterList

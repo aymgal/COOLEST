@@ -1,4 +1,4 @@
-# Base class for any profile (mass or light)
+__author__ = 'aymgal'
 
 from lensmodelapi.parameter_list import ParameterList
 

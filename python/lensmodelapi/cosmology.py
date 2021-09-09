@@ -1,4 +1,4 @@
-# Defines some quantities that defines a the cosmology
+__author__ = 'aymgal'
 
 
 class Cosmology(object):

@@ -1,3 +1,5 @@
+__author__ = 'aymgal'
+
 from typing import List
 
 from lensmodelapi.galaxy import Galaxy

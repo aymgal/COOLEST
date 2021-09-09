@@ -1,4 +1,4 @@
-# Single galaxy, acting as source or a lens
+__author__ = 'aymgal'
 
 from typing import List
 

@@ -1,3 +1,5 @@
+__author__ = 'aymgal'
+
 from lensmodelapi.lens_object import LensObject
 from lensmodelapi.cosmology import Cosmology
 

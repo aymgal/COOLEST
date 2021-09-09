@@ -1,4 +1,4 @@
-# Single mass profile
+__author__ = 'aymgal'
 
 from lensmodelapi.profile import MassProfile
 from lensmodelapi.parameter_list import ParameterList

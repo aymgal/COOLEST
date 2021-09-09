@@ -1,15 +1,8 @@
-# Generic model, as an ensemble of profiles
+__author__ = 'aymgal'
 
 from typing import List
 
 from lensmodelapi.profile_list import ProfileList, MassProfileList, LightProfileList
-
-
-__all__ = [
-    'Model', 
-    'LightModel', 
-    'MassModel', 
-]
 
 
 class Model(object):
