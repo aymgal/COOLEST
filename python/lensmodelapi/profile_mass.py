@@ -1,29 +1,26 @@
 # Single mass profile
 
-from lensmodelapi.parameter import NonLinearParameter
+from lensmodelapi.profile_base import Profile
+from lensmodelapi.parameter import NonLinearParameter, HyperParameter
 
 
 __all__ = ['SIE', 'ExternalShearEllipticity', 'ExternalShearAngleStrength']
 SUPPORTED_PROFILES = __all__
 
 
-class _MassProfileBase(object):
+class MassProfile(Profile):
 
-    def __init__(self, 
-                 name: str, 
-                 description: str, 
-                 parameters: str):
-        self.name = name
-        self.description = description
-        self.parameters = parameters
-        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._type = 'mass'
 
-class SIE(_MassProfileBase):
+
+class SIE(MassProfile):
     
     def __init__(self):
         name = 'SIE'
         description = "Singular isothermal sphere"
-        parameters = [
+        parameters = ParameterList([
             NonLinearParameter('theta_E',
                                "Einstein radius",
                                min_value=0.0,
@@ -44,16 +41,16 @@ class SIE(_MassProfileBase):
             NonLinearParameter('center_y',
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
-        ]
+        ])
         super(name, description, parameters)
 
 
-class PEMD(_MassProfileBase):
+class PEMD(MassProfile):
     
     def __init__(self):
         name = 'PEMD'
         description = "Powerlaw elliptical mass distribution"
-        parameters = [
+        parameters = ParameterList([
             NonLinearParameter('gamma',
                                "Mass density slope at Einstein radius",
                                min_value=1.0,
@@ -78,16 +75,16 @@ class PEMD(_MassProfileBase):
             NonLinearParameter('center_y',
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
-        ]
+        ])
         super(name, description, parameters)
 
 
-class ExternalShearEllipticity(_MassProfileBase):
+class ExternalShearEllipticity(MassProfile):
     
     def __init__(self):
         name = 'ext_shear_gamma1gamma2'
         description = "External shear defined with ellipticity"
-        parameters = [
+        parameters = ParameterList([
             NonLinearParameter('gamma1',
                                "Complex ellipticity component 1",
                                min_value=-1.0,
@@ -108,16 +105,16 @@ class ExternalShearEllipticity(_MassProfileBase):
                                fixed=True,
                                default_value=0.0,
                                latex_name=r"$y_0$")
-        ]
+        ])
         super(name, description, parameters)
 
 
-class ExternalShearAngleStrength(_MassProfileBase):
+class ExternalShearAngleStrength(MassProfile):
     
     def __init__(self):
         name = 'ext_shear_gamma_psi'
         description = "External shear defined with ellipticity"
-        parameters = [
+        parameters = ParameterList([
             NonLinearParameter('gamma',
                                "Strength of external shear",
                                min_value=-1.0,
@@ -138,5 +135,5 @@ class ExternalShearAngleStrength(_MassProfileBase):
                                fixed=True,
                                default_value=0.0,
                                latex_name=r"$y_0$")
-        ]
+        ])
         super(name, description, parameters)

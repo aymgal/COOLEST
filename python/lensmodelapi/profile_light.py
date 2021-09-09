@@ -1,35 +1,29 @@
 # Single light profile
 
-from lensmodelapi.parameter import NonLinearParameter, LinearParameter, LinearParameterSet
+from lensmodelapi.profile_base import LightProfile
+from lensmodelapi.parameter import (ParameterList,
+                                    NonLinearParameter, 
+                                    LinearParameter, 
+                                    LinearParameterSet)
 
 
 __all__ = ['SersicElliptical', 'PixelatedRegularGrid']
 SUPPORTED_PROFILES = __all__
 
 
-class _LightProfileBase(object):
+class LightProfile(Profile):
 
-    def __init__(self, name, description, parameters):
-        self.name = name
-        self.description = description
-        self.parameters = parameters
-
-    def num_params(self):
-        count = 0
-        for p in self.parameters:
-            if isinstance(p, (NonLinearParameter, LinearParameter)):
-                count += 1
-            elif isinstance(p, LinearParameterSet):
-                count += p.num_values
-        return count
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._type = 'light'
 
 
-class SersicElliptical(_LightProfileBase):
+class SersicElliptical(LightProfile):
     
     def __init__(self):
-        name = 'sersic_ell'
+        name = 'sersic_elliptical'
         description = "Elliptical Sersic"
-        parameters = [
+        parameters = ParameterList([
             LinearParameter('A',
                             "Amplitude at origin",
                             min_value=0.0,
@@ -59,34 +53,34 @@ class SersicElliptical(_LightProfileBase):
             NonLinearParameter('center_y',
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
-        ]
+        ])
         super(name, description, parameters)
 
 
-class Uniform(_LightProfileBase):
+class Uniform(LightProfile):
     
     def __init__(self):
         name = 'uniform'
         description = "Uniform sheet of light"
-        parameters = [
+        parameters = ParameterList([
             LinearParameter('A',
-                            "Amplitude at origin",
+                            "Central amplitude",
                             min_value=0.0,
                             latex_name=r"$A$"),
-        ]
+        ])
         super(name, description, parameters)
 
 
-class PixelatedRegularGrid(_LightProfileBase):
+class PixelatedRegularGrid(LightProfile):
     
     def __init__(self, num_pixels):
         name = 'pixelated_regular'
         description = "Pixelated light profile on a grid pixel grid"
-        parameters = [
+        parameters = ParameterList([
             LinearParameterSet('pixels',
                                "Set of pixel values",
                                num_pixels,
                                min_value=0.0,
                                latex_name=r"{\rm pixels}"),
-        ]
+        ])
         super(name, description, parameters)
