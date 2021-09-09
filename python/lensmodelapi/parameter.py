@@ -27,7 +27,6 @@ class Parameter(object):
             latex_name = name
         self.latex_name = latex_name
         self.value = default_value
-        self._type = None
         self._id = None
         
     def set_value(self, value, overwrite=False):
@@ -42,30 +41,28 @@ class Parameter(object):
     def set_id(self, unique_id: str) -> None:
         self._id = unique_id
 
-    def fix():
+    def get_id(self):
+        return self._id
+
+    def fix(self):
         if self.value is None:
             raise ValueError(f"Cannot fix parameter {self.name} as no value has been set.")
         self.fixed = True
 
-    def unfix():
+    def unfix(self):
         self.fixed = False
-
-    def param_type():
-        return self._type
 
 
 class NonLinearParameter(Parameter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._type = 'non_linear'
 
 
 class LinearParameter(Parameter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._type = 'linear'
 
 
 class LinearParameterSet(Parameter):
@@ -76,7 +73,11 @@ class LinearParameterSet(Parameter):
                  *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.num_values = num_values
-        self._type = 'linear_set'
+
+    def to_dict(self):
+        d = super().to_dict()
+        d['num_values'] = num_values
+        return d
 
 
 class HyperParameter(Parameter):
@@ -85,5 +86,4 @@ class HyperParameter(Parameter):
     def __init__(self, profile_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.profile_id = profile_id
-        self._type = 'hyper'
         

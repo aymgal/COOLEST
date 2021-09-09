@@ -10,10 +10,6 @@ class Model(object):
     def __init__(self, 
                  profiles: ProfileList) -> None:
         self.profiles = profiles
-        self._type = None
-        
-    def type(self):
-        return self._type
 
 
 class MassModel(Model):
@@ -22,7 +18,6 @@ class MassModel(Model):
                  profile_names: List[str]) -> None:
         profiles = MassProfileList(profile_names)
         super().__init__(profiles)
-        self._type = 'mass'
         
 
 class LightModel(Model):
@@ -31,5 +26,4 @@ class LightModel(Model):
                  profile_names: List[str]) -> None:
         profiles = LightProfileList(profile_names)
         super().__init__(profiles)
-        self._type = 'light'
         

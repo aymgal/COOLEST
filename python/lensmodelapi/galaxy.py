@@ -15,10 +15,6 @@ class Galaxy(object):
         self.name = name
         self.redshift = redshift
         self.light_model = light_model
-        self._type = None
-
-    def type(self):
-        return self._type
 
 
 class LensGalaxy(Galaxy):
@@ -30,7 +26,6 @@ class LensGalaxy(Galaxy):
                  mass_model: MassModel) -> None:
         super().__init__(name, redshift, light_model)
         self.mass_model = mass_model
-        self._type = 'lens'
 
 
 class SourceGalaxy(Galaxy):
@@ -40,5 +35,4 @@ class SourceGalaxy(Galaxy):
                  redshift: Redshift,
                  light_model: LightModel) -> None:
         super().__init__(name, redshift, light_model)
-        self._type = 'source'
         

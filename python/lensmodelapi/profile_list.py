@@ -19,10 +19,6 @@ class ProfileList(list):
             profile_class = getattr(profiles_module, name)
             profiles.append(profile_class())
         list.__init__(self, profiles)
-        self._type = None
-
-    def type(self):
-        return self._type
 
     def num_pixelated_profiles(self):
         pass  #TODO
@@ -33,7 +29,6 @@ class MassProfileList(ProfileList):
     def __init__(self, 
                  profile_names: List[str]) -> None:
         super().__init__(mass_profiles_module, profile_names)
-        self._type = 'mass'
 
 
 class LightProfileList(ProfileList):
@@ -41,4 +36,3 @@ class LightProfileList(ProfileList):
     def __init__(self, 
                  profile_names: List[str]) -> None:
         super().__init__(light_profiles_module, profile_names)
-        self._type = 'light'
