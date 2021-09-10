@@ -1,7 +1,7 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.base import APIBaseObject
-from lensmodelapi.model import LightModel, MassModel
+from lensmodelapi.api.base import APIBaseObject
+from lensmodelapi.api.model import LightModel, MassModel
 
 
 class Galaxy(APIBaseObject):

@@ -3,7 +3,7 @@ __author__ = 'aymgal'
 from astropy.io import fits
 import numpy as np
 
-from lensmodelapi.base import APIBaseObject
+from lensmodelapi.api.base import APIBaseObject
 
 
 class FitsFile(APIBaseObject):

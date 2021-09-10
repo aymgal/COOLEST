@@ -3,8 +3,8 @@ __author__ = 'aymgal'
 from types import ModuleType
 from typing import List
 
-from lensmodelapi.profiles import mass as mass_profiles_module
-from lensmodelapi.profiles import light as light_profiles_module
+from lensmodelapi.api.profiles import mass as mass_profiles_module
+from lensmodelapi.api.profiles import light as light_profiles_module
 
 
 class ProfileList(list):

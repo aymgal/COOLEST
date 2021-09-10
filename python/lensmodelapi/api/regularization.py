@@ -1,8 +1,8 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.base import APIBaseObject
-from lensmodelapi.parameter_list import ParameterList
-from lensmodelapi.profile import Profile
+from lensmodelapi.api.base import APIBaseObject
+from lensmodelapi.api.parameter_list import ParameterList
+from lensmodelapi.api.profile import Profile
 
 
 class Regularization(APIBaseObject):

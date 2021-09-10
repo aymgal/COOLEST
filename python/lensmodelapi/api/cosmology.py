@@ -1,6 +1,6 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.base import APIBaseObject
+from lensmodelapi.api.base import APIBaseObject
 
 
 class Cosmology(APIBaseObject):

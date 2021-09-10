@@ -1,8 +1,8 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.regularization import Regularization
-from lensmodelapi.parameter_list import ParameterList
-from lensmodelapi.parameter import HyperParameter
+from lensmodelapi.api.regularization import Regularization
+from lensmodelapi.api.parameter_list import ParameterList
+from lensmodelapi.api.parameter import HyperParameter
 
 __all__ = [
     'PixelEntropy',

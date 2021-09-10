@@ -2,10 +2,10 @@ __author__ = 'aymgal'
 
 from typing import List
 
-from lensmodelapi.base import APIBaseObject
-from lensmodelapi.lens_object import LensObject
-from lensmodelapi.lens_sample import LensSample
-from lensmodelapi.cosmology import Cosmology
+from lensmodelapi.api.base import APIBaseObject
+from lensmodelapi.api.lens_object import LensObject
+from lensmodelapi.api.lens_sample import LensSample
+from lensmodelapi.api.cosmology import Cosmology
 
 
 class LensUniverse(APIBaseObject):

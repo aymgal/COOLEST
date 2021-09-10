@@ -2,11 +2,11 @@ __author__ = 'aymgal'
 
 from typing import List
 
-from lensmodelapi.parameter import (Parameter,
-                                    NonLinearParameter,
-                                    LinearParameter,
-                                    LinearParameterSet,
-                                    HyperParameter)
+from lensmodelapi.api.parameter import (Parameter,
+                                        NonLinearParameter,
+                                        LinearParameter,
+                                        LinearParameterSet,
+                                        HyperParameter)
 
 
 class ParameterList(list):

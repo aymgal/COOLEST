@@ -2,7 +2,7 @@ __author__ = 'aymgal'
 
 from typing import List
 
-from lensmodelapi.lens_object import LensObject
+from lensmodelapi.api.lens_object import LensObject
 
 
 class LensSample(list):

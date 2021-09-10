@@ -2,11 +2,11 @@ __author__ = 'aymgal'
 
 from typing import List
 
-from lensmodelapi.base import APIBaseObject
-from lensmodelapi.galaxy_list import GalaxyList
-from lensmodelapi.galaxy import Galaxy, LensGalaxy, SourceGalaxy
-from lensmodelapi.regularization_list import RegularizationList
-from lensmodelapi.coordinates import Coordinates
+from lensmodelapi.api.base import APIBaseObject
+from lensmodelapi.api.galaxy_list import GalaxyList
+from lensmodelapi.api.galaxy import Galaxy, LensGalaxy, SourceGalaxy
+from lensmodelapi.api.regularization_list import RegularizationList
+from lensmodelapi.api.coordinates import Coordinates
 
 
 class LensModel(APIBaseObject):

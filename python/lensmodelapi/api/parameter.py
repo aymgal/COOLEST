@@ -1,6 +1,6 @@
 # Single parameter of a profile
 
-from lensmodelapi.base import APIBaseObject
+from lensmodelapi.api.base import APIBaseObject
 
 __all__ = [
     'Parameter',

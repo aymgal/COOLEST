@@ -2,7 +2,7 @@ __author__ = 'aymgal'
 
 from typing import List
 
-from lensmodelapi.regularizations import pixelated as regularization_module
+from lensmodelapi.api.regularizations import pixelated as regularization_module
 
 
 class RegularizationList(list):

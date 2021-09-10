@@ -1,8 +1,8 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.profile import MassProfile
-from lensmodelapi.parameter_list import ParameterList
-from lensmodelapi.parameter import NonLinearParameter
+from lensmodelapi.api.profile import MassProfile
+from lensmodelapi.api.parameter_list import ParameterList
+from lensmodelapi.api.parameter import NonLinearParameter
 
 
 __all__ = [

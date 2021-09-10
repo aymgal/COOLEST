@@ -2,7 +2,7 @@ __author__ = 'aymgal'
 
 from typing import List
 
-from lensmodelapi.galaxy import Galaxy, SourceGalaxy, LensGalaxy
+from lensmodelapi.api.galaxy import Galaxy, SourceGalaxy, LensGalaxy
 
 
 class GalaxyList(list):

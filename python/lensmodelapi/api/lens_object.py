@@ -1,8 +1,8 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.base import APIBaseObject
-from lensmodelapi.lens_model import LensModel
-from lensmodelapi.observation import Data, Instrument
+from lensmodelapi.api.base import APIBaseObject
+from lensmodelapi.api.lens_model import LensModel
+from lensmodelapi.api.observation import Data, Instrument
 
 
 class LensObject(APIBaseObject):
