@@ -3,7 +3,7 @@ import yaml
 import json
 
 
-class HierarchicalEncoder(object):
+class HierarchyEncoder(object):
 
     def __init__(self,
                  obj: object, 
@@ -17,7 +17,7 @@ class HierarchicalEncoder(object):
         yaml_path = self.path + '.yaml'
         with open(yaml_path, 'w') as f:
             result = yaml.dump(self, f, indent=self.indent,
-                               sort_keys=False, default_flow_style=False)
+                               sort_keys=True, default_flow_style=False)
         return result
 
     def yaml_to_json(self):

@@ -20,7 +20,6 @@ SUPPORTED_PROFILES = __all__
 class SersicElliptical(LightProfile):
     
     def __init__(self):
-        name = 'sersic_elliptical'
         description = "Elliptical Sersic"
         parameters = ParameterList([
             LinearParameter('A',
@@ -53,13 +52,12 @@ class SersicElliptical(LightProfile):
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class Chameleon(LightProfile):
     
     def __init__(self):
-        name = 'chameleon'
         description = ("Chameleon profile defined as the difference between two NIE profiles"
                        " (elliptical truncated double isothermal profile)")
         parameters = ParameterList([
@@ -92,13 +90,12 @@ class Chameleon(LightProfile):
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class Uniform(LightProfile):
     
     def __init__(self):
-        name = 'uniform'
         description = "Uniform sheet of light"
         parameters = ParameterList([
             LinearParameter('A',
@@ -106,14 +103,13 @@ class Uniform(LightProfile):
                             min_value=0.0,
                             latex_name=r"$A$"),
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class PixelatedRegularGrid(LightProfile):
     
     def __init__(self):
         num_pixels = None # TODO
-        name = 'pixelated_regular'
         description = "Pixelated light profile on a grid pixel grid"
         parameters = ParameterList([
             LinearParameterSet(num_pixels,
@@ -122,14 +118,13 @@ class PixelatedRegularGrid(LightProfile):
                                min_value=0.0,
                                latex_name=r"{\rm pixels}"),
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class PixelatedAdaptiveGrid(LightProfile):
     
     def __init__(self):
         num_pixels = None # TODO
-        name = 'pixelated_adaptive'
         description = "Pixelated light profile on an adaptive (thus irregular) grid"
         parameters = ParameterList([
             LinearParameterSet(num_pixels,
@@ -138,4 +133,4 @@ class PixelatedAdaptiveGrid(LightProfile):
                                min_value=0.0,
                                latex_name=r"{\rm pixels}"),
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)

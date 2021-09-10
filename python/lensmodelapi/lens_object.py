@@ -2,7 +2,6 @@ __author__ = 'aymgal'
 
 from lensmodelapi.base import APIBaseObject
 from lensmodelapi.lens_model import LensModel
-from lensmodelapi.coordinates import Coordinates
 from lensmodelapi.observation import Data, Instrument
 
 
@@ -14,12 +13,10 @@ class LensObject(APIBaseObject):
     """
     def __init__(self,
                  instrument: Instrument,
-                 coordinates: Coordinates,
                  lens_model: LensModel,
                  data: Data = None) -> None:
         self.lens_model = lens_model
         self.instrument = instrument
-        self.coordinates = coordinates
         self.data = data
         super().__init__()
         

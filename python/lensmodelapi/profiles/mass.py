@@ -20,7 +20,6 @@ SUPPORTED_PROFILES = __all__
 class SIE(MassProfile):
     
     def __init__(self):
-        name = 'SIE'
         description = "Singular isothermal sphere"
         parameters = ParameterList([
             NonLinearParameter('theta_E',
@@ -44,13 +43,12 @@ class SIE(MassProfile):
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class PEMD(MassProfile):
     
     def __init__(self):
-        name = 'PEMD'
         description = "Powerlaw elliptical mass distribution"
         parameters = ParameterList([
             NonLinearParameter('gamma',
@@ -78,13 +76,12 @@ class PEMD(MassProfile):
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class SPEMD(MassProfile):
     
     def __init__(self):
-        name = 'SPEMD'
         description = "Softened powerlaw elliptical mass distribution"
         parameters = ParameterList([
             NonLinearParameter('gamma',
@@ -117,13 +114,12 @@ class SPEMD(MassProfile):
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class NFWElliptical(MassProfile):
     
     def __init__(self):
-        name = 'NFW_elliptical'
         description = "NFW with ellipticity introduced in the mass"
         parameters = ParameterList([
             NonLinearParameter('r_s',
@@ -151,13 +147,12 @@ class NFWElliptical(MassProfile):
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class Chameleon(MassProfile):
     
     def __init__(self):
-        name = 'chameleon'
         description = ("Chameleon profile defined as the difference between two NIE profiles"
                        " (elliptical truncated double isothermal profile)")
         parameters = ParameterList([
@@ -190,13 +185,12 @@ class Chameleon(MassProfile):
                                "Profile center along y coordinates",
                                latex_name=r"$y_0$")
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class ExternalShearEllipticity(MassProfile):
     
     def __init__(self):
-        name = 'ext_shear_gamma1gamma2'
         description = "External shear defined with ellipticity"
         parameters = ParameterList([
             NonLinearParameter('gamma1',
@@ -220,13 +214,12 @@ class ExternalShearEllipticity(MassProfile):
                                default_value=0.0,
                                latex_name=r"$y_0$")
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
 
 
 class ExternalShearAngleStrength(MassProfile):
     
     def __init__(self):
-        name = 'ext_shear_gamma_psi'
         description = "External shear defined with ellipticity"
         parameters = ParameterList([
             NonLinearParameter('gamma',
@@ -250,4 +243,4 @@ class ExternalShearAngleStrength(MassProfile):
                                default_value=0.0,
                                latex_name=r"$y_0$")
         ])
-        super().__init__(name, description, parameters)
+        super().__init__(description, parameters)
