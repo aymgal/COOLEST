@@ -1,9 +1,9 @@
 # Single redshift plane
 
-from lensmodelapi.base import LensModelAPIObject
+from lensmodelapi.base import APIBaseObject
 
 
-class Redshift(LensModelAPIObject):
+class Redshift(APIBaseObject):
 
     def __init__(self, 
                  z: float) -> None:

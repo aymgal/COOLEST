@@ -7,7 +7,13 @@ from lensmodelapi.parameter import (NonLinearParameter,
                                     LinearParameterSet)
 
 
-__all__ = ['SersicElliptical', 'PixelatedRegularGrid']
+__all__ = [
+    'SersicElliptical',
+    'Chameleon',
+    'Uniform',
+    'PixelatedRegularGrid',
+    'PixelatedAdaptiveGrid',
+]
 SUPPORTED_PROFILES = __all__
 
 
@@ -50,6 +56,45 @@ class SersicElliptical(LightProfile):
         super().__init__(name, description, parameters)
 
 
+class Chameleon(LightProfile):
+    
+    def __init__(self):
+        name = 'chameleon'
+        description = ("Chameleon profile defined as the difference between two NIE profiles"
+                       " (elliptical truncated double isothermal profile)")
+        parameters = ParameterList([
+            LinearParameter('A',
+                            "Central amplitude",
+                            min_value=0.0,
+                            latex_name=r"$A$"),
+            NonLinearParameter('w_c',
+                               "Core radius of inner NIE",
+                               min_value=0.0,
+                               latex_name=r"$w{\rm c}$"),
+            NonLinearParameter('w_t',
+                               "Core radius of outer NIE",
+                               min_value=0.0,
+                               latex_name=r"$w{\rm t}$"),
+            NonLinearParameter('e1',
+                               "Complex ellipticity component 1",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_1$"),
+            NonLinearParameter('e2',
+                               "Complex ellipticity component 2",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_2$"),
+            NonLinearParameter('center_x',
+                               "Profile center along x coordinates",
+                               latex_name=r"$x_0$"),
+            NonLinearParameter('center_y',
+                               "Profile center along y coordinates",
+                               latex_name=r"$y_0$")
+        ])
+        super().__init__(name, description, parameters)
+
+
 class Uniform(LightProfile):
     
     def __init__(self):
@@ -67,9 +112,25 @@ class Uniform(LightProfile):
 class PixelatedRegularGrid(LightProfile):
     
     def __init__(self):
-        num_pixels = 100 # TODO
+        num_pixels = None # TODO
         name = 'pixelated_regular'
         description = "Pixelated light profile on a grid pixel grid"
+        parameters = ParameterList([
+            LinearParameterSet(num_pixels,
+                               'pixels',
+                               "Set of pixel values",
+                               min_value=0.0,
+                               latex_name=r"{\rm pixels}"),
+        ])
+        super().__init__(name, description, parameters)
+
+
+class PixelatedAdaptiveGrid(LightProfile):
+    
+    def __init__(self):
+        num_pixels = None # TODO
+        name = 'pixelated_adaptive'
+        description = "Pixelated light profile on an adaptive (thus irregular) grid"
         parameters = ParameterList([
             LinearParameterSet(num_pixels,
                                'pixels',

@@ -1,33 +1,26 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.base import LensModelAPIObject
-from lensmodelapi.observation import Observation
+from lensmodelapi.base import APIBaseObject
 
 
-class Coordinates(LensModelAPIObject):
+class Coordinates(APIBaseObject):
 
-    # TODO: support for general pixel shape (using pixel to angle matrix)
+    _ra_orientations = ['left', 'right']
+    _dec_orientations = ['top', 'bottom']
+    _origins = ['center', 'bottom_left']
 
     def __init__(self, 
                  ra_orientation: str = 'left', 
                  dec_orientation: str = 'top',
                  origin: str = 'center',
-                 pixel_size: float = None,        # can be inferred from a Data object
-                 ra_field_of_view: float = None,  # can be inferred from a Data object
-                 dec_field_of_view: float = None, # can be inferred from a Data object
                  ) -> None:
-        if ra_orientation not in ['left', 'top']:
-            raise ValueError("RA orientation can either be 'left' or 'right'.")
+        if ra_orientation not in self._ra_orientations:
+            raise ValueError(f"RA orientation can only be in {self._ra_orientations}.")
         self.ra_orientation = ra_orientation
-        if dec_orientation not in ['top', 'bottom']:
-            raise ValueError("Dec orientation can either be 'left' or 'right'.")
+        if dec_orientation not in self._dec_orientations:
+            raise ValueError(f"Dec orientation can only be in {self._dec_orientations}.")
         self.dec_orientation = dec_orientation
-        self.pixel_size = pixel_size
-        self.ra_field_of_view = ra_field_of_view
-        self.dec_field_of_view = dec_field_of_view
+        if origin not in self._origins:
+            raise ValueError(f"Dec orientation can only be in {self._origins}.")
+        self.origin = origin
         super().__init__()
-
-    def update_with_observation(self, observation: Observation) -> None:
-        self.pixel_size = observation.image.pixel_size
-        self.ra_field_of_view  = observation.image.num_pix_ra * self.pixel_size
-        self.dec_field_of_view = observation.image.num_pix_dec * self.pixel_size

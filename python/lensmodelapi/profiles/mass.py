@@ -9,6 +9,8 @@ __all__ = [
     'SIE', 
     'PEMD',
     'SPEMD',
+    'NFWElliptical',
+    'Chameleon',
     'ExternalShearEllipticity', 
     'ExternalShearAngleStrength',
 ]
@@ -54,7 +56,7 @@ class PEMD(MassProfile):
             NonLinearParameter('gamma',
                                "Mass density slope at Einstein radius",
                                min_value=1.0,
-                               latex_name=r"$\theta_{\rm E}$"),
+                               latex_name=r"$\gamma$"),
             NonLinearParameter('theta_E',
                                "Einstein radius",
                                min_value=0.0,
@@ -89,7 +91,7 @@ class SPEMD(MassProfile):
                                "Mass density slope at Einstein radius",
                                min_value=1.0,
                                max_value=3.0,
-                               latex_name=r"$\theta_{\rm E}$"),
+                               latex_name=r"$\gamma$"),
             NonLinearParameter('theta_E',
                                "Einstein radius",
                                min_value=0.0,
@@ -97,7 +99,7 @@ class SPEMD(MassProfile):
             NonLinearParameter('r_core',
                                "Core radius",
                                min_value=0.0,
-                               latex_name=r"$\theta_{\rm E}$"),
+                               latex_name=r"$r_{\rm c}$"),
             NonLinearParameter('e1',
                                "Complex ellipticity component 1",
                                min_value=-1.0,
@@ -117,6 +119,78 @@ class SPEMD(MassProfile):
         ])
         super().__init__(name, description, parameters)
 
+
+class NFWElliptical(MassProfile):
+    
+    def __init__(self):
+        name = 'NFW_elliptical'
+        description = "NFW with ellipticity introduced in the mass"
+        parameters = ParameterList([
+            NonLinearParameter('r_s',
+                               "Radius at which the mass density profile slope transitions from -1 to -3",
+                               min_value=0.0,
+                               latex_name=r"$r_{\rm s}$"),
+            NonLinearParameter('rho_0',
+                               "Characteristic mass density",
+                               min_value=0.0,
+                               latex_name=r"$\rho_0$"),
+            NonLinearParameter('e1',
+                               "Complex ellipticity component 1",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_1$"),
+            NonLinearParameter('e2',
+                               "Complex ellipticity component 2",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_2$"),
+            NonLinearParameter('center_x',
+                               "Profile center along x coordinates",
+                               latex_name=r"$x_0$"),
+            NonLinearParameter('center_y',
+                               "Profile center along y coordinates",
+                               latex_name=r"$y_0$")
+        ])
+        super().__init__(name, description, parameters)
+
+
+class Chameleon(MassProfile):
+    
+    def __init__(self):
+        name = 'chameleon'
+        description = ("Chameleon profile defined as the difference between two NIE profiles"
+                       " (elliptical truncated double isothermal profile)")
+        parameters = ParameterList([
+            NonLinearParameter('alpha_1',
+                               "Deflection angle at 1 (in coordinates units) from the center",
+                               min_value=0.0,
+                               latex_name=r"$\alpha_1$"),
+            NonLinearParameter('w_c',
+                               "Core radius of inner NIE",
+                               min_value=0.0,
+                               latex_name=r"$w{\rm c}$"),
+            NonLinearParameter('w_t',
+                               "Core radius of outer NIE",
+                               min_value=0.0,
+                               latex_name=r"$w{\rm t}$"),
+            NonLinearParameter('e1',
+                               "Complex ellipticity component 1",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_1$"),
+            NonLinearParameter('e2',
+                               "Complex ellipticity component 2",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_2$"),
+            NonLinearParameter('center_x',
+                               "Profile center along x coordinates",
+                               latex_name=r"$x_0$"),
+            NonLinearParameter('center_y',
+                               "Profile center along y coordinates",
+                               latex_name=r"$y_0$")
+        ])
+        super().__init__(name, description, parameters)
 
 
 class ExternalShearEllipticity(MassProfile):

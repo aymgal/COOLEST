@@ -1,6 +1,6 @@
 # Single parameter of a profile
 
-from lensmodelapi.base import LensModelAPIObject
+from lensmodelapi.base import APIBaseObject
 
 __all__ = [
     'Parameter',
@@ -10,7 +10,7 @@ __all__ = [
     'HyperParameter',
 ]
 
-class Parameter(LensModelAPIObject):
+class Parameter(APIBaseObject):
 
     def __init__(self, 
                  name: str, 
@@ -75,7 +75,6 @@ class LinearParameterSet(Parameter):
 class HyperParameter(Parameter):
     """Typically for pixelated profiles"""
 
-    def __init__(self, profile_id, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.profile_id = profile_id
         

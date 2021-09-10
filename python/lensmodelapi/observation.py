@@ -1,53 +1,70 @@
 __author__ = 'aymgal'
 
 from astropy.io import fits
+import numpy as np
 
-from lensmodelapi.base import LensModelAPIObject
+from lensmodelapi.base import APIBaseObject
 
 
-class FitsFile(LensModelAPIObject):
-
+class FitsFile(APIBaseObject):
+    """A simple FITS file"""
     def __init__(self,
-                 fits_path: str,
-                 pixel_size: float = None,
-                 num_pix_ra: int = None,
-                 num_pix_dec: int = None,
-                 update_with_fits: bool = False) -> None:
+                 fits_path: str) -> None:
         self.fits_path = fits_path
-        self.pixel_size = pixel_size
-        self.num_pix_ra = num_pix_ra
-        self.num_pix_dec = num_pix_dec
-        super().__init__()
-
-    def update_with_fits(self):
-        array_shape, pixel_size = self.extract_properties()
-        if array_shape is not None:
-            self.num_pix_ra, self.num_pix_dec = array_shape
-        if pixel_size is not None:
-            self.pixel_size = pixel_size
-
-    def extract_properties(self):
-        pixels, header = self.read(self.fits_path)
+        pixels, header = self.read()
         array_shape = pixels.shape
-        pixel_size = None  # TODO: extraction of pixel size and other things from the header
-        return array_shape, pixel_size
-
-    @staticmethod
-    def read(fits_path):
-        pixels, header = fits.getdata(fits_path, header=True)
-        return pixels, header
-
-
-class Observation(LensModelAPIObject):
-
-    def __init__(self, 
-                 image: FitsFile,
-                 psf: FitsFile,
-                 update_with_fits: bool = False) -> None:
-        self.image = image
-        if update_with_fits:
-            self.image.update_with_fits()
-        self.psf = psf
-        if update_with_fits:
-            self.psf.update_with_fits()
+        assert array_shape == (header['NAXIS1'], header['NAXIS2'])
+        self.num_pix_ra, self.num_pix_dec = array_shape
         super().__init__()
+
+    def read(self):
+        return fits.getdata(self.fits_path, header=True)
+
+
+class Instrument(APIBaseObject):
+    """Defines an telescope+camera setup"""
+    # TODO: support for general pixel shape (using pixel to angle matrix)
+    def __init__(self,
+                 psf: FitsFile,
+                 pixel_size: float, 
+                 field_of_view_ra: float,
+                 field_of_view_dec: float,
+                 background_rms: float = None,
+                 exposure_time: float = None,
+                 psf_pixel_size: float = None) -> None:
+        self.psf = psf
+        self.pixel_size = pixel_size
+        self.field_of_view_ra = field_of_view_ra
+        self.field_of_view_dec = field_of_view_dec
+        self.background_rms = background_rms
+        self.exposure_time = exposure_time
+        if psf_pixel_size is None:
+            self.psf_pixel_size = pixel_size
+        super().__init__()
+
+    def set_background_rms(self, sigma_bkg):
+        self.background_rms = sigma_bkg
+
+
+class Data(APIBaseObject):
+    """Defines a data image, as a simple FITS file"""
+    def __init__(self, 
+                 image: FitsFile) -> None:
+        self.image = image
+        super().__init__()
+
+    def check_consistency_with_instrument(self, instrument):
+        """Checks that the data image is consistent with instrument properties"""
+        num_pix_ra = int(instrument.field_of_view_ra / instrument.pixel_size)
+        error_ra = f"Field-of-view along RA is inconsistent (data: {self.image.num_pix_ra}, instrument: {num_pix_ra})."
+        assert self.image.num_pix_ra  == num_pix_ra, error_ra
+        num_pix_dec = int(instrument.field_of_view_dec / instrument.pixel_size)
+        error_dec = f"Field-of-view along Dec is inconsistent (data: {self.image.num_pix_dec}, instrument: {num_pix_dec})."
+        assert self.image.num_pix_dec  == num_pix_dec, error_dec
+        # TODO: check pixel size value?
+
+    def estimate_background_noise(self):
+        # TODO: this is a VERY crude estimation
+        pixels, _ = self.image.read()
+        sigma_bkg = np.median(np.abs(pixels - np.median(pixels)))
+        return float(sigma_bkg)

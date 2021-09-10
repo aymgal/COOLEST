@@ -1,11 +1,11 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.base import LensModelAPIObject
+from lensmodelapi.base import APIBaseObject
 from lensmodelapi.redshift import Redshift
 from lensmodelapi.model import LightModel, MassModel
 
 
-class Galaxy(LensModelAPIObject):
+class Galaxy(APIBaseObject):
 
     def __init__(self,
                  name: str,
