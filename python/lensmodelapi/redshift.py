@@ -1,9 +1,14 @@
 # Single redshift plane
 
-class Redshift(object):
+from lensmodelapi.base import LensModelAPIObject
+
+
+class Redshift(LensModelAPIObject):
 
     def __init__(self, 
                  z: float) -> None:
         if z < 0:
             raise ValueError("Redshift cannot be negative.")
         self.z = z
+        super().__init__()
+        

@@ -1,5 +1,7 @@
 # Single parameter of a profile
 
+from lensmodelapi.base import LensModelAPIObject
+
 __all__ = [
     'Parameter',
     'NonLinearParameter', 
@@ -8,7 +10,7 @@ __all__ = [
     'HyperParameter',
 ]
 
-class Parameter(object):
+class Parameter(LensModelAPIObject):
 
     def __init__(self, 
                  name: str, 
@@ -27,7 +29,8 @@ class Parameter(object):
             latex_name = name
         self.latex_name = latex_name
         self.value = default_value
-        self._id = None
+        self.id = None
+        super().__init__()
         
     def set_value(self, value, overwrite=False):
         if self.value is not None and not overwrite:
@@ -37,12 +40,6 @@ class Parameter(object):
         if self.max_value is not None and value > self.max_value:
             raise ValueError(f"Value cannot be larger than {self.max_value}.")
         self.value = value
-
-    def set_id(self, unique_id: str) -> None:
-        self._id = unique_id
-
-    def get_id(self):
-        return self._id
 
     def fix(self):
         if self.value is None:
@@ -73,11 +70,6 @@ class LinearParameterSet(Parameter):
                  *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.num_values = num_values
-
-    def to_dict(self):
-        d = super().to_dict()
-        d['num_values'] = num_values
-        return d
 
 
 class HyperParameter(Parameter):

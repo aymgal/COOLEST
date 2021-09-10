@@ -1,5 +1,6 @@
 __author__ = 'aymgal'
 
+from lensmodelapi.base import LensModelAPIObject
 from lensmodelapi.parameter_list import ParameterList
 
 
@@ -10,7 +11,7 @@ __all__ = [
 ]
 
 
-class Profile(object):
+class Profile(LensModelAPIObject):
 
     def __init__(self,
                  name: str, 
@@ -19,6 +20,7 @@ class Profile(object):
         self.name = name
         self.description = description
         self.parameters = parameters
+        super().__init__()
         
 
 class LightProfile(Profile):

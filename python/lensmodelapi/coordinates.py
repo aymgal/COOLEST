@@ -1,9 +1,10 @@
 __author__ = 'aymgal'
 
+from lensmodelapi.base import LensModelAPIObject
 from lensmodelapi.observation import Observation
 
 
-class Coordinates(object):
+class Coordinates(LensModelAPIObject):
 
     # TODO: support for general pixel shape (using pixel to angle matrix)
 
@@ -24,8 +25,9 @@ class Coordinates(object):
         self.pixel_size = pixel_size
         self.ra_field_of_view = ra_field_of_view
         self.dec_field_of_view = dec_field_of_view
+        super().__init__()
 
     def update_with_observation(self, observation: Observation) -> None:
         self.pixel_size = observation.image.pixel_size
-        self.ra_field_of_view  = observation.image.array_shape[0] * self.pixel_size
-        self.dec_field_of_view = observation.image.array_shape[1] * self.pixel_size
+        self.ra_field_of_view  = observation.image.num_pix_ra * self.pixel_size
+        self.dec_field_of_view = observation.image.num_pix_dec * self.pixel_size
