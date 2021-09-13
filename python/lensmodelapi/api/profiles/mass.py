@@ -7,6 +7,7 @@ from lensmodelapi.api.parameter import NonLinearParameter
 
 __all__ = [
     'SIE', 
+    'NIE',
     'PEMD',
     'SPEMD',
     'NFWElliptical',
@@ -31,6 +32,39 @@ class SIE(MassProfile):
                                min_value=-1.0,
                                max_value=1.0,
                                latex_name=r"$e_1$"),
+            NonLinearParameter('e2',
+                               "Complex ellipticity component 2",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_2$"),
+            NonLinearParameter('center_x',
+                               "Profile center along x coordinates",
+                               latex_name=r"$x_0$"),
+            NonLinearParameter('center_y',
+                               "Profile center along y coordinates",
+                               latex_name=r"$y_0$")
+        ])
+        super().__init__(description, parameters)
+
+
+class NIE(MassProfile):
+    
+    def __init__(self):
+        description = "Non-singular isothermal sphere"
+        parameters = ParameterList([
+            NonLinearParameter('theta_E',
+                               "Einstein radius",
+                               min_value=0.0,
+                               latex_name=r"$\theta_{\rm E}$"),
+            NonLinearParameter('e1',
+                               "Complex ellipticity component 1",
+                               min_value=-1.0,
+                               max_value=1.0,
+                               latex_name=r"$e_1$"),
+            NonLinearParameter('r_core',
+                               "Core radius",
+                               min_value=0.0,
+                               latex_name=r"$r_{\rm c}$"),
             NonLinearParameter('e2',
                                "Complex ellipticity component 2",
                                min_value=-1.0,

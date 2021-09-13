@@ -2,64 +2,98 @@
 # emulating a series of inputs from e.g. a user interface,
 # and finally write it on disk as a JSON file.
 
-from lensmodelapi.observation import FitsFile, Observation
-from lensmodelapi.coordinates import Coordinates
-from lensmodelapi.cosmology import Cosmology
-from lensmodelapi.redshift import Redshift
-from lensmodelapi.galaxy import SourceGalaxy, LensGalaxy
-from lensmodelapi.model import LightModel, MassModel
-from lensmodelapi.lens_object import LensObject
-from lensmodelapi.lens_universe import LensUniverse
+from lensmodelapi.api.observation import FitsFile, Data, Instrument
+from lensmodelapi.api.coordinates import Coordinates
+from lensmodelapi.api.cosmology import Cosmology
+from lensmodelapi.api.galaxy import SourceGalaxy, LensGalaxy
+from lensmodelapi.api.galaxy_list import GalaxyList
+from lensmodelapi.api.mass_light_model import MassModel, LightModel
+from lensmodelapi.api.regularization_list import RegularizationList
+from lensmodelapi.api.lens_model import LensModel
+from lensmodelapi.api.lens_object import LensObject
+from lensmodelapi.api.lens_universe import LensUniverse
 from lensmodelapi import info
+from lensmodelapi.encoder import HierarchyEncoder
 
 
-# Provide data files
-image = FitsFile('test_image.fits',
-                 pixel_size=0.08)
-psf = FitsFile('test_psf.fits',
-               pixel_size=0.08)
-observation = Observation(image, psf, update_with_fits=True)
-print("OBSERVATION\n", observation.__dict__)
-print("image array shape\n", observation.image.array_shape, '\n')
+# Provide data file
+data = Data(FitsFile('test_image.fits'),
+            noise_map=None,
+            wht_map=None)
 
+# Defines the instrument
+instrument = Instrument('some instrument',
+                        FitsFile('test_psf.fits'),
+                        pixel_size=0.08, 
+                        field_of_view_ra=None,
+                        field_of_view_dec=None,
+                        exposure_time=1000,
+                        background_rms=0.05,
+                        psf_pixel_size=None)
+
+# estimate background noise from data
+instrument.set_background_rms(data.estimate_background_noise())
+
+# check consistency
+# data.check_consistency_with_instrument(instrument)
+
+# or update instrument field-of-view based on data
+instrument.update_fov_with_data(data)
+
+# Setup coordinate systems that defines e.g. centers of model profiles
 coordinates = Coordinates(ra_orientation='left', 
                           dec_orientation='top',
                           origin='center')
-coordinates.update_with_observation(observation)
 
 # Setup cosmology 
 cosmology = Cosmology(H0=73.0, Om0=0.3)
-print("COSMOLOGY\n", cosmology.__dict__, '\n')
 
 # Create a couple of source galaxies at different redshifts
-source_1 = SourceGalaxy('a source galaxy', 
-                        Redshift(2.0),
+source_1 = SourceGalaxy('a source galaxy', 2.0,
                         LightModel(['SersicElliptical']))
-print("SOURCE 1\n", source_1.light_model.__dict__, '\n')
 
-source_2 = SourceGalaxy('another source', 
-                        Redshift(1.5),
+source_2 = SourceGalaxy('another source', 1.5,
                         LightModel(['PixelatedRegularGrid']))
-print("SOURCE 2\n", source_2.light_model.__dict__, '\n')
 
 # Create a lens galaxy
-lens_1 = LensGalaxy('a lens galaxy',
-                    Redshift(0.5),
+lens_1 = LensGalaxy('a lens galaxy', 0.5,
                     LightModel(['SersicElliptical', 'SersicElliptical']),
                     MassModel(['PEMD', 'ExternalShearEllipticity']))
-print("LENS 1\n", lens_1.mass_model.__dict__)
-print("a single parameter\n", lens_1.light_model.profiles[0].parameters[-1].__dict__, '\n')
+
+# Order in a list
+galaxy_list = GalaxyList([lens_1, source_1, source_2])
+
+# Define regularization strategies and link them to a given profile
+regularization_list = RegularizationList([('PixelStarlet', source_2.light_model.profiles[0]), 
+                                          ('PixelBLWavelet', source_2.light_model.profiles[0])])
+
+# Define the LensModel that merges physical objects (galaxies), 
+# regularization strategies and a choice of coordinate system
+lens_model = LensModel(galaxy_list,
+                       regularization_list,
+                       coordinates)
 
 # Assign the list of galaxies to a LensObject
 # along with the coordinate system and (optinonally) the observation
-lens_object = LensObject([lens_1, source_1, source_2], 
-                         coordinates, 
-                         observation=observation)
-print("OBJECT\n", lens_object.__dict__, '\n')
+lens_object = LensObject(instrument,
+                         lens_model,
+                         data=data)
 
-# Wrap up the object and cosmology into a LensUniverse master object
-lens_universe = LensUniverse(lens_object, cosmology)
-print("UNIVERSE\n", lens_universe.__dict__, '\n')
+# Wrap up a list of objects (here, only one) and a cosmology into a LensUniverse master object
+lens_universe = LensUniverse([lens_object], cosmology)
+print("FINAL LENS UNIVERSE OBJECT\n", lens_universe.__dict__, '\n')
 
 # print supported profiles so far
-print(info.supported_mass_profiles, info.supported_light_profiles)
+print("Supported mass profiles:", info.supported_mass_profiles)
+print("Supported light profiles:", info.supported_light_profiles)
+print("Supported regularizations:", info.supported_pixel_regularizations)
+
+print("#"*30 + " serialization " + "#"*30)
+# import json
+# from lensmodelapi.encoders.json import JSONProfile, JSONParameter
+# print(json.dumps(source_1.light_model.profiles, cls=JSONProfile, indent=4))
+# print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
+
+encoder = HierarchyEncoder(lens_universe, 'test_api', indent=2)
+encoder.yaml_dump()
+encoder.yaml_to_json()

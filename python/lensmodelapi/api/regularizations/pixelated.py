@@ -20,7 +20,7 @@ SUPPORTED_PROFILES = __all__
 
 class PixelEntropy(Regularization):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         description = "Entropy regularization"
         parameters = ParameterList([
             HyperParameter('lambda',
@@ -28,12 +28,12 @@ class PixelEntropy(Regularization):
                            min_value=0.0,
                            latex_name=r"$\lambda_{\rm e}$"),
         ])
-        super().__init__(description, parameters)
+        super().__init__(description, parameters, **kwargs)
 
 
 class PixelRidge(Regularization):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         description = "Ridge regularization (L2 norm)"
         parameters = ParameterList([
             HyperParameter('lambda',
@@ -41,12 +41,12 @@ class PixelRidge(Regularization):
                            min_value=0.0,
                            latex_name=r"$\lambda_{\rm ridge}$"),
         ])
-        super().__init__(description, parameters)
+        super().__init__(description, parameters, **kwargs)
 
 
 class PixelLasso(Regularization):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         description = "Lasso regularization (L1 norm)"
         parameters = ParameterList([
             HyperParameter('lambda',
@@ -54,12 +54,12 @@ class PixelLasso(Regularization):
                            min_value=0.0,
                            latex_name=r"$\lambda_{\rm lasso}$"),
         ])
-        super().__init__(description, parameters)
+        super().__init__(description, parameters, **kwargs)
 
 
 class PixelGradient(Regularization):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         description = "Gradient regularization (first spatial derivative)"
         parameters = ParameterList([
             HyperParameter('lambda',
@@ -67,12 +67,12 @@ class PixelGradient(Regularization):
                            min_value=0.0,
                            latex_name=r"$\lambda_{\rm grad}$"),
         ])
-        super().__init__(description, parameters)
+        super().__init__(description, parameters, **kwargs)
 
 
 class PixelCurvature(Regularization):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         description = "Curvature regularization (second spatial derivative)"
         parameters = ParameterList([
             HyperParameter('lambda',
@@ -80,12 +80,12 @@ class PixelCurvature(Regularization):
                            min_value=0.0,
                            latex_name=r"$\lambda_{\rm curv}$"),
         ])
-        super().__init__(description, parameters)
+        super().__init__(description, parameters, **kwargs)
 
 
 class PixelExponentialKernel(Regularization):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         description = "Exponential kernel regularization"
         parameters = ParameterList([
             HyperParameter('lambda',
@@ -93,12 +93,12 @@ class PixelExponentialKernel(Regularization):
                            min_value=0.0,
                            latex_name=r"$\lambda_{\rm exp}$"),
         ])
-        super().__init__(description, parameters)
+        super().__init__(description, parameters, **kwargs)
 
 
 class PixelGaussianKernel(Regularization):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         description = "Gaussian kernel regularization"
         parameters = ParameterList([
             HyperParameter('lambda',
@@ -106,12 +106,12 @@ class PixelGaussianKernel(Regularization):
                            min_value=0.0,
                            latex_name=r"$\lambda_{\rm gauss}$"),
         ])
-        super().__init__(description, parameters)
+        super().__init__(description, parameters, **kwargs)
 
 
 class PixelStarlet(Regularization):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         description = "Starlets regularization"
         parameters = ParameterList([
             HyperParameter('lambda_hf',
@@ -123,12 +123,12 @@ class PixelStarlet(Regularization):
                            min_value=0.0,
                            latex_name=r"$\lambda_{\rm s}$"),
         ])
-        super().__init__(description, parameters)
+        super().__init__(description, parameters, **kwargs)
 
 
 class PixelBLWavelet(Regularization):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         description = "Battle-Lemarie wavelet regularization"
         parameters = ParameterList([
             HyperParameter('lambda_hf',
@@ -136,4 +136,4 @@ class PixelBLWavelet(Regularization):
                            min_value=0.0,
                            latex_name=r"$\lambda_{\rm BL, hf}$"),
         ])
-        super().__init__(description, parameters)
+        super().__init__(description, parameters, **kwargs)

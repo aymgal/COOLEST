@@ -13,4 +13,4 @@ class APIBaseObject(object):
     """Base class for all API objects"""
 
     def __init__(self):
-        self.object, self.api_inheritance = get_class_names(self)
+        self.type, self._api_inheritance = get_class_names(self)

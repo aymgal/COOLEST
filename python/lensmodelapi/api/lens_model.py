@@ -4,25 +4,24 @@ from typing import List
 
 from lensmodelapi.api.base import APIBaseObject
 from lensmodelapi.api.galaxy_list import GalaxyList
-from lensmodelapi.api.galaxy import Galaxy, LensGalaxy, SourceGalaxy
 from lensmodelapi.api.regularization_list import RegularizationList
+from lensmodelapi.api.regularization import Regularization
 from lensmodelapi.api.coordinates import Coordinates
 
 
 class LensModel(APIBaseObject):
 
     def __init__(self, 
-                 galaxies: List[Galaxy],
-                 regularizations: List[str],
+                 galaxies: GalaxyList,
+                 regularizations: RegularizationList,
                  coordinates: Coordinates) -> None:
-        self.galaxies = GalaxyList(galaxies)
-        self.regularizations = RegularizationList(regularizations)
+        self.galaxies = galaxies
+        self.regularizations = regularizations
         super().__init__()
-        self._create_unique_ids()
 
-    def _create_unique_ids(self):
-        for i, galaxy in enumerate(self.galaxies):
-            for model in ['light', 'mass']:
-                for j, profile in enumerate(getattr(galaxy, f'{model}_model').profiles):
-                    for parameter in profile.parameters:
-                        parameter.id = f'galaxy{i}_{model}_{profile.object.lower()}{j}_{parameter.name}'
+    # def _check_regul(self):
+    #     for regularization in self.regularizations:
+    #         profile_id = regularization.applied_to_profile
+    #         if profile_id is not None and profile_id not in self._profile_ids:
+    #             raise ValueError(f"Profile ID '{profile_id}' does not correspond "
+    #                              f"to any profile for regularization {regularization.object_name}.")

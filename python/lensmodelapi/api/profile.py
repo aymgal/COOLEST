@@ -11,6 +11,7 @@ class Profile(APIBaseObject):
                  parameters: ParameterList) -> None:
         self.description = description
         self.parameters = parameters
+        self.id = None
         super().__init__()
         
 
