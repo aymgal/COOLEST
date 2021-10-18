@@ -14,7 +14,7 @@ class ProfileList(list):
                  profile_names: List[str]) -> None:
         profiles = []
         for name in profile_names:
-            if name not in profiles_module.SUPPORTED_PROFILES:
+            if name not in profiles_module.SUPPORTED_CHOICES:
                 raise ValueError(f"Profile '{name}' of type '{self._type}' is not supported.")
             profile_class = getattr(profiles_module, name)
             profiles.append(profile_class())

@@ -11,7 +11,7 @@ class RegularizationList(list):
                  regularization_profile_pairs: List[Tuple]) -> None:
         profiles = []
         for name, profile in regularization_profile_pairs:
-            if name not in regularization_module.SUPPORTED_PROFILES:
+            if name not in regularization_module.SUPPORTED_CHOICES:
                 raise ValueError(f"Regularization '{name}' of type '{self._type}' is not supported.")
             profile_class = getattr(regularization_module, name)
             profiles.append(profile_class(applied_to_profile_id=profile.id))

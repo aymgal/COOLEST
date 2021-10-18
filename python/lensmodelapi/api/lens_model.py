@@ -5,7 +5,7 @@ from typing import List
 from lensmodelapi.api.base import APIBaseObject
 from lensmodelapi.api.galaxy_list import GalaxyList
 from lensmodelapi.api.regularization_list import RegularizationList
-from lensmodelapi.api.regularization import Regularization
+from lensmodelapi.api.likelihood_list import LikelihoodList
 from lensmodelapi.api.coordinates import Coordinates
 
 
@@ -14,9 +14,11 @@ class LensModel(APIBaseObject):
     def __init__(self, 
                  galaxies: GalaxyList,
                  regularizations: RegularizationList,
+                 likelihoods: LikelihoodList,
                  coordinates: Coordinates) -> None:
         self.galaxies = galaxies
         self.regularizations = regularizations
+        self.likelihoods = likelihoods
         super().__init__()
 
     # def _check_regul(self):

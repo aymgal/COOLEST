@@ -14,7 +14,7 @@ __all__ = [
     'PixelatedRegularGrid',
     'PixelatedAdaptiveGrid',
 ]
-SUPPORTED_PROFILES = __all__
+SUPPORTED_CHOICES = __all__
 
 
 class SersicElliptical(LightProfile):

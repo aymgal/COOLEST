@@ -15,7 +15,7 @@ __all__ = [
     'PixelStarlet',
     'PixelBLWavelet',
 ]
-SUPPORTED_PROFILES = __all__
+SUPPORTED_CHOICES = __all__
 
 
 class PixelEntropy(Regularization):
@@ -137,3 +137,4 @@ class PixelBLWavelet(Regularization):
                            latex_name=r"$\lambda_{\rm BL, hf}$"),
         ])
         super().__init__(description, parameters, **kwargs)
+
