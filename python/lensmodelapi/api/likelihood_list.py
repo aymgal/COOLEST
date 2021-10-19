@@ -1,6 +1,6 @@
 __author__ = 'aymgal'
 
-from typing import List
+from typing import Tuple
 
 
 SUPPORTED_CHOICES = [
@@ -15,7 +15,7 @@ SUPPORTED_CHOICES = [
 class LikelihoodList(list):
 
     def __init__(self, 
-                 likelihood_types: List[str]) -> None:
+                 *likelihood_types: Tuple[str]) -> None:
         for ll_type in likelihood_types:
             if ll_type not in SUPPORTED_CHOICES:
                 raise ValueError(f"Likelihood type '{ll_type}' is not supported.")

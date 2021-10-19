@@ -1,6 +1,6 @@
 __author__ = 'aymgal'
 
-from typing import List, Tuple
+from typing import Tuple
 
 from lensmodelapi.api.regularizations import pixelated as regularization_module
 
@@ -8,7 +8,7 @@ from lensmodelapi.api.regularizations import pixelated as regularization_module
 class RegularizationList(list):
 
     def __init__(self, 
-                 regularization_profile_pairs: List[Tuple]) -> None:
+                 *regularization_profile_pairs: Tuple[Tuple]) -> None:
         profiles = []
         for name, profile in regularization_profile_pairs:
             if name not in regularization_module.SUPPORTED_CHOICES:

@@ -1,6 +1,6 @@
 __author__ = 'aymgal'
 
-from typing import List
+from typing import Tuple
 
 from lensmodelapi.api.galaxy import Galaxy, SourceGalaxy, LensGalaxy
 
@@ -8,7 +8,7 @@ from lensmodelapi.api.galaxy import Galaxy, SourceGalaxy, LensGalaxy
 class GalaxyList(list):
 
     def __init__(self,
-                 galaxies: List[Galaxy]):
+                 *galaxies: Tuple[Galaxy]):
         list.__init__(self, galaxies)
         self._create_all_ids()
 

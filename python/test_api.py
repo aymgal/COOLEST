@@ -12,6 +12,7 @@ from lensmodelapi.api.regularization_list import RegularizationList
 from lensmodelapi.api.likelihood_list import LikelihoodList
 from lensmodelapi.api.lens_model import LensModel
 from lensmodelapi.api.lens_object import LensObject
+from lensmodelapi.api.lens_sample import LensSample
 from lensmodelapi.api.lens_universe import LensUniverse
 from lensmodelapi import info
 from lensmodelapi.encoder import HierarchyEncoder
@@ -52,29 +53,33 @@ cosmology = Cosmology(H0=73.0, Om0=0.3)
 
 # Create a couple of source galaxies at different redshifts
 source_1 = SourceGalaxy('a source galaxy', 2.0,
-                        LightModel(['SersicElliptical']))
+                        LightModel('SersicElliptical'))
 
 source_2 = SourceGalaxy('another source', 1.5,
-                        LightModel(['PixelatedRegularGrid']))
+                        LightModel('PixelatedRegularGrid'))
 
 source_3 = SourceGalaxy('a GLEE source', 1.2,
-                        LightModel(['PixelatedRegularGrid']))
+                        LightModel('PixelatedRegularGrid'))
 
 # Create a lens galaxy
 lens_1 = LensGalaxy('a lens galaxy', 0.5,
-                    LightModel(['SersicElliptical', 'SersicElliptical']),
-                    MassModel(['PEMD', 'ExternalShearEllipticity']))
+                    LightModel('SersicElliptical', 'SersicElliptical'),
+                    MassModel('PEMD', 'ExternalShearEllipticity', 'PixelatedPotential'))
 
 # Order in a list, which will also create unique IDs for each profile
-galaxy_list = GalaxyList([lens_1, source_1, source_2, source_3])
+galaxy_list = GalaxyList(lens_1, source_1, source_2, source_3)
 
 # Define regularization strategies and link them to a given profile
-regularization_list = RegularizationList([('PixelStarlet', source_2.light_model.profiles[0]), 
-                                          ('PixelBLWavelet', source_2.light_model.profiles[0]),
-                                          ('PixelCurvature', source_3.light_model.profiles[0])])
+regularization_list = RegularizationList(('PixelStarlet', source_2.light_model.profiles[0]),
+                                         ('PixelPositivity', source_2.light_model.profiles[0]), 
+                                         ('PixelCurvature', source_3.light_model.profiles[0]),
+                                         ('PixelBLWavelet', lens_1.mass_model.profiles[2]))
 
 # Choose which likelihood terms you want to include
-likelihood_list = LikelihoodList(['imaging_data'])
+
+# likelihood = Likelihood(LikelihoodTerms(['imaging_data']), 
+#                         image_mask=FitsFile('test_image.fits'))
+likelihood_list = LikelihoodList('imaging_data')
 
 # Define the LensModel that merges physical objects (galaxies), 
 # regularization strategies and a choice of coordinate system
@@ -86,13 +91,16 @@ lens_model = LensModel(galaxy_list,
 # Assign the list of galaxies to a LensObject
 # along with the coordinate system and (optinonally) the observation
 name = 'My Favorite Lens ever'
-lens_object = LensObject(name,
-                         instrument,
-                         lens_model,
-                         data=data)
+lens_object_1 = LensObject(name,
+                           instrument,
+                           lens_model,
+                           data=data)
+
+# can do another LensObject just the same... and build a LensSample
+lens_sample = LensSample(lens_object_1)  # , lens_object_2, lens_object_3, ...
 
 # Wrap up a list of objects (here, only one) and a cosmology into a LensUniverse master object
-lens_universe = LensUniverse([lens_object], cosmology)
+lens_universe = LensUniverse(cosmology, lens_sample)
 print("FINAL LENS UNIVERSE OBJECT\n", lens_universe.__dict__, '\n')
 
 # print supported profiles so far
@@ -114,4 +122,4 @@ lens_universe_2 = encoder.yaml_load_universe()
 print("Retrieved object is a LensUniverse instance?", 
       isinstance(lens_universe_2, LensUniverse))
 
-pprint(lens_universe_2.lens_sample[0].name)
+print("First lens in the sample:", lens_universe_2.lens_sample[0].name)

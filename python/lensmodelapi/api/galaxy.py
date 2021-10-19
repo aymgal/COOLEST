@@ -17,7 +17,7 @@ class Galaxy(APIBaseObject):
         self.redshift = redshift
         self.light_model = light_model
         if mass_model is None:
-            mass_model = MassModel([])
+            mass_model = MassModel()
         self.mass_model = mass_model
         super().__init__()
 
