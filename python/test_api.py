@@ -2,18 +2,7 @@
 # emulating a series of inputs from e.g. a user interface,
 # and finally write it on disk as YAML or JSON files.
 
-from lensmodelapi.api.observation import FitsFile, Data, Instrument
-from lensmodelapi.api.coordinates import Coordinates
-from lensmodelapi.api.cosmology import Cosmology
-from lensmodelapi.api.galaxy import SourceGalaxy, LensGalaxy
-from lensmodelapi.api.galaxy_list import GalaxyList
-from lensmodelapi.api.mass_light_model import MassModel, LightModel
-from lensmodelapi.api.regularization_list import RegularizationList
-from lensmodelapi.api.likelihood_list import LikelihoodList
-from lensmodelapi.api.lens_model import LensModel
-from lensmodelapi.api.lens_object import LensObject
-from lensmodelapi.api.lens_sample import LensSample
-from lensmodelapi.api.lens_universe import LensUniverse
+from lensmodelapi.lazy import *
 from lensmodelapi import info
 from lensmodelapi.encoder import HierarchyEncoder
 
