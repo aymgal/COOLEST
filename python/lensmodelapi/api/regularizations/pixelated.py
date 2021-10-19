@@ -14,6 +14,8 @@ __all__ = [
     'PixelGaussianKernel',
     'PixelStarlet',
     'PixelBLWavelet',
+    'PixelPositivity',
+    'PixelDefault',
 ]
 SUPPORTED_CHOICES = __all__
 
@@ -138,3 +140,27 @@ class PixelBLWavelet(Regularization):
         ])
         super().__init__(description, parameters, **kwargs)
 
+class PixelPositivity(Regularization):
+
+    def __init__(self, **kwargs):
+        description = "Non-negativity constraint on pixel values"
+        parameters = ParameterList([
+            HyperParameter('lambda',
+                           "Lagrange parameter",
+                           min_value=0.0,
+                           latex_name=r"$\lambda_{\rm pos}$"),
+        ])
+        super().__init__(description, parameters, **kwargs)
+
+
+class PixelDefault(Regularization):
+
+    def __init__(self, **kwargs):
+        description = "Default regularization strategy, set by the specific modelling code"
+        parameters = ParameterList([
+            HyperParameter('lambda',
+                           "Lagrange parameter",
+                           min_value=0.0,
+                           latex_name=r"$\lambda$"),
+        ])
+        super().__init__(description, parameters, **kwargs)

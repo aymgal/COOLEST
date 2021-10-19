@@ -110,7 +110,7 @@ class PixelatedRegularGrid(LightProfile):
     
     def __init__(self):
         num_pixels = None # TODO
-        description = "Pixelated light profile on a grid pixel grid"
+        description = "Pixelated light profile on a pixel grid"
         parameters = ParameterList([
             LinearParameterSet(num_pixels,
                                'pixels',
