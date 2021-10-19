@@ -12,9 +12,11 @@ class LensObject(APIBaseObject):
     each defined by several mass models and light models 
     """
     def __init__(self,
+                 name: str,
                  instrument: Instrument,
                  lens_model: LensModel,
                  data: Data = None) -> None:
+        self.name = name
         self.lens_model = lens_model
         self.instrument = instrument
         self.data = data

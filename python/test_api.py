@@ -1,6 +1,6 @@
 # Test script that creates a whole LensUniverse model
 # emulating a series of inputs from e.g. a user interface,
-# and finally write it on disk as a JSON file.
+# and finally write it on disk as YAML or JSON files.
 
 from lensmodelapi.api.observation import FitsFile, Data, Instrument
 from lensmodelapi.api.coordinates import Coordinates
@@ -85,7 +85,9 @@ lens_model = LensModel(galaxy_list,
 
 # Assign the list of galaxies to a LensObject
 # along with the coordinate system and (optinonally) the observation
-lens_object = LensObject(instrument,
+name = 'My Favorite Lens ever'
+lens_object = LensObject(name,
+                         instrument,
                          lens_model,
                          data=data)
 
@@ -106,3 +108,10 @@ print("#"*30 + " serialization " + "#"*30)
 encoder = HierarchyEncoder(lens_universe, 'test_api', indent=2)
 encoder.yaml_dump()
 encoder.yaml_to_json()
+
+# test construct class from YAML
+lens_universe_2 = encoder.yaml_load_universe()
+print("Retrieved object is a LensUniverse instance?", 
+      isinstance(lens_universe_2, LensUniverse))
+
+pprint(lens_universe_2.lens_sample[0].name)

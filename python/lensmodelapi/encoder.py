@@ -9,14 +9,15 @@ class HierarchyEncoder(object):
                  obj: object, 
                  file_path_no_ext: str, 
                  indent: int = 2) -> None:
-        setattr(self, obj.__class__.__name__, obj)
+        #setattr(self, obj.__class__.__name__, obj)
+        self.obj = obj
         self.path = file_path_no_ext
         self.indent = indent
 
     def yaml_dump(self):
         yaml_path = self.path + '.yaml'
         with open(yaml_path, 'w') as f:
-            result = yaml.dump(self, f, indent=self.indent,
+            result = yaml.dump(self.obj, f, indent=self.indent,
                                sort_keys=True, default_flow_style=False)
         return result
 
@@ -38,3 +39,9 @@ class HierarchyEncoder(object):
         with open(json_path, 'w') as f:
             result = json.dump(content, f, indent=self.indent)
         return result
+
+    def yaml_load_universe(self):
+        yaml_path = self.path + '.yaml'
+        with open(yaml_path, 'r') as f:
+            content = yaml.load(f, Loader=yaml.Loader)
+        return content
