@@ -2,7 +2,7 @@ __author__ = 'aymgal'
 
 from lensmodelapi.api.profile import MassProfile
 from lensmodelapi.api.parameter_list import ParameterList
-from lensmodelapi.api.parameter import NonLinearParameter
+from lensmodelapi.api.parameter import NonLinearParameter, LinearParameterSet
 
 
 __all__ = [
@@ -14,6 +14,8 @@ __all__ = [
     'Chameleon',
     'ExternalShearEllipticity', 
     'ExternalShearAngleStrength',
+    'PixelatedPotential',
+    'PixelatedConvergence',
 ]
 SUPPORTED_CHOICES = __all__
 
@@ -276,5 +278,35 @@ class ExternalShearAngleStrength(MassProfile):
                                fixed=True,
                                default_value=0.0,
                                latex_name=r"$y_0$")
+        ])
+        super().__init__(description, parameters)
+
+
+class PixelatedPotential(MassProfile):
+    
+    def __init__(self):
+        num_pixels = None # TODO
+        description = "Pixelated lensing potential on a pixel grid"
+        parameters = ParameterList([
+            LinearParameterSet(num_pixels,
+                               'pixels',
+                               "Set of pixel values",
+                               min_value=0.0,
+                               latex_name=r"{\rm pixels}"),
+        ])
+        super().__init__(description, parameters)
+
+
+class PixelatedConvergence(MassProfile):
+    
+    def __init__(self):
+        num_pixels = None # TODO
+        description = "Pixelated convergence on a pixel grid"
+        parameters = ParameterList([
+            LinearParameterSet(num_pixels,
+                               'pixels',
+                               "Set of pixel values",
+                               min_value=0.0,
+                               latex_name=r"{\rm pixels}"),
         ])
         super().__init__(description, parameters)
