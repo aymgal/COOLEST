@@ -22,7 +22,9 @@ from pprint import pprint
 # Provide data file
 data = Data(FitsFile('test_image.fits'),
             noise_map=None,
-            wht_map=None)
+            wht_map=None,
+            arc_mask=FitsFile('arc_mask.fits'),
+            likelihood_mask=None)
 
 # Defines the instrument
 instrument = Instrument('some instrument',
@@ -76,9 +78,6 @@ regularization_list = RegularizationList(('PixelStarlet', source_2.light_model.p
                                          ('PixelBLWavelet', lens_1.mass_model.profiles[2]))
 
 # Choose which likelihood terms you want to include
-
-# likelihood = Likelihood(LikelihoodTerms(['imaging_data']), 
-#                         image_mask=FitsFile('test_image.fits'))
 likelihood_list = LikelihoodList('imaging_data')
 
 # Define the LensModel that merges physical objects (galaxies), 

@@ -57,10 +57,15 @@ class Data(APIBaseObject):
     def __init__(self, 
                  image: FitsFile, 
                  noise_map: FitsFile = None,
-                 wht_map: FitsFile = None) -> None:
+                 wht_map: FitsFile = None,
+                 arc_mask: FitsFile = None,
+                 likelihood_mask: FitsFile = None) -> None:
         self.image = image
         self.noise_map = noise_map
         self.wht_map = wht_map
+        self.arc_mask = arc_mask
+        self.likelihood_mask = likelihood_mask
+        self._check_images()
         super().__init__()
 
     def check_consistency_with_instrument(self, instrument):
@@ -78,3 +83,24 @@ class Data(APIBaseObject):
         pixels, _ = self.image.read()
         sigma_bkg = np.median(np.abs(pixels - np.median(pixels)))
         return float(sigma_bkg)
+
+    def _check_images(self):
+        self._check_positive(self.wht_map, "WHT map")
+        self._check_binary(self.arc_mask, "Arc mask")
+        self._check_binary(self.likelihood_mask, "Likelihood mask")
+
+    @staticmethod
+    def _check_positive(fits_file, fits_name):
+        if fits_file is None:
+            return
+        pixels, _ = fits_file.read()
+        if not np.all(pixels > 0):
+            raise ValueError(f"{fits_name} pixels should all be positive.")
+
+    @staticmethod
+    def _check_binary(fits_file, fits_name):
+        if fits_file is None:
+            return
+        pixels, _ = fits_file.read()
+        if not np.array_equal(pixels, pixels.astype(bool)):
+            raise ValueError(f"{fits_name} pixels should be either 0 or 1.")
