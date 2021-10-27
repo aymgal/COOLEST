@@ -13,7 +13,9 @@ data = Data(FitsFile('test_image.fits'),
             noise_map=None,
             wht_map=None,
             arc_mask=FitsFile('arc_mask.fits'),
-            likelihood_mask=None)
+            likelihood_mask=None,
+            time_delays=[10., 20., 40.],
+            magnification_ratios=None)
 
 # Defines the instrument
 instrument = Instrument('some instrument',
@@ -86,6 +88,12 @@ lens_object_1 = LensObject(name,
                            instrument,
                            lens_model,
                            data=data)
+
+# name = 'Same system in another band'
+# lens_object_2 = LensObject(name,
+#                            instrument,
+#                            lens_model,
+#                            data=data_2)
 
 # can do another LensObject just the same... and build a LensSample
 lens_sample = LensSample(lens_object_1)  # , lens_object_2, lens_object_3, ...

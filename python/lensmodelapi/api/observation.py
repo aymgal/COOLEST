@@ -59,13 +59,17 @@ class Data(APIBaseObject):
                  noise_map: FitsFile = None,
                  wht_map: FitsFile = None,
                  arc_mask: FitsFile = None,
-                 likelihood_mask: FitsFile = None) -> None:
+                 likelihood_mask: FitsFile = None,
+                 time_delays: list = None,
+                 magnification_ratios: list = None) -> None:
         self.image = image
         self.noise_map = noise_map
         self.wht_map = wht_map
         self.arc_mask = arc_mask
         self.likelihood_mask = likelihood_mask
         self._check_images()
+        self.time_delays = time_delays
+        self.magnification_ratios = magnification_ratios
         super().__init__()
 
     def check_consistency_with_instrument(self, instrument):
