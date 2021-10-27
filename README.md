@@ -1,2 +1,2 @@
 # LensModelAPI
-API for defining application-independent lens models, aiming to generate input and output files for any lens modeling code/pipeline.
+API for defining application-independent lens models, aiming to __generate input files__ and __store output files__ for any lens modeling code/pipeline.

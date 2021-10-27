@@ -48,3 +48,10 @@ class GalaxyList(list):
         profile_idx = int(profile_idx)
         model_type = model_str.split('-')[0]
         return model_type, profile_name, profile_idx, galaxy_idx
+
+    def update_parameter_bounds_with_obs(self, instrument):
+        for galaxy in self:
+            for light_profile in galaxy.light_model.profiles:
+                light_profile.update_parameter_bounds_with_obs(instrument)
+            for mass_profile in galaxy.mass_model.profiles:
+                mass_profile.update_parameter_bounds_with_obs(instrument)

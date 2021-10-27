@@ -22,9 +22,5 @@ class LensModel(APIBaseObject):
         self.coordinates = coordinates
         super().__init__()
 
-    # def _check_regul(self):
-    #     for regularization in self.regularizations:
-    #         profile_id = regularization.applied_to_profile
-    #         if profile_id is not None and profile_id not in self._profile_ids:
-    #             raise ValueError(f"Profile ID '{profile_id}' does not correspond "
-    #                              f"to any profile for regularization {regularization.object_name}.")
+    def update_parameter_bounds_with_obs(self, instrument):
+        self.galaxies.update_parameter_bounds_with_obs(instrument)

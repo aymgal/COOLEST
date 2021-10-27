@@ -90,6 +90,7 @@ class PEMD(MassProfile):
             NonLinearParameter('gamma',
                                "Mass density slope at Einstein radius",
                                min_value=1.0,
+                               max_value=3.0,
                                latex_name=r"$\gamma$"),
             NonLinearParameter('theta_E',
                                "Einstein radius",
