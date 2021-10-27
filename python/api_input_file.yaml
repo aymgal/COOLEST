@@ -1,0 +1,659 @@
+!!python/object:lensmodelapi.api.lens_universe.LensUniverse
+_api_inheritance: LensUniverse < APIBaseObject
+cosmology: !!python/object:lensmodelapi.api.cosmology.Cosmology
+  H0: 73.0
+  Om0: 0.3
+  _api_inheritance: Cosmology < APIBaseObject
+  astropy_name: FlatLambdaCDM
+  type: Cosmology
+lens_sample: !!python/object/new:lensmodelapi.api.lens_sample.LensSample
+  listitems:
+  - !!python/object:lensmodelapi.api.lens_object.LensObject
+    _api_inheritance: LensObject < APIBaseObject
+    data: !!python/object:lensmodelapi.api.observation.Data
+      _api_inheritance: Data < APIBaseObject
+      arc_mask: !!python/object:lensmodelapi.api.observation.FitsFile
+        _api_inheritance: FitsFile < APIBaseObject
+        fits_path: arc_mask.fits
+        num_pix_dec: 110
+        num_pix_ra: 110
+        type: FitsFile
+      image: !!python/object:lensmodelapi.api.observation.FitsFile
+        _api_inheritance: FitsFile < APIBaseObject
+        fits_path: test_image.fits
+        num_pix_dec: 100
+        num_pix_ra: 100
+        type: FitsFile
+      likelihood_mask: null
+      magnification_ratios: null
+      noise_map: null
+      time_delays:
+      - 10.0
+      - 20.0
+      - 40.0
+      type: Data
+      wht_map: null
+    instrument: !!python/object:lensmodelapi.api.observation.Instrument
+      _api_inheritance: Instrument < APIBaseObject
+      background_rms: 0.10736330635066439
+      exposure_time: 1000
+      field_of_view_dec: 8.0
+      field_of_view_ra: 8.0
+      name: some instrument
+      pixel_size: 0.08
+      psf: !!python/object:lensmodelapi.api.observation.FitsFile
+        _api_inheritance: FitsFile < APIBaseObject
+        fits_path: test_psf.fits
+        num_pix_dec: 99
+        num_pix_ra: 99
+        type: FitsFile
+      psf_pixel_size: 0.08
+      type: Instrument
+    lens_model: !!python/object:lensmodelapi.api.lens_model.LensModel
+      _api_inheritance: LensModel < APIBaseObject
+      coordinates: !!python/object:lensmodelapi.api.coordinates.Coordinates
+        _api_inheritance: Coordinates < APIBaseObject
+        dec_at_xy_0: -3.96
+        orientation_dec: top
+        orientation_ra: left
+        origin_position: center
+        pix2angle_matrix:
+        - - 0.08
+          - 0
+        - - 0
+          - 0.08
+        ra_at_xy_0: -3.96
+        type: Coordinates
+      galaxies: !!python/object/new:lensmodelapi.api.galaxy_list.GalaxyList
+        listitems:
+        - !!python/object:lensmodelapi.api.galaxy.LensGalaxy
+          _api_inheritance: LensGalaxy < Galaxy < APIBaseObject
+          light_model: !!python/object:lensmodelapi.api.mass_light_model.LightModel
+            _api_inheritance: LightModel < APIBaseObject
+            profiles: !!python/object/new:lensmodelapi.api.profile_list.LightProfileList
+              listitems:
+              - !!python/object:lensmodelapi.api.profiles.light.SersicElliptical
+                _api_inheritance: SersicElliptical < LightProfile < Profile < APIBaseObject
+                description: Elliptical Sersic
+                id: galaxy-0_light-model_SersicElliptical-0
+                parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+                  listitems:
+                  - !!python/object:lensmodelapi.api.parameter.LinearParameter
+                    _api_inheritance: LinearParameter < Parameter < APIBaseObject
+                    description: Amplitude at origin
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-0_A
+                    latex_name: $A$
+                    max_value: null
+                    min_value: 0.0
+                    name: A
+                    type: LinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Sersic radius
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-0_R_sersic
+                    latex_name: $R_{\rm Sersic}$
+                    max_value: null
+                    min_value: 0.0
+                    name: R_sersic
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Sersic index
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-0_n_sersic
+                    latex_name: $n_{\rm Sersic}$
+                    max_value: 10.0
+                    min_value: 0.5
+                    name: n_sersic
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 1
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-0_e1
+                    latex_name: $e_1$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: e1
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 2
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-0_e2
+                    latex_name: $e_2$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: e2
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along x coordinates
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-0_center_x
+                    latex_name: $x_0$
+                    max_value: null
+                    min_value: null
+                    name: center_x
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along y coordinates
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-0_center_y
+                    latex_name: $y_0$
+                    max_value: null
+                    min_value: null
+                    name: center_y
+                    type: NonLinearParameter
+                    value: null
+                type: SersicElliptical
+              - !!python/object:lensmodelapi.api.profiles.light.SersicElliptical
+                _api_inheritance: SersicElliptical < LightProfile < Profile < APIBaseObject
+                description: Elliptical Sersic
+                id: galaxy-0_light-model_SersicElliptical-1
+                parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+                  listitems:
+                  - !!python/object:lensmodelapi.api.parameter.LinearParameter
+                    _api_inheritance: LinearParameter < Parameter < APIBaseObject
+                    description: Amplitude at origin
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-1_A
+                    latex_name: $A$
+                    max_value: null
+                    min_value: 0.0
+                    name: A
+                    type: LinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Sersic radius
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-1_R_sersic
+                    latex_name: $R_{\rm Sersic}$
+                    max_value: null
+                    min_value: 0.0
+                    name: R_sersic
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Sersic index
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-1_n_sersic
+                    latex_name: $n_{\rm Sersic}$
+                    max_value: 10.0
+                    min_value: 0.5
+                    name: n_sersic
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 1
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-1_e1
+                    latex_name: $e_1$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: e1
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 2
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-1_e2
+                    latex_name: $e_2$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: e2
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along x coordinates
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-1_center_x
+                    latex_name: $x_0$
+                    max_value: null
+                    min_value: null
+                    name: center_x
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along y coordinates
+                    fixed: false
+                    id: galaxy-0_light-model_SersicElliptical-1_center_y
+                    latex_name: $y_0$
+                    max_value: null
+                    min_value: null
+                    name: center_y
+                    type: NonLinearParameter
+                    value: null
+                type: SersicElliptical
+            type: LightModel
+          mass_model: !!python/object:lensmodelapi.api.mass_light_model.MassModel
+            _api_inheritance: MassModel < APIBaseObject
+            profiles: !!python/object/new:lensmodelapi.api.profile_list.MassProfileList
+              listitems:
+              - !!python/object:lensmodelapi.api.profiles.mass.PEMD
+                _api_inheritance: PEMD < MassProfile < Profile < APIBaseObject
+                description: Powerlaw elliptical mass distribution
+                id: galaxy-0_mass-model_PEMD-0
+                parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+                  listitems:
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Mass density slope at Einstein radius
+                    fixed: false
+                    id: galaxy-0_mass-model_PEMD-0_gamma
+                    latex_name: $\gamma$
+                    max_value: 3.0
+                    min_value: 1.0
+                    name: gamma
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Einstein radius
+                    fixed: false
+                    id: galaxy-0_mass-model_PEMD-0_theta_E
+                    latex_name: $\theta_{\rm E}$
+                    max_value: 4.0
+                    min_value: 0.0
+                    name: theta_E
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 1
+                    fixed: false
+                    id: galaxy-0_mass-model_PEMD-0_e1
+                    latex_name: $e_1$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: e1
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 2
+                    fixed: false
+                    id: galaxy-0_mass-model_PEMD-0_e2
+                    latex_name: $e_2$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: e2
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along x coordinates
+                    fixed: false
+                    id: galaxy-0_mass-model_PEMD-0_center_x
+                    latex_name: $x_0$
+                    max_value: null
+                    min_value: null
+                    name: center_x
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along y coordinates
+                    fixed: false
+                    id: galaxy-0_mass-model_PEMD-0_center_y
+                    latex_name: $y_0$
+                    max_value: null
+                    min_value: null
+                    name: center_y
+                    type: NonLinearParameter
+                    value: null
+                type: PEMD
+              - !!python/object:lensmodelapi.api.profiles.mass.ExternalShearEllipticity
+                _api_inheritance: ExternalShearEllipticity < MassProfile < Profile
+                  < APIBaseObject
+                description: External shear defined with ellipticity
+                id: galaxy-0_mass-model_ExternalShearEllipticity-1
+                parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+                  listitems:
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 1
+                    fixed: false
+                    id: galaxy-0_mass-model_ExternalShearEllipticity-1_gamma1
+                    latex_name: $\gamma_1$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: gamma1
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 2
+                    fixed: false
+                    id: galaxy-0_mass-model_ExternalShearEllipticity-1_gamma2
+                    latex_name: $\gamma_2$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: gamma2
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along x coordinates
+                    fixed: true
+                    id: galaxy-0_mass-model_ExternalShearEllipticity-1_center_x
+                    latex_name: $x_0$
+                    max_value: null
+                    min_value: null
+                    name: center_x
+                    type: NonLinearParameter
+                    value: 0.0
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along y coordinates
+                    fixed: true
+                    id: galaxy-0_mass-model_ExternalShearEllipticity-1_center_y
+                    latex_name: $y_0$
+                    max_value: null
+                    min_value: null
+                    name: center_y
+                    type: NonLinearParameter
+                    value: 0.0
+                type: ExternalShearEllipticity
+              - !!python/object:lensmodelapi.api.profiles.mass.PixelatedPotential
+                _api_inheritance: PixelatedPotential < MassProfile < Profile < APIBaseObject
+                description: Pixelated lensing potential on a pixel grid
+                id: galaxy-0_mass-model_PixelatedPotential-2
+                parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+                  listitems:
+                  - !!python/object:lensmodelapi.api.parameter.LinearParameterSet
+                    _api_inheritance: LinearParameterSet < Parameter < APIBaseObject
+                    description: Set of pixel values
+                    fixed: false
+                    id: galaxy-0_mass-model_PixelatedPotential-2_pixels
+                    latex_name: '{\rm pixels}'
+                    max_value: null
+                    min_value: 0.0
+                    name: pixels
+                    num_values: null
+                    type: LinearParameterSet
+                    value: null
+                type: PixelatedPotential
+            type: MassModel
+          name: a lens galaxy
+          redshift: 0.5
+          type: LensGalaxy
+        - !!python/object:lensmodelapi.api.galaxy.SourceGalaxy
+          _api_inheritance: SourceGalaxy < Galaxy < APIBaseObject
+          light_model: !!python/object:lensmodelapi.api.mass_light_model.LightModel
+            _api_inheritance: LightModel < APIBaseObject
+            profiles: !!python/object/new:lensmodelapi.api.profile_list.LightProfileList
+              listitems:
+              - !!python/object:lensmodelapi.api.profiles.light.SersicElliptical
+                _api_inheritance: SersicElliptical < LightProfile < Profile < APIBaseObject
+                description: Elliptical Sersic
+                id: galaxy-1_light-model_SersicElliptical-0
+                parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+                  listitems:
+                  - !!python/object:lensmodelapi.api.parameter.LinearParameter
+                    _api_inheritance: LinearParameter < Parameter < APIBaseObject
+                    description: Amplitude at origin
+                    fixed: false
+                    id: galaxy-1_light-model_SersicElliptical-0_A
+                    latex_name: $A$
+                    max_value: null
+                    min_value: 0.0
+                    name: A
+                    type: LinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Sersic radius
+                    fixed: false
+                    id: galaxy-1_light-model_SersicElliptical-0_R_sersic
+                    latex_name: $R_{\rm Sersic}$
+                    max_value: null
+                    min_value: 0.0
+                    name: R_sersic
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Sersic index
+                    fixed: false
+                    id: galaxy-1_light-model_SersicElliptical-0_n_sersic
+                    latex_name: $n_{\rm Sersic}$
+                    max_value: 10.0
+                    min_value: 0.5
+                    name: n_sersic
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 1
+                    fixed: false
+                    id: galaxy-1_light-model_SersicElliptical-0_e1
+                    latex_name: $e_1$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: e1
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Complex ellipticity component 2
+                    fixed: false
+                    id: galaxy-1_light-model_SersicElliptical-0_e2
+                    latex_name: $e_2$
+                    max_value: 1.0
+                    min_value: -1.0
+                    name: e2
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along x coordinates
+                    fixed: false
+                    id: galaxy-1_light-model_SersicElliptical-0_center_x
+                    latex_name: $x_0$
+                    max_value: null
+                    min_value: null
+                    name: center_x
+                    type: NonLinearParameter
+                    value: null
+                  - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
+                    _api_inheritance: NonLinearParameter < Parameter < APIBaseObject
+                    description: Profile center along y coordinates
+                    fixed: false
+                    id: galaxy-1_light-model_SersicElliptical-0_center_y
+                    latex_name: $y_0$
+                    max_value: null
+                    min_value: null
+                    name: center_y
+                    type: NonLinearParameter
+                    value: null
+                type: SersicElliptical
+            type: LightModel
+          mass_model: !!python/object:lensmodelapi.api.mass_light_model.MassModel
+            _api_inheritance: MassModel < APIBaseObject
+            profiles: !!python/object:lensmodelapi.api.profile_list.MassProfileList {}
+            type: MassModel
+          name: a source galaxy
+          redshift: 2.0
+          type: SourceGalaxy
+        - !!python/object:lensmodelapi.api.galaxy.SourceGalaxy
+          _api_inheritance: SourceGalaxy < Galaxy < APIBaseObject
+          light_model: !!python/object:lensmodelapi.api.mass_light_model.LightModel
+            _api_inheritance: LightModel < APIBaseObject
+            profiles: !!python/object/new:lensmodelapi.api.profile_list.LightProfileList
+              listitems:
+              - !!python/object:lensmodelapi.api.profiles.light.PixelatedRegularGrid
+                _api_inheritance: PixelatedRegularGrid < LightProfile < Profile <
+                  APIBaseObject
+                description: Pixelated light profile on a pixel grid
+                id: galaxy-2_light-model_PixelatedRegularGrid-0
+                parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+                  listitems:
+                  - !!python/object:lensmodelapi.api.parameter.LinearParameterSet
+                    _api_inheritance: LinearParameterSet < Parameter < APIBaseObject
+                    description: Set of pixel values
+                    fixed: false
+                    id: galaxy-2_light-model_PixelatedRegularGrid-0_pixels
+                    latex_name: '{\rm pixels}'
+                    max_value: null
+                    min_value: 0.0
+                    name: pixels
+                    num_values: null
+                    type: LinearParameterSet
+                    value: null
+                type: PixelatedRegularGrid
+            type: LightModel
+          mass_model: !!python/object:lensmodelapi.api.mass_light_model.MassModel
+            _api_inheritance: MassModel < APIBaseObject
+            profiles: !!python/object:lensmodelapi.api.profile_list.MassProfileList {}
+            type: MassModel
+          name: another source
+          redshift: 1.5
+          type: SourceGalaxy
+        - !!python/object:lensmodelapi.api.galaxy.SourceGalaxy
+          _api_inheritance: SourceGalaxy < Galaxy < APIBaseObject
+          light_model: !!python/object:lensmodelapi.api.mass_light_model.LightModel
+            _api_inheritance: LightModel < APIBaseObject
+            profiles: !!python/object/new:lensmodelapi.api.profile_list.LightProfileList
+              listitems:
+              - !!python/object:lensmodelapi.api.profiles.light.PixelatedRegularGrid
+                _api_inheritance: PixelatedRegularGrid < LightProfile < Profile <
+                  APIBaseObject
+                description: Pixelated light profile on a pixel grid
+                id: galaxy-3_light-model_PixelatedRegularGrid-0
+                parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+                  listitems:
+                  - !!python/object:lensmodelapi.api.parameter.LinearParameterSet
+                    _api_inheritance: LinearParameterSet < Parameter < APIBaseObject
+                    description: Set of pixel values
+                    fixed: false
+                    id: galaxy-3_light-model_PixelatedRegularGrid-0_pixels
+                    latex_name: '{\rm pixels}'
+                    max_value: null
+                    min_value: 0.0
+                    name: pixels
+                    num_values: null
+                    type: LinearParameterSet
+                    value: null
+                type: PixelatedRegularGrid
+            type: LightModel
+          mass_model: !!python/object:lensmodelapi.api.mass_light_model.MassModel
+            _api_inheritance: MassModel < APIBaseObject
+            profiles: !!python/object:lensmodelapi.api.profile_list.MassProfileList {}
+            type: MassModel
+          name: a GLEE source
+          redshift: 1.2
+          type: SourceGalaxy
+      likelihoods: !!python/object/new:lensmodelapi.api.likelihood_list.LikelihoodList
+        listitems:
+        - imaging_data
+      regularizations: !!python/object/new:lensmodelapi.api.regularization_list.RegularizationList
+        listitems:
+        - !!python/object:lensmodelapi.api.regularizations.pixelated.PixelStarlet
+          _api_inheritance: PixelStarlet < Regularization < APIBaseObject
+          applied_to_profile_id: galaxy-2_light-model_PixelatedRegularGrid-0
+          description: Starlets regularization
+          id: regularization-model_PixelStarlet-0
+          parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+            listitems:
+            - !!python/object:lensmodelapi.api.parameter.HyperParameter
+              _api_inheritance: HyperParameter < Parameter < APIBaseObject
+              description: Lagrange parameter for first starlet scale (high frequencies)
+              fixed: false
+              id: regularization-model_PixelStarlet-0_lambda_hf
+              latex_name: $\lambda_{\rm s, hf}$
+              max_value: null
+              min_value: 0.0
+              name: lambda_hf
+              type: HyperParameter
+              value: null
+            - !!python/object:lensmodelapi.api.parameter.HyperParameter
+              _api_inheritance: HyperParameter < Parameter < APIBaseObject
+              description: Lagrange parameter from second to last starlet scales (excluding
+                coarse scale)
+              fixed: false
+              id: regularization-model_PixelStarlet-0_lambda
+              latex_name: $\lambda_{\rm s}$
+              max_value: null
+              min_value: 0.0
+              name: lambda
+              type: HyperParameter
+              value: null
+          type: PixelStarlet
+        - !!python/object:lensmodelapi.api.regularizations.pixelated.PixelPositivity
+          _api_inheritance: PixelPositivity < Regularization < APIBaseObject
+          applied_to_profile_id: galaxy-2_light-model_PixelatedRegularGrid-0
+          description: Non-negativity constraint on pixel values
+          id: regularization-model_PixelPositivity-1
+          parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+            listitems:
+            - !!python/object:lensmodelapi.api.parameter.HyperParameter
+              _api_inheritance: HyperParameter < Parameter < APIBaseObject
+              description: Lagrange parameter
+              fixed: false
+              id: regularization-model_PixelPositivity-1_lambda
+              latex_name: $\lambda_{\rm pos}$
+              max_value: null
+              min_value: 0.0
+              name: lambda
+              type: HyperParameter
+              value: null
+          type: PixelPositivity
+        - !!python/object:lensmodelapi.api.regularizations.pixelated.PixelCurvature
+          _api_inheritance: PixelCurvature < Regularization < APIBaseObject
+          applied_to_profile_id: galaxy-3_light-model_PixelatedRegularGrid-0
+          description: Curvature regularization (second spatial derivative)
+          id: regularization-model_PixelCurvature-2
+          parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+            listitems:
+            - !!python/object:lensmodelapi.api.parameter.HyperParameter
+              _api_inheritance: HyperParameter < Parameter < APIBaseObject
+              description: Lagrange parameter for curvature regularization
+              fixed: false
+              id: regularization-model_PixelCurvature-2_lambda
+              latex_name: $\lambda_{\rm curv}$
+              max_value: null
+              min_value: 0.0
+              name: lambda
+              type: HyperParameter
+              value: null
+          type: PixelCurvature
+        - !!python/object:lensmodelapi.api.regularizations.pixelated.PixelBLWavelet
+          _api_inheritance: PixelBLWavelet < Regularization < APIBaseObject
+          applied_to_profile_id: galaxy-0_mass-model_PixelatedPotential-2
+          description: Battle-Lemarie wavelet regularization
+          id: regularization-model_PixelBLWavelet-3
+          parameters: !!python/object/new:lensmodelapi.api.parameter_list.ParameterList
+            listitems:
+            - !!python/object:lensmodelapi.api.parameter.HyperParameter
+              _api_inheritance: HyperParameter < Parameter < APIBaseObject
+              description: Lagrange parameter for first Battle-Lemarie scale (high
+                frequencies)
+              fixed: false
+              id: regularization-model_PixelBLWavelet-3_lambda_hf
+              latex_name: $\lambda_{\rm BL, hf}$
+              max_value: null
+              min_value: 0.0
+              name: lambda_hf
+              type: HyperParameter
+              value: null
+          type: PixelBLWavelet
+      type: LensModel
+    name: My Favorite Lens ever
+    type: LensObject
+type: LensUniverse
