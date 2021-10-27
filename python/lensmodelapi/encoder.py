@@ -21,7 +21,7 @@ class HierarchyEncoder(object):
                                sort_keys=True, default_flow_style=False)
         return result
 
-    def yaml_to_json(self):
+    def yaml_to_json_dump(self):
         yaml_path = self.path + '.yaml'
         json_path = self.path + '.json'
         def _any_constructor(loader, tag_suffix, node):
