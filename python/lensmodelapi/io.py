@@ -3,11 +3,11 @@ import yaml
 import json
 
 
-class HierarchyEncoder(object):
+class APIHierarchy(object):
 
     def __init__(self,
-                 obj: object, 
                  file_path_no_ext: str, 
+                 obj: object = None, 
                  indent: int = 2) -> None:
         #setattr(self, obj.__class__.__name__, obj)
         self.obj = obj
@@ -40,7 +40,7 @@ class HierarchyEncoder(object):
             result = json.dump(content, f, indent=self.indent)
         return result
 
-    def yaml_load_universe(self):
+    def yaml_load(self):
         yaml_path = self.path + '.yaml'
         with open(yaml_path, 'r') as f:
             content = yaml.load(f, Loader=yaml.Loader)

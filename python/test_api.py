@@ -4,7 +4,7 @@
 
 from lensmodelapi.lazy import *
 from lensmodelapi import info
-from lensmodelapi.encoder import HierarchyEncoder
+from lensmodelapi.io import APIHierarchy
 
 from pprint import pprint
 
@@ -112,12 +112,12 @@ print("#"*30 + " serialization " + "#"*30)
 # print(json.dumps(source_1.light_model.profiles, cls=JSONProfile, indent=4))
 # print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
 
-encoder = HierarchyEncoder(lens_universe, 'api_input_file', indent=2)
+encoder = APIHierarchy('api_input_file', obj=lens_universe, indent=2)
 encoder.yaml_dump()
 encoder.yaml_to_json_dump()
 
 # test construct class from YAML
-lens_universe_2 = encoder.yaml_load_universe()
+lens_universe_2 = encoder.yaml_load()
 print("Retrieved object is a LensUniverse instance?", 
       isinstance(lens_universe_2, LensUniverse))
 
