@@ -28,7 +28,7 @@ instrument = Instrument('some instrument',
 # estimate background noise from data
 instrument.set_background_rms(data.estimate_background_noise())
 
-# check consistency
+# check consistency between data and instrument
 # data.check_consistency_with_instrument(instrument)
 
 # or update instrument field-of-view based on data
@@ -37,7 +37,10 @@ instrument.update_fov_with_data(data)
 # Setup coordinate systems that defines e.g. centers of model profiles
 coordinates = Coordinates(orientation_ra='left', 
                           orientation_dec='top',
-                          origin='center')
+                          origin_position='center')
+
+# update coordinates based on instrument pixel size
+coordinates.update_with_instrument(instrument)
 
 # Setup cosmology
 cosmology = Cosmology(H0=73.0, Om0=0.3)

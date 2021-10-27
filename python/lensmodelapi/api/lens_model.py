@@ -19,6 +19,7 @@ class LensModel(APIBaseObject):
         self.galaxies = galaxies
         self.regularizations = regularizations
         self.likelihoods = likelihoods
+        self.coordinates = coordinates
         super().__init__()
 
     # def _check_regul(self):
