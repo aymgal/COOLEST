@@ -2,7 +2,7 @@ __author__ = 'aymgal'
 
 from typing import Tuple
 
-from lensmodelapi.api.galaxy import Galaxy, SourceGalaxy, LensGalaxy
+from lensmodelapi.api.galaxy import Galaxy
 from lensmodelapi.api import util
 
 
@@ -16,14 +16,14 @@ class GalaxyList(list):
     def num_sources():
         count = 0
         for g in self:
-            if isinstance(g, SourceGalaxy):
+            if g.is_lensed:
                 count += 1
         return count
 
     def num_lenses():
         count = 0
         for g in self:
-            if isinstance(g, LensGalaxy):
+            if not g.is_lensed:
                 count += 1
         return count
 
