@@ -10,25 +10,60 @@ __all__ = [
     'HyperParameter',
 ]
 
+
+class DefinitionRange(APIBaseObject):
+
+    def __init__(self, min_value=None, max_value=None):
+        self.min_value = min_value
+        self.max_value = max_value
+
+
+class Prior(APIBaseObject):
+
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class GaussianPrior(Prior):
+
+    def __init__(self, mean=None, std_dev=None):
+        super().__init__(mean=mean, std_dev=std_dev)
+
+
+class LogNormalPrior(Prior):
+
+    def __init__(self, mean=None, std_dev=None):
+        super().__init__(mean=mean, std_dev=std_dev)
+
+
+class UniformPrior(Prior):
+
+    def __init__(self, min_value=None, max_value=None):
+        super().__init__(min_value=min_value, max_value=max_value)
+
+
 class Parameter(APIBaseObject):
 
     def __init__(self, 
                  name: str, 
                  description: str, 
+                 definition_range: DefinitionRange,
                  fixed: bool = False,
                  default_value: float = None,
-                 min_value: float = None, 
-                 max_value: float = None,
+                 initial_value: float = None,
+                 prior: Prior = None,
                  latex_name: str = None) -> None:
         self.name = name
         self.description = description
         self.fixed = fixed
-        self.min_value = min_value
-        self.max_value = max_value
+        self.value = initial_value
+        self.default_value = default_value
+        self.definition_range = definition_range
+        self.prior = prior
         if latex_name is None:
             latex_name = name
         self.latex_name = latex_name
-        self.value = default_value
         self.id = None
         super().__init__()
         
@@ -76,5 +111,4 @@ class HyperParameter(Parameter):
     """Typically for pixelated profiles"""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
+        super().__init__(*args, **kwargs)        

@@ -1,6 +1,6 @@
 __author__ = 'aymgal'
 
-from typing import List
+from typing import Tuple
 
 from lensmodelapi.api.parameter import (Parameter,
                                         NonLinearParameter,
@@ -12,7 +12,7 @@ from lensmodelapi.api.parameter import (Parameter,
 class ParameterList(list):
 
     def __init__(self,
-                 parameters: List[Parameter]) -> None:
+                 *parameters: Tuple[Parameter]) -> None:
         list.__init__(self, parameters)
 
     def total_num_params(self, include_fixed=False, include_hyper=True):
