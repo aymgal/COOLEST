@@ -15,6 +15,17 @@ class ParameterList(list):
                  *parameters: Tuple[Parameter]) -> None:
         list.__init__(self, parameters)
 
+    def __getitem__(self, key):
+        """
+        override parent's method so we can look for a Parameter
+        based on its name, e.g. parameter['gamma']
+        """
+        if isinstance(key, str):
+            idx = [p.name for p in self].index(key)
+        else:
+            idx = key
+        return list.__getitem__(self, idx)
+
     def total_num_params(self, include_fixed=False, include_hyper=True):
         count = 0
         for p in self:

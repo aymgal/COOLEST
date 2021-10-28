@@ -1,6 +1,8 @@
 # Single parameter of a profile
 
 from lensmodelapi.api.base import APIBaseObject
+from lensmodelapi.api.prior import Prior
+
 
 __all__ = [
     'Parameter',
@@ -16,31 +18,6 @@ class DefinitionRange(APIBaseObject):
     def __init__(self, min_value=None, max_value=None):
         self.min_value = min_value
         self.max_value = max_value
-
-
-class Prior(APIBaseObject):
-
-    def __init__(self, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-
-class GaussianPrior(Prior):
-
-    def __init__(self, mean=None, std_dev=None):
-        super().__init__(mean=mean, std_dev=std_dev)
-
-
-class LogNormalPrior(Prior):
-
-    def __init__(self, mean=None, std_dev=None):
-        super().__init__(mean=mean, std_dev=std_dev)
-
-
-class UniformPrior(Prior):
-
-    def __init__(self, min_value=None, max_value=None):
-        super().__init__(min_value=min_value, max_value=max_value)
 
 
 class Parameter(APIBaseObject):
@@ -75,6 +52,14 @@ class Parameter(APIBaseObject):
         if self.max_value is not None and value > self.max_value:
             raise ValueError(f"Value cannot be larger than {self.max_value}.")
         self.value = value
+
+    def set_prior(self, prior):
+        if not isinstance(prior, Prior):
+            raise ValueError("Parameter prior must be a subclass of Prior.")
+        self.prior = prior
+
+    def remove_prior(self):
+        self.prior = None
 
     def fix(self):
         if self.value is None:
