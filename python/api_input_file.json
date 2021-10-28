@@ -80,7 +80,8 @@
           "galaxies": {
             "listitems": [
               {
-                "_api_inheritance": "LensGalaxy < Galaxy < APIBaseObject",
+                "_api_inheritance": "Galaxy < APIBaseObject",
+                "is_lensed": false,
                 "light_model": {
                   "_api_inheritance": "LightModel < APIBaseObject",
                   "profiles": {
@@ -355,7 +356,11 @@
                               "id": "galaxy-0_mass-model_PEMD-0_gamma",
                               "latex_name": "$\\gamma$",
                               "name": "gamma",
-                              "prior": null,
+                              "prior": {
+                                "mean": 2.0,
+                                "prior_type": "gaussian",
+                                "width": 0.2
+                              },
                               "type": "NonLinearParameter",
                               "value": null
                             },
@@ -551,10 +556,11 @@
                 },
                 "name": "a lens galaxy",
                 "redshift": 0.5,
-                "type": "LensGalaxy"
+                "type": "Galaxy"
               },
               {
-                "_api_inheritance": "SourceGalaxy < Galaxy < APIBaseObject",
+                "_api_inheritance": "Galaxy < APIBaseObject",
+                "is_lensed": true,
                 "light_model": {
                   "_api_inheritance": "LightModel < APIBaseObject",
                   "profiles": {
@@ -692,10 +698,11 @@
                 },
                 "name": "a source galaxy",
                 "redshift": 2.0,
-                "type": "SourceGalaxy"
+                "type": "Galaxy"
               },
               {
-                "_api_inheritance": "SourceGalaxy < Galaxy < APIBaseObject",
+                "_api_inheritance": "Galaxy < APIBaseObject",
+                "is_lensed": true,
                 "light_model": {
                   "_api_inheritance": "LightModel < APIBaseObject",
                   "profiles": {
@@ -738,10 +745,11 @@
                 },
                 "name": "another source",
                 "redshift": 1.5,
-                "type": "SourceGalaxy"
+                "type": "Galaxy"
               },
               {
-                "_api_inheritance": "SourceGalaxy < Galaxy < APIBaseObject",
+                "_api_inheritance": "Galaxy < APIBaseObject",
+                "is_lensed": true,
                 "light_model": {
                   "_api_inheritance": "LightModel < APIBaseObject",
                   "profiles": {
@@ -784,7 +792,7 @@
                 },
                 "name": "a GLEE source",
                 "redshift": 1.2,
-                "type": "SourceGalaxy"
+                "type": "Galaxy"
               }
             ]
           },

@@ -48,19 +48,19 @@ coordinates.update_with_instrument(instrument)
 cosmology = Cosmology(H0=73.0, Om0=0.3)
 
 # Create a couple of source galaxies at different redshifts
-source_1 = SourceGalaxy('a source galaxy', 2.0,
-                        LightModel('SersicElliptical'))
+source_1 = Galaxy('a source galaxy', 2.0, is_lensed=True,
+                  light_model=LightModel('SersicElliptical'))
 
-source_2 = SourceGalaxy('another source', 1.5,
-                        LightModel('PixelatedRegularGrid'))
+source_2 = Galaxy('another source', 1.5, is_lensed=True,
+                  light_model=LightModel('PixelatedRegularGrid'))
 
-source_3 = SourceGalaxy('a GLEE source', 1.2,
-                        LightModel('PixelatedRegularGrid'))
+source_3 = Galaxy('a GLEE source', 1.2, is_lensed=True,
+                  light_model=LightModel('PixelatedRegularGrid'))
 
 # Create a lens galaxy
-lens_1 = LensGalaxy('a lens galaxy', 0.5,
-                    LightModel('SersicElliptical', 'SersicElliptical'),
-                    MassModel('PEMD', 'ExternalShearEllipticity', 'PixelatedPotential'))
+lens_1 = Galaxy('a lens galaxy', 0.5, is_lensed=False,
+                light_model=LightModel('SersicElliptical', 'SersicElliptical'),
+                mass_model=MassModel('PEMD', 'ExternalShearEllipticity', 'PixelatedPotential'))
 
 # Order in a list, which will also create unique IDs for each profile
 galaxy_list = GalaxyList(lens_1, source_1, source_2, source_3)
@@ -74,6 +74,10 @@ regularization_list = RegularizationList(('PixelStarlet', source_2.light_model.p
 # Choose which likelihood terms you want to include
 likelihood_list = LikelihoodList('imaging_data')
 
+# Test: add a gaussian prior to a given parameter
+from lensmodelapi.api.prior import GaussianPrior
+lens_1.mass_model.profiles[0].parameters['gamma'].set_prior(GaussianPrior(mean=2.0, width=0.2))
+
 # Define the LensModel that merges physical objects (galaxies), 
 # regularization strategies and a choice of coordinate system
 lens_model = LensModel(galaxy_list,
@@ -83,14 +87,12 @@ lens_model = LensModel(galaxy_list,
 
 # Assign the list of galaxies to a LensObject
 # along with the coordinate system and (optinonally) the observation
-name = 'My Favorite Lens ever'
-lens_object_1 = LensObject(name,
+lens_object_1 = LensObject('My Favorite Lens ever',
                            instrument,
                            lens_model,
                            data=data)
 
-# name = 'Same system in another band'
-# lens_object_2 = LensObject(name,
+# lens_object_2 = LensObject('Same system in another band',
 #                            instrument,
 #                            lens_model,
 #                            data=data_2)

@@ -66,8 +66,9 @@ lens_sample: !!python/object/new:lensmodelapi.api.lens_sample.LensSample
         type: Coordinates
       galaxies: !!python/object/new:lensmodelapi.api.galaxy_list.GalaxyList
         listitems:
-        - !!python/object:lensmodelapi.api.galaxy.LensGalaxy
-          _api_inheritance: LensGalaxy < Galaxy < APIBaseObject
+        - !!python/object:lensmodelapi.api.galaxy.Galaxy
+          _api_inheritance: Galaxy < APIBaseObject
+          is_lensed: false
           light_model: !!python/object:lensmodelapi.api.mass_light_model.LightModel
             _api_inheritance: LightModel < APIBaseObject
             profiles: !!python/object/new:lensmodelapi.api.profile_list.LightProfileList
@@ -304,7 +305,10 @@ lens_sample: !!python/object/new:lensmodelapi.api.lens_sample.LensSample
                     id: galaxy-0_mass-model_PEMD-0_gamma
                     latex_name: $\gamma$
                     name: gamma
-                    prior: null
+                    prior: !!python/object:lensmodelapi.api.prior.GaussianPrior
+                      mean: 2.0
+                      prior_type: gaussian
+                      width: 0.2
                     type: NonLinearParameter
                     value: null
                   - !!python/object:lensmodelapi.api.parameter.NonLinearParameter
@@ -468,9 +472,10 @@ lens_sample: !!python/object/new:lensmodelapi.api.lens_sample.LensSample
             type: MassModel
           name: a lens galaxy
           redshift: 0.5
-          type: LensGalaxy
-        - !!python/object:lensmodelapi.api.galaxy.SourceGalaxy
-          _api_inheritance: SourceGalaxy < Galaxy < APIBaseObject
+          type: Galaxy
+        - !!python/object:lensmodelapi.api.galaxy.Galaxy
+          _api_inheritance: Galaxy < APIBaseObject
+          is_lensed: true
           light_model: !!python/object:lensmodelapi.api.mass_light_model.LightModel
             _api_inheritance: LightModel < APIBaseObject
             profiles: !!python/object/new:lensmodelapi.api.profile_list.LightProfileList
@@ -587,9 +592,10 @@ lens_sample: !!python/object/new:lensmodelapi.api.lens_sample.LensSample
             type: MassModel
           name: a source galaxy
           redshift: 2.0
-          type: SourceGalaxy
-        - !!python/object:lensmodelapi.api.galaxy.SourceGalaxy
-          _api_inheritance: SourceGalaxy < Galaxy < APIBaseObject
+          type: Galaxy
+        - !!python/object:lensmodelapi.api.galaxy.Galaxy
+          _api_inheritance: Galaxy < APIBaseObject
+          is_lensed: true
           light_model: !!python/object:lensmodelapi.api.mass_light_model.LightModel
             _api_inheritance: LightModel < APIBaseObject
             profiles: !!python/object/new:lensmodelapi.api.profile_list.LightProfileList
@@ -624,9 +630,10 @@ lens_sample: !!python/object/new:lensmodelapi.api.lens_sample.LensSample
             type: MassModel
           name: another source
           redshift: 1.5
-          type: SourceGalaxy
-        - !!python/object:lensmodelapi.api.galaxy.SourceGalaxy
-          _api_inheritance: SourceGalaxy < Galaxy < APIBaseObject
+          type: Galaxy
+        - !!python/object:lensmodelapi.api.galaxy.Galaxy
+          _api_inheritance: Galaxy < APIBaseObject
+          is_lensed: true
           light_model: !!python/object:lensmodelapi.api.mass_light_model.LightModel
             _api_inheritance: LightModel < APIBaseObject
             profiles: !!python/object/new:lensmodelapi.api.profile_list.LightProfileList
@@ -661,7 +668,7 @@ lens_sample: !!python/object/new:lensmodelapi.api.lens_sample.LensSample
             type: MassModel
           name: a GLEE source
           redshift: 1.2
-          type: SourceGalaxy
+          type: Galaxy
       likelihoods: !!python/object/new:lensmodelapi.api.likelihood_list.LikelihoodList
         listitems:
         - imaging_data
