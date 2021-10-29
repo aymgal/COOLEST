@@ -12,6 +12,7 @@ __all__ = [
     'SersicElliptical',
     'Chameleon',
     'Uniform',
+    'Shapelets',
     'PixelatedRegularGrid',
     'PixelatedAdaptiveGrid',
 ]
@@ -89,6 +90,34 @@ class Chameleon(LightProfile):
                                "Profile center along y coordinates",
                                DefinitionRange(),
                                latex_name=r"$y_0$")
+        )
+        super().__init__(description, parameters)
+
+
+class Shapelets(LightProfile):
+    
+    def __init__(self):
+        self.n_max = None # TODO
+        num_coeffs = None # (self.n_max+1)*(self.n_max+2) / 2
+        description = "Set of shapelet functions"
+        parameters = ParameterList(
+            NonLinearParameter('beta',
+                               "Shapelet characteristic scale",
+                               DefinitionRange(min_value=0.0),
+                               latex_name=r"$\beta$"),
+            NonLinearParameter('center_x',
+                               "Shapelets center along x coordinates",
+                               DefinitionRange(),
+                               latex_name=r"$x_0$"),
+            NonLinearParameter('center_y',
+                               "Shapelets center along y coordinates",
+                               DefinitionRange(),
+                               latex_name=r"$y_0$"),
+            LinearParameterSet(num_coeffs,
+                               'amps',
+                               "Set of amplitude values for each shapelet function",
+                               DefinitionRange(min_value=0.0),
+                               latex_name=r"$A$"),
         )
         super().__init__(description, parameters)
 
