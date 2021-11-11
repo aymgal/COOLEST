@@ -17,6 +17,10 @@ class Profile(APIBaseObject):
         super().__init__()
 
     def update_parameter_bounds_with_obs(self, instrument):
+        """
+        This function is meant to limit the available parameter space
+        using simple arguments such as the image field of view, pixel size, etc.
+        """
         fov_ra, fov_dec = instrument.field_of_view_ra, instrument.field_of_view_dec
         # Einstein radius cannot be more than half the FOV
         max_theta_E = max(fov_ra, fov_dec) / 2.

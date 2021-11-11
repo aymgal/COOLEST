@@ -4,7 +4,8 @@ from lensmodelapi.api.profile import LightProfile
 from lensmodelapi.api.parameter_list import ParameterList
 from lensmodelapi.api.parameter import (NonLinearParameter, 
                                         LinearParameter, 
-                                        LinearParameterSet)
+                                        LinearParameterSet, 
+                                        PixelParameterSet)
 from lensmodelapi.api.parameter import DefinitionRange
 
 
@@ -113,8 +114,7 @@ class Shapelets(LightProfile):
                                "Shapelets center along y coordinates",
                                DefinitionRange(),
                                latex_name=r"$y_0$"),
-            LinearParameterSet(num_coeffs,
-                               'amps',
+            LinearParameterSet('amps',
                                "Set of amplitude values for each shapelet function",
                                DefinitionRange(min_value=0.0),
                                latex_name=r"$A$"),
@@ -138,11 +138,9 @@ class Uniform(LightProfile):
 class PixelatedRegularGrid(LightProfile):
     
     def __init__(self):
-        num_pixels = None # TODO
         description = "Pixelated light profile on a pixel grid"
         parameters = ParameterList(
-            LinearParameterSet(num_pixels,
-                               'pixels',
+            PixelParameterSet('pixels',
                                "Set of pixel values",
                                DefinitionRange(min_value=0.0),
                                latex_name=r"{\rm pixels}"),
@@ -153,11 +151,9 @@ class PixelatedRegularGrid(LightProfile):
 class PixelatedAdaptiveGrid(LightProfile):
     
     def __init__(self):
-        num_pixels = None # TODO
         description = "Pixelated light profile on an adaptive (thus irregular) grid"
         parameters = ParameterList(
-            LinearParameterSet(num_pixels,
-                               'pixels',
+            PixelParameterSet('pixels',
                                "Set of pixel values",
                                DefinitionRange(min_value=0.0),
                                latex_name=r"{\rm pixels}"),

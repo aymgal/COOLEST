@@ -2,7 +2,7 @@ __author__ = 'aymgal'
 
 from lensmodelapi.api.profile import MassProfile
 from lensmodelapi.api.parameter_list import ParameterList
-from lensmodelapi.api.parameter import NonLinearParameter, LinearParameterSet
+from lensmodelapi.api.parameter import NonLinearParameter, PixelParameterSet
 from lensmodelapi.api.parameter import DefinitionRange
 
 
@@ -238,16 +238,14 @@ class ExternalShearEllipticity(MassProfile):
                                DefinitionRange(min_value=-1.0, max_value=1.0),
                                latex_name=r"$\gamma_2$"),
             NonLinearParameter('center_x',
-                               "Profile center along x coordinates",
+                               "Shear origin along x coordinates",
                                DefinitionRange(),
                                fixed=True,
-                               default_value=0.0,
                                latex_name=r"$x_0$"),
             NonLinearParameter('center_y',
-                               "Profile center along y coordinates",
+                               "Shear origin along y coordinates",
                                DefinitionRange(),
                                fixed=True,
-                               default_value=0.0,
                                latex_name=r"$y_0$")
         )
         super().__init__(description, parameters)
@@ -267,13 +265,13 @@ class ExternalShearAngleStrength(MassProfile):
                                DefinitionRange(min_value=-1.0, max_value=1.0),
                                latex_name=r"$\gamma_2$"),
             NonLinearParameter('center_x',
-                               "Profile center along x coordinates",
+                               "Shear origin along x coordinates",
                                DefinitionRange(),
                                fixed=True,
                                default_value=0.0,
                                latex_name=r"$x_0$"),
             NonLinearParameter('center_y',
-                               "Profile center along y coordinates",
+                               "Shear origin along y coordinates",
                                DefinitionRange(),
                                fixed=True,
                                default_value=0.0,
@@ -285,13 +283,11 @@ class ExternalShearAngleStrength(MassProfile):
 class PixelatedPotential(MassProfile):
     
     def __init__(self):
-        num_pixels = None # TODO
         description = "Pixelated lensing potential on a pixel grid"
         parameters = ParameterList(
-            LinearParameterSet(num_pixels,
-                               'pixels',
+            PixelParameterSet('pixels',
                                "Set of pixel values",
-                               DefinitionRange(min_value=0.0),
+                               DefinitionRange(),
                                latex_name=r"{\rm pixels}"),
         )
         super().__init__(description, parameters)
@@ -300,13 +296,12 @@ class PixelatedPotential(MassProfile):
 class PixelatedConvergence(MassProfile):
     
     def __init__(self):
-        num_pixels = None # TODO
         description = "Pixelated convergence on a pixel grid"
         parameters = ParameterList(
-            LinearParameterSet(num_pixels,
+            PixelParameterSet(num_pixels,
                                'pixels',
                                "Set of pixel values",
-                               DefinitionRange(min_value=0.0),
+                               DefinitionRange(),
                                latex_name=r"{\rm pixels}"),
         )
         super().__init__(description, parameters)

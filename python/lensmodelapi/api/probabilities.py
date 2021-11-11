@@ -3,6 +3,24 @@ __author__ = 'aymgal'
 
 from lensmodelapi.api.base import APIBaseObject
 
+__all__ = [
+    'PosteriorDistrib',
+    'Prior', 
+    'GaussianPrior', 
+    'LogNormalPrior',
+    'UniformPrior',
+]
+
+
+class PosteriorDistrib(APIBaseObject):
+
+    def __init__(self, mean=None, median=None, 
+                 quantile_16=None, quantile_84=None):
+        self.mean = mean
+        self.median = median
+        self.quantile_16 = quantile_16
+        self.quantile_84 = quantile_84
+
 
 class Prior(APIBaseObject):
 
