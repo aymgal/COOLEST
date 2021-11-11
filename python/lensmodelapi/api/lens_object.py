@@ -13,17 +13,16 @@ class LensObject(APIBaseObject):
     """
     def __init__(self,
                  name: str,
-                 instrument: Instrument,
                  lens_model: LensModel,
+                 instrument: Instrument = None,
                  data: Data = None) -> None:
         self.name = name
         self.lens_model = lens_model
         self.instrument = instrument
         self.data = data
-        self._update_parameter_bounds()
         super().__init__()
         
-    def _update_parameter_bounds(self):
+    def update_parameter_bounds(self):
         """
         Based on the e.g. field-of-view, will update the allowed range
         for certain parameters
