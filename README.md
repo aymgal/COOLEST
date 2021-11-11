@@ -1,8 +1,8 @@
 # LensModelAPI: a standard for lens models
 
-API for defining application-independent lens models, aiming to __generate input files__ and __store output files__ for any lens modeling code/pipeline.
+API for defining application-independent lens models, aiming to __generate template files__ to initalize models, and __store output results__ from _any_ lens modeling code/pipeline.
 
-The first implementation takes the form of collection of Python classes, organised in a very general hierarchy common to every lens model paradigms. It can the be encoded in a JSON or YAML human-readable file that serves as the base for initialiazing and storing modeling results.
+The first implementation takes the form of collection of Python classes, organised in a very general hierarchy common to most of lens model software packages. It can the be encoded as JSON or YAML human-readable files that serve as templates for initialiazing and storing modeling results.
 
 Current hierarchy:
 
