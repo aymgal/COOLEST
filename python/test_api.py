@@ -78,9 +78,19 @@ regularization_list = RegularizationList(('PixelStarlet', source_2.light_model.p
 # Choose which likelihood terms you want to include
 likelihood_list = LikelihoodList('imaging_data')
 
-# Test: add a gaussian prior to a given parameter
+# TESTS
+# - add a gaussian prior to a given parameter
 from lensmodelapi.api.probabilities import GaussianPrior
 lens_1.mass_model.profiles[0].parameters['gamma'].set_prior(GaussianPrior(mean=2.0, width=0.2))
+
+# - add a point estimate to a given parameter
+from lensmodelapi.api.parameter import PointEstimate
+lens_1.light_model.profiles[1].parameters['e1'].set_point_estimate(PointEstimate(value=0.34))
+
+# - add a posterior distribution (as 0th and 1st order statistics)
+from lensmodelapi.api.probabilities import PosteriorDistrib
+source_1.light_model.profiles[0].parameters['R_sersic'].set_posterior(PosteriorDistrib(mean=0.12, median=0.15, 
+                                                                                       quantile_16=0.03, quantile_84=0.05))
 
 # Define the LensModel that merges physical objects (galaxies), 
 # regularization strategies and a choice of coordinate system
