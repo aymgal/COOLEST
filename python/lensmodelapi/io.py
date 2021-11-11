@@ -1,6 +1,7 @@
 import os
 import yaml
 import json
+import jsonpickle
 
 
 class APIHierarchy(object):
@@ -9,7 +10,6 @@ class APIHierarchy(object):
                  file_path_no_ext: str, 
                  obj: object = None, 
                  indent: int = 2) -> None:
-        #setattr(self, obj.__class__.__name__, obj)
         self.obj = obj
         self.path = file_path_no_ext
         self.indent = indent
@@ -21,7 +21,26 @@ class APIHierarchy(object):
                                sort_keys=False, default_flow_style=False)
         return result
 
-    def yaml_to_json_dump(self):
+    def json_dump(self):
+        json_path = self.path + '.json'
+        result = jsonpickle.encode(self.obj, indent=self.indent)
+        with open(json_path, 'w') as f:
+            f.write(result)
+        return result
+
+    def yaml_load(self):
+        yaml_path = self.path + '.yaml'
+        with open(yaml_path, 'r') as f:
+            content = yaml.load(f, Loader=yaml.Loader)
+        return content
+
+    def json_load(self):
+        json_path = self.path + '.json'
+        with open(json_path, 'r') as f:
+            content = jsonpickle.decode(f.read())
+        return content
+
+    def dump_yaml_to_json(self):
         yaml_path = self.path + '.yaml'
         json_path = self.path + '.json'
         def _any_constructor(loader, tag_suffix, node):
@@ -39,9 +58,4 @@ class APIHierarchy(object):
         with open(json_path, 'w') as f:
             result = json.dump(content, f, indent=self.indent)
         return result
-
-    def yaml_load(self):
-        yaml_path = self.path + '.yaml'
-        with open(yaml_path, 'r') as f:
-            content = yaml.load(f, Loader=yaml.Loader)
-        return content
+        

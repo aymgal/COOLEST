@@ -75,7 +75,7 @@ regularization_list = RegularizationList(('PixelStarlet', source_2.light_model.p
 likelihood_list = LikelihoodList('imaging_data')
 
 # Test: add a gaussian prior to a given parameter
-from lensmodelapi.api.prior import GaussianPrior
+from lensmodelapi.api.probabilities import GaussianPrior
 lens_1.mass_model.profiles[0].parameters['gamma'].set_prior(GaussianPrior(mean=2.0, width=0.2))
 
 # Define the LensModel that merges physical objects (galaxies), 
@@ -114,13 +114,21 @@ print("#"*30 + " serialization " + "#"*30)
 # print(json.dumps(source_1.light_model.profiles, cls=JSONProfile, indent=4))
 # print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
 
-encoder = APIHierarchy('api_input_file', obj=lens_universe, indent=2)
-encoder.yaml_dump()
-encoder.yaml_to_json_dump()
-
+# TESTS WITH YAML
+encoder_yaml = APIHierarchy('api_input_file_YAML', obj=lens_universe, indent=2)
+encoder_yaml.yaml_dump()
+encoder_yaml.dump_yaml_to_json()
 # test construct class from YAML
-lens_universe_2 = encoder.yaml_load()
+lens_universe_2 = encoder_yaml.yaml_load()
 print("Retrieved object is a LensUniverse instance?", 
       isinstance(lens_universe_2, LensUniverse))
-
 print("First lens in the sample:", lens_universe_2.lens_sample[0].name)
+
+# TESTS WITH JSON
+encoder_json = APIHierarchy('api_input_file_JSON', obj=lens_universe, indent=2)
+encoder_json.json_dump()
+lens_universe_3 = encoder_json.json_load()
+print("Retrieved object is a LensUniverse instance?", 
+      isinstance(lens_universe_3, LensUniverse))
+print("First lens in the sample:", lens_universe_3.lens_sample[0].name)
+
