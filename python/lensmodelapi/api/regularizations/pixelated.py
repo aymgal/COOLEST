@@ -17,7 +17,7 @@ __all__ = [
     'PixelStarlet',
     'PixelBLWavelet',
     'PixelPositivity',
-    'PixelDefault',
+    'DefaultForPixelated',
 ]
 SUPPORTED_CHOICES = __all__
 
@@ -155,7 +155,7 @@ class PixelPositivity(Regularization):
         super().__init__(description, parameters, **kwargs)
 
 
-class PixelDefault(Regularization):
+class DefaultForPixelated(Regularization):
 
     def __init__(self, **kwargs):
         description = "Default regularization strategy, set by the specific modelling code"

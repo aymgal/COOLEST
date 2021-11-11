@@ -3,7 +3,7 @@
 from typing import List
 
 from lensmodelapi.api.base import APIBaseObject
-from lensmodelapi.api.probabilities import Prior, PosteriorDistrib
+from lensmodelapi.api.probabilities import Prior, PosteriorStatistics
 
 
 __all__ = [
@@ -38,7 +38,7 @@ class Parameter(APIBaseObject):
                  units: str = None,
                  fixed: bool = False,
                  initial_estimate: PointEstimate = None,
-                 posterior: PosteriorDistrib = None,
+                 posterior: PosteriorStatistics = None,
                  prior: Prior = None,
                  latex_name: str = None) -> None:
         self.name = name
@@ -52,7 +52,7 @@ class Parameter(APIBaseObject):
             self.initial_estimate = initial_estimate
         self.point_estimate = PointEstimate(value=self.initial_estimate.value)
         if posterior is None:
-            posterior = PosteriorDistrib()
+            posterior = PosteriorStatistics()
         self.posterior = posterior
         if prior is None:
             prior = Prior()
@@ -81,12 +81,12 @@ class Parameter(APIBaseObject):
         self.point_estimate = PointEstimate()
 
     def set_posterior(self, posterior):
-        if not isinstance(posterior, PosteriorDistrib):
-            raise ValueError("Parameter prior must be a PosteriorDistrib instance.")
+        if not isinstance(posterior, PosteriorStatistics):
+            raise ValueError("Parameter prior must be a PosteriorStatistics instance.")
         self.posterior = posterior
 
     def remove_posterior(self):
-        self.posterior = PosteriorDistrib()
+        self.posterior = PosteriorStatistics()
 
     def set_prior(self, prior):
         if not isinstance(prior, Prior):
