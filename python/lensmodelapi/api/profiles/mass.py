@@ -256,11 +256,11 @@ class ExternalShearAngleStrength(MassProfile):
     def __init__(self):
         description = "External shear defined with ellipticity"
         parameters = ParameterList(
-            NonLinearParameter('gamma',
+            NonLinearParameter('gamma_ext',
                                "Strength of external shear",
                                DefinitionRange(min_value=-1.0, max_value=1.0),
                                latex_name=r"$\gamma_1$"),
-            NonLinearParameter('phi',
+            NonLinearParameter('phi_ext',
                                "Orientation of external shear",
                                DefinitionRange(min_value=-1.0, max_value=1.0),
                                latex_name=r"$\gamma_2$"),
@@ -268,13 +268,11 @@ class ExternalShearAngleStrength(MassProfile):
                                "Shear origin along x coordinates",
                                DefinitionRange(),
                                fixed=True,
-                               default_value=0.0,
                                latex_name=r"$x_0$"),
             NonLinearParameter('center_y',
                                "Shear origin along y coordinates",
                                DefinitionRange(),
                                fixed=True,
-                               default_value=0.0,
                                latex_name=r"$y_0$")
         )
         super().__init__(description, parameters)
