@@ -4,7 +4,7 @@ __author__ = 'aymgal'
 from lensmodelapi.api.base import APIBaseObject
 
 __all__ = [
-    'PosteriorDistrib',
+    'PosteriorStatistics',
     'Prior', 
     'GaussianPrior', 
     'LogNormalPrior',
@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 
-class PosteriorDistrib(APIBaseObject):
+class PosteriorStatistics(APIBaseObject):
 
     def __init__(self, mean=None, median=None, 
                  quantile_16=None, quantile_84=None):
