@@ -72,13 +72,29 @@ class Parameter(APIBaseObject):
             raise ValueError(f"Value cannot be larger than {self.max_value}.")
         self.value = value
 
+    def set_point_estimate(self, point_estimate):
+        if not isinstance(point_estimate, PointEstimate):
+            raise ValueError("Parameter prior must be a PointEstimate instance.")
+        self.point_estimate = point_estimate
+
+    def remove_point_estimate(self):
+        self.point_estimate = PointEstimate()
+
+    def set_posterior(self, posterior):
+        if not isinstance(posterior, PosteriorDistrib):
+            raise ValueError("Parameter prior must be a PosteriorDistrib instance.")
+        self.posterior = posterior
+
+    def remove_posterior(self):
+        self.posterior = PosteriorDistrib()
+
     def set_prior(self, prior):
         if not isinstance(prior, Prior):
-            raise ValueError("Parameter prior must be a subclass of Prior.")
+            raise ValueError("Parameter prior must be a Prior instance.")
         self.prior = prior
 
     def remove_prior(self):
-        self.prior = None
+        self.prior = Prior()
 
     def fix(self):
         if self.value is None:
