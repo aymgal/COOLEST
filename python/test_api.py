@@ -48,28 +48,32 @@ coordinates.update_with_instrument(instrument)
 cosmology = Cosmology(H0=73.0, Om0=0.3)
 
 # Create a couple of source galaxies at different redshifts
-source_1 = Galaxy('a source galaxy', 2.0, is_lensed=True,
+source_1 = Galaxy('a source galaxy', 2.0,
                   light_model=LightModel('SersicElliptical'))
 
-source_2 = Galaxy('another source', 1.5, is_lensed=True,
+source_2 = Galaxy('another source', 1.5,
                   light_model=LightModel('PixelatedRegularGrid'))
 
-source_3 = Galaxy('a GLEE source', 1.2, is_lensed=True,
+source_3 = Galaxy('a GLEE source', 1.2,
                   light_model=LightModel('PixelatedRegularGrid'))
 
 # Create a lens galaxy
-lens_1 = Galaxy('a lens galaxy', 0.5, is_lensed=False,
+lens_1 = Galaxy('a lens galaxy', 0.5,
                 light_model=LightModel('SersicElliptical', 'SersicElliptical'),
-                mass_model=MassModel('PEMD', 'ExternalShearEllipticity', 'PixelatedPotential'))
+                mass_model=MassModel('PEMD', 'PixelatedPotential'))
 
-# Order in a list, which will also create unique IDs for each profile
+# Put them in a list, which will also create unique IDs for each profile
 galaxy_list = GalaxyList(lens_1, source_1, source_2, source_3)
+
+# Defines the external shear
+ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
+                          mass_model=MassModel('ExternalShearEllipticity'))
 
 # Define regularization strategies and link them to a given profile
 regularization_list = RegularizationList(('PixelStarlet', source_2.light_model.profiles[0]),
                                          ('PixelPositivity', source_2.light_model.profiles[0]), 
                                          ('PixelCurvature', source_3.light_model.profiles[0]),
-                                         ('PixelBLWavelet', lens_1.mass_model.profiles[2]))
+                                         ('PixelBLWavelet', lens_1.mass_model.profiles[1]))
 
 # Choose which likelihood terms you want to include
 likelihood_list = LikelihoodList('imaging_data')
@@ -80,10 +84,10 @@ lens_1.mass_model.profiles[0].parameters['gamma'].set_prior(GaussianPrior(mean=2
 
 # Define the LensModel that merges physical objects (galaxies), 
 # regularization strategies and a choice of coordinate system
-lens_model = LensModel(galaxy_list,
-                       regularization_list,
-                       likelihood_list,
-                       coordinates)
+lens_model = LensModel(galaxy_list, coordinates,
+                       external_shear=ext_shear,
+                       regularizations=regularization_list,
+                       likelihoods=likelihood_list)
 
 # Assign the list of galaxies to a LensObject
 # along with the coordinate system and (optinonally) the observation
