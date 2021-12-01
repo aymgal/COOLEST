@@ -36,14 +36,6 @@ instrument.set_background_rms(data.estimate_background_noise())
 # or update instrument field-of-view based on data
 instrument.update_fov_with_data(data)
 
-# Setup coordinate systems that defines e.g. centers of model profiles
-coordinates = Coordinates(orientation_ra='left', 
-                          orientation_dec='top',
-                          origin_position='center')
-
-# update coordinates based on instrument pixel size
-coordinates.update_with_instrument(instrument)
-
 # Setup cosmology
 cosmology = Cosmology(H0=73.0, Om0=0.3)
 
@@ -88,13 +80,13 @@ from lensmodelapi.api.parameter import PointEstimate
 lens_1.light_model.profiles[1].parameters['e1'].set_point_estimate(PointEstimate(value=0.34))
 
 # - add a posterior distribution (as 0th and 1st order statistics)
-from lensmodelapi.api.probabilities import PosteriorDistrib
-source_1.light_model.profiles[0].parameters['R_sersic'].set_posterior(PosteriorDistrib(mean=0.12, median=0.15, 
-                                                                                       quantile_16=0.03, quantile_84=0.05))
+from lensmodelapi.api.probabilities import PosteriorStatistics
+source_1.light_model.profiles[0].parameters['R_sersic'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
+                                                                                          quantile_16=0.03, quantile_84=0.05))
 
 # Define the LensModel that merges physical objects (galaxies), 
 # regularization strategies and a choice of coordinate system
-lens_model = LensModel(galaxy_list, coordinates,
+lens_model = LensModel(galaxy_list,
                        external_shear=ext_shear,
                        regularizations=regularization_list,
                        likelihoods=likelihood_list)

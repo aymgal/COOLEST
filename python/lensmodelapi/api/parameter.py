@@ -63,18 +63,18 @@ class Parameter(APIBaseObject):
         self.id = None
         super().__init__()
         
-    def set_value(self, value, overwrite=False):
-        if self.value is not None and not overwrite:
-            raise ValueError(f"A value ({self.value:.2f}) has already been set.")
-        if self.min_value is not None and value < self.min_value:
-            raise ValueError(f"Value cannot be smaller than {self.min_value}.")
-        if self.max_value is not None and value > self.max_value:
-            raise ValueError(f"Value cannot be larger than {self.max_value}.")
-        self.value = value
-
     def set_point_estimate(self, point_estimate):
-        if not isinstance(point_estimate, PointEstimate):
-            raise ValueError("Parameter prior must be a PointEstimate instance.")
+        if isinstance(point_estimate, (float, int)):
+            point_estimate = PointEstimate(value=float(point_estimate))
+        elif not isinstance(point_estimate, PointEstimate):
+            raise ValueError("Parameter prior must be either a PointEstimate instance "
+                             "or a single number (float or int).")
+        if (self.definition_range.min_value is not None 
+            and point_estimate.value < self.definition_range.min_value):
+            raise ValueError(f"Value cannot be smaller than {self.definition_range.min_value}.")
+        if (self.definition_range.max_value is not None 
+            and point_estimate.value > self.definition_range.max_value):
+            raise ValueError(f"Value cannot be larger than {self.definition_range.max_value}.")
         self.point_estimate = point_estimate
 
     def remove_point_estimate(self):
