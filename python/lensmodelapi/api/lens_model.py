@@ -14,12 +14,10 @@ class LensModel(APIBaseObject):
 
     def __init__(self, 
                  galaxies: GalaxyList,
-                 coordinates: Coordinates,
                  likelihoods: LikelihoodList = None,
                  external_shear: ExternalShear = None,
                  regularizations: RegularizationList = None) -> None:
         self.galaxies = galaxies
-        self.coordinates = coordinates
         if likelihoods is None:
             likelihoods = LikelihoodList('imaging_data')
         self.likelihoods = likelihoods
