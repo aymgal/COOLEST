@@ -15,17 +15,17 @@ __all__ = [
 class PosteriorStatistics(APIBaseObject):
 
     def __init__(self, mean=None, median=None, 
-                 quantile_16=None, quantile_84=None):
+                 percentile_16th=None, percentile_84th=None):
         self.mean = mean
         self.median = median
-        self.quantile_16 = quantile_16
-        self.quantile_84 = quantile_84
+        self.percentile_16th = percentile_16th
+        self.percentile_84th = percentile_84th
 
 
 class Prior(APIBaseObject):
 
-    def __init__(self, prior_type=None, **kwargs):
-        self.prior_type = prior_type
+    def __init__(self, ptype=None, **kwargs):
+        self.type = ptype
         for key, value in kwargs.items():
             setattr(self, key, value)
         super().__init__()
@@ -34,19 +34,19 @@ class Prior(APIBaseObject):
 class GaussianPrior(Prior):
 
     def __init__(self, mean=None, width=None):
-        super().__init__(prior_type='gaussian', 
+        super().__init__(ptype='gaussian', 
                          mean=mean, width=width)
 
 
 class LogNormalPrior(Prior):
 
     def __init__(self, mean=None, width=None):
-        super().__init__(prior_type='log-normal', 
+        super().__init__(ptype='log-normal', 
                          mean=mean, width=width)
 
 
 class UniformPrior(Prior):
 
     def __init__(self, min_value=None, max_value=None):
-        super().__init__(prior_type='uniform', 
+        super().__init__(ptype='uniform', 
                          min_value=min_value, max_value=max_value)
