@@ -22,10 +22,3 @@ class LensObject(APIBaseObject):
         self.data = data
         super().__init__()
         
-    def update_parameter_bounds(self):
-        """
-        Based on the e.g. field-of-view, will update the allowed range
-        for certain parameters
-        """
-        self.lens_model.update_parameter_bounds_with_obs(self.instrument)
-        

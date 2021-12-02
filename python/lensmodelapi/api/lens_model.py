@@ -24,7 +24,3 @@ class LensModel(APIBaseObject):
         self.external_shear = external_shear
         self.regularizations = regularizations
         super().__init__()
-
-    def update_parameter_bounds_with_obs(self, instrument):
-        self.galaxies.update_parameter_bounds_with_obs(instrument)
-        
