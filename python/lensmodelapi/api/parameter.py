@@ -32,7 +32,6 @@ class PointEstimate(APIBaseObject):
 class Parameter(APIBaseObject):
 
     def __init__(self, 
-                 name: str, 
                  description: str, 
                  definition_range: DefinitionRange,
                  units: str = None,
@@ -40,8 +39,7 @@ class Parameter(APIBaseObject):
                  initial_estimate: PointEstimate = None,
                  posterior: PosteriorStatistics = None,
                  prior: Prior = None,
-                 latex_name: str = None) -> None:
-        self.name = name
+                 latex_str: str = None) -> None:
         self.description = description
         self.units = units
         self.definition_range = definition_range
@@ -57,9 +55,9 @@ class Parameter(APIBaseObject):
         if prior is None:
             prior = Prior()
         self.prior = prior
-        if latex_name is None:
-            latex_name = name
-        self.latex_name = latex_name
+        if latex_str is None:
+            latex_str = name
+        self.latex_str = latex_str
         self.id = None
         super().__init__()
         
@@ -98,7 +96,7 @@ class Parameter(APIBaseObject):
 
     def fix(self):
         if self.point_estimate.value is None:
-            raise ValueError(f"Cannot fix parameter {self.name} as no value has been set.")
+            raise ValueError(f"Cannot fix parameter '{self.description}' as no value has been set.")
         self.fixed = True
 
     def unfix(self):

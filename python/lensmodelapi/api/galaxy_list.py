@@ -40,6 +40,6 @@ class GalaxyList(list):
                 for j, profile in enumerate(getattr(galaxy, f'{model_type}_model').profiles):
                     profile_id = util.profile_to_id(model_type, profile.type, j, i)
                     profile.id = profile_id
-                    for parameter in profile.parameters:
-                        param_id = f'{profile.id}_{parameter.name}'
+                    for param_name, parameter in profile.parameters.items():
+                        param_id = f'{profile.id}_{param_name}'
                         parameter.id = param_id

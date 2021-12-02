@@ -16,6 +16,20 @@ class Profile(APIBaseObject):
         self.id = None
         super().__init__()
 
+    def total_num_params(self, include_fixed=False, include_hyper=True):
+        count = 0
+        for name, parameter in self.parameters.items():
+            if isinstance(parameter, (NonLinearParameter, LinearParameter)):
+                if not parameter.fixed or include_fixed:
+                    count += 1
+            elif isinstance(parameter, LinearParameterSet):
+                if not parameter.fixed or include_fixed:
+                    count += p.num_values
+            elif isinstance(parameter, HyperParameter) and include_hyper:
+                if not parameter.fixed or include_fixed:
+                    count += 1
+        return count
+
     def update_parameter_bounds_with_obs(self, instrument):
         """
         This function is meant to limit the available parameter space
