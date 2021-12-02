@@ -3,11 +3,12 @@ __author__ = 'aymgal'
 from types import ModuleType
 from typing import Tuple
 
+from lensmodelapi.api.base import APIBaseObject
 from lensmodelapi.api.profiles import mass as mass_profiles_module
 from lensmodelapi.api.profiles import light as light_profiles_module
 
 
-class ProfileList(list):
+class ProfileList(list, APIBaseObject):
 
     def __init__(self, 
                  profiles_module: ModuleType,

@@ -2,11 +2,12 @@ __author__ = 'aymgal'
 
 from typing import Tuple
 
+from lensmodelapi.api.base import APIBaseObject
 from lensmodelapi.api.galaxy import Galaxy
 from lensmodelapi.api import util
 
 
-class GalaxyList(list):
+class GalaxyList(list, APIBaseObject):
 
     def __init__(self,
                  *galaxies: Tuple[Galaxy]):
@@ -14,18 +15,10 @@ class GalaxyList(list):
         self._create_all_ids()
 
     def num_sources():
-        count = 0
-        for g in self:
-            if g.is_lensed:
-                count += 1
-        return count
+        raise NotImplementedError("Couting number of source galaxies is not yet implemented.")
 
     def num_lenses():
-        count = 0
-        for g in self:
-            if not g.is_lensed:
-                count += 1
-        return count
+        raise NotImplementedError("Couting number of source galaxies is not yet implemented.")
 
     def update_parameter_bounds_with_obs(self, instrument):
         for galaxy in self:

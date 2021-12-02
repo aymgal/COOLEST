@@ -1,16 +1,17 @@
 __author__ = 'aymgal'
 
 import numpy as np
+from typing import Dict
 
 from lensmodelapi.api.base import APIBaseObject
-from lensmodelapi.api.parameter_list import ParameterList
+from lensmodelapi.api.parameter import Parameter
 
 
 class Profile(APIBaseObject):
 
     def __init__(self,
                  description: str, 
-                 parameters: ParameterList) -> None:
+                 parameters: Dict[(str, Parameter)]) -> None:
         self.description = description
         self.parameters = parameters
         self.id = None

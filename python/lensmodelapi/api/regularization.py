@@ -1,14 +1,16 @@
 __author__ = 'aymgal'
 
+from typing import Dict
+
 from lensmodelapi.api.base import APIBaseObject
-from lensmodelapi.api.parameter_list import ParameterList
+from lensmodelapi.api.parameter import Parameter
 
 
 class Regularization(APIBaseObject):
 
     def __init__(self,
                  description: str, 
-                 parameters: ParameterList,
+                 parameters: Dict[str, Parameter],
                  applied_to_profile_id: str = None) -> None:
         self.description = description
         self.parameters = parameters

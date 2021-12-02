@@ -1,7 +1,6 @@
 __author__ = 'aymgal'
 
 from lensmodelapi.api.profile import LightProfile
-from lensmodelapi.api.parameter_list import ParameterList
 from lensmodelapi.api.parameter import (NonLinearParameter, 
                                         LinearParameter, 
                                         LinearParameterSet, 
