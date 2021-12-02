@@ -16,7 +16,7 @@ class ProfileList(list, APIBaseObject):
         profiles = []
         for name in profile_names:
             if name not in profiles_module.SUPPORTED_CHOICES:
-                raise ValueError(f"Profile '{name}' of type '{self._type}' is not supported.")
+                raise ValueError(f"Profile '{name}' is not supported.")
             profile_class = getattr(profiles_module, name)
             profiles.append(profile_class())
         list.__init__(self, profiles)

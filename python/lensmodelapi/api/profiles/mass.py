@@ -44,178 +44,146 @@ class SIE(MassProfile):
         super().__init__(description, parameters)
 
 
-# class NIE(MassProfile):
+class NIE(MassProfile):
     
-#     def __init__(self):
-#         description = "Non-singular isothermal sphere"
-#         parameters = ParameterList(
-#             NonLinearParameter('theta_E',
-#                                "Einstein radius",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$\theta_{\rm E}$"),
-#             NonLinearParameter('e1',
-#                                "Complex ellipticity component 1",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_1$"),
-#             NonLinearParameter('r_core',
-#                                "Core radius",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$r_{\rm c}$"),
-#             NonLinearParameter('e2',
-#                                "Complex ellipticity component 2",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_2$"),
-#             NonLinearParameter('center_x',
-#                                "Profile center along x coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$x_0$"),
-#             NonLinearParameter('center_y',
-#                                "Profile center along y coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$y_0$")
-#         )
-#         super().__init__(description, parameters)
+    def __init__(self):
+        description = "Non-singular isothermal sphere"
+        parameters = {
+            'theta_E': NonLinearParameter("Einstein radius",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$\theta_{\rm E}$"),
+            'e1': NonLinearParameter("Complex ellipticity component 1",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_1$"),
+            'r_core': NonLinearParameter("Core radius",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$r_{\rm c}$"),
+            'e2': NonLinearParameter("Complex ellipticity component 2",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_2$"),
+            'center_x': NonLinearParameter("Profile center along x coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$x_0$"),
+            'center_y': NonLinearParameter("Profile center along y coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$y_0$")
+        }
+        super().__init__(description, parameters)
 
 
-# class PEMD(MassProfile):
+class PEMD(MassProfile):
     
-#     def __init__(self):
-#         description = "Powerlaw elliptical mass distribution"
-#         parameters = ParameterList(
-#             NonLinearParameter('gamma',
-#                                "Mass density slope at Einstein radius",
-#                                DefinitionRange(min_value=1.0, max_value=3.0),
-#                                latex_str=r"$\gamma$"),
-#             NonLinearParameter('theta_E',
-#                                "Einstein radius",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$\theta_{\rm E}$"),
-#             NonLinearParameter('e1',
-#                                "Complex ellipticity component 1",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_1$"),
-#             NonLinearParameter('e2',
-#                                "Complex ellipticity component 2",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_2$"),
-#             NonLinearParameter('center_x',
-#                                "Profile center along x coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$x_0$"),
-#             NonLinearParameter('center_y',
-#                                "Profile center along y coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$y_0$")
-#         )
-#         super().__init__(description, parameters)
+    def __init__(self):
+        description = "Powerlaw elliptical mass distribution"
+        parameters = {
+            'gamma': NonLinearParameter("Mass density slope at Einstein radius",
+                               DefinitionRange(min_value=1.0, max_value=3.0),
+                               latex_str=r"$\gamma$"),
+            'theta_E': NonLinearParameter("Einstein radius",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$\theta_{\rm E}$"),
+            'e1': NonLinearParameter("Complex ellipticity component 1",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_1$"),
+            'e2': NonLinearParameter("Complex ellipticity component 2",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_2$"),
+            'center_x': NonLinearParameter("Profile center along x coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$x_0$"),
+            'center_y': NonLinearParameter("Profile center along y coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$y_0$")
+        }
+        super().__init__(description, parameters)
 
 
-# class SPEMD(MassProfile):
+class SPEMD(MassProfile):
     
-#     def __init__(self):
-#         description = "Softened powerlaw elliptical mass distribution"
-#         parameters = ParameterList(
-#             NonLinearParameter('gamma',
-#                                "Mass density slope at Einstein radius",
-#                                DefinitionRange(min_value=1.0, max_value=3.0),
-#                                latex_str=r"$\gamma$"),
-#             NonLinearParameter('theta_E',
-#                                "Einstein radius",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$\theta_{\rm E}$"),
-#             NonLinearParameter('r_core',
-#                                "Core radius",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$r_{\rm c}$"),
-#             NonLinearParameter('e1',
-#                                "Complex ellipticity component 1",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_1$"),
-#             NonLinearParameter('e2',
-#                                "Complex ellipticity component 2",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_2$"),
-#             NonLinearParameter('center_x',
-#                                "Profile center along x coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$x_0$"),
-#             NonLinearParameter('center_y',
-#                                "Profile center along y coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$y_0$")
-#         )
-#         super().__init__(description, parameters)
+    def __init__(self):
+        description = "Softened powerlaw elliptical mass distribution"
+        parameters = {
+            'gamma': NonLinearParameter("Mass density slope at Einstein radius",
+                               DefinitionRange(min_value=1.0, max_value=3.0),
+                               latex_str=r"$\gamma$"),
+            'theta_E': NonLinearParameter("Einstein radius",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$\theta_{\rm E}$"),
+            'r_core': NonLinearParameter("Core radius",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$r_{\rm c}$"),
+            'e1': NonLinearParameter("Complex ellipticity component 1",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_1$"),
+            'e2': NonLinearParameter("Complex ellipticity component 2",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_2$"),
+            'center_x': NonLinearParameter("Profile center along x coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$x_0$"),
+            'center_y': NonLinearParameter("Profile center along y coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$y_0$")
+        }
+        super().__init__(description, parameters)
 
 
-# class NFWElliptical(MassProfile):
+class NFWElliptical(MassProfile):
     
-#     def __init__(self):
-#         description = "NFW with ellipticity introduced in the mass"
-#         parameters = ParameterList(
-#             NonLinearParameter('r_s',
-#                                "Radius at which the mass density profile slope transitions from -1 to -3",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$r_{\rm s}$"),
-#             NonLinearParameter('rho_0',
-#                                "Characteristic mass density",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$\rho_0$"),
-#             NonLinearParameter('e1',
-#                                "Complex ellipticity component 1",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_1$"),
-#             NonLinearParameter('e2',
-#                                "Complex ellipticity component 2",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_2$"),
-#             NonLinearParameter('center_x',
-#                                "Profile center along x coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$x_0$"),
-#             NonLinearParameter('center_y',
-#                                "Profile center along y coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$y_0$")
-#         )
-#         super().__init__(description, parameters)
+    def __init__(self):
+        description = "NFW with ellipticity introduced in the mass"
+        parameters = {
+            'r_s': NonLinearParameter("Radius at which the mass density profile slope transitions from -1 to -3",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$r_{\rm s}$"),
+            'rho_0': NonLinearParameter("Characteristic mass density",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$\rho_0$"),
+            'e1': NonLinearParameter("Complex ellipticity component 1",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_1$"),
+            'e2': NonLinearParameter("Complex ellipticity component 2",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_2$"),
+            'center_x': NonLinearParameter("Profile center along x coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$x_0$"),
+            'center_y': NonLinearParameter("Profile center along y coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$y_0$")
+        }
+        super().__init__(description, parameters)
 
 
-# class Chameleon(MassProfile):
+class Chameleon(MassProfile):
     
-#     def __init__(self):
-#         description = ("Chameleon profile defined as the difference between two NIE profiles"
-#                        " (elliptical truncated double isothermal profile)")
-#         parameters = ParameterList(
-#             NonLinearParameter('alpha_1',
-#                                "Deflection angle at 1 (in coordinates units) from the center",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$\alpha_1$"),
-#             NonLinearParameter('w_c',
-#                                "Core radius of inner NIE",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$w{\rm c}$"),
-#             NonLinearParameter('w_t',
-#                                "Core radius of outer NIE",
-#                                DefinitionRange(min_value=0.0),
-#                                latex_str=r"$w{\rm t}$"),
-#             NonLinearParameter('e1',
-#                                "Complex ellipticity component 1",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_1$"),
-#             NonLinearParameter('e2',
-#                                "Complex ellipticity component 2",
-#                                DefinitionRange(min_value=-1.0, max_value=1.0),
-#                                latex_str=r"$e_2$"),
-#             NonLinearParameter('center_x',
-#                                "Profile center along x coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$x_0$"),
-#             NonLinearParameter('center_y',
-#                                "Profile center along y coordinates",
-#                                DefinitionRange(),
-#                                latex_str=r"$y_0$")
-#         )
-#         super().__init__(description, parameters)
+    def __init__(self):
+        description = ("Chameleon profile defined as the difference between two NIE profiles"
+                       " (elliptical truncated double isothermal profile)")
+        parameters = {
+            'alpha_1': NonLinearParameter("Deflection angle at 1 (in coordinates units) from the center",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$\alpha_1$"),
+            'w_c': NonLinearParameter("Core radius of inner NIE",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$w{\rm c}$"),
+            'w_t': NonLinearParameter("Core radius of outer NIE",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$w{\rm t}$"),
+            'e1': NonLinearParameter("Complex ellipticity component 1",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_1$"),
+            'e2': NonLinearParameter("Complex ellipticity component 2",
+                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               latex_str=r"$e_2$"),
+            'center_x': NonLinearParameter("Profile center along x coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$x_0$"),
+            'center_y': NonLinearParameter("Profile center along y coordinates",
+                               DefinitionRange(),
+                               latex_str=r"$y_0$")
+        }
+        super().__init__(description, parameters)
 
 
 class ExternalShearEllipticity(MassProfile):
@@ -264,28 +232,25 @@ class ExternalShearAngleStrength(MassProfile):
         super().__init__(description, parameters)
 
 
-# class PixelatedPotential(MassProfile):
+class PixelatedPotential(MassProfile):
     
-#     def __init__(self):
-#         description = "Pixelated lensing potential on a pixel grid"
-#         parameters = ParameterList(
-#             PixelParameterSet('pixels',
-#                                "Set of pixel values",
-#                                DefinitionRange(),
-#                                latex_str=r"{\rm pixels}"),
-#         )
-#         super().__init__(description, parameters)
+    def __init__(self):
+        description = "Pixelated lensing potential on a pixel grid"
+        parameters = {
+            'pixels': PixelParameterSet("Set of pixel values",
+                               DefinitionRange(),
+                               latex_str=r"{\rm pixels}"),
+        }
+        super().__init__(description, parameters)
 
 
-# class PixelatedConvergence(MassProfile):
+class PixelatedConvergence(MassProfile):
     
-#     def __init__(self):
-#         description = "Pixelated convergence on a pixel grid"
-#         parameters = ParameterList(
-#             PixelParameterSet(num_pixels,
-#                                'pixels',
-#                                "Set of pixel values",
-#                                DefinitionRange(),
-#                                latex_str=r"{\rm pixels}"),
-#         )
-#         super().__init__(description, parameters)
+    def __init__(self):
+        description = "Pixelated convergence on a pixel grid"
+        parameters = {
+            'pixels': PixelParameterSet("Set of pixel values",
+                               DefinitionRange(),
+                               latex_str=r"{\rm pixels}"),
+        }
+        super().__init__(description, parameters)

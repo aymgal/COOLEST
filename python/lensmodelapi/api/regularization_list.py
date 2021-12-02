@@ -21,7 +21,7 @@ class RegularizationList(list):
         profiles = []
         for name, profile in regularization_profile_pairs:
             if name not in regularization_module.SUPPORTED_CHOICES:
-                raise ValueError(f"Regularization '{name}' of type '{self._type}' is not supported.")
+                raise ValueError(f"Regularization '{name}' is not supported.")
             profile_class = getattr(regularization_module, name)
             profiles.append(profile_class(applied_to_profile_id=profile.id))
         list.__init__(self, profiles)
@@ -29,8 +29,8 @@ class RegularizationList(list):
 
     def _create_all_ids(self):
         for j, regularization in enumerate(self):
-            regularization_id = util.regul_to_id(regularization.type, j)
+            regularization_id = util.regul_to_id(regularization.name, j)
             regularization.id = regularization_id
-            for parameter in regularization.parameters:
-                param_id = f'{regularization.id}_{parameter.name}'
+            for name, parameter in regularization.parameters.items():
+                param_id = f'{regularization.id}_{name}'
                 parameter.id = param_id

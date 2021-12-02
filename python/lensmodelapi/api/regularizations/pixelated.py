@@ -28,7 +28,7 @@ class PixelEntropy(Regularization):
         parameters = {
             'lambda': HyperParameter("Lagrange parameter for entropy regularization",
                                      DefinitionRange(min_value=0.0),
-                                     latex_name=r"$\lambda_{\rm e}$"),
+                                     latex_str=r"$\lambda_{\rm e}$"),
             }
         super().__init__(description, parameters, **kwargs)
 
@@ -40,7 +40,7 @@ class PixelRidge(Regularization):
         parameters = {
             'lambda': HyperParameter("Lagrange parameter for Ridge norm regularization",
                                      DefinitionRange(min_value=0.0),
-                                     latex_name=r"$\lambda_{\rm ridge}$"),
+                                     latex_str=r"$\lambda_{\rm ridge}$"),
         }
         super().__init__(description, parameters, **kwargs)
 
@@ -52,7 +52,7 @@ class PixelLasso(Regularization):
         parameters = {
             'lambda': HyperParameter("Lagrange parameter for Lasso norm regularization",
                                      DefinitionRange(min_value=0.0),
-                                     latex_name=r"$\lambda_{\rm lasso}$"),
+                                     latex_str=r"$\lambda_{\rm lasso}$"),
         }
         super().__init__(description, parameters, **kwargs)
 
@@ -64,7 +64,7 @@ class PixelGradient(Regularization):
         parameters = {
             'lambda': HyperParameter("Lagrange parameter for gradient regularization",
                            DefinitionRange(min_value=0.0),
-                           latex_name=r"$\lambda_{\rm grad}$"),
+                           latex_str=r"$\lambda_{\rm grad}$"),
         }
         super().__init__(description, parameters, **kwargs)
 
@@ -76,7 +76,7 @@ class PixelCurvature(Regularization):
         parameters = {
             'lambda': HyperParameter("Lagrange parameter for curvature regularization",
                            DefinitionRange(min_value=0.0),
-                           latex_name=r"$\lambda_{\rm curv}$"),
+                           latex_str=r"$\lambda_{\rm curv}$"),
         }
         super().__init__(description, parameters, **kwargs)
 
@@ -88,7 +88,7 @@ class PixelExponentialKernel(Regularization):
         parameters = {
             'lambda': HyperParameter("Lagrange parameter for exponential kernel regularization",
                            DefinitionRange(min_value=0.0),
-                           latex_name=r"$\lambda_{\rm exp}$"),
+                           latex_str=r"$\lambda_{\rm exp}$"),
         }
         super().__init__(description, parameters, **kwargs)
 
@@ -100,7 +100,7 @@ class PixelGaussianKernel(Regularization):
         parameters = {
             'lambda': HyperParameter("Lagrange parameter for gaussian kernel regularization",
                            DefinitionRange(min_value=0.0),
-                           latex_name=r"$\lambda_{\rm gauss}$"),
+                           latex_str=r"$\lambda_{\rm gauss}$"),
         }
         super().__init__(description, parameters, **kwargs)
 
@@ -112,10 +112,10 @@ class PixelStarlet(Regularization):
         parameters = {
             'lambda_hf': HyperParameter("Lagrange parameter for first starlet scale (high frequencies)",
                            DefinitionRange(min_value=0.0),
-                           latex_name=r"$\lambda_{\rm s, hf}$"),
+                           latex_str=r"$\lambda_{\rm s, hf}$"),
             'lambda': HyperParameter("Lagrange parameter from second to last starlet scales (excluding coarse scale)",
                            DefinitionRange(min_value=0.0),
-                           latex_name=r"$\lambda_{\rm s}$"),
+                           latex_str=r"$\lambda_{\rm s}$"),
         }
         super().__init__(description, parameters, **kwargs)
 
@@ -127,7 +127,7 @@ class PixelBLWavelet(Regularization):
         parameters = {
             'lambda_hf': HyperParameter("Lagrange parameter for first Battle-Lemarie scale (high frequencies)",
                            DefinitionRange(min_value=0.0),
-                           latex_name=r"$\lambda_{\rm BL, hf}$"),
+                           latex_str=r"$\lambda_{\rm BL, hf}$"),
         }
         super().__init__(description, parameters, **kwargs)
 
@@ -138,7 +138,7 @@ class PixelPositivity(Regularization):
         parameters = {
             'lambda': HyperParameter("Lagrange parameter",
                            DefinitionRange(min_value=0.0),
-                           latex_name=r"$\lambda_{\rm pos}$"),
+                           latex_str=r"$\lambda_{\rm pos}$"),
         }
         super().__init__(description, parameters, **kwargs)
 
@@ -150,6 +150,6 @@ class DefaultForPixelated(Regularization):
         parameters = {
             'lambda': HyperParameter("Lagrange parameter",
                            DefinitionRange(min_value=0.0),
-                           latex_name=r"$\lambda$"),
+                           latex_str=r"$\lambda$"),
         }
         super().__init__(description, parameters, **kwargs)
