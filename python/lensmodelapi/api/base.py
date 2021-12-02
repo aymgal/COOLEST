@@ -14,8 +14,9 @@ class APIBaseObject(object):
     """Base class for all API objects"""
 
     def __init__(self):
-        self.type, self._api_inheritance = get_class_names(self)
-
+        #self.type, self._api_inheritance = get_class_names(self)
+        pass
+        
     def to_JSON(self, indent=2):
         return json.dumps(self, default=lambda o: o.__dict__, 
                           sort_keys=True, indent=indent)

@@ -31,7 +31,7 @@ class GalaxyList(list, APIBaseObject):
         for i, galaxy in enumerate(self):
             for model_type in ['light', 'mass']:
                 for j, profile in enumerate(getattr(galaxy, f'{model_type}_model').profiles):
-                    profile_id = util.profile_to_id(model_type, profile.type, j, i)
+                    profile_id = util.profile_to_id(model_type, profile.name, j, i)
                     profile.id = profile_id
                     for param_name, parameter in profile.parameters.items():
                         param_id = f'{profile.id}_{param_name}'

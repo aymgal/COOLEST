@@ -12,6 +12,7 @@ class Regularization(APIBaseObject):
                  description: str, 
                  parameters: Dict[str, Parameter],
                  applied_to_profile_id: str = None) -> None:
+        self.name = self.__class__.__name__  # name of children class
         self.description = description
         self.parameters = parameters
         self.applied_to_profile_id = applied_to_profile_id

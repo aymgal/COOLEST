@@ -28,6 +28,7 @@ class Prior(APIBaseObject):
         self.prior_type = prior_type
         for key, value in kwargs.items():
             setattr(self, key, value)
+        super().__init__()
 
 
 class GaussianPrior(Prior):

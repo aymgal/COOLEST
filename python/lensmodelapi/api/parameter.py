@@ -37,7 +37,7 @@ class Parameter(APIBaseObject):
                  units: str = None,
                  fixed: bool = False,
                  initial_estimate: PointEstimate = None,
-                 posterior: PosteriorStatistics = None,
+                 posterior_stats: PosteriorStatistics = None,
                  prior: Prior = None,
                  latex_str: str = None) -> None:
         self.description = description
@@ -49,9 +49,9 @@ class Parameter(APIBaseObject):
         else:
             self.initial_estimate = initial_estimate
         self.point_estimate = PointEstimate(value=self.initial_estimate.value)
-        if posterior is None:
-            posterior = PosteriorStatistics()
-        self.posterior = posterior
+        if posterior_stats is None:
+            posterior_stats = PosteriorStatistics()
+        self.posterior_stats = posterior_stats
         if prior is None:
             prior = Prior()
         self.prior = prior
@@ -78,13 +78,13 @@ class Parameter(APIBaseObject):
     def remove_point_estimate(self):
         self.point_estimate = PointEstimate()
 
-    def set_posterior(self, posterior):
-        if not isinstance(posterior, PosteriorStatistics):
+    def set_posterior(self, posterior_stats):
+        if not isinstance(posterior_stats, PosteriorStatistics):
             raise ValueError("Parameter prior must be a PosteriorStatistics instance.")
-        self.posterior = posterior
+        self.posterior_stats = posterior_stats
 
     def remove_posterior(self):
-        self.posterior = PosteriorStatistics()
+        self.posterior_stats = PosteriorStatistics()
 
     def set_prior(self, prior):
         if not isinstance(prior, Prior):
