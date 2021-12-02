@@ -4,7 +4,7 @@
 
 from lensmodelapi.lazy import *
 from lensmodelapi import info
-from lensmodelapi.io import APIHierarchy
+from lensmodelapi.io import APISerializer
 
 from pprint import pprint
 
@@ -41,7 +41,7 @@ cosmology = Cosmology(H0=73.0, Om0=0.3)
 
 # Create a couple of source galaxies at different redshifts
 source_1 = Galaxy('a source galaxy', 2.0,
-                  light_model=LightModel('SersicElliptical'))
+                  light_model=LightModel('Sersic'))
 
 source_2 = Galaxy('another source', 1.5,
                   light_model=LightModel('PixelatedRegularGrid'))
@@ -51,7 +51,7 @@ source_3 = Galaxy('a GLEE source', 1.2,
 
 # Create a lens galaxy
 lens_1 = Galaxy('a lens galaxy', 0.5,
-                light_model=LightModel('SersicElliptical', 'SersicElliptical'),
+                light_model=LightModel('Sersic', 'Sersic'),
                 mass_model=MassModel('PEMD', 'PixelatedPotential'))
 
 # Put them in a list, which will also create unique IDs for each profile
@@ -82,7 +82,7 @@ lens_1.light_model.profiles[1].parameters['e1'].set_point_estimate(PointEstimate
 # - add a posterior distribution (as 0th and 1st order statistics)
 from lensmodelapi.api.probabilities import PosteriorStatistics
 source_1.light_model.profiles[0].parameters['R_sersic'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
-                                                                                          quantile_16=0.03, quantile_84=0.05))
+                                                                                          percentile_16th=0.03, percentile_84th=0.05))
 
 # Define the LensModel that merges physical objects (galaxies), 
 # regularization strategies and a choice of coordinate system
@@ -121,7 +121,7 @@ print("#"*30 + " serialization " + "#"*30)
 # print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
 
 # TESTS WITH YAML
-encoder_yaml = APIHierarchy('api_input_file_YAML', obj=lens_universe, indent=2)
+encoder_yaml = APISerializer('api_input_file_YAML', obj=lens_universe, indent=2)
 encoder_yaml.yaml_dump()
 encoder_yaml.dump_yaml_to_json()
 # test construct class from YAML
@@ -131,8 +131,9 @@ print("Retrieved object is a LensUniverse instance?",
 print("First lens in the sample:", lens_universe_2.lens_sample[0].name)
 
 # TESTS WITH JSON
-encoder_json = APIHierarchy('api_input_file_JSON', obj=lens_universe, indent=2)
+encoder_json = APISerializer('api_input_file_JSON', obj=lens_universe, indent=2)
 encoder_json.json_dump()
+encoder_json.json_dump_simple()
 lens_universe_3 = encoder_json.json_load()
 print("Retrieved object is a LensUniverse instance?", 
       isinstance(lens_universe_3, LensUniverse))
