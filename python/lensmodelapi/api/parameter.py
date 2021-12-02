@@ -97,7 +97,7 @@ class Parameter(APIBaseObject):
         self.prior = Prior()
 
     def fix(self):
-        if self.elf.point_estimate.value is None:
+        if self.point_estimate.value is None:
             raise ValueError(f"Cannot fix parameter {self.name} as no value has been set.")
         self.fixed = True
 
