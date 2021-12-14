@@ -64,14 +64,17 @@ class Parameter(APIBaseObject):
     def set_point_estimate(self, point_estimate):
         if isinstance(point_estimate, (float, int)):
             point_estimate = PointEstimate(value=float(point_estimate))
+        elif isinstance(point_estimate, (list, np.ndarray)):
+            point_estimate = PointEstimate(value=np.asarray(point_estimate))
         elif not isinstance(point_estimate, PointEstimate):
             raise ValueError("Parameter prior must be either a PointEstimate instance "
-                             "or a single number (float or int).")
-        if (self.definition_range.min_value is not None 
-            and point_estimate.value < self.definition_range.min_value):
+                             "or a single number (float or int) or an array (list or ndarray).")
+        val = point_estimate.value
+        min_val = self.definition_range.min_value
+        max_val = self.definition_range.max_value
+        if min_val is not None and np.any(np.asarray(val) < np.asarray(min_val)):
             raise ValueError(f"Value cannot be smaller than {self.definition_range.min_value}.")
-        if (self.definition_range.max_value is not None 
-            and point_estimate.value > self.definition_range.max_value):
+        if max_val is not None and np.any(np.asarray(val) > np.asarray(max_val)):
             raise ValueError(f"Value cannot be larger than {self.definition_range.max_value}.")
         self.point_estimate = point_estimate
 
