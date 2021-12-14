@@ -97,7 +97,7 @@ class Shapelets(LightProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$"),
             'amps': LinearParameterSet("Set of amplitude values for each shapelet function",
-                               DefinitionRange(min_value=0.0),
+                               DefinitionRange(),
                                latex_str=r"$A$"),
         }
         super().__init__(description, parameters)
