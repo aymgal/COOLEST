@@ -5,6 +5,8 @@ from typing import List
 from lensmodelapi.api.base import APIBaseObject
 from lensmodelapi.api.probabilities import Prior, PosteriorStatistics
 
+import numpy as np
+
 
 __all__ = [
     'Parameter',
