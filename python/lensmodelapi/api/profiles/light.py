@@ -4,6 +4,7 @@ from lensmodelapi.api.profile import LightProfile
 from lensmodelapi.api.parameter import (NonLinearParameter, 
                                         LinearParameter, 
                                         LinearParameterSet, 
+                                        NonLinearParameterSet, 
                                         PixelParameterSet)
 from lensmodelapi.api.parameter import DefinitionRange
 
@@ -13,6 +14,7 @@ __all__ = [
     'Chameleon',
     'Uniform',
     'Shapelets',
+    'LensedPS',
     'PixelatedRegularGrid',
     'PixelatedAdaptiveGrid',
 ]
@@ -98,6 +100,21 @@ class Shapelets(LightProfile):
                                latex_str=r"$y_0$"),
             'amps': LinearParameterSet("Set of amplitude values for each shapelet function",
                                DefinitionRange(),
+                               latex_str=r"$A$"),
+        }
+        super().__init__(description, parameters)
+class LensedPS(LightProfile):
+    def __init__(self):
+        description = "Set of lensed point sources"
+        parameters = {
+            'ra_list': NonLinearParameterSet("RA positions of the lensed point sources",
+                               DefinitionRange(),
+                               latex_str=r"$ra$"),
+            'dec_list': NonLinearParameterSet("DEC positions of the lensed point sources",
+                               DefinitionRange(),
+                               latex_str=r"$dec$"),
+            'amps': LinearParameterSet("Set of amplitude values for the lensed point sources",
+                               DefinitionRange(min_value=0.0),
                                latex_str=r"$A$"),
         }
         super().__init__(description, parameters)
