@@ -14,6 +14,7 @@ __all__ = [
     'LinearParameter', 
     'HyperParameter',
     'LinearParameterSet',
+    'NonLinearParameterSet',
     'PixelParameterSet',
 ]
 
@@ -140,6 +141,12 @@ class ParameterSet(Parameter):
 
 
 class LinearParameterSet(ParameterSet):
+    """Typically for pixelated profiles"""
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        
+class NonLinearParameterSet(ParameterSet):
     """Typically for pixelated profiles"""
 
     def __init__(self, *args, **kwargs) -> None:
