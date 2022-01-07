@@ -147,7 +147,7 @@ class LinearParameterSet(ParameterSet):
         super().__init__(*args, **kwargs)
         
 class NonLinearParameterSet(ParameterSet):
-    """Typically for pixelated profiles"""
+    """Typically for position of point sources"""
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
