@@ -5,6 +5,8 @@ from typing import List
 from lensmodelapi.api.base import APIBaseObject
 from lensmodelapi.api.probabilities import Prior, PosteriorStatistics
 
+import numpy as np
+
 
 __all__ = [
     'Parameter',
@@ -12,6 +14,7 @@ __all__ = [
     'LinearParameter', 
     'HyperParameter',
     'LinearParameterSet',
+    'NonLinearParameterSet',
     'PixelParameterSet',
 ]
 
@@ -139,6 +142,12 @@ class ParameterSet(Parameter):
 
 class LinearParameterSet(ParameterSet):
     """Typically for pixelated profiles"""
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        
+class NonLinearParameterSet(ParameterSet):
+    """Typically for position of point sources"""
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
