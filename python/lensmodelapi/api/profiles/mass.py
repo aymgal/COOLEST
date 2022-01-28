@@ -12,8 +12,7 @@ __all__ = [
     'SPEMD',
     'NFWElliptical',
     'Chameleon',
-    'ExternalShearEllipticity', 
-    'ExternalShearAngleStrength',
+    'ExternalShear', 
     'PixelatedPotential',
     'PixelatedConvergence',
 ]
@@ -186,33 +185,10 @@ class Chameleon(MassProfile):
         super().__init__(description, parameters)
 
 
-class ExternalShearEllipticity(MassProfile):
+class ExternalShear(MassProfile):
     
     def __init__(self):
-        description = "External shear defined with ellipticity"
-        parameters = {
-            'gamma1': NonLinearParameter("Complex ellipticity component 1",
-                               DefinitionRange(min_value=-1.0, max_value=1.0),
-                               latex_str=r"$\gamma_1$"),
-            'gamma2': NonLinearParameter("Complex ellipticity component 2",
-                               DefinitionRange(min_value=-1.0, max_value=1.0),
-                               latex_str=r"$\gamma_2$"),
-            'center_x': NonLinearParameter("Shear origin along x coordinates",
-                               DefinitionRange(),
-                               fixed=True,
-                               latex_str=r"$x_0$"),
-            'center_y': NonLinearParameter("Shear origin along y coordinates",
-                               DefinitionRange(),
-                               fixed=True,
-                               latex_str=r"$y_0$")
-        }
-        super().__init__(description, parameters)
-
-
-class ExternalShearAngleStrength(MassProfile):
-    
-    def __init__(self):
-        description = "External shear defined with ellipticity"
+        description = "External shear defined with a strength and orientation"
         parameters = {
             'gamma_ext': NonLinearParameter("Strength of external shear",
                                DefinitionRange(min_value=-1.0, max_value=1.0),
