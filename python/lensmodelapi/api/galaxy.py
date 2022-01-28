@@ -12,7 +12,7 @@ class Galaxy(APIBaseObject):
                  light_model: LightModel = None,
                  mass_model: MassModel = None) -> None:
         self.name = name
-        if redshift < 0:
+        if redshift is not None and redshift < 0:
             raise ValueError("Redshift cannot be negative.")
         self.redshift = redshift
         if light_model is None:
