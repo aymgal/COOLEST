@@ -194,7 +194,7 @@ class ExternalShear(MassProfile):
                                DefinitionRange(min_value=-1.0, max_value=1.0),
                                latex_str=r"$\gamma_{\rm ext}$"),
             'phi_ext': NonLinearParameter("Orientation of external shear",
-                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               DefinitionRange(min_value=-90., max_value=90.),
                                latex_str=r"$\phi_{\rm ext}$"),
             'center_x': NonLinearParameter("Shear origin along x coordinates",
                                DefinitionRange(),
