@@ -191,7 +191,7 @@ class ExternalShear(MassProfile):
         description = "External shear defined with a strength and orientation"
         parameters = {
             'gamma_ext': NonLinearParameter("Strength of external shear",
-                               DefinitionRange(min_value=-1.0, max_value=1.0),
+                               DefinitionRange(min_value=0., max_value=1.0),
                                latex_str=r"$\gamma_{\rm ext}$"),
             'phi_ext': NonLinearParameter("Orientation of external shear",
                                DefinitionRange(min_value=-90., max_value=90.),
