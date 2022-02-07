@@ -8,11 +8,24 @@ The first implementation takes the form of collection of Python classes, organis
 ## Adopted conventions
 
 Within this framework, the following conventions are fixed and must be adopted when filling template files:
-- **coordinates origin**: center of the imaging data cutout
-- **coordinates orientation**: RA increasing along x direction, Dec increasing along y direction
-- **position**: East-of-North
-- **external shear**: strength and position angle
-- **radii**: intermediate-axis (applies to e.g. Einstein radii, half-ligh radii, etc.)
+
+- **coordinates**:
+    - the field-of-view (i.e. min/max values in each direction) is defined from pixel centers
+    - origin at center of the imaging data cutout
+    - RA increasing along x direction
+    - Dec increasing along y direction
+    - units: arcseconds
+
+- **position angles**:
+    - East-of-North
+    - units: degrees
+
+- **external shear**:
+    - defined by strength and position angle
+
+- **radii** (e.g. Einstein radii, half-ligh radii, etc.):
+    - intermediate-axis
+    - units: arcseconds
 
 
 ## Current hierarchy

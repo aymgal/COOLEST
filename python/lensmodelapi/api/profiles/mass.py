@@ -196,14 +196,6 @@ class ExternalShear(MassProfile):
             'phi_ext': NonLinearParameter("Orientation of external shear",
                                DefinitionRange(min_value=-90., max_value=90.),
                                latex_str=r"$\phi_{\rm ext}$"),
-            'center_x': NonLinearParameter("Shear origin along x coordinates",
-                               DefinitionRange(),
-                               fixed=True,
-                               latex_str=r"$x_0$"),
-            'center_y': NonLinearParameter("Shear origin along y coordinates",
-                               DefinitionRange(),
-                               fixed=True,
-                               latex_str=r"$y_0$")
         }
         super().__init__(description, parameters)
 
