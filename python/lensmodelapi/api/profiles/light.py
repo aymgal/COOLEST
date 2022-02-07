@@ -35,12 +35,12 @@ class Sersic(LightProfile):
             'n_sersic': NonLinearParameter("Sersic index",
                                DefinitionRange(min_value=0.5, max_value=10.0),
                                latex_str=r"$n_{\rm Sersic}$"),
-            'e1': NonLinearParameter("Complex ellipticity component 1",
-                               DefinitionRange(min_value=-1.0, max_value=1.0),
-                               latex_str=r"$e_1$"),
-            'e2': NonLinearParameter("Complex ellipticity component 2",
-                               DefinitionRange(min_value=-1.0, max_value=1.0),
-                               latex_str=r"$e_2$"),
+            'q': NonLinearParameter("Axis ratio, semi-minor axis / semi-major axis",
+                                     DefinitionRange(min_value=0.0, max_value=1.0),
+                                     latex_str=r"$e_1$"),
+            'phi': NonLinearParameter("Position angle",
+                                     DefinitionRange(min_value=-90., max_value=90.),
+                                     latex_str=r"$e_2$"),
             'center_x': NonLinearParameter("Profile center along x coordinates",
                                DefinitionRange(),
                                latex_str=r"$x_0$"),
@@ -66,12 +66,12 @@ class Chameleon(LightProfile):
             'w_t': NonLinearParameter("Core radius of outer NIE",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$w{\rm t}$"),
-            'e1': NonLinearParameter("Complex ellipticity component 1",
-                               DefinitionRange(min_value=-1.0, max_value=1.0),
-                               latex_str=r"$e_1$"),
-            'e2': NonLinearParameter("Complex ellipticity component 2",
-                               DefinitionRange(min_value=-1.0, max_value=1.0),
-                               latex_str=r"$e_2$"),
+            'q': NonLinearParameter("Axis ratio, semi-minor axis / semi-major axis",
+                                     DefinitionRange(min_value=0.0, max_value=1.0),
+                                     latex_str=r"$e_1$"),
+            'phi': NonLinearParameter("Position angle",
+                                     DefinitionRange(min_value=-90., max_value=90.),
+                                     latex_str=r"$e_2$"),
             'center_x': NonLinearParameter("Profile center along x coordinates",
                                DefinitionRange(),
                                latex_str=r"$x_0$"),
@@ -103,6 +103,8 @@ class Shapelets(LightProfile):
                                latex_str=r"$A$"),
         }
         super().__init__(description, parameters)
+
+        
 class LensedPS(LightProfile):
     def __init__(self):
         description = "Set of lensed point sources"
