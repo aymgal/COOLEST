@@ -7,7 +7,7 @@ from lensmodelapi.api.galaxy_list import GalaxyList
 from lensmodelapi.api.external_shear import ExternalShear
 from lensmodelapi.api.regularization_list import RegularizationList
 from lensmodelapi.api.likelihood_list import LikelihoodList
-from lensmodelapi.api.coordinates import Coordinates
+from lensmodelapi.api.cosmology import Cosmology
 
 
 class LensModel(APIBaseObject):
@@ -16,11 +16,13 @@ class LensModel(APIBaseObject):
                  galaxies: GalaxyList,
                  likelihoods: LikelihoodList = None,
                  external_shear: ExternalShear = None,
-                 regularizations: RegularizationList = None) -> None:
+                 regularizations: RegularizationList = None,
+                 cosmology: Cosmology = None) -> None:
         self.galaxies = galaxies
         if likelihoods is None:
             likelihoods = LikelihoodList('imaging_data')
         self.likelihoods = likelihoods
         self.external_shear = external_shear
         self.regularizations = regularizations
+        self.cosmology = cosmology
         super().__init__()

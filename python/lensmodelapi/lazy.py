@@ -11,4 +11,3 @@ from lensmodelapi.api.likelihood_list import LikelihoodList
 from lensmodelapi.api.lens_model import LensModel
 from lensmodelapi.api.lens_object import LensObject
 from lensmodelapi.api.lens_sample import LensSample
-from lensmodelapi.api.lens_universe import LensUniverse

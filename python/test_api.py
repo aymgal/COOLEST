@@ -59,7 +59,7 @@ galaxy_list = GalaxyList(lens_1, source_1, source_2, source_3)
 
 # Defines the external shear
 ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
-                          mass_model=MassModel('ExternalShearEllipticity'))
+                          mass_model=MassModel('ExternalShear'))
 
 # Define regularization strategies and link them to a given profile
 regularization_list = RegularizationList(('PixelStarlet', source_2.light_model.profiles[0]),
@@ -77,7 +77,7 @@ lens_1.mass_model.profiles[0].parameters['gamma'].set_prior(GaussianPrior(mean=2
 
 # - add a point estimate to a given parameter
 from lensmodelapi.api.parameter import PointEstimate
-lens_1.light_model.profiles[1].parameters['e1'].set_point_estimate(PointEstimate(value=0.34))
+lens_1.light_model.profiles[1].parameters['q'].set_point_estimate(PointEstimate(value=0.89))
 
 # - add a posterior distribution (as 0th and 1st order statistics)
 from lensmodelapi.api.probabilities import PosteriorStatistics
@@ -89,7 +89,8 @@ source_1.light_model.profiles[0].parameters['R_sersic'].set_posterior(PosteriorS
 lens_model = LensModel(galaxy_list,
                        external_shear=ext_shear,
                        regularizations=regularization_list,
-                       likelihoods=likelihood_list)
+                       likelihoods=likelihood_list,
+                       cosmology=cosmology)
 
 # Assign the list of galaxies to a LensObject
 # along with the coordinate system and (optinonally) the observation
@@ -107,8 +108,7 @@ lens_object_1 = LensObject('My Favorite Lens ever',
 lens_sample = LensSample(lens_object_1)  # , lens_object_2, lens_object_3, ...
 
 # Wrap up a list of objects (here, only one) and a cosmology into a LensUniverse master object
-lens_universe = LensUniverse(cosmology, lens_sample)
-print("FINAL LENS UNIVERSE OBJECT\n", lens_universe.__dict__, '\n')
+print("FINAL OBJECT\n", lens_sample.__dict__, '\n')
 
 # print supported profiles so far
 print("Supported choices:")
@@ -121,21 +121,21 @@ print("#"*30 + " serialization " + "#"*30)
 # print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
 
 # TESTS WITH YAML
-encoder_yaml = APISerializer('api_input_file_YAML', obj=lens_universe, indent=2)
+encoder_yaml = APISerializer('api_input_file_YAML', obj=lens_sample, indent=2)
 encoder_yaml.yaml_dump()
 encoder_yaml.dump_yaml_to_json()
 # test construct class from YAML
-lens_universe_2 = encoder_yaml.yaml_load()
+lens_sample_2 = encoder_yaml.yaml_load()
 print("Retrieved object is a LensUniverse instance?", 
-      isinstance(lens_universe_2, LensUniverse))
-print("First lens in the sample:", lens_universe_2.lens_sample[0].name)
+      isinstance(lens_sample_2, LensUniverse))
+print("First lens in the sample:", lens_sample[0].name)
 
 # TESTS WITH JSON
-encoder_json = APISerializer('api_input_file_JSON', obj=lens_universe, indent=2)
+encoder_json = APISerializer('api_input_file_JSON', obj=lens_sample, indent=2)
 encoder_json.json_dump()
 encoder_json.json_dump_simple()
-lens_universe_3 = encoder_json.json_load()
+lens_sample_3 = encoder_json.json_load()
 print("Retrieved object is a LensUniverse instance?", 
-      isinstance(lens_universe_3, LensUniverse))
-print("First lens in the sample:", lens_universe_3.lens_sample[0].name)
+      isinstance(lens_sample_3, LensUniverse))
+print("First lens in the sample:", lens_sample[0].name)
 
