@@ -16,11 +16,11 @@ class APISerializer(object):
         # to distinguish files that can be converted back to the python API
         self._api_suffix = '_pyAPI'
 
-    def json_dump_simple(self):
+    def json_dump_simple(self, exclude_keys=None):
         json_path = self.path + '.json'
         result = jsonpickle.encode(self.obj, indent=self.indent)
         with open(json_path, 'w') as f:
-            f.write(self.obj.to_JSON(indent=self.indent))
+            f.write(self.obj.to_JSON(indent=self.indent, exclude_keys=exclude_keys))
         return result
 
     def json_dump(self):
