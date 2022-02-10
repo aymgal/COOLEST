@@ -1,49 +1,168 @@
-{
-  "cosmology": {
-    "H0": 73.0,
-    "Om0": 0.3,
-    "astropy_name": "FlatLambdaCDM"
-  },
-  "lens_sample": [
-    {
-      "data": {
-        "arc_mask": {
-          "fits_path": "arc_mask.fits",
-          "num_pix_dec": 110,
-          "num_pix_ra": 110
-        },
-        "image": {
-          "fits_path": "test_image.fits",
-          "num_pix_dec": 100,
-          "num_pix_ra": 100
-        },
-        "likelihood_mask": null,
-        "magnification_ratios": null,
-        "noise_map": null,
-        "time_delays": [
-          10.0,
-          20.0,
-          40.0
-        ],
-        "wht_map": null
+[
+  {
+    "data": {
+      "arc_mask": {
+        "fits_path": "arc_mask.fits",
+        "num_pix_dec": 110,
+        "num_pix_ra": 110
       },
-      "instrument": {
-        "external_shear": {
-          "mass_model": {
+      "image": {
+        "fits_path": "test_image.fits",
+        "num_pix_dec": 100,
+        "num_pix_ra": 100
+      },
+      "likelihood_mask": null,
+      "magnification_ratios": null,
+      "noise_map": null,
+      "time_delays": [
+        10.0,
+        20.0,
+        40.0
+      ],
+      "wht_map": null
+    },
+    "instrument": {
+      "cosmology": {
+        "H0": 73.0,
+        "Om0": 0.3,
+        "astropy_name": "FlatLambdaCDM"
+      },
+      "external_shear": {
+        "mass_model": {
+          "profiles": [
+            {
+              "description": "External shear defined with a strength and orientation",
+              "id": "extshear_model-ExternalShear_0",
+              "name": "ExternalShear",
+              "parameters": {
+                "gamma_ext": {
+                  "definition_range": {
+                    "max_value": 1.0,
+                    "min_value": 0.0
+                  },
+                  "description": "Strength of external shear",
+                  "fixed": false,
+                  "id": "extshear_model-ExternalShear_0-gamma_ext",
+                  "initial_estimate": {
+                    "value": null
+                  },
+                  "latex_str": "$\\gamma_{\\rm ext}$",
+                  "point_estimate": {
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "type": null
+                  },
+                  "units": null
+                },
+                "phi_ext": {
+                  "definition_range": {
+                    "max_value": 90.0,
+                    "min_value": -90.0
+                  },
+                  "description": "Orientation of external shear",
+                  "fixed": false,
+                  "id": "extshear_model-ExternalShear_0-phi_ext",
+                  "initial_estimate": {
+                    "value": null
+                  },
+                  "latex_str": "$\\phi_{\\rm ext}$",
+                  "point_estimate": {
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "type": null
+                  },
+                  "units": null
+                }
+              }
+            }
+          ]
+        },
+        "name": "my lovely external shear",
+        "redshift": 0.5
+      },
+      "galaxies": [
+        {
+          "light_model": {
             "profiles": [
               {
-                "description": "External shear defined with ellipticity",
-                "id": "extshear_model-ExternalShearEllipticity_0",
-                "name": "ExternalShearEllipticity",
+                "description": "Elliptical Sersic",
+                "id": "galaxy_0-light_model-Sersic_0",
+                "name": "Sersic",
                 "parameters": {
+                  "A": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": 0.0
+                    },
+                    "description": "Amplitude at origin",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_0-A",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$A$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "R_sersic": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": 0.0
+                    },
+                    "description": "Sersic radius",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_0-R_sersic",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$R_{\\rm Sersic}$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
                   "center_x": {
                     "definition_range": {
                       "max_value": null,
                       "min_value": null
                     },
-                    "description": "Shear origin along x coordinates",
-                    "fixed": true,
-                    "id": "extshear_model-ExternalShearEllipticity_0-center_x",
+                    "description": "Profile center along x coordinates",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_0-center_x",
                     "initial_estimate": {
                       "value": null
                     },
@@ -67,9 +186,9 @@
                       "max_value": null,
                       "min_value": null
                     },
-                    "description": "Shear origin along y coordinates",
-                    "fixed": true,
-                    "id": "extshear_model-ExternalShearEllipticity_0-center_y",
+                    "description": "Profile center along y coordinates",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_0-center_y",
                     "initial_estimate": {
                       "value": null
                     },
@@ -88,18 +207,18 @@
                     },
                     "units": null
                   },
-                  "gamma1": {
+                  "n_sersic": {
                     "definition_range": {
-                      "max_value": 1.0,
-                      "min_value": -1.0
+                      "max_value": 10.0,
+                      "min_value": 0.5
                     },
-                    "description": "Complex ellipticity component 1",
+                    "description": "Sersic index",
                     "fixed": false,
-                    "id": "extshear_model-ExternalShearEllipticity_0-gamma1",
+                    "id": "galaxy_0-light_model-Sersic_0-n_sersic",
                     "initial_estimate": {
                       "value": null
                     },
-                    "latex_str": "$\\gamma_1$",
+                    "latex_str": "$n_{\\rm Sersic}$",
                     "point_estimate": {
                       "value": null
                     },
@@ -114,18 +233,636 @@
                     },
                     "units": null
                   },
-                  "gamma2": {
+                  "phi": {
                     "definition_range": {
-                      "max_value": 1.0,
-                      "min_value": -1.0
+                      "max_value": 90.0,
+                      "min_value": -90.0
                     },
-                    "description": "Complex ellipticity component 2",
+                    "description": "Position angle",
                     "fixed": false,
-                    "id": "extshear_model-ExternalShearEllipticity_0-gamma2",
+                    "id": "galaxy_0-light_model-Sersic_0-phi",
                     "initial_estimate": {
                       "value": null
                     },
-                    "latex_str": "$\\gamma_2$",
+                    "latex_str": "$e_2$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "q": {
+                    "definition_range": {
+                      "max_value": 1.0,
+                      "min_value": 0.0
+                    },
+                    "description": "Axis ratio, semi-minor axis / semi-major axis",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_0-q",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$e_1$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  }
+                }
+              },
+              {
+                "description": "Elliptical Sersic",
+                "id": "galaxy_0-light_model-Sersic_1",
+                "name": "Sersic",
+                "parameters": {
+                  "A": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": 0.0
+                    },
+                    "description": "Amplitude at origin",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_1-A",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$A$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "R_sersic": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": 0.0
+                    },
+                    "description": "Sersic radius",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_1-R_sersic",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$R_{\\rm Sersic}$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "center_x": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": null
+                    },
+                    "description": "Profile center along x coordinates",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_1-center_x",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$x_0$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "center_y": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": null
+                    },
+                    "description": "Profile center along y coordinates",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_1-center_y",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$y_0$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "n_sersic": {
+                    "definition_range": {
+                      "max_value": 10.0,
+                      "min_value": 0.5
+                    },
+                    "description": "Sersic index",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_1-n_sersic",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$n_{\\rm Sersic}$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "phi": {
+                    "definition_range": {
+                      "max_value": 90.0,
+                      "min_value": -90.0
+                    },
+                    "description": "Position angle",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_1-phi",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$e_2$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "q": {
+                    "definition_range": {
+                      "max_value": 1.0,
+                      "min_value": 0.0
+                    },
+                    "description": "Axis ratio, semi-minor axis / semi-major axis",
+                    "fixed": false,
+                    "id": "galaxy_0-light_model-Sersic_1-q",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$e_1$",
+                    "point_estimate": {
+                      "value": 0.89
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  }
+                }
+              }
+            ]
+          },
+          "mass_model": {
+            "profiles": [
+              {
+                "description": "Powerlaw elliptical mass distribution",
+                "id": "galaxy_0-mass_model-PEMD_0",
+                "name": "PEMD",
+                "parameters": {
+                  "center_x": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": null
+                    },
+                    "description": "Profile center along x coordinates",
+                    "fixed": false,
+                    "id": "galaxy_0-mass_model-PEMD_0-center_x",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$x_0$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "center_y": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": null
+                    },
+                    "description": "Profile center along y coordinates",
+                    "fixed": false,
+                    "id": "galaxy_0-mass_model-PEMD_0-center_y",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$y_0$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "gamma": {
+                    "definition_range": {
+                      "max_value": 3.0,
+                      "min_value": 1.0
+                    },
+                    "description": "Mass density slope at Einstein radius",
+                    "fixed": false,
+                    "id": "galaxy_0-mass_model-PEMD_0-gamma",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$\\gamma$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "mean": 2.0,
+                      "type": "gaussian",
+                      "width": 0.2
+                    },
+                    "units": null
+                  },
+                  "phi": {
+                    "definition_range": {
+                      "max_value": 90.0,
+                      "min_value": -90.0
+                    },
+                    "description": "Position angle",
+                    "fixed": false,
+                    "id": "galaxy_0-mass_model-PEMD_0-phi",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$e_2$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "q": {
+                    "definition_range": {
+                      "max_value": 1.0,
+                      "min_value": 0.0
+                    },
+                    "description": "Axis ratio, semi-minor axis / semi-major axis",
+                    "fixed": false,
+                    "id": "galaxy_0-mass_model-PEMD_0-q",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$e_1$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "theta_E": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": 0.0
+                    },
+                    "description": "Einstein radius",
+                    "fixed": false,
+                    "id": "galaxy_0-mass_model-PEMD_0-theta_E",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$\\theta_{\\rm E}$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  }
+                }
+              },
+              {
+                "description": "Pixelated lensing potential on a pixel grid",
+                "id": "galaxy_0-mass_model-PixelatedPotential_1",
+                "name": "PixelatedPotential",
+                "parameters": {
+                  "pixels": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": null
+                    },
+                    "description": "Set of pixel values",
+                    "fixed": false,
+                    "id": "galaxy_0-mass_model-PixelatedPotential_1-pixels",
+                    "initial_estimate": {
+                      "value": []
+                    },
+                    "latex_str": "{\\rm pixels}",
+                    "num_values": 0,
+                    "order_in_memory": "C",
+                    "point_estimate": {
+                      "value": []
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null,
+                    "x_coords": [],
+                    "y_coords": []
+                  }
+                }
+              }
+            ]
+          },
+          "name": "a lens galaxy",
+          "redshift": 0.5
+        },
+        {
+          "light_model": {
+            "profiles": [
+              {
+                "description": "Elliptical Sersic",
+                "id": "galaxy_1-light_model-Sersic_0",
+                "name": "Sersic",
+                "parameters": {
+                  "A": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": 0.0
+                    },
+                    "description": "Amplitude at origin",
+                    "fixed": false,
+                    "id": "galaxy_1-light_model-Sersic_0-A",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$A$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "R_sersic": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": 0.0
+                    },
+                    "description": "Sersic radius",
+                    "fixed": false,
+                    "id": "galaxy_1-light_model-Sersic_0-R_sersic",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$R_{\\rm Sersic}$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": 0.12,
+                      "median": 0.15,
+                      "percentile_16th": 0.03,
+                      "percentile_84th": 0.05
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "center_x": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": null
+                    },
+                    "description": "Profile center along x coordinates",
+                    "fixed": false,
+                    "id": "galaxy_1-light_model-Sersic_0-center_x",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$x_0$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "center_y": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": null
+                    },
+                    "description": "Profile center along y coordinates",
+                    "fixed": false,
+                    "id": "galaxy_1-light_model-Sersic_0-center_y",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$y_0$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "n_sersic": {
+                    "definition_range": {
+                      "max_value": 10.0,
+                      "min_value": 0.5
+                    },
+                    "description": "Sersic index",
+                    "fixed": false,
+                    "id": "galaxy_1-light_model-Sersic_0-n_sersic",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$n_{\\rm Sersic}$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "phi": {
+                    "definition_range": {
+                      "max_value": 90.0,
+                      "min_value": -90.0
+                    },
+                    "description": "Position angle",
+                    "fixed": false,
+                    "id": "galaxy_1-light_model-Sersic_0-phi",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$e_2$",
+                    "point_estimate": {
+                      "value": null
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null
+                  },
+                  "q": {
+                    "definition_range": {
+                      "max_value": 1.0,
+                      "min_value": 0.0
+                    },
+                    "description": "Axis ratio, semi-minor axis / semi-major axis",
+                    "fixed": false,
+                    "id": "galaxy_1-light_model-Sersic_0-q",
+                    "initial_estimate": {
+                      "value": null
+                    },
+                    "latex_str": "$e_1$",
                     "point_estimate": {
                       "value": null
                     },
@@ -144,1082 +881,291 @@
               }
             ]
           },
-          "name": "my lovely external shear",
-          "redshift": 0.5
+          "mass_model": {
+            "profiles": []
+          },
+          "name": "a source galaxy",
+          "redshift": 2.0
         },
-        "galaxies": [
-          {
-            "light_model": {
-              "profiles": [
-                {
-                  "description": "Elliptical Sersic",
-                  "id": "galaxy_0-light_model-Sersic_0",
-                  "name": "Sersic",
-                  "parameters": {
-                    "A": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": 0.0
-                      },
-                      "description": "Amplitude at origin",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_0-A",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$A$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
+        {
+          "light_model": {
+            "profiles": [
+              {
+                "description": "Pixelated light profile on a pixel grid",
+                "id": "galaxy_2-light_model-PixelatedRegularGrid_0",
+                "name": "PixelatedRegularGrid",
+                "parameters": {
+                  "pixels": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": 0.0
                     },
-                    "R_sersic": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": 0.0
-                      },
-                      "description": "Sersic radius",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_0-R_sersic",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$R_{\\rm Sersic}$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
+                    "description": "Set of pixel values",
+                    "fixed": false,
+                    "id": "galaxy_2-light_model-PixelatedRegularGrid_0-pixels",
+                    "initial_estimate": {
+                      "value": []
                     },
-                    "center_x": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": null
-                      },
-                      "description": "Profile center along x coordinates",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_0-center_x",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$x_0$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
+                    "latex_str": "{\\rm pixels}",
+                    "num_values": 0,
+                    "order_in_memory": "C",
+                    "point_estimate": {
+                      "value": []
                     },
-                    "center_y": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": null
-                      },
-                      "description": "Profile center along y coordinates",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_0-center_y",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$y_0$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
                     },
-                    "e1": {
-                      "definition_range": {
-                        "max_value": 1.0,
-                        "min_value": -1.0
-                      },
-                      "description": "Complex ellipticity component 1",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_0-e1",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$e_1$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
+                    "prior": {
+                      "type": null
                     },
-                    "e2": {
-                      "definition_range": {
-                        "max_value": 1.0,
-                        "min_value": -1.0
-                      },
-                      "description": "Complex ellipticity component 2",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_0-e2",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$e_2$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "n_sersic": {
-                      "definition_range": {
-                        "max_value": 10.0,
-                        "min_value": 0.5
-                      },
-                      "description": "Sersic index",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_0-n_sersic",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$n_{\\rm Sersic}$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    }
-                  }
-                },
-                {
-                  "description": "Elliptical Sersic",
-                  "id": "galaxy_0-light_model-Sersic_1",
-                  "name": "Sersic",
-                  "parameters": {
-                    "A": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": 0.0
-                      },
-                      "description": "Amplitude at origin",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_1-A",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$A$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "R_sersic": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": 0.0
-                      },
-                      "description": "Sersic radius",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_1-R_sersic",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$R_{\\rm Sersic}$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "center_x": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": null
-                      },
-                      "description": "Profile center along x coordinates",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_1-center_x",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$x_0$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "center_y": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": null
-                      },
-                      "description": "Profile center along y coordinates",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_1-center_y",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$y_0$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "e1": {
-                      "definition_range": {
-                        "max_value": 1.0,
-                        "min_value": -1.0
-                      },
-                      "description": "Complex ellipticity component 1",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_1-e1",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$e_1$",
-                      "point_estimate": {
-                        "value": 0.34
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "e2": {
-                      "definition_range": {
-                        "max_value": 1.0,
-                        "min_value": -1.0
-                      },
-                      "description": "Complex ellipticity component 2",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_1-e2",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$e_2$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "n_sersic": {
-                      "definition_range": {
-                        "max_value": 10.0,
-                        "min_value": 0.5
-                      },
-                      "description": "Sersic index",
-                      "fixed": false,
-                      "id": "galaxy_0-light_model-Sersic_1-n_sersic",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$n_{\\rm Sersic}$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    }
+                    "units": null,
+                    "x_coords": [],
+                    "y_coords": []
                   }
                 }
-              ]
-            },
-            "mass_model": {
-              "profiles": [
-                {
-                  "description": "Powerlaw elliptical mass distribution",
-                  "id": "galaxy_0-mass_model-PEMD_0",
-                  "name": "PEMD",
-                  "parameters": {
-                    "center_x": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": null
-                      },
-                      "description": "Profile center along x coordinates",
-                      "fixed": false,
-                      "id": "galaxy_0-mass_model-PEMD_0-center_x",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$x_0$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "center_y": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": null
-                      },
-                      "description": "Profile center along y coordinates",
-                      "fixed": false,
-                      "id": "galaxy_0-mass_model-PEMD_0-center_y",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$y_0$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "e1": {
-                      "definition_range": {
-                        "max_value": 1.0,
-                        "min_value": -1.0
-                      },
-                      "description": "Complex ellipticity component 1",
-                      "fixed": false,
-                      "id": "galaxy_0-mass_model-PEMD_0-e1",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$e_1$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "e2": {
-                      "definition_range": {
-                        "max_value": 1.0,
-                        "min_value": -1.0
-                      },
-                      "description": "Complex ellipticity component 2",
-                      "fixed": false,
-                      "id": "galaxy_0-mass_model-PEMD_0-e2",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$e_2$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "gamma": {
-                      "definition_range": {
-                        "max_value": 3.0,
-                        "min_value": 1.0
-                      },
-                      "description": "Mass density slope at Einstein radius",
-                      "fixed": false,
-                      "id": "galaxy_0-mass_model-PEMD_0-gamma",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$\\gamma$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "mean": 2.0,
-                        "type": "gaussian",
-                        "width": 0.2
-                      },
-                      "units": null
-                    },
-                    "theta_E": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": 0.0
-                      },
-                      "description": "Einstein radius",
-                      "fixed": false,
-                      "id": "galaxy_0-mass_model-PEMD_0-theta_E",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$\\theta_{\\rm E}$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    }
-                  }
-                },
-                {
-                  "description": "Pixelated lensing potential on a pixel grid",
-                  "id": "galaxy_0-mass_model-PixelatedPotential_1",
-                  "name": "PixelatedPotential",
-                  "parameters": {
-                    "pixels": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": null
-                      },
-                      "description": "Set of pixel values",
-                      "fixed": false,
-                      "id": "galaxy_0-mass_model-PixelatedPotential_1-pixels",
-                      "initial_estimate": {
-                        "value": []
-                      },
-                      "latex_str": "{\\rm pixels}",
-                      "num_values": 0,
-                      "order_in_memory": "C",
-                      "point_estimate": {
-                        "value": []
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null,
-                      "x_coords": [],
-                      "y_coords": []
-                    }
-                  }
-                }
-              ]
-            },
-            "name": "a lens galaxy",
-            "redshift": 0.5
+              }
+            ]
           },
-          {
-            "light_model": {
-              "profiles": [
-                {
-                  "description": "Elliptical Sersic",
-                  "id": "galaxy_1-light_model-Sersic_0",
-                  "name": "Sersic",
-                  "parameters": {
-                    "A": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": 0.0
-                      },
-                      "description": "Amplitude at origin",
-                      "fixed": false,
-                      "id": "galaxy_1-light_model-Sersic_0-A",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$A$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "R_sersic": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": 0.0
-                      },
-                      "description": "Sersic radius",
-                      "fixed": false,
-                      "id": "galaxy_1-light_model-Sersic_0-R_sersic",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$R_{\\rm Sersic}$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": 0.12,
-                        "median": 0.15,
-                        "percentile_16th": 0.03,
-                        "percentile_84th": 0.05
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "center_x": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": null
-                      },
-                      "description": "Profile center along x coordinates",
-                      "fixed": false,
-                      "id": "galaxy_1-light_model-Sersic_0-center_x",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$x_0$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "center_y": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": null
-                      },
-                      "description": "Profile center along y coordinates",
-                      "fixed": false,
-                      "id": "galaxy_1-light_model-Sersic_0-center_y",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$y_0$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "e1": {
-                      "definition_range": {
-                        "max_value": 1.0,
-                        "min_value": -1.0
-                      },
-                      "description": "Complex ellipticity component 1",
-                      "fixed": false,
-                      "id": "galaxy_1-light_model-Sersic_0-e1",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$e_1$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "e2": {
-                      "definition_range": {
-                        "max_value": 1.0,
-                        "min_value": -1.0
-                      },
-                      "description": "Complex ellipticity component 2",
-                      "fixed": false,
-                      "id": "galaxy_1-light_model-Sersic_0-e2",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$e_2$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    },
-                    "n_sersic": {
-                      "definition_range": {
-                        "max_value": 10.0,
-                        "min_value": 0.5
-                      },
-                      "description": "Sersic index",
-                      "fixed": false,
-                      "id": "galaxy_1-light_model-Sersic_0-n_sersic",
-                      "initial_estimate": {
-                        "value": null
-                      },
-                      "latex_str": "$n_{\\rm Sersic}$",
-                      "point_estimate": {
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null
-                    }
-                  }
-                }
-              ]
-            },
-            "mass_model": {
-              "profiles": []
-            },
-            "name": "a source galaxy",
-            "redshift": 2.0
+          "mass_model": {
+            "profiles": []
           },
-          {
-            "light_model": {
-              "profiles": [
-                {
-                  "description": "Pixelated light profile on a pixel grid",
-                  "id": "galaxy_2-light_model-PixelatedRegularGrid_0",
-                  "name": "PixelatedRegularGrid",
-                  "parameters": {
-                    "pixels": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": 0.0
-                      },
-                      "description": "Set of pixel values",
-                      "fixed": false,
-                      "id": "galaxy_2-light_model-PixelatedRegularGrid_0-pixels",
-                      "initial_estimate": {
-                        "value": []
-                      },
-                      "latex_str": "{\\rm pixels}",
-                      "num_values": 0,
-                      "order_in_memory": "C",
-                      "point_estimate": {
-                        "value": []
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null,
-                      "x_coords": [],
-                      "y_coords": []
-                    }
+          "name": "another source",
+          "redshift": 1.5
+        },
+        {
+          "light_model": {
+            "profiles": [
+              {
+                "description": "Pixelated light profile on a pixel grid",
+                "id": "galaxy_3-light_model-PixelatedRegularGrid_0",
+                "name": "PixelatedRegularGrid",
+                "parameters": {
+                  "pixels": {
+                    "definition_range": {
+                      "max_value": null,
+                      "min_value": 0.0
+                    },
+                    "description": "Set of pixel values",
+                    "fixed": false,
+                    "id": "galaxy_3-light_model-PixelatedRegularGrid_0-pixels",
+                    "initial_estimate": {
+                      "value": []
+                    },
+                    "latex_str": "{\\rm pixels}",
+                    "num_values": 0,
+                    "order_in_memory": "C",
+                    "point_estimate": {
+                      "value": []
+                    },
+                    "posterior_stats": {
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
+                    },
+                    "prior": {
+                      "type": null
+                    },
+                    "units": null,
+                    "x_coords": [],
+                    "y_coords": []
                   }
                 }
-              ]
-            },
-            "mass_model": {
-              "profiles": []
-            },
-            "name": "another source",
-            "redshift": 1.5
+              }
+            ]
           },
-          {
-            "light_model": {
-              "profiles": [
-                {
-                  "description": "Pixelated light profile on a pixel grid",
-                  "id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-                  "name": "PixelatedRegularGrid",
-                  "parameters": {
-                    "pixels": {
-                      "definition_range": {
-                        "max_value": null,
-                        "min_value": 0.0
-                      },
-                      "description": "Set of pixel values",
-                      "fixed": false,
-                      "id": "galaxy_3-light_model-PixelatedRegularGrid_0-pixels",
-                      "initial_estimate": {
-                        "value": []
-                      },
-                      "latex_str": "{\\rm pixels}",
-                      "num_values": 0,
-                      "order_in_memory": "C",
-                      "point_estimate": {
-                        "value": []
-                      },
-                      "posterior_stats": {
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "type": null
-                      },
-                      "units": null,
-                      "x_coords": [],
-                      "y_coords": []
-                    }
-                  }
-                }
-              ]
-            },
-            "mass_model": {
-              "profiles": []
-            },
-            "name": "a GLEE source",
-            "redshift": 1.2
-          }
-        ],
-        "likelihoods": [
-          "imaging_data"
-        ],
-        "regularizations": [
-          {
-            "applied_to_profile_id": "galaxy_2-light_model-PixelatedRegularGrid_0",
-            "description": "Starlets regularization",
-            "id": "regularization_model-PixelStarlet_0",
-            "name": "PixelStarlet",
-            "parameters": {
-              "lambda": {
-                "definition_range": {
-                  "max_value": null,
-                  "min_value": 0.0
-                },
-                "description": "Lagrange parameter from second to last starlet scales (excluding coarse scale)",
-                "fixed": false,
-                "id": "regularization_model-PixelStarlet_0_lambda",
-                "initial_estimate": {
-                  "value": null
-                },
-                "latex_str": "$\\lambda_{\\rm s}$",
-                "point_estimate": {
-                  "value": null
-                },
-                "posterior_stats": {
-                  "mean": null,
-                  "median": null,
-                  "percentile_16th": null,
-                  "percentile_84th": null
-                },
-                "prior": {
-                  "type": null
-                },
-                "units": null
+          "mass_model": {
+            "profiles": []
+          },
+          "name": "a GLEE source",
+          "redshift": 1.2
+        }
+      ],
+      "likelihoods": [
+        "imaging_data"
+      ],
+      "regularizations": [
+        {
+          "applied_to_profile_id": "galaxy_2-light_model-PixelatedRegularGrid_0",
+          "description": "Starlets regularization",
+          "id": "regularization_model-PixelStarlet_0",
+          "name": "PixelStarlet",
+          "parameters": {
+            "lambda": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
               },
-              "lambda_hf": {
-                "definition_range": {
-                  "max_value": null,
-                  "min_value": 0.0
-                },
-                "description": "Lagrange parameter for first starlet scale (high frequencies)",
-                "fixed": false,
-                "id": "regularization_model-PixelStarlet_0_lambda_hf",
-                "initial_estimate": {
-                  "value": null
-                },
-                "latex_str": "$\\lambda_{\\rm s, hf}$",
-                "point_estimate": {
-                  "value": null
-                },
-                "posterior_stats": {
-                  "mean": null,
-                  "median": null,
-                  "percentile_16th": null,
-                  "percentile_84th": null
-                },
-                "prior": {
-                  "type": null
-                },
-                "units": null
-              }
-            }
-          },
-          {
-            "applied_to_profile_id": "galaxy_2-light_model-PixelatedRegularGrid_0",
-            "description": "Non-negativity constraint on pixel values",
-            "id": "regularization_model-PixelPositivity_1",
-            "name": "PixelPositivity",
-            "parameters": {
-              "lambda": {
-                "definition_range": {
-                  "max_value": null,
-                  "min_value": 0.0
-                },
-                "description": "Lagrange parameter",
-                "fixed": false,
-                "id": "regularization_model-PixelPositivity_1_lambda",
-                "initial_estimate": {
-                  "value": null
-                },
-                "latex_str": "$\\lambda_{\\rm pos}$",
-                "point_estimate": {
-                  "value": null
-                },
-                "posterior_stats": {
-                  "mean": null,
-                  "median": null,
-                  "percentile_16th": null,
-                  "percentile_84th": null
-                },
-                "prior": {
-                  "type": null
-                },
-                "units": null
-              }
-            }
-          },
-          {
-            "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-            "description": "Curvature regularization (second spatial derivative)",
-            "id": "regularization_model-PixelCurvature_2",
-            "name": "PixelCurvature",
-            "parameters": {
-              "lambda": {
-                "definition_range": {
-                  "max_value": null,
-                  "min_value": 0.0
-                },
-                "description": "Lagrange parameter for curvature regularization",
-                "fixed": false,
-                "id": "regularization_model-PixelCurvature_2_lambda",
-                "initial_estimate": {
-                  "value": null
-                },
-                "latex_str": "$\\lambda_{\\rm curv}$",
-                "point_estimate": {
-                  "value": null
-                },
-                "posterior_stats": {
-                  "mean": null,
-                  "median": null,
-                  "percentile_16th": null,
-                  "percentile_84th": null
-                },
-                "prior": {
-                  "type": null
-                },
-                "units": null
-              }
-            }
-          },
-          {
-            "applied_to_profile_id": "galaxy_0-mass_model-PixelatedPotential_1",
-            "description": "Battle-Lemarie wavelet regularization",
-            "id": "regularization_model-PixelBLWavelet_3",
-            "name": "PixelBLWavelet",
-            "parameters": {
-              "lambda_hf": {
-                "definition_range": {
-                  "max_value": null,
-                  "min_value": 0.0
-                },
-                "description": "Lagrange parameter for first Battle-Lemarie scale (high frequencies)",
-                "fixed": false,
-                "id": "regularization_model-PixelBLWavelet_3_lambda_hf",
-                "initial_estimate": {
-                  "value": null
-                },
-                "latex_str": "$\\lambda_{\\rm BL, hf}$",
-                "point_estimate": {
-                  "value": null
-                },
-                "posterior_stats": {
-                  "mean": null,
-                  "median": null,
-                  "percentile_16th": null,
-                  "percentile_84th": null
-                },
-                "prior": {
-                  "type": null
-                },
-                "units": null
-              }
+              "description": "Lagrange parameter from second to last starlet scales (excluding coarse scale)",
+              "fixed": false,
+              "id": "regularization_model-PixelStarlet_0_lambda",
+              "initial_estimate": {
+                "value": null
+              },
+              "latex_str": "$\\lambda_{\\rm s}$",
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              },
+              "units": null
+            },
+            "lambda_hf": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "description": "Lagrange parameter for first starlet scale (high frequencies)",
+              "fixed": false,
+              "id": "regularization_model-PixelStarlet_0_lambda_hf",
+              "initial_estimate": {
+                "value": null
+              },
+              "latex_str": "$\\lambda_{\\rm s, hf}$",
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              },
+              "units": null
             }
           }
-        ]
-      },
-      "lens_model": {
-        "background_rms": 0.10736330635066439,
-        "exposure_time": 1000,
-        "field_of_view_dec": 8.0,
-        "field_of_view_ra": 8.0,
-        "name": "some instrument",
-        "pixel_size": 0.08,
-        "psf": {
-          "fits_path": "test_psf.fits",
-          "num_pix_dec": 99,
-          "num_pix_ra": 99
         },
-        "psf_pixel_size": 0.08
+        {
+          "applied_to_profile_id": "galaxy_2-light_model-PixelatedRegularGrid_0",
+          "description": "Non-negativity constraint on pixel values",
+          "id": "regularization_model-PixelPositivity_1",
+          "name": "PixelPositivity",
+          "parameters": {
+            "lambda": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "description": "Lagrange parameter",
+              "fixed": false,
+              "id": "regularization_model-PixelPositivity_1_lambda",
+              "initial_estimate": {
+                "value": null
+              },
+              "latex_str": "$\\lambda_{\\rm pos}$",
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              },
+              "units": null
+            }
+          }
+        },
+        {
+          "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
+          "description": "Curvature regularization (second spatial derivative)",
+          "id": "regularization_model-PixelCurvature_2",
+          "name": "PixelCurvature",
+          "parameters": {
+            "lambda": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "description": "Lagrange parameter for curvature regularization",
+              "fixed": false,
+              "id": "regularization_model-PixelCurvature_2_lambda",
+              "initial_estimate": {
+                "value": null
+              },
+              "latex_str": "$\\lambda_{\\rm curv}$",
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              },
+              "units": null
+            }
+          }
+        },
+        {
+          "applied_to_profile_id": "galaxy_0-mass_model-PixelatedPotential_1",
+          "description": "Battle-Lemarie wavelet regularization",
+          "id": "regularization_model-PixelBLWavelet_3",
+          "name": "PixelBLWavelet",
+          "parameters": {
+            "lambda_hf": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "description": "Lagrange parameter for first Battle-Lemarie scale (high frequencies)",
+              "fixed": false,
+              "id": "regularization_model-PixelBLWavelet_3_lambda_hf",
+              "initial_estimate": {
+                "value": null
+              },
+              "latex_str": "$\\lambda_{\\rm BL, hf}$",
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              },
+              "units": null
+            }
+          }
+        }
+      ]
+    },
+    "lens_model": {
+      "background_rms": 0.10736330635066439,
+      "exposure_time": 1000,
+      "field_of_view_dec": 8.0,
+      "field_of_view_ra": 8.0,
+      "name": "some instrument",
+      "pixel_size": 0.08,
+      "psf": {
+        "fits_path": "test_psf.fits",
+        "num_pix_dec": 99,
+        "num_pix_ra": 99
       },
-      "name": "My Favorite Lens ever"
-    }
-  ]
-}
+      "psf_pixel_size": 0.08
+    },
+    "name": "My Favorite Lens ever"
+  }
+]
