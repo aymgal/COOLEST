@@ -1,27 +1,10 @@
 [
   {
-    "data": {
-      "arc_mask": {
-        "fits_path": "arc_mask.fits",
-        "num_pix_dec": 110,
-        "num_pix_ra": 110
+    "lens_model": {
+      "coordinates_origin": {
+        "dec": "-08d45m51.48s",
+        "ra": "00h11m20.244s"
       },
-      "image": {
-        "fits_path": "test_image.fits",
-        "num_pix_dec": 100,
-        "num_pix_ra": 100
-      },
-      "likelihood_mask": null,
-      "magnification_ratios": null,
-      "noise_map": null,
-      "time_delays": [
-        10.0,
-        20.0,
-        40.0
-      ],
-      "wht_map": null
-    },
-    "instrument": {
       "cosmology": {
         "H0": 73.0,
         "Om0": 0.3,
@@ -461,7 +444,7 @@
                     },
                     "latex_str": "$e_1$",
                     "point_estimate": {
-                      "value": 0.89
+                      "value": null
                     },
                     "posterior_stats": {
                       "mean": null,
@@ -559,9 +542,7 @@
                       "percentile_84th": null
                     },
                     "prior": {
-                      "mean": 2.0,
-                      "type": "gaussian",
-                      "width": 0.2
+                      "type": null
                     },
                     "units": null
                   },
@@ -737,10 +718,10 @@
                       "value": null
                     },
                     "posterior_stats": {
-                      "mean": 0.12,
-                      "median": 0.15,
-                      "percentile_16th": 0.03,
-                      "percentile_84th": 0.05
+                      "mean": null,
+                      "median": null,
+                      "percentile_16th": null,
+                      "percentile_84th": null
                     },
                     "prior": {
                       "type": null
@@ -1151,20 +1132,6 @@
           }
         }
       ]
-    },
-    "lens_model": {
-      "background_rms": 0.10736330635066439,
-      "exposure_time": 1000,
-      "field_of_view_dec": 8.0,
-      "field_of_view_ra": 8.0,
-      "name": "some instrument",
-      "pixel_size": 0.08,
-      "psf": {
-        "fits_path": "test_psf.fits",
-        "num_pix_dec": 99,
-        "num_pix_ra": 99
-      },
-      "psf_pixel_size": 0.08
     },
     "name": "My Favorite Lens ever"
   }

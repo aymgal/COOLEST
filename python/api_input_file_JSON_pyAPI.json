@@ -5,22 +5,6 @@
       "py/object": "lensmodelapi.api.lens_object.LensObject",
       "name": "My Favorite Lens ever",
       "lens_model": {
-        "py/object": "lensmodelapi.api.observation.Instrument",
-        "name": "some instrument",
-        "psf": {
-          "py/object": "lensmodelapi.api.observation.FitsFile",
-          "fits_path": "test_psf.fits",
-          "num_pix_ra": 99,
-          "num_pix_dec": 99
-        },
-        "pixel_size": 0.08,
-        "field_of_view_ra": 8.0,
-        "field_of_view_dec": 8.0,
-        "background_rms": 0.10736330635066439,
-        "exposure_time": 1000,
-        "psf_pixel_size": 0.08
-      },
-      "instrument": {
         "py/object": "lensmodelapi.api.lens_model.LensModel",
         "galaxies": {
           "py/object": "lensmodelapi.api.galaxy_list.GalaxyList",
@@ -383,7 +367,7 @@
                           },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": 0.89
+                            "value": null
                           },
                           "posterior_stats": {
                             "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
@@ -537,10 +521,8 @@
                             "percentile_84th": null
                           },
                           "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.GaussianPrior",
-                            "type": "gaussian",
-                            "mean": 2.0,
-                            "width": 0.2
+                            "py/object": "lensmodelapi.api.probabilities.Prior",
+                            "type": null
                           },
                           "latex_str": "$\\gamma$",
                           "id": "galaxy_0-mass_model-PEMD_0-gamma"
@@ -730,7 +712,7 @@
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": {
-                              "py/id": 142
+                              "py/id": 140
                             }
                           },
                           "posterior_stats": {
@@ -824,10 +806,10 @@
                           },
                           "posterior_stats": {
                             "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": 0.12,
-                            "median": 0.15,
-                            "percentile_16th": 0.03,
-                            "percentile_84th": 0.05
+                            "mean": null,
+                            "median": null,
+                            "percentile_16th": null,
+                            "percentile_84th": null
                           },
                           "prior": {
                             "py/object": "lensmodelapi.api.probabilities.Prior",
@@ -1041,7 +1023,7 @@
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": {
-                              "py/id": 205
+                              "py/id": 203
                             }
                           },
                           "posterior_stats": {
@@ -1059,10 +1041,10 @@
                           "id": "galaxy_2-light_model-PixelatedRegularGrid_0-pixels",
                           "num_values": 0,
                           "x_coords": {
-                            "py/id": 146
+                            "py/id": 144
                           },
                           "y_coords": {
-                            "py/id": 147
+                            "py/id": 145
                           },
                           "order_in_memory": "C"
                         }
@@ -1111,7 +1093,7 @@
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": {
-                              "py/id": 219
+                              "py/id": 217
                             }
                           },
                           "posterior_stats": {
@@ -1129,10 +1111,10 @@
                           "id": "galaxy_3-light_model-PixelatedRegularGrid_0-pixels",
                           "num_values": 0,
                           "x_coords": {
-                            "py/id": 146
+                            "py/id": 144
                           },
                           "y_coords": {
-                            "py/id": 147
+                            "py/id": 145
                           },
                           "order_in_memory": "C"
                         }
@@ -1151,6 +1133,11 @@
               }
             }
           ]
+        },
+        "coordinates_origin": {
+          "py/object": "lensmodelapi.api.coordinates.CoordinatesOrigin",
+          "ra": "00h11m20.244s",
+          "dec": "-08d45m51.48s"
         },
         "likelihoods": {
           "py/object": "lensmodelapi.api.likelihood_list.LikelihoodList",
@@ -1450,30 +1437,6 @@
           "Om0": 0.3,
           "astropy_name": "FlatLambdaCDM"
         }
-      },
-      "data": {
-        "py/object": "lensmodelapi.api.observation.Data",
-        "image": {
-          "py/object": "lensmodelapi.api.observation.FitsFile",
-          "fits_path": "test_image.fits",
-          "num_pix_ra": 100,
-          "num_pix_dec": 100
-        },
-        "noise_map": null,
-        "wht_map": null,
-        "arc_mask": {
-          "py/object": "lensmodelapi.api.observation.FitsFile",
-          "fits_path": "arc_mask.fits",
-          "num_pix_ra": 110,
-          "num_pix_dec": 110
-        },
-        "likelihood_mask": null,
-        "time_delays": [
-          10.0,
-          20.0,
-          40.0
-        ],
-        "magnification_ratios": null
       }
     }
   ]
