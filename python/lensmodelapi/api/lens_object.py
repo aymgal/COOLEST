@@ -14,11 +14,12 @@ class LensObject(APIBaseObject):
     def __init__(self,
                  name: str,
                  lens_model: LensModel,
-                 instrument: Instrument = None,
-                 data: Data = None) -> None:
+                 # instrument: Instrument = None,
+                 # data: Data = None
+                 ) -> None:
         self.name = name
         self.lens_model = lens_model
-        self.instrument = instrument
-        self.data = data
+        # self.instrument = instrument
+        # self.data = data
         super().__init__()
         

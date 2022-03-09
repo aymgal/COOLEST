@@ -1,6 +1,10 @@
 # imports all classes that are need to be filled
 
-from lensmodelapi.api.observation import FitsFile, Data, Instrument
+from lensmodelapi.api.file import FitsFile
+from lensmodelapi.api.data import Data
+from lensmodelapi.api.instrument import Instrument
+from lensmodelapi.api.observation import Observation
+from lensmodelapi.api.coordinates import CoordinatesOrigin
 from lensmodelapi.api.cosmology import Cosmology
 from lensmodelapi.api.galaxy import Galaxy
 from lensmodelapi.api.external_shear import ExternalShear
