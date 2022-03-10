@@ -26,9 +26,6 @@
                   "description": "Strength of external shear",
                   "fixed": false,
                   "id": "extshear_model-ExternalShear_0-gamma_ext",
-                  "initial_estimate": {
-                    "value": null
-                  },
                   "latex_str": "$\\gamma_{\\rm ext}$",
                   "point_estimate": {
                     "value": null
@@ -52,9 +49,6 @@
                   "description": "Orientation of external shear",
                   "fixed": false,
                   "id": "extshear_model-ExternalShear_0-phi_ext",
-                  "initial_estimate": {
-                    "value": null
-                  },
                   "latex_str": "$\\phi_{\\rm ext}$",
                   "point_estimate": {
                     "value": null
@@ -94,9 +88,6 @@
                     "description": "Amplitude at origin",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_0-A",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$A$",
                     "point_estimate": {
                       "value": null
@@ -120,9 +111,6 @@
                     "description": "Sersic radius",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_0-R_sersic",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$R_{\\rm Sersic}$",
                     "point_estimate": {
                       "value": null
@@ -146,9 +134,6 @@
                     "description": "Profile center along x coordinates",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_0-center_x",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$x_0$",
                     "point_estimate": {
                       "value": null
@@ -172,9 +157,6 @@
                     "description": "Profile center along y coordinates",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_0-center_y",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$y_0$",
                     "point_estimate": {
                       "value": null
@@ -198,9 +180,6 @@
                     "description": "Sersic index",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_0-n_sersic",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$n_{\\rm Sersic}$",
                     "point_estimate": {
                       "value": null
@@ -224,9 +203,6 @@
                     "description": "Position angle",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_0-phi",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$e_2$",
                     "point_estimate": {
                       "value": null
@@ -250,9 +226,6 @@
                     "description": "Axis ratio, semi-minor axis / semi-major axis",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_0-q",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$e_1$",
                     "point_estimate": {
                       "value": null
@@ -283,9 +256,6 @@
                     "description": "Amplitude at origin",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_1-A",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$A$",
                     "point_estimate": {
                       "value": null
@@ -309,9 +279,6 @@
                     "description": "Sersic radius",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_1-R_sersic",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$R_{\\rm Sersic}$",
                     "point_estimate": {
                       "value": null
@@ -335,9 +302,6 @@
                     "description": "Profile center along x coordinates",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_1-center_x",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$x_0$",
                     "point_estimate": {
                       "value": null
@@ -361,9 +325,6 @@
                     "description": "Profile center along y coordinates",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_1-center_y",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$y_0$",
                     "point_estimate": {
                       "value": null
@@ -387,9 +348,6 @@
                     "description": "Sersic index",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_1-n_sersic",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$n_{\\rm Sersic}$",
                     "point_estimate": {
                       "value": null
@@ -413,9 +371,6 @@
                     "description": "Position angle",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_1-phi",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$e_2$",
                     "point_estimate": {
                       "value": null
@@ -439,9 +394,6 @@
                     "description": "Axis ratio, semi-minor axis / semi-major axis",
                     "fixed": false,
                     "id": "galaxy_0-light_model-Sersic_1-q",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$e_1$",
                     "point_estimate": {
                       "value": null
@@ -476,9 +428,6 @@
                     "description": "Profile center along x coordinates",
                     "fixed": false,
                     "id": "galaxy_0-mass_model-PEMD_0-center_x",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$x_0$",
                     "point_estimate": {
                       "value": null
@@ -502,9 +451,6 @@
                     "description": "Profile center along y coordinates",
                     "fixed": false,
                     "id": "galaxy_0-mass_model-PEMD_0-center_y",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$y_0$",
                     "point_estimate": {
                       "value": null
@@ -528,9 +474,6 @@
                     "description": "Mass density slope at Einstein radius",
                     "fixed": false,
                     "id": "galaxy_0-mass_model-PEMD_0-gamma",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$\\gamma$",
                     "point_estimate": {
                       "value": null
@@ -554,9 +497,6 @@
                     "description": "Position angle",
                     "fixed": false,
                     "id": "galaxy_0-mass_model-PEMD_0-phi",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$e_2$",
                     "point_estimate": {
                       "value": null
@@ -580,9 +520,6 @@
                     "description": "Axis ratio, semi-minor axis / semi-major axis",
                     "fixed": false,
                     "id": "galaxy_0-mass_model-PEMD_0-q",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$e_1$",
                     "point_estimate": {
                       "value": null
@@ -606,9 +543,6 @@
                     "description": "Einstein radius",
                     "fixed": false,
                     "id": "galaxy_0-mass_model-PEMD_0-theta_E",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$\\theta_{\\rm E}$",
                     "point_estimate": {
                       "value": null
@@ -639,9 +573,6 @@
                     "description": "Set of pixel values",
                     "fixed": false,
                     "id": "galaxy_0-mass_model-PixelatedPotential_1-pixels",
-                    "initial_estimate": {
-                      "value": []
-                    },
                     "latex_str": "{\\rm pixels}",
                     "num_values": 0,
                     "order_in_memory": "C",
@@ -684,9 +615,6 @@
                     "description": "Amplitude at origin",
                     "fixed": false,
                     "id": "galaxy_1-light_model-Sersic_0-A",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$A$",
                     "point_estimate": {
                       "value": null
@@ -710,9 +638,6 @@
                     "description": "Sersic radius",
                     "fixed": false,
                     "id": "galaxy_1-light_model-Sersic_0-R_sersic",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$R_{\\rm Sersic}$",
                     "point_estimate": {
                       "value": null
@@ -736,9 +661,6 @@
                     "description": "Profile center along x coordinates",
                     "fixed": false,
                     "id": "galaxy_1-light_model-Sersic_0-center_x",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$x_0$",
                     "point_estimate": {
                       "value": null
@@ -762,9 +684,6 @@
                     "description": "Profile center along y coordinates",
                     "fixed": false,
                     "id": "galaxy_1-light_model-Sersic_0-center_y",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$y_0$",
                     "point_estimate": {
                       "value": null
@@ -788,9 +707,6 @@
                     "description": "Sersic index",
                     "fixed": false,
                     "id": "galaxy_1-light_model-Sersic_0-n_sersic",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$n_{\\rm Sersic}$",
                     "point_estimate": {
                       "value": null
@@ -814,9 +730,6 @@
                     "description": "Position angle",
                     "fixed": false,
                     "id": "galaxy_1-light_model-Sersic_0-phi",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$e_2$",
                     "point_estimate": {
                       "value": null
@@ -840,9 +753,6 @@
                     "description": "Axis ratio, semi-minor axis / semi-major axis",
                     "fixed": false,
                     "id": "galaxy_1-light_model-Sersic_0-q",
-                    "initial_estimate": {
-                      "value": null
-                    },
                     "latex_str": "$e_1$",
                     "point_estimate": {
                       "value": null
@@ -884,9 +794,6 @@
                     "description": "Set of pixel values",
                     "fixed": false,
                     "id": "galaxy_2-light_model-PixelatedRegularGrid_0-pixels",
-                    "initial_estimate": {
-                      "value": []
-                    },
                     "latex_str": "{\\rm pixels}",
                     "num_values": 0,
                     "order_in_memory": "C",
@@ -932,9 +839,6 @@
                     "description": "Set of pixel values",
                     "fixed": false,
                     "id": "galaxy_3-light_model-PixelatedRegularGrid_0-pixels",
-                    "initial_estimate": {
-                      "value": []
-                    },
                     "latex_str": "{\\rm pixels}",
                     "num_values": 0,
                     "order_in_memory": "C",
@@ -983,9 +887,6 @@
               "description": "Lagrange parameter from second to last starlet scales (excluding coarse scale)",
               "fixed": false,
               "id": "regularization_model-PixelStarlet_0_lambda",
-              "initial_estimate": {
-                "value": null
-              },
               "latex_str": "$\\lambda_{\\rm s}$",
               "point_estimate": {
                 "value": null
@@ -1009,9 +910,6 @@
               "description": "Lagrange parameter for first starlet scale (high frequencies)",
               "fixed": false,
               "id": "regularization_model-PixelStarlet_0_lambda_hf",
-              "initial_estimate": {
-                "value": null
-              },
               "latex_str": "$\\lambda_{\\rm s, hf}$",
               "point_estimate": {
                 "value": null
@@ -1043,9 +941,6 @@
               "description": "Lagrange parameter",
               "fixed": false,
               "id": "regularization_model-PixelPositivity_1_lambda",
-              "initial_estimate": {
-                "value": null
-              },
               "latex_str": "$\\lambda_{\\rm pos}$",
               "point_estimate": {
                 "value": null
@@ -1077,9 +972,6 @@
               "description": "Lagrange parameter for curvature regularization",
               "fixed": false,
               "id": "regularization_model-PixelCurvature_2_lambda",
-              "initial_estimate": {
-                "value": null
-              },
               "latex_str": "$\\lambda_{\\rm curv}$",
               "point_estimate": {
                 "value": null
@@ -1111,9 +1003,6 @@
               "description": "Lagrange parameter for first Battle-Lemarie scale (high frequencies)",
               "fixed": false,
               "id": "regularization_model-PixelBLWavelet_3_lambda_hf",
-              "initial_estimate": {
-                "value": null
-              },
               "latex_str": "$\\lambda_{\\rm BL, hf}$",
               "point_estimate": {
                 "value": null

@@ -33,10 +33,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -65,10 +61,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -97,10 +89,6 @@
                             "max_value": 10.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -129,10 +117,6 @@
                             "max_value": 1.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -161,10 +145,6 @@
                             "max_value": 90.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -193,10 +173,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -225,10 +201,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -265,10 +237,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -297,10 +265,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -329,10 +293,6 @@
                             "max_value": 10.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -361,10 +321,6 @@
                             "max_value": 1.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -393,10 +349,6 @@
                             "max_value": 90.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -425,10 +377,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -457,10 +405,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -505,10 +449,6 @@
                             "max_value": 3.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -537,10 +477,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -569,10 +505,6 @@
                             "max_value": 1.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -601,10 +533,6 @@
                             "max_value": 90.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -633,10 +561,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -665,10 +589,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -705,15 +625,9 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": []
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": {
-                              "py/id": 140
-                            }
+                            "value": []
                           },
                           "posterior_stats": {
                             "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
@@ -764,10 +678,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -796,10 +706,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -828,10 +734,6 @@
                             "max_value": 10.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -860,10 +762,6 @@
                             "max_value": 1.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -892,10 +790,6 @@
                             "max_value": 90.0
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -924,10 +818,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -956,10 +846,6 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
                             "value": null
@@ -1016,15 +902,9 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": []
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": {
-                              "py/id": 203
-                            }
+                            "value": []
                           },
                           "posterior_stats": {
                             "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
@@ -1041,10 +921,10 @@
                           "id": "galaxy_2-light_model-PixelatedRegularGrid_0-pixels",
                           "num_values": 0,
                           "x_coords": {
-                            "py/id": 144
+                            "py/id": 123
                           },
                           "y_coords": {
-                            "py/id": 145
+                            "py/id": 124
                           },
                           "order_in_memory": "C"
                         }
@@ -1086,15 +966,9 @@
                             "max_value": null
                           },
                           "fixed": false,
-                          "initial_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": []
-                          },
                           "point_estimate": {
                             "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": {
-                              "py/id": 217
-                            }
+                            "value": []
                           },
                           "posterior_stats": {
                             "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
@@ -1111,10 +985,10 @@
                           "id": "galaxy_3-light_model-PixelatedRegularGrid_0-pixels",
                           "num_values": 0,
                           "x_coords": {
-                            "py/id": 144
+                            "py/id": 123
                           },
                           "y_coords": {
-                            "py/id": 145
+                            "py/id": 124
                           },
                           "order_in_memory": "C"
                         }
@@ -1169,10 +1043,6 @@
                         "max_value": 1.0
                       },
                       "fixed": false,
-                      "initial_estimate": {
-                        "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                        "value": null
-                      },
                       "point_estimate": {
                         "py/object": "lensmodelapi.api.parameter.PointEstimate",
                         "value": null
@@ -1201,10 +1071,6 @@
                         "max_value": 90.0
                       },
                       "fixed": false,
-                      "initial_estimate": {
-                        "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                        "value": null
-                      },
                       "point_estimate": {
                         "py/object": "lensmodelapi.api.parameter.PointEstimate",
                         "value": null
@@ -1248,10 +1114,6 @@
                     "max_value": null
                   },
                   "fixed": false,
-                  "initial_estimate": {
-                    "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                    "value": null
-                  },
                   "point_estimate": {
                     "py/object": "lensmodelapi.api.parameter.PointEstimate",
                     "value": null
@@ -1280,10 +1142,6 @@
                     "max_value": null
                   },
                   "fixed": false,
-                  "initial_estimate": {
-                    "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                    "value": null
-                  },
                   "point_estimate": {
                     "py/object": "lensmodelapi.api.parameter.PointEstimate",
                     "value": null
@@ -1321,10 +1179,6 @@
                     "max_value": null
                   },
                   "fixed": false,
-                  "initial_estimate": {
-                    "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                    "value": null
-                  },
                   "point_estimate": {
                     "py/object": "lensmodelapi.api.parameter.PointEstimate",
                     "value": null
@@ -1362,10 +1216,6 @@
                     "max_value": null
                   },
                   "fixed": false,
-                  "initial_estimate": {
-                    "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                    "value": null
-                  },
                   "point_estimate": {
                     "py/object": "lensmodelapi.api.parameter.PointEstimate",
                     "value": null
@@ -1403,10 +1253,6 @@
                     "max_value": null
                   },
                   "fixed": false,
-                  "initial_estimate": {
-                    "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                    "value": null
-                  },
                   "point_estimate": {
                     "py/object": "lensmodelapi.api.parameter.PointEstimate",
                     "value": null

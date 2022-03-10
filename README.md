@@ -9,25 +9,21 @@ The first implementation takes the form of collection of Python classes, organis
 
 Within this framework, the following conventions are fixed and must be adopted when filling template files:
 
-- **coordinates**:
-    - the field-of-view (i.e. min/max values in each direction) is defined from pixel centers
-    - origin at center of the imaging data cutout
-    - RA increasing along x direction
-    - Dec increasing along y direction
-    - units: arcseconds
+- **Units**:
+    - Lengths, radii, angular positions, widths, heights: arcseconds
+    - Position angles and orientations: degrees, by default in the interval (-90, +90]
 
-- **position angles**:
-    - East-of-North
-    - units: degrees
+- **Coordinate system**:
+    - Standard cartesian coordinate system: RA decreasing along *x*, Dec increasing along *y*
+    - The origin is a unique (absolute) sky coordinate (RA, Dec)
+    - Position angles defined counter-clockwise from positive *y* axis (i.e. East-of-North). For elliptical profiles, the angle is measured based on the major-axis of the ellipse.
 
-- **external shear**:
-    - defined by strength and position angle
+- **Standard quantities**:
+    - effective radii (e.g. Einstein radius, half-light radius) are expressed along the intermediate axis, as the product average of semi-major and semi-minor axis, i.e. _r_ = sqrt(_ab_)
 
-- **radii** (e.g. Einstein radii, half-ligh radii, etc.):
-    - intermediate-axis
-    - units: arcseconds
+- **Other conventions**: TBD.
 
 
-## Current hierarchy
+## Overview of the JSON template hierarchy
 
 ![API Hierarchy](images/api_stacked_hierarchy.png "API Hierarchy")
