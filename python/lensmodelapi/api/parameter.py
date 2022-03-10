@@ -39,7 +39,7 @@ class Parameter(APIBaseObject):
                  definition_range: DefinitionRange,
                  units: str = None,
                  fixed: bool = False,
-                 initial_estimate: PointEstimate = None,
+                 point_estimate: PointEstimate = None,
                  posterior_stats: PosteriorStatistics = None,
                  prior: Prior = None,
                  latex_str: str = None) -> None:
@@ -47,11 +47,10 @@ class Parameter(APIBaseObject):
         self.units = units
         self.definition_range = definition_range
         self.fixed = fixed
-        if not isinstance(initial_estimate, PointEstimate):
-            self.initial_estimate = PointEstimate(initial_estimate)
+        if not isinstance(point_estimate, PointEstimate):
+            self.point_estimate = PointEstimate(point_estimate)
         else:
-            self.initial_estimate = initial_estimate
-        self.point_estimate = PointEstimate(value=self.initial_estimate.value)
+            self.point_estimate = point_estimate
         if posterior_stats is None:
             posterior_stats = PosteriorStatistics()
         self.posterior_stats = posterior_stats
@@ -132,10 +131,10 @@ class ParameterSet(Parameter):
     """Typically for pixelated profiles"""
 
     def __init__(self, *args, **kwargs) -> None:
-        if 'initial_estimate' not in kwargs or kwargs['initial_estimate'] is None:
-            kwargs['initial_estimate'] = []
-        if not isinstance(kwargs['initial_estimate'], list):
-            raise ValueError("For any ParameterSet, `initial_estimate` must be a list of values.")
+        if 'point_estimate' not in kwargs or kwargs['point_estimate'] is None:
+            kwargs['point_estimate'] = []
+        if not isinstance(kwargs['point_estimate'], list):
+            raise ValueError("For any ParameterSet, `point_estimate` must be a list of values.")
         super().__init__(*args, **kwargs)
         self.num_values = len(self.point_estimate.value)
 
