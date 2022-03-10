@@ -10,7 +10,7 @@ __all__ = [
     'NIE',
     'PEMD',
     'SPEMD',
-    'NFWElliptical',
+    'NFW',
     'Chameleon',
     'ExternalShear', 
     'PixelatedPotential',
@@ -127,7 +127,7 @@ class SPEMD(MassProfile):
         super().__init__(description, parameters)
 
 
-class NFWElliptical(MassProfile):
+class NFW(MassProfile):
     
     def __init__(self):
         description = "NFW with ellipticity introduced in the mass"
