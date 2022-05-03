@@ -1,0 +1,37 @@
+{
+  "data": {
+    "arc_mask": {
+      "fits_path": "arc_mask.fits",
+      "num_pix_dec": 110,
+      "num_pix_ra": 110
+    },
+    "image": {
+      "fits_path": "test_image.fits",
+      "num_pix_dec": 100,
+      "num_pix_ra": 100
+    },
+    "likelihood_mask": null,
+    "magnification_ratios": null,
+    "noise_map": null,
+    "time_delays": [
+      10.0,
+      20.0,
+      40.0
+    ],
+    "wht_map": null
+  },
+  "instrument": {
+    "background_rms": 0.10736330635066439,
+    "exposure_time": 1000,
+    "field_of_view_dec": 8.0,
+    "field_of_view_ra": 8.0,
+    "name": "some instrument",
+    "pixel_size": 0.08,
+    "psf": {
+      "fits_path": "test_psf.fits",
+      "num_pix_dec": 99,
+      "num_pix_ra": 99
+    },
+    "psf_pixel_size": 0.08
+  }
+}
