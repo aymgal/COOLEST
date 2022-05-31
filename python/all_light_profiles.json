@@ -1,0 +1,271 @@
+[
+  {
+    "description": "Elliptical Sersic",
+    "name": "Sersic",
+    "parameters": {
+      "A": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Amplitude at origin",
+        "latex_str": "$A$",
+        "units": null
+      },
+      "R_sersic": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Sersic radius",
+        "latex_str": "$R_{\\rm Sersic}$",
+        "units": null
+      },
+      "center_x": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along x coordinates",
+        "latex_str": "$x_0$",
+        "units": null
+      },
+      "center_y": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along y coordinates",
+        "latex_str": "$y_0$",
+        "units": null
+      },
+      "n_sersic": {
+        "definition_range": {
+          "max_value": 10.0,
+          "min_value": 0.5
+        },
+        "description": "Sersic index",
+        "latex_str": "$n_{\\rm Sersic}$",
+        "units": null
+      },
+      "phi": {
+        "definition_range": {
+          "max_value": 90.0,
+          "min_value": -90.0
+        },
+        "description": "Position angle",
+        "latex_str": "$e_2$",
+        "units": null
+      },
+      "q": {
+        "definition_range": {
+          "max_value": 1.0,
+          "min_value": 0.0
+        },
+        "description": "Axis ratio, semi-minor axis / semi-major axis",
+        "latex_str": "$e_1$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Chameleon profile defined as the difference between two NIE profiles (elliptical truncated double isothermal profile)",
+    "name": "Chameleon",
+    "parameters": {
+      "A": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Central amplitude",
+        "latex_str": "$A$",
+        "units": null
+      },
+      "center_x": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along x coordinates",
+        "latex_str": "$x_0$",
+        "units": null
+      },
+      "center_y": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along y coordinates",
+        "latex_str": "$y_0$",
+        "units": null
+      },
+      "phi": {
+        "definition_range": {
+          "max_value": 90.0,
+          "min_value": -90.0
+        },
+        "description": "Position angle",
+        "latex_str": "$e_2$",
+        "units": null
+      },
+      "q": {
+        "definition_range": {
+          "max_value": 1.0,
+          "min_value": 0.0
+        },
+        "description": "Axis ratio, semi-minor axis / semi-major axis",
+        "latex_str": "$e_1$",
+        "units": null
+      },
+      "w_c": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Core radius of inner NIE",
+        "latex_str": "$w{\\rm c}$",
+        "units": null
+      },
+      "w_t": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Core radius of outer NIE",
+        "latex_str": "$w{\\rm t}$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Uniform sheet of light",
+    "name": "Uniform",
+    "parameters": {
+      "A": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Central amplitude",
+        "latex_str": "$A$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Set of shapelet functions",
+    "n_max": null,
+    "name": "Shapelets",
+    "parameters": {
+      "amps": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Set of amplitude values for each shapelet function",
+        "latex_str": "$A$",
+        "num_values": 0,
+        "units": null
+      },
+      "beta": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Shapelet characteristic scale",
+        "latex_str": "$\\beta$",
+        "units": null
+      },
+      "center_x": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Shapelets center along x coordinates",
+        "latex_str": "$x_0$",
+        "units": null
+      },
+      "center_y": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Shapelets center along y coordinates",
+        "latex_str": "$y_0$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Set of lensed point sources",
+    "name": "LensedPS",
+    "parameters": {
+      "amps": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Set of amplitude values for the lensed point sources",
+        "latex_str": "$A$",
+        "num_values": 0,
+        "units": null
+      },
+      "dec_list": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "DEC positions of the lensed point sources",
+        "latex_str": "$dec$",
+        "num_values": 0,
+        "units": null
+      },
+      "ra_list": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "RA positions of the lensed point sources",
+        "latex_str": "$ra$",
+        "num_values": 0,
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Pixelated light profile on a pixel grid",
+    "name": "PixelatedRegularGrid",
+    "parameters": {
+      "pixels": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Set of pixel values",
+        "latex_str": "{\\rm pixels}",
+        "num_values": 0,
+        "units": null,
+        "x_coords": [],
+        "y_coords": []
+      }
+    }
+  },
+  {
+    "description": "Pixelated light profile on an adaptive (thus irregular) grid",
+    "name": "PixelatedAdaptiveGrid",
+    "parameters": {
+      "pixels": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Set of pixel values",
+        "latex_str": "{\\rm pixels}",
+        "num_values": 0,
+        "units": null,
+        "x_coords": [],
+        "y_coords": []
+      }
+    }
+  }
+]
