@@ -13,7 +13,7 @@ class FitsFile(APIBaseObject):
         pixels, header = self.read()
         array_shape = pixels.shape
         assert array_shape == (header['NAXIS1'], header['NAXIS2'])
-        self.num_pix_ra, self.num_pix_dec = array_shape
+        self.num_pix_x, self.num_pix_y = array_shape
         super().__init__()
 
     def read(self):

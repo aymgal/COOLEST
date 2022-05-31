@@ -1,7 +1,9 @@
 # imports all classes that are need to be filled
 
 from lensmodelapi.api.file import FitsFile
-from lensmodelapi.api.data import Data
+from lensmodelapi.api.noise import Noise
+from lensmodelapi.api.observation import Observation
+from lensmodelapi.api.psf import PSF
 from lensmodelapi.api.instrument import Instrument
 from lensmodelapi.api.observation import Observation
 from lensmodelapi.api.coordinates import CoordinatesOrigin

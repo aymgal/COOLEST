@@ -22,7 +22,7 @@ SUPPORTED_CHOICES = __all__
 class SIE(MassProfile):
     
     def __init__(self):
-        description = "Singular isothermal sphere"
+        documentation = "Singular isothermal sphere"
         parameters = {
             'theta_E': NonLinearParameter("Einstein radius",
                                           DefinitionRange(min_value=0.0),
@@ -40,13 +40,13 @@ class SIE(MassProfile):
                                            DefinitionRange(),
                                            latex_str=r"$y_0$")
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class NIE(MassProfile):
     
     def __init__(self):
-        description = "Non-singular isothermal sphere"
+        documentation = "Non-singular isothermal sphere"
         parameters = {
             'theta_E': NonLinearParameter("Einstein radius",
                                DefinitionRange(min_value=0.0),
@@ -67,13 +67,13 @@ class NIE(MassProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class PEMD(MassProfile):
     
     def __init__(self):
-        description = "Powerlaw elliptical mass distribution"
+        documentation = "Powerlaw elliptical mass distribution"
         parameters = {
             'gamma': NonLinearParameter("Mass density slope at Einstein radius",
                                DefinitionRange(min_value=1.0, max_value=3.0),
@@ -94,13 +94,13 @@ class PEMD(MassProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class SPEMD(MassProfile):
     
     def __init__(self):
-        description = "Softened powerlaw elliptical mass distribution"
+        documentation = "Softened powerlaw elliptical mass distribution"
         parameters = {
             'gamma': NonLinearParameter("Mass density slope at Einstein radius",
                                DefinitionRange(min_value=1.0, max_value=3.0),
@@ -124,13 +124,13 @@ class SPEMD(MassProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class NFW(MassProfile):
     
     def __init__(self):
-        description = "NFW with ellipticity introduced in the mass"
+        documentation = "NFW with ellipticity introduced in the mass"
         parameters = {
             'r_s': NonLinearParameter("Radius at which the mass density profile slope transitions from -1 to -3",
                                DefinitionRange(min_value=0.0),
@@ -151,13 +151,13 @@ class NFW(MassProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class Chameleon(MassProfile):
     
     def __init__(self):
-        description = ("Chameleon profile defined as the difference between two NIE profiles"
+        documentation = ("Chameleon profile defined as the difference between two NIE profiles"
                        " (elliptical truncated double isothermal profile)")
         parameters = {
             'alpha_1': NonLinearParameter("Deflection angle at 1 (in coordinates units) from the center",
@@ -182,13 +182,13 @@ class Chameleon(MassProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class ExternalShear(MassProfile):
     
     def __init__(self):
-        description = "External shear defined with a strength and orientation"
+        documentation = "External shear defined with a strength and orientation"
         parameters = {
             'gamma_ext': NonLinearParameter("Strength of external shear",
                                DefinitionRange(min_value=0., max_value=1.0),
@@ -197,28 +197,28 @@ class ExternalShear(MassProfile):
                                DefinitionRange(min_value=-90., max_value=90.),
                                latex_str=r"$\phi_{\rm ext}$"),
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class PixelatedPotential(MassProfile):
     
     def __init__(self):
-        description = "Pixelated lensing potential on a pixel grid"
+        documentation = "Pixelated lensing potential on a pixel grid"
         parameters = {
             'pixels': PixelParameterSet("Set of pixel values",
                                DefinitionRange(),
                                latex_str=r"{\rm pixels}"),
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class PixelatedConvergence(MassProfile):
     
     def __init__(self):
-        description = "Pixelated convergence on a pixel grid"
+        documentation = "Pixelated convergence on a pixel grid"
         parameters = {
             'pixels': PixelParameterSet("Set of pixel values",
                                DefinitionRange(),
                                latex_str=r"{\rm pixels}"),
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)

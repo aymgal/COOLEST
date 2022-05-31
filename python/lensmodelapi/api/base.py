@@ -16,7 +16,7 @@ def filter_dict(dictionary, exclude_keys=None):
         return dictionary
     dictionary_ = deepcopy(dictionary)
     for key in dictionary.keys():
-        if key in exclude_keys:
+        if key in exclude_keys or key[0] == '_':
             del dictionary_[key]
         elif isinstance(dictionary[key], dict):
             dictionary_[key] = filter_dict(dictionary_[key], exclude_keys)

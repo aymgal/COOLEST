@@ -1,13 +1,28 @@
 {
+  "cosmology": {
+    "H0": 73.0,
+    "Om0": 0.3,
+    "astropy_name": "FlatLambdaCDM"
+  },
+  "instrument": {
+    "band": "F160W",
+    "name": "some instrument",
+    "pixel_size": 0.08,
+    "psf": {
+      "description": null,
+      "image": {
+        "fits_path": "test_psf.fits",
+        "num_pix_x": 99,
+        "num_pix_y": 99
+      },
+      "pixel_size": 0.08
+    },
+    "readout": null
+  },
   "lens_model": {
     "coordinates_origin": {
       "dec": "-08d45m51.48s",
       "ra": "00h11m20.244s"
-    },
-    "cosmology": {
-      "H0": 73.0,
-      "Om0": 0.3,
-      "astropy_name": "FlatLambdaCDM"
     },
     "lensing_entities": [
       {
@@ -654,6 +669,36 @@
   },
   "meta": {
     "mode": "mock"
+  },
+  "observation": {
+    "arc_mask": {
+      "fits_path": "arc_mask.fits",
+      "num_pix_x": 110,
+      "num_pix_y": 110
+    },
+    "exposure_time": null,
+    "field_of_view_dec": 8.0,
+    "field_of_view_ra": 8.0,
+    "image": {
+      "fits_path": "test_image.fits",
+      "num_pix_x": 100,
+      "num_pix_y": 100
+    },
+    "likelihood_mask": null,
+    "mag_sky_brightness": null,
+    "mag_zero_point": null,
+    "magnification_ratios": null,
+    "noise": {
+      "background_rms": 0.005,
+      "noise_map": null,
+      "with_poisson_noise": true
+    },
+    "time_delays": [
+      10.0,
+      20.0,
+      40.0
+    ],
+    "wht_map": null
   },
   "standard": "coolest"
 }

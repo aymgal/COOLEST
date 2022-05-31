@@ -17,8 +17,7 @@ class LensModel(APIBaseObject):
                  lensing_entities: LensingEntityList,
                  coordinates_origin: CoordinatesOrigin = None,
                  likelihoods: LikelihoodList = None,
-                 regularizations: RegularizationList = None,
-                 cosmology: Cosmology = None) -> None:
+                 regularizations: RegularizationList = None) -> None:
         self.name = name
         self.lensing_entities = lensing_entities
         if coordinates_origin is None:
@@ -26,5 +25,4 @@ class LensModel(APIBaseObject):
         self.coordinates_origin = coordinates_origin
         self.likelihoods = likelihoods
         self.regularizations = regularizations
-        self.cosmology = cosmology
         super().__init__()

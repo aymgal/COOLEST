@@ -11,10 +11,10 @@ from lensmodelapi.api.parameter import Parameter
 class Profile(APIBaseObject):
 
     def __init__(self,
-                 description: str, 
+                 documentation: str, 
                  parameters: Dict[(str, Parameter)]) -> None:
         self.type = self.__class__.__name__  # name of children class
-        self.description = description
+        self.documentation = documentation
         self.parameters = parameters
         self.id = None
         super().__init__()

@@ -24,7 +24,7 @@ SUPPORTED_CHOICES = __all__
 class Sersic(LightProfile):
     
     def __init__(self):
-        description = "Elliptical Sersic"
+        documentation = "Elliptical Sersic"
         parameters = {
             'A': LinearParameter("Amplitude at origin",
                             DefinitionRange(min_value=0.0),
@@ -48,13 +48,13 @@ class Sersic(LightProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class Chameleon(LightProfile):
     
     def __init__(self):
-        description = ("Chameleon profile defined as the difference between two NIE profiles"
+        documentation = ("Chameleon profile defined as the difference between two NIE profiles"
                        " (elliptical truncated double isothermal profile)")
         parameters = {
             'A': LinearParameter("Central amplitude",
@@ -79,7 +79,7 @@ class Chameleon(LightProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class Shapelets(LightProfile):
@@ -87,7 +87,7 @@ class Shapelets(LightProfile):
     def __init__(self):
         self.n_max = None # TODO
         num_coeffs = None # (self.n_max+1)*(self.n_max+2) / 2
-        description = "Set of shapelet functions"
+        documentation = "Set of shapelet functions"
         parameters = {
             'beta': NonLinearParameter("Shapelet characteristic scale",
                                DefinitionRange(min_value=0.0),
@@ -102,12 +102,12 @@ class Shapelets(LightProfile):
                                DefinitionRange(),
                                latex_str=r"$A$"),
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
         
 class LensedPS(LightProfile):
     def __init__(self):
-        description = "Set of lensed point sources"
+        documentation = "Set of lensed point sources"
         parameters = {
             'ra_list': NonLinearParameterSet("RA positions of the lensed point sources",
                                DefinitionRange(),
@@ -119,40 +119,40 @@ class LensedPS(LightProfile):
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$A$"),
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class Uniform(LightProfile):
     
     def __init__(self):
-        description = "Uniform sheet of light"
+        documentation = "Uniform sheet of light"
         parameters = {
             'A': LinearParameter("Central amplitude",
                             DefinitionRange(min_value=0.0),
                             latex_str=r"$A$"),
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class PixelatedRegularGrid(LightProfile):
     
     def __init__(self):
-        description = "Pixelated light profile on a pixel grid"
+        documentation = "Pixelated light profile on a pixel grid"
         parameters = {
             'pixels': PixelParameterSet("Set of pixel values",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"{\rm pixels}"),
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
 
 
 class PixelatedAdaptiveGrid(LightProfile):
     
     def __init__(self):
-        description = "Pixelated light profile on an adaptive (thus irregular) grid"
+        documentation = "Pixelated light profile on an adaptive (thus irregular) grid"
         parameters = {
             'pixels': PixelParameterSet("Set of pixel values",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"{\rm pixels}"),
         }
-        super().__init__(description, parameters)
+        super().__init__(documentation, parameters)
