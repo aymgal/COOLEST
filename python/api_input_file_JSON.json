@@ -11,9 +11,7 @@
     "psf": {
       "description": null,
       "image": {
-        "fits_path": "test_psf.fits",
-        "num_pix_x": 99,
-        "num_pix_y": 99
+        "fits_path": "test_psf.fits"
       },
       "pixel_size": 0.08
     },
@@ -672,25 +670,25 @@
   },
   "observation": {
     "arc_mask": {
-      "fits_path": "arc_mask.fits",
-      "num_pix_x": 110,
-      "num_pix_y": 110
+      "fits_path": "arc_mask.fits"
     },
     "exposure_time": null,
-    "field_of_view_dec": 8.0,
-    "field_of_view_ra": 8.0,
+    "field_of_view_dec": null,
+    "field_of_view_ra": null,
     "image": {
-      "fits_path": "test_image.fits",
-      "num_pix_x": 100,
-      "num_pix_y": 100
+      "fits_path": null
     },
-    "likelihood_mask": null,
+    "likelihood_mask": {
+      "fits_path": null
+    },
     "mag_sky_brightness": null,
     "mag_zero_point": null,
     "magnification_ratios": null,
     "noise": {
       "background_rms": 0.005,
-      "noise_map": null,
+      "noise_map": {
+        "fits_path": null
+      },
       "with_poisson_noise": true
     },
     "time_delays": [
@@ -698,7 +696,9 @@
       20.0,
       40.0
     ],
-    "wht_map": null
+    "wht_map": {
+      "fits_path": null
+    }
   },
   "standard": "coolest"
 }

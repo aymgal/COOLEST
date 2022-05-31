@@ -1,6 +1,6 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.api.file import FitsFile
+from lensmodelapi.api.fits_file import FitsFile
 from lensmodelapi.api.base import APIBaseObject
 
 

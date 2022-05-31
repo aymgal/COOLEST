@@ -3,7 +3,7 @@ __author__ = 'aymgal'
 from astropy.io import fits
 import numpy as np
 
-from lensmodelapi.api.file import FitsFile
+from lensmodelapi.api.fits_file import FitsFile
 from lensmodelapi.api.noise import Noise
 from lensmodelapi.api.base import APIBaseObject
 
@@ -12,7 +12,7 @@ class Observation(APIBaseObject):
     """Defines a data image, as a simple FITS file"""
     def __init__(self, 
 
-                 image: FitsFile, 
+                 image: FitsFile = None,  # can be None for mock generation
                  field_of_view_ra: float = None,
                  field_of_view_dec: float = None,
 
@@ -29,6 +29,14 @@ class Observation(APIBaseObject):
                  
                  time_delays: list = None,
                  magnification_ratios: list = None) -> None:
+        if image is None:
+            image = FitsFile(None)
+        if wht_map is None:
+            wht_map = FitsFile(None)
+        if arc_mask is None:
+            arc_mask = FitsFile(None)
+        if likelihood_mask is None:
+            likelihood_mask = FitsFile(None)
         self.image = image
         self.field_of_view_ra = field_of_view_ra
         self.field_of_view_dec = field_of_view_dec
@@ -55,8 +63,10 @@ class Observation(APIBaseObject):
         # TODO: check pixel size value?
 
     def update_fov_with_instrument(self, instrument):
-        self.field_of_view_ra = instrument.pixel_size * self.image.num_pix_x
-        self.field_of_view_dec = instrument.pixel_size * self.image.num_pix_y
+        if self.image.exists:
+            num_pix_x, num_pix_y = self.image.shape
+            self.field_of_view_ra  = instrument.pixel_size * num_pix_x
+            self.field_of_view_dec = instrument.pixel_size * num_pix_y
 
     def _check_images(self):
         self._check_positive(self.wht_map, "WHT map")
@@ -65,7 +75,7 @@ class Observation(APIBaseObject):
 
     @staticmethod
     def _check_positive(fits_file, fits_name):
-        if fits_file is None:
+        if not fits_file.exists:
             return
         pixels, _ = fits_file.read()
         if not np.all(pixels > 0):
@@ -73,7 +83,7 @@ class Observation(APIBaseObject):
 
     @staticmethod
     def _check_binary(fits_file, fits_name):
-        if fits_file is None:
+        if not fits_file.exists:
             return
         pixels, _ = fits_file.read()
         if not np.array_equal(pixels, pixels.astype(bool)):

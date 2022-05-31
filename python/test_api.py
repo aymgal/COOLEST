@@ -73,8 +73,9 @@ lens_model = LensModel('My Favorite Lens ever',
                        likelihoods=likelihood_list)
 
 # Provide data file
+obs_image = None #FitsFile('test_image.fits')  # if None, COOLEST mode will be automatically set to 'mock'
 noise = Noise(background_rms=0.005, with_poisson_noise=True, noise_map=None)
-observation = Observation(FitsFile('test_image.fits'),
+observation = Observation(image=obs_image,
                           noise=noise,
                           wht_map=None,
                           arc_mask=FitsFile('arc_mask.fits'),
@@ -92,7 +93,7 @@ instrument = Instrument('some instrument',
 observation.update_fov_with_instrument(instrument)
 
 # Master object for the standard
-master = CoolestStandard('mock', lens_model, observation, instrument, cosmology)
+master = CoolestStandard(lens_model, observation, instrument, cosmology)
 print("FINAL OBJECT\n", master, '\n')
 
 # print supported profiles so far

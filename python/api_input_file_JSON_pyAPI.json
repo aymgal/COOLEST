@@ -1256,13 +1256,17 @@
   "observation": {
     "py/object": "lensmodelapi.api.observation.Observation",
     "image": {
-      "py/object": "lensmodelapi.api.file.FitsFile",
-      "fits_path": "test_image.fits",
-      "num_pix_x": 100,
-      "num_pix_y": 100
+      "py/object": "lensmodelapi.api.fits_file.FitsFile",
+      "fits_path": null,
+      "_array_shape": {
+        "py/tuple": [
+          null,
+          null
+        ]
+      }
     },
-    "field_of_view_ra": 8.0,
-    "field_of_view_dec": 8.0,
+    "field_of_view_ra": null,
+    "field_of_view_dec": null,
     "exposure_time": null,
     "mag_zero_point": null,
     "mag_sky_brightness": null,
@@ -1270,16 +1274,47 @@
       "py/object": "lensmodelapi.api.noise.Noise",
       "background_rms": 0.005,
       "with_poisson_noise": true,
-      "noise_map": null
+      "noise_map": {
+        "py/object": "lensmodelapi.api.fits_file.FitsFile",
+        "fits_path": null,
+        "_array_shape": {
+          "py/tuple": [
+            null,
+            null
+          ]
+        }
+      }
     },
-    "wht_map": null,
+    "wht_map": {
+      "py/object": "lensmodelapi.api.fits_file.FitsFile",
+      "fits_path": null,
+      "_array_shape": {
+        "py/tuple": [
+          null,
+          null
+        ]
+      }
+    },
     "arc_mask": {
-      "py/object": "lensmodelapi.api.file.FitsFile",
+      "py/object": "lensmodelapi.api.fits_file.FitsFile",
       "fits_path": "arc_mask.fits",
-      "num_pix_x": 110,
-      "num_pix_y": 110
+      "_array_shape": {
+        "py/tuple": [
+          110,
+          110
+        ]
+      }
     },
-    "likelihood_mask": null,
+    "likelihood_mask": {
+      "py/object": "lensmodelapi.api.fits_file.FitsFile",
+      "fits_path": null,
+      "_array_shape": {
+        "py/tuple": [
+          null,
+          null
+        ]
+      }
+    },
     "time_delays": [
       10.0,
       20.0,
@@ -1296,10 +1331,14 @@
     "psf": {
       "py/object": "lensmodelapi.api.psf.PSF",
       "image": {
-        "py/object": "lensmodelapi.api.file.FitsFile",
+        "py/object": "lensmodelapi.api.fits_file.FitsFile",
         "fits_path": "test_psf.fits",
-        "num_pix_x": 99,
-        "num_pix_y": 99
+        "_array_shape": {
+          "py/tuple": [
+            99,
+            99
+          ]
+        }
       },
       "pixel_size": 0.08,
       "description": null

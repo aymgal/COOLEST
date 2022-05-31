@@ -1,6 +1,6 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.api.file import FitsFile
+from lensmodelapi.api.fits_file import FitsFile
 from lensmodelapi.api.base import APIBaseObject
 
 
@@ -13,5 +13,7 @@ class Noise(APIBaseObject):
                  noise_map: FitsFile = None) -> None:
         self.background_rms = background_rms
         self.with_poisson_noise = with_poisson_noise
+        if noise_map is None:
+            noise_map = FitsFile(None)
         self.noise_map = noise_map
         super().__init__()
