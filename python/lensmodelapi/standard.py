@@ -26,17 +26,19 @@ class CoolestStandard(APIBaseObject):
                  lens_model: LensModel,
                  observation: Observation,
                  instrument: Instrument,
-                 cosmology: Cosmology = None):
+                 cosmology: Cosmology = None,
+                 metadata: dict = None):
         self.lens_model  = lens_model
         self.observation = observation
         self.instrument  = instrument
         self.cosmology   = cosmology
         self.standard = 'coolest'
+        if metadata is None:
+            metadata = {}
+        self.meta = metadata
         if observation.image.exists:
             mode = 'MODEL'
         else:
             mode = 'MOCK'
-        self.meta = {
-            'mode': mode,
-        }
+        self.meta.update({'mode': mode})
         
