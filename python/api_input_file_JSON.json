@@ -1,657 +1,659 @@
-[
-  {
-    "lens_model": {
-      "coordinates_origin": {
-        "dec": "-08d45m51.48s",
-        "ra": "00h11m20.244s"
-      },
-      "cosmology": {
-        "H0": 73.0,
-        "Om0": 0.3,
-        "astropy_name": "FlatLambdaCDM"
-      },
-      "lensing_entities": [
-        {
-          "mass_model": [
-            {
-              "parameters": {
-                "gamma_ext": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "phi_ext": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                }
-              },
-              "type": "ExternalShear"
-            }
-          ],
-          "name": "my lovely external shear",
-          "redshift": 0.5,
-          "type": "external_shear"
-        },
-        {
-          "light_model": [
-            {
-              "parameters": {
-                "A": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "R_sersic": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "center_x": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "center_y": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "n_sersic": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "phi": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "q": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                }
-              },
-              "type": "Sersic"
-            },
-            {
-              "parameters": {
-                "A": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "R_sersic": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "center_x": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "center_y": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "n_sersic": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "phi": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "q": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                }
-              },
-              "type": "Sersic"
-            }
-          ],
-          "mass_model": [
-            {
-              "parameters": {
-                "center_x": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "center_y": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "gamma": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "phi": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "q": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "theta_E": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                }
-              },
-              "type": "PEMD"
-            },
-            {
-              "parameters": {
-                "pixels": {
-                  "num_values": 0,
-                  "order_in_memory": "C",
-                  "point_estimate": {
-                    "value": []
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  },
-                  "x_coords": [],
-                  "y_coords": []
-                }
-              },
-              "type": "PixelatedPotential"
-            }
-          ],
-          "name": "a lens galaxy",
-          "redshift": 0.5,
-          "type": "galaxy"
-        },
-        {
-          "light_model": [
-            {
-              "parameters": {
-                "A": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "R_sersic": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "center_x": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "center_y": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "n_sersic": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "phi": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                },
-                "q": {
-                  "point_estimate": {
-                    "value": null
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  }
-                }
-              },
-              "type": "Sersic"
-            }
-          ],
-          "mass_model": [],
-          "name": "a source galaxy",
-          "redshift": 2.0,
-          "type": "galaxy"
-        },
-        {
-          "light_model": [
-            {
-              "parameters": {
-                "pixels": {
-                  "num_values": 0,
-                  "order_in_memory": "C",
-                  "point_estimate": {
-                    "value": []
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  },
-                  "x_coords": [],
-                  "y_coords": []
-                }
-              },
-              "type": "PixelatedRegularGrid"
-            }
-          ],
-          "mass_model": [],
-          "name": "another source",
-          "redshift": 1.5,
-          "type": "galaxy"
-        },
-        {
-          "light_model": [
-            {
-              "parameters": {
-                "pixels": {
-                  "num_values": 0,
-                  "order_in_memory": "C",
-                  "point_estimate": {
-                    "value": []
-                  },
-                  "posterior_stats": {
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
-                  },
-                  "prior": {
-                    "type": null
-                  },
-                  "x_coords": [],
-                  "y_coords": []
-                }
-              },
-              "type": "PixelatedRegularGrid"
-            }
-          ],
-          "mass_model": [],
-          "name": "a GLEE source",
-          "redshift": 1.2,
-          "type": "galaxy"
-        }
-      ],
-      "likelihoods": [
-        "imaging_data"
-      ],
-      "regularizations": [
-        {
-          "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-          "name": "PixelStarlet",
-          "parameters": {
-            "lambda": {
-              "point_estimate": {
-                "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              }
-            },
-            "lambda_hf": {
-              "point_estimate": {
-                "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              }
-            }
-          }
-        },
-        {
-          "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-          "name": "PixelPositivity",
-          "parameters": {
-            "lambda": {
-              "point_estimate": {
-                "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              }
-            }
-          }
-        },
-        {
-          "applied_to_profile_id": "galaxy_4-light_model-PixelatedRegularGrid_0",
-          "name": "PixelCurvature",
-          "parameters": {
-            "lambda": {
-              "point_estimate": {
-                "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              }
-            }
-          }
-        },
-        {
-          "applied_to_profile_id": "galaxy_1-mass_model-PixelatedPotential_1",
-          "name": "PixelBLWavelet",
-          "parameters": {
-            "lambda_hf": {
-              "point_estimate": {
-                "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              }
-            }
-          }
-        }
-      ]
+{
+  "lens_model": {
+    "coordinates_origin": {
+      "dec": "-08d45m51.48s",
+      "ra": "00h11m20.244s"
     },
-    "name": "My Favorite Lens ever"
-  }
-]
+    "cosmology": {
+      "H0": 73.0,
+      "Om0": 0.3,
+      "astropy_name": "FlatLambdaCDM"
+    },
+    "lensing_entities": [
+      {
+        "mass_model": [
+          {
+            "parameters": {
+              "gamma_ext": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "phi_ext": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              }
+            },
+            "type": "ExternalShear"
+          }
+        ],
+        "name": "my lovely external shear",
+        "redshift": 0.5,
+        "type": "external_shear"
+      },
+      {
+        "light_model": [
+          {
+            "parameters": {
+              "A": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "R_sersic": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "center_x": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "center_y": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "n_sersic": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "phi": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "q": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              }
+            },
+            "type": "Sersic"
+          },
+          {
+            "parameters": {
+              "A": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "R_sersic": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "center_x": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "center_y": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "n_sersic": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "phi": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "q": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              }
+            },
+            "type": "Sersic"
+          }
+        ],
+        "mass_model": [
+          {
+            "parameters": {
+              "center_x": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "center_y": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "gamma": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "phi": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "q": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "theta_E": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              }
+            },
+            "type": "PEMD"
+          },
+          {
+            "parameters": {
+              "pixels": {
+                "num_values": 0,
+                "order_in_memory": "C",
+                "point_estimate": {
+                  "value": []
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                },
+                "x_coords": [],
+                "y_coords": []
+              }
+            },
+            "type": "PixelatedPotential"
+          }
+        ],
+        "name": "a lens galaxy",
+        "redshift": 0.5,
+        "type": "galaxy"
+      },
+      {
+        "light_model": [
+          {
+            "parameters": {
+              "A": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "R_sersic": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "center_x": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "center_y": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "n_sersic": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "phi": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              },
+              "q": {
+                "point_estimate": {
+                  "value": null
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                }
+              }
+            },
+            "type": "Sersic"
+          }
+        ],
+        "mass_model": [],
+        "name": "a source galaxy",
+        "redshift": 2.0,
+        "type": "galaxy"
+      },
+      {
+        "light_model": [
+          {
+            "parameters": {
+              "pixels": {
+                "num_values": 0,
+                "order_in_memory": "C",
+                "point_estimate": {
+                  "value": []
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                },
+                "x_coords": [],
+                "y_coords": []
+              }
+            },
+            "type": "PixelatedRegularGrid"
+          }
+        ],
+        "mass_model": [],
+        "name": "another source",
+        "redshift": 1.5,
+        "type": "galaxy"
+      },
+      {
+        "light_model": [
+          {
+            "parameters": {
+              "pixels": {
+                "num_values": 0,
+                "order_in_memory": "C",
+                "point_estimate": {
+                  "value": []
+                },
+                "posterior_stats": {
+                  "mean": null,
+                  "median": null,
+                  "percentile_16th": null,
+                  "percentile_84th": null
+                },
+                "prior": {
+                  "type": null
+                },
+                "x_coords": [],
+                "y_coords": []
+              }
+            },
+            "type": "PixelatedRegularGrid"
+          }
+        ],
+        "mass_model": [],
+        "name": "a GLEE source",
+        "redshift": 1.2,
+        "type": "galaxy"
+      }
+    ],
+    "likelihoods": [
+      "imaging_data"
+    ],
+    "name": "My Favorite Lens ever",
+    "regularizations": [
+      {
+        "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
+        "name": "PixelStarlet",
+        "parameters": {
+          "lambda": {
+            "point_estimate": {
+              "value": null
+            },
+            "posterior_stats": {
+              "mean": null,
+              "median": null,
+              "percentile_16th": null,
+              "percentile_84th": null
+            },
+            "prior": {
+              "type": null
+            }
+          },
+          "lambda_hf": {
+            "point_estimate": {
+              "value": null
+            },
+            "posterior_stats": {
+              "mean": null,
+              "median": null,
+              "percentile_16th": null,
+              "percentile_84th": null
+            },
+            "prior": {
+              "type": null
+            }
+          }
+        }
+      },
+      {
+        "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
+        "name": "PixelPositivity",
+        "parameters": {
+          "lambda": {
+            "point_estimate": {
+              "value": null
+            },
+            "posterior_stats": {
+              "mean": null,
+              "median": null,
+              "percentile_16th": null,
+              "percentile_84th": null
+            },
+            "prior": {
+              "type": null
+            }
+          }
+        }
+      },
+      {
+        "applied_to_profile_id": "galaxy_4-light_model-PixelatedRegularGrid_0",
+        "name": "PixelCurvature",
+        "parameters": {
+          "lambda": {
+            "point_estimate": {
+              "value": null
+            },
+            "posterior_stats": {
+              "mean": null,
+              "median": null,
+              "percentile_16th": null,
+              "percentile_84th": null
+            },
+            "prior": {
+              "type": null
+            }
+          }
+        }
+      },
+      {
+        "applied_to_profile_id": "galaxy_1-mass_model-PixelatedPotential_1",
+        "name": "PixelBLWavelet",
+        "parameters": {
+          "lambda_hf": {
+            "point_estimate": {
+              "value": null
+            },
+            "posterior_stats": {
+              "mean": null,
+              "median": null,
+              "percentile_16th": null,
+              "percentile_84th": null
+            },
+            "prior": {
+              "type": null
+            }
+          }
+        }
+      }
+    ]
+  },
+  "meta": {
+    "mode": "mock"
+  },
+  "standard": "coolest"
+}

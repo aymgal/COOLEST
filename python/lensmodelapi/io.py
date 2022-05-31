@@ -4,7 +4,6 @@ import json
 import jsonpickle
 
 
-
 DEFAULT_EXCLUDE_KEYS = [
     'description',
     'id',

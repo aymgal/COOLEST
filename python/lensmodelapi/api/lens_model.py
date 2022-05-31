@@ -13,11 +13,13 @@ from lensmodelapi.api.cosmology import Cosmology
 class LensModel(APIBaseObject):
 
     def __init__(self, 
+                 name: str,
                  lensing_entities: LensingEntityList,
                  coordinates_origin: CoordinatesOrigin = None,
                  likelihoods: LikelihoodList = None,
                  regularizations: RegularizationList = None,
                  cosmology: Cosmology = None) -> None:
+        self.name = name
         self.lensing_entities = lensing_entities
         if coordinates_origin is None:
             coordinates_origin = CoordinatesOrigin('0', '0')
