@@ -1352,6 +1352,6 @@
   },
   "standard": "coolest",
   "meta": {
-    "mode": "mock"
+    "mode": "MOCK"
   }
 }

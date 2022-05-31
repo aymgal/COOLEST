@@ -33,9 +33,9 @@ class CoolestStandard(APIBaseObject):
         self.cosmology   = cosmology
         self.standard = 'coolest'
         if observation.image.exists:
-            mode = 'model'
+            mode = 'MODEL'
         else:
-            mode = 'mock'
+            mode = 'MOCK'
         self.meta = {
             'mode': mode,
         }

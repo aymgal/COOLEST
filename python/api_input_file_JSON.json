@@ -666,7 +666,7 @@
     ]
   },
   "meta": {
-    "mode": "mock"
+    "mode": "MOCK"
   },
   "observation": {
     "arc_mask": {
