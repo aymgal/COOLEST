@@ -31,17 +31,19 @@ lens_1 = Galaxy('a lens galaxy', 0.5,
                 mass_model=MassModel('PEMD', 'PixelatedPotential'))
 
 # Put them in a list, which will also create unique IDs for each profile
-galaxy_list = GalaxyList(lens_1, source_1, source_2, source_3)
+#galaxy_list = GalaxyList(lens_1, source_1, source_2, source_3)
 
 # Defines the external shear
 ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
                           mass_model=MassModel('ExternalShear'))
 
+entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3)
+
 # Define regularization strategies and link them to a given profile
-regularization_list = RegularizationList(('PixelStarlet', source_2.light_model.profiles[0]),
-                                         ('PixelPositivity', source_2.light_model.profiles[0]), 
-                                         ('PixelCurvature', source_3.light_model.profiles[0]),
-                                         ('PixelBLWavelet', lens_1.mass_model.profiles[1]))
+regularization_list = RegularizationList(('PixelStarlet', source_2.light_model[0]),
+                                         ('PixelPositivity', source_2.light_model[0]), 
+                                         ('PixelCurvature', source_3.light_model[0]),
+                                         ('PixelBLWavelet', lens_1.mass_model[1]))
 
 # Choose which likelihood terms you want to include
 likelihood_list = LikelihoodList('imaging_data')
@@ -65,8 +67,7 @@ origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')  # <- in degrees (2
 
 # Define the LensModel that merges physical objects (galaxies), 
 # regularization strategies and a choice of coordinate system
-lens_model = LensModel(galaxy_list,
-                       external_shear=ext_shear,
+lens_model = LensModel(entity_list,
                        coordinates_origin=origin,
                        regularizations=regularization_list,
                        likelihoods=likelihood_list,

@@ -4,6 +4,17 @@ import json
 import jsonpickle
 
 
+
+DEFAULT_EXCLUDE_KEYS = [
+    'description',
+    'id',
+    'latex_str',
+    'units',
+    'fixed',
+    'definition_range',
+]
+
+
 class APISerializer(object):
 
     def __init__(self,
@@ -17,6 +28,8 @@ class APISerializer(object):
         self._api_suffix = '_pyAPI'
 
     def json_dump_simple(self, exclude_keys=None):
+        if exclude_keys is None:
+            exclude_keys = DEFAULT_EXCLUDE_KEYS
         json_path = self.path + '.json'
         result = jsonpickle.encode(self.obj, indent=self.indent)
         with open(json_path, 'w') as f:

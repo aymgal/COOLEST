@@ -6,1004 +6,1059 @@
       "name": "My Favorite Lens ever",
       "lens_model": {
         "py/object": "lensmodelapi.api.lens_model.LensModel",
-        "galaxies": {
-          "py/object": "lensmodelapi.api.galaxy_list.GalaxyList",
+        "lensing_entities": {
+          "py/object": "lensmodelapi.api.lensing_entity_list.LensingEntityList",
           "py/seq": [
             {
+              "py/object": "lensmodelapi.api.external_shear.ExternalShear",
+              "type": "external_shear",
+              "name": "my lovely external shear",
+              "redshift": 0.5,
+              "mass_model": {
+                "py/object": "lensmodelapi.api.mass_light_model.MassModel",
+                "py/seq": [
+                  {
+                    "py/object": "lensmodelapi.api.profiles.mass.ExternalShear",
+                    "type": "ExternalShear",
+                    "description": "External shear defined with a strength and orientation",
+                    "parameters": {
+                      "gamma_ext": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Strength of external shear",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": 1.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$\\gamma_{\\rm ext}$",
+                        "id": "extshear_model_0-ExternalShear_0-gamma_ext"
+                      },
+                      "phi_ext": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Orientation of external shear",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": -90.0,
+                          "max_value": 90.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$\\phi_{\\rm ext}$",
+                        "id": "extshear_model_0-ExternalShear_0-phi_ext"
+                      }
+                    },
+                    "id": "extshear_model_0-ExternalShear_0"
+                  }
+                ]
+              }
+            },
+            {
               "py/object": "lensmodelapi.api.galaxy.Galaxy",
+              "type": "galaxy",
               "name": "a lens galaxy",
               "redshift": 0.5,
-              "light_model": {
-                "py/object": "lensmodelapi.api.mass_light_model.LightModel",
-                "profiles": {
-                  "py/object": "lensmodelapi.api.profile_list.LightProfileList",
-                  "py/seq": [
-                    {
-                      "py/object": "lensmodelapi.api.profiles.light.Sersic",
-                      "name": "Sersic",
-                      "description": "Elliptical Sersic",
-                      "parameters": {
-                        "A": {
-                          "py/object": "lensmodelapi.api.parameter.LinearParameter",
-                          "description": "Amplitude at origin",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$A$",
-                          "id": "galaxy_0-light_model-Sersic_0-A"
-                        },
-                        "R_sersic": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Sersic radius",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$R_{\\rm Sersic}$",
-                          "id": "galaxy_0-light_model-Sersic_0-R_sersic"
-                        },
-                        "n_sersic": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Sersic index",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.5,
-                            "max_value": 10.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$n_{\\rm Sersic}$",
-                          "id": "galaxy_0-light_model-Sersic_0-n_sersic"
-                        },
-                        "q": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Axis ratio, semi-minor axis / semi-major axis",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": 1.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$e_1$",
-                          "id": "galaxy_0-light_model-Sersic_0-q"
-                        },
-                        "phi": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Position angle",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": -90.0,
-                            "max_value": 90.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$e_2$",
-                          "id": "galaxy_0-light_model-Sersic_0-phi"
-                        },
-                        "center_x": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Profile center along x coordinates",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": null,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$x_0$",
-                          "id": "galaxy_0-light_model-Sersic_0-center_x"
-                        },
-                        "center_y": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Profile center along y coordinates",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": null,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$y_0$",
-                          "id": "galaxy_0-light_model-Sersic_0-center_y"
-                        }
-                      },
-                      "id": "galaxy_0-light_model-Sersic_0"
-                    },
-                    {
-                      "py/object": "lensmodelapi.api.profiles.light.Sersic",
-                      "name": "Sersic",
-                      "description": "Elliptical Sersic",
-                      "parameters": {
-                        "A": {
-                          "py/object": "lensmodelapi.api.parameter.LinearParameter",
-                          "description": "Amplitude at origin",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$A$",
-                          "id": "galaxy_0-light_model-Sersic_1-A"
-                        },
-                        "R_sersic": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Sersic radius",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$R_{\\rm Sersic}$",
-                          "id": "galaxy_0-light_model-Sersic_1-R_sersic"
-                        },
-                        "n_sersic": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Sersic index",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.5,
-                            "max_value": 10.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$n_{\\rm Sersic}$",
-                          "id": "galaxy_0-light_model-Sersic_1-n_sersic"
-                        },
-                        "q": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Axis ratio, semi-minor axis / semi-major axis",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": 1.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$e_1$",
-                          "id": "galaxy_0-light_model-Sersic_1-q"
-                        },
-                        "phi": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Position angle",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": -90.0,
-                            "max_value": 90.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$e_2$",
-                          "id": "galaxy_0-light_model-Sersic_1-phi"
-                        },
-                        "center_x": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Profile center along x coordinates",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": null,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$x_0$",
-                          "id": "galaxy_0-light_model-Sersic_1-center_x"
-                        },
-                        "center_y": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Profile center along y coordinates",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": null,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$y_0$",
-                          "id": "galaxy_0-light_model-Sersic_1-center_y"
-                        }
-                      },
-                      "id": "galaxy_0-light_model-Sersic_1"
-                    }
-                  ]
-                }
-              },
               "mass_model": {
                 "py/object": "lensmodelapi.api.mass_light_model.MassModel",
-                "profiles": {
-                  "py/object": "lensmodelapi.api.profile_list.MassProfileList",
-                  "py/seq": [
-                    {
-                      "py/object": "lensmodelapi.api.profiles.mass.PEMD",
-                      "name": "PEMD",
-                      "description": "Powerlaw elliptical mass distribution",
-                      "parameters": {
-                        "gamma": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Mass density slope at Einstein radius",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 1.0,
-                            "max_value": 3.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$\\gamma$",
-                          "id": "galaxy_0-mass_model-PEMD_0-gamma"
+                "py/seq": [
+                  {
+                    "py/object": "lensmodelapi.api.profiles.mass.PEMD",
+                    "type": "PEMD",
+                    "description": "Powerlaw elliptical mass distribution",
+                    "parameters": {
+                      "gamma": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Mass density slope at Einstein radius",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 1.0,
+                          "max_value": 3.0
                         },
-                        "theta_E": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Einstein radius",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$\\theta_{\\rm E}$",
-                          "id": "galaxy_0-mass_model-PEMD_0-theta_E"
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
                         },
-                        "q": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Axis ratio, semi-minor axis / semi-major axis",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": 1.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$e_1$",
-                          "id": "galaxy_0-mass_model-PEMD_0-q"
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
                         },
-                        "phi": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Position angle",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": -90.0,
-                            "max_value": 90.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$e_2$",
-                          "id": "galaxy_0-mass_model-PEMD_0-phi"
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
                         },
-                        "center_x": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Profile center along x coordinates",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": null,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$x_0$",
-                          "id": "galaxy_0-mass_model-PEMD_0-center_x"
-                        },
-                        "center_y": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Profile center along y coordinates",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": null,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$y_0$",
-                          "id": "galaxy_0-mass_model-PEMD_0-center_y"
-                        }
+                        "latex_str": "$\\gamma$",
+                        "id": "galaxy_1-mass_model-PEMD_0-gamma"
                       },
-                      "id": "galaxy_0-mass_model-PEMD_0"
+                      "theta_E": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Einstein radius",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$\\theta_{\\rm E}$",
+                        "id": "galaxy_1-mass_model-PEMD_0-theta_E"
+                      },
+                      "q": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Axis ratio, semi-minor axis / semi-major axis",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": 1.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$e_1$",
+                        "id": "galaxy_1-mass_model-PEMD_0-q"
+                      },
+                      "phi": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Position angle",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": -90.0,
+                          "max_value": 90.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$e_2$",
+                        "id": "galaxy_1-mass_model-PEMD_0-phi"
+                      },
+                      "center_x": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Profile center along x coordinates",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": null,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$x_0$",
+                        "id": "galaxy_1-mass_model-PEMD_0-center_x"
+                      },
+                      "center_y": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Profile center along y coordinates",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": null,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$y_0$",
+                        "id": "galaxy_1-mass_model-PEMD_0-center_y"
+                      }
                     },
-                    {
-                      "py/object": "lensmodelapi.api.profiles.mass.PixelatedPotential",
-                      "name": "PixelatedPotential",
-                      "description": "Pixelated lensing potential on a pixel grid",
-                      "parameters": {
-                        "pixels": {
-                          "py/object": "lensmodelapi.api.parameter.PixelParameterSet",
-                          "description": "Set of pixel values",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": null,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": []
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "{\\rm pixels}",
-                          "id": "galaxy_0-mass_model-PixelatedPotential_1-pixels",
-                          "num_values": 0,
-                          "x_coords": [],
-                          "y_coords": [],
-                          "order_in_memory": "C"
-                        }
+                    "id": "galaxy_1-mass_model-PEMD_0"
+                  },
+                  {
+                    "py/object": "lensmodelapi.api.profiles.mass.PixelatedPotential",
+                    "type": "PixelatedPotential",
+                    "description": "Pixelated lensing potential on a pixel grid",
+                    "parameters": {
+                      "pixels": {
+                        "py/object": "lensmodelapi.api.parameter.PixelParameterSet",
+                        "description": "Set of pixel values",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": null,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": []
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "{\\rm pixels}",
+                        "id": "galaxy_1-mass_model-PixelatedPotential_1-pixels",
+                        "num_values": 0,
+                        "x_coords": [],
+                        "y_coords": [],
+                        "order_in_memory": "C"
+                      }
+                    },
+                    "id": "galaxy_1-mass_model-PixelatedPotential_1"
+                  }
+                ]
+              },
+              "light_model": {
+                "py/object": "lensmodelapi.api.mass_light_model.LightModel",
+                "py/seq": [
+                  {
+                    "py/object": "lensmodelapi.api.profiles.light.Sersic",
+                    "type": "Sersic",
+                    "description": "Elliptical Sersic",
+                    "parameters": {
+                      "A": {
+                        "py/object": "lensmodelapi.api.parameter.LinearParameter",
+                        "description": "Amplitude at origin",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$A$",
+                        "id": "galaxy_1-light_model-Sersic_0-A"
                       },
-                      "id": "galaxy_0-mass_model-PixelatedPotential_1"
-                    }
-                  ]
-                }
+                      "R_sersic": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Sersic radius",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$R_{\\rm Sersic}$",
+                        "id": "galaxy_1-light_model-Sersic_0-R_sersic"
+                      },
+                      "n_sersic": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Sersic index",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.5,
+                          "max_value": 10.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$n_{\\rm Sersic}$",
+                        "id": "galaxy_1-light_model-Sersic_0-n_sersic"
+                      },
+                      "q": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Axis ratio, semi-minor axis / semi-major axis",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": 1.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$e_1$",
+                        "id": "galaxy_1-light_model-Sersic_0-q"
+                      },
+                      "phi": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Position angle",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": -90.0,
+                          "max_value": 90.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$e_2$",
+                        "id": "galaxy_1-light_model-Sersic_0-phi"
+                      },
+                      "center_x": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Profile center along x coordinates",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": null,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$x_0$",
+                        "id": "galaxy_1-light_model-Sersic_0-center_x"
+                      },
+                      "center_y": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Profile center along y coordinates",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": null,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$y_0$",
+                        "id": "galaxy_1-light_model-Sersic_0-center_y"
+                      }
+                    },
+                    "id": "galaxy_1-light_model-Sersic_0"
+                  },
+                  {
+                    "py/object": "lensmodelapi.api.profiles.light.Sersic",
+                    "type": "Sersic",
+                    "description": "Elliptical Sersic",
+                    "parameters": {
+                      "A": {
+                        "py/object": "lensmodelapi.api.parameter.LinearParameter",
+                        "description": "Amplitude at origin",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$A$",
+                        "id": "galaxy_1-light_model-Sersic_1-A"
+                      },
+                      "R_sersic": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Sersic radius",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$R_{\\rm Sersic}$",
+                        "id": "galaxy_1-light_model-Sersic_1-R_sersic"
+                      },
+                      "n_sersic": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Sersic index",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.5,
+                          "max_value": 10.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$n_{\\rm Sersic}$",
+                        "id": "galaxy_1-light_model-Sersic_1-n_sersic"
+                      },
+                      "q": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Axis ratio, semi-minor axis / semi-major axis",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": 1.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$e_1$",
+                        "id": "galaxy_1-light_model-Sersic_1-q"
+                      },
+                      "phi": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Position angle",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": -90.0,
+                          "max_value": 90.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$e_2$",
+                        "id": "galaxy_1-light_model-Sersic_1-phi"
+                      },
+                      "center_x": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Profile center along x coordinates",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": null,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$x_0$",
+                        "id": "galaxy_1-light_model-Sersic_1-center_x"
+                      },
+                      "center_y": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Profile center along y coordinates",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": null,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$y_0$",
+                        "id": "galaxy_1-light_model-Sersic_1-center_y"
+                      }
+                    },
+                    "id": "galaxy_1-light_model-Sersic_1"
+                  }
+                ]
               }
             },
             {
               "py/object": "lensmodelapi.api.galaxy.Galaxy",
+              "type": "galaxy",
               "name": "a source galaxy",
               "redshift": 2.0,
-              "light_model": {
-                "py/object": "lensmodelapi.api.mass_light_model.LightModel",
-                "profiles": {
-                  "py/object": "lensmodelapi.api.profile_list.LightProfileList",
-                  "py/seq": [
-                    {
-                      "py/object": "lensmodelapi.api.profiles.light.Sersic",
-                      "name": "Sersic",
-                      "description": "Elliptical Sersic",
-                      "parameters": {
-                        "A": {
-                          "py/object": "lensmodelapi.api.parameter.LinearParameter",
-                          "description": "Amplitude at origin",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$A$",
-                          "id": "galaxy_1-light_model-Sersic_0-A"
-                        },
-                        "R_sersic": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Sersic radius",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$R_{\\rm Sersic}$",
-                          "id": "galaxy_1-light_model-Sersic_0-R_sersic"
-                        },
-                        "n_sersic": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Sersic index",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.5,
-                            "max_value": 10.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$n_{\\rm Sersic}$",
-                          "id": "galaxy_1-light_model-Sersic_0-n_sersic"
-                        },
-                        "q": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Axis ratio, semi-minor axis / semi-major axis",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": 1.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$e_1$",
-                          "id": "galaxy_1-light_model-Sersic_0-q"
-                        },
-                        "phi": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Position angle",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": -90.0,
-                            "max_value": 90.0
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$e_2$",
-                          "id": "galaxy_1-light_model-Sersic_0-phi"
-                        },
-                        "center_x": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Profile center along x coordinates",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": null,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$x_0$",
-                          "id": "galaxy_1-light_model-Sersic_0-center_x"
-                        },
-                        "center_y": {
-                          "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                          "description": "Profile center along y coordinates",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": null,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": null
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "$y_0$",
-                          "id": "galaxy_1-light_model-Sersic_0-center_y"
-                        }
-                      },
-                      "id": "galaxy_1-light_model-Sersic_0"
-                    }
-                  ]
-                }
-              },
               "mass_model": {
                 "py/object": "lensmodelapi.api.mass_light_model.MassModel",
-                "profiles": {
-                  "py/object": "lensmodelapi.api.profile_list.MassProfileList",
-                  "py/seq": []
-                }
+                "py/seq": []
+              },
+              "light_model": {
+                "py/object": "lensmodelapi.api.mass_light_model.LightModel",
+                "py/seq": [
+                  {
+                    "py/object": "lensmodelapi.api.profiles.light.Sersic",
+                    "type": "Sersic",
+                    "description": "Elliptical Sersic",
+                    "parameters": {
+                      "A": {
+                        "py/object": "lensmodelapi.api.parameter.LinearParameter",
+                        "description": "Amplitude at origin",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$A$",
+                        "id": "galaxy_2-light_model-Sersic_0-A"
+                      },
+                      "R_sersic": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Sersic radius",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$R_{\\rm Sersic}$",
+                        "id": "galaxy_2-light_model-Sersic_0-R_sersic"
+                      },
+                      "n_sersic": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Sersic index",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.5,
+                          "max_value": 10.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$n_{\\rm Sersic}$",
+                        "id": "galaxy_2-light_model-Sersic_0-n_sersic"
+                      },
+                      "q": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Axis ratio, semi-minor axis / semi-major axis",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": 1.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$e_1$",
+                        "id": "galaxy_2-light_model-Sersic_0-q"
+                      },
+                      "phi": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Position angle",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": -90.0,
+                          "max_value": 90.0
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$e_2$",
+                        "id": "galaxy_2-light_model-Sersic_0-phi"
+                      },
+                      "center_x": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Profile center along x coordinates",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": null,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$x_0$",
+                        "id": "galaxy_2-light_model-Sersic_0-center_x"
+                      },
+                      "center_y": {
+                        "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
+                        "description": "Profile center along y coordinates",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": null,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": null
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "$y_0$",
+                        "id": "galaxy_2-light_model-Sersic_0-center_y"
+                      }
+                    },
+                    "id": "galaxy_2-light_model-Sersic_0"
+                  }
+                ]
               }
             },
             {
               "py/object": "lensmodelapi.api.galaxy.Galaxy",
+              "type": "galaxy",
               "name": "another source",
               "redshift": 1.5,
-              "light_model": {
-                "py/object": "lensmodelapi.api.mass_light_model.LightModel",
-                "profiles": {
-                  "py/object": "lensmodelapi.api.profile_list.LightProfileList",
-                  "py/seq": [
-                    {
-                      "py/object": "lensmodelapi.api.profiles.light.PixelatedRegularGrid",
-                      "name": "PixelatedRegularGrid",
-                      "description": "Pixelated light profile on a pixel grid",
-                      "parameters": {
-                        "pixels": {
-                          "py/object": "lensmodelapi.api.parameter.PixelParameterSet",
-                          "description": "Set of pixel values",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": []
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "{\\rm pixels}",
-                          "id": "galaxy_2-light_model-PixelatedRegularGrid_0-pixels",
-                          "num_values": 0,
-                          "x_coords": {
-                            "py/id": 123
-                          },
-                          "y_coords": {
-                            "py/id": 124
-                          },
-                          "order_in_memory": "C"
-                        }
-                      },
-                      "id": "galaxy_2-light_model-PixelatedRegularGrid_0"
-                    }
-                  ]
-                }
-              },
               "mass_model": {
                 "py/object": "lensmodelapi.api.mass_light_model.MassModel",
-                "profiles": {
-                  "py/object": "lensmodelapi.api.profile_list.MassProfileList",
-                  "py/seq": []
-                }
+                "py/seq": []
+              },
+              "light_model": {
+                "py/object": "lensmodelapi.api.mass_light_model.LightModel",
+                "py/seq": [
+                  {
+                    "py/object": "lensmodelapi.api.profiles.light.PixelatedRegularGrid",
+                    "type": "PixelatedRegularGrid",
+                    "description": "Pixelated light profile on a pixel grid",
+                    "parameters": {
+                      "pixels": {
+                        "py/object": "lensmodelapi.api.parameter.PixelParameterSet",
+                        "description": "Set of pixel values",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": []
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "{\\rm pixels}",
+                        "id": "galaxy_3-light_model-PixelatedRegularGrid_0-pixels",
+                        "num_values": 0,
+                        "x_coords": {
+                          "py/id": 60
+                        },
+                        "y_coords": {
+                          "py/id": 61
+                        },
+                        "order_in_memory": "C"
+                      }
+                    },
+                    "id": "galaxy_3-light_model-PixelatedRegularGrid_0"
+                  }
+                ]
               }
             },
             {
               "py/object": "lensmodelapi.api.galaxy.Galaxy",
+              "type": "galaxy",
               "name": "a GLEE source",
               "redshift": 1.2,
-              "light_model": {
-                "py/object": "lensmodelapi.api.mass_light_model.LightModel",
-                "profiles": {
-                  "py/object": "lensmodelapi.api.profile_list.LightProfileList",
-                  "py/seq": [
-                    {
-                      "py/object": "lensmodelapi.api.profiles.light.PixelatedRegularGrid",
-                      "name": "PixelatedRegularGrid",
-                      "description": "Pixelated light profile on a pixel grid",
-                      "parameters": {
-                        "pixels": {
-                          "py/object": "lensmodelapi.api.parameter.PixelParameterSet",
-                          "description": "Set of pixel values",
-                          "units": null,
-                          "definition_range": {
-                            "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                            "min_value": 0.0,
-                            "max_value": null
-                          },
-                          "fixed": false,
-                          "point_estimate": {
-                            "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                            "value": []
-                          },
-                          "posterior_stats": {
-                            "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                            "mean": null,
-                            "median": null,
-                            "percentile_16th": null,
-                            "percentile_84th": null
-                          },
-                          "prior": {
-                            "py/object": "lensmodelapi.api.probabilities.Prior",
-                            "type": null
-                          },
-                          "latex_str": "{\\rm pixels}",
-                          "id": "galaxy_3-light_model-PixelatedRegularGrid_0-pixels",
-                          "num_values": 0,
-                          "x_coords": {
-                            "py/id": 123
-                          },
-                          "y_coords": {
-                            "py/id": 124
-                          },
-                          "order_in_memory": "C"
-                        }
-                      },
-                      "id": "galaxy_3-light_model-PixelatedRegularGrid_0"
-                    }
-                  ]
-                }
-              },
               "mass_model": {
                 "py/object": "lensmodelapi.api.mass_light_model.MassModel",
-                "profiles": {
-                  "py/object": "lensmodelapi.api.profile_list.MassProfileList",
-                  "py/seq": []
-                }
+                "py/seq": []
+              },
+              "light_model": {
+                "py/object": "lensmodelapi.api.mass_light_model.LightModel",
+                "py/seq": [
+                  {
+                    "py/object": "lensmodelapi.api.profiles.light.PixelatedRegularGrid",
+                    "type": "PixelatedRegularGrid",
+                    "description": "Pixelated light profile on a pixel grid",
+                    "parameters": {
+                      "pixels": {
+                        "py/object": "lensmodelapi.api.parameter.PixelParameterSet",
+                        "description": "Set of pixel values",
+                        "units": null,
+                        "definition_range": {
+                          "py/object": "lensmodelapi.api.parameter.DefinitionRange",
+                          "min_value": 0.0,
+                          "max_value": null
+                        },
+                        "fixed": false,
+                        "point_estimate": {
+                          "py/object": "lensmodelapi.api.parameter.PointEstimate",
+                          "value": []
+                        },
+                        "posterior_stats": {
+                          "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
+                          "mean": null,
+                          "median": null,
+                          "percentile_16th": null,
+                          "percentile_84th": null
+                        },
+                        "prior": {
+                          "py/object": "lensmodelapi.api.probabilities.Prior",
+                          "type": null
+                        },
+                        "latex_str": "{\\rm pixels}",
+                        "id": "galaxy_4-light_model-PixelatedRegularGrid_0-pixels",
+                        "num_values": 0,
+                        "x_coords": {
+                          "py/id": 60
+                        },
+                        "y_coords": {
+                          "py/id": 61
+                        },
+                        "order_in_memory": "C"
+                      }
+                    },
+                    "id": "galaxy_4-light_model-PixelatedRegularGrid_0"
+                  }
+                ]
               }
             }
           ]
@@ -1018,83 +1073,6 @@
           "py/seq": [
             "imaging_data"
           ]
-        },
-        "external_shear": {
-          "py/object": "lensmodelapi.api.external_shear.ExternalShear",
-          "name": "my lovely external shear",
-          "redshift": 0.5,
-          "mass_model": {
-            "py/object": "lensmodelapi.api.mass_light_model.MassModel",
-            "profiles": {
-              "py/object": "lensmodelapi.api.profile_list.MassProfileList",
-              "py/seq": [
-                {
-                  "py/object": "lensmodelapi.api.profiles.mass.ExternalShear",
-                  "name": "ExternalShear",
-                  "description": "External shear defined with a strength and orientation",
-                  "parameters": {
-                    "gamma_ext": {
-                      "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                      "description": "Strength of external shear",
-                      "units": null,
-                      "definition_range": {
-                        "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                        "min_value": 0.0,
-                        "max_value": 1.0
-                      },
-                      "fixed": false,
-                      "point_estimate": {
-                        "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "py/object": "lensmodelapi.api.probabilities.Prior",
-                        "type": null
-                      },
-                      "latex_str": "$\\gamma_{\\rm ext}$",
-                      "id": "extshear_model-ExternalShear_0-gamma_ext"
-                    },
-                    "phi_ext": {
-                      "py/object": "lensmodelapi.api.parameter.NonLinearParameter",
-                      "description": "Orientation of external shear",
-                      "units": null,
-                      "definition_range": {
-                        "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-                        "min_value": -90.0,
-                        "max_value": 90.0
-                      },
-                      "fixed": false,
-                      "point_estimate": {
-                        "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                        "value": null
-                      },
-                      "posterior_stats": {
-                        "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                        "mean": null,
-                        "median": null,
-                        "percentile_16th": null,
-                        "percentile_84th": null
-                      },
-                      "prior": {
-                        "py/object": "lensmodelapi.api.probabilities.Prior",
-                        "type": null
-                      },
-                      "latex_str": "$\\phi_{\\rm ext}$",
-                      "id": "extshear_model-ExternalShear_0-phi_ext"
-                    }
-                  },
-                  "id": "extshear_model-ExternalShear_0"
-                }
-              ]
-            }
-          }
         },
         "regularizations": {
           "py/object": "lensmodelapi.api.regularization_list.RegularizationList",
@@ -1161,7 +1139,7 @@
                   "id": "regularization_model-PixelStarlet_0_lambda"
                 }
               },
-              "applied_to_profile_id": "galaxy_2-light_model-PixelatedRegularGrid_0",
+              "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
               "id": "regularization_model-PixelStarlet_0"
             },
             {
@@ -1198,7 +1176,7 @@
                   "id": "regularization_model-PixelPositivity_1_lambda"
                 }
               },
-              "applied_to_profile_id": "galaxy_2-light_model-PixelatedRegularGrid_0",
+              "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
               "id": "regularization_model-PixelPositivity_1"
             },
             {
@@ -1235,7 +1213,7 @@
                   "id": "regularization_model-PixelCurvature_2_lambda"
                 }
               },
-              "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
+              "applied_to_profile_id": "galaxy_4-light_model-PixelatedRegularGrid_0",
               "id": "regularization_model-PixelCurvature_2"
             },
             {
@@ -1272,7 +1250,7 @@
                   "id": "regularization_model-PixelBLWavelet_3_lambda_hf"
                 }
               },
-              "applied_to_profile_id": "galaxy_0-mass_model-PixelatedPotential_1",
+              "applied_to_profile_id": "galaxy_1-mass_model-PixelatedPotential_1",
               "id": "regularization_model-PixelBLWavelet_3"
             }
           ]
