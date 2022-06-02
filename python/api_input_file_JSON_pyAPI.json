@@ -1065,64 +1065,31 @@
   "observation": {
     "py/object": "lensmodelapi.api.observation.Observation",
     "image": {
-      "py/object": "lensmodelapi.api.fits_file.FitsFile",
-      "fits_path": null,
-      "_array_shape": {
-        "py/tuple": [
-          null,
-          null
-        ]
-      }
+      "py/object": "lensmodelapi.api.fits_file.PixelFitsFile",
+      "fits_path": "test_image.fits",
+      "pixel_size": 0.08,
+      "num_pix_x": 100,
+      "num_pix_y": 100
     },
-    "field_of_view_ra": null,
-    "field_of_view_dec": null,
+    "field_of_view_ra": {
+      "py/tuple": [
+        null,
+        null
+      ]
+    },
+    "field_of_view_dec": {
+      "py/tuple": [
+        null,
+        null
+      ]
+    },
     "exposure_time": null,
     "mag_zero_point": null,
     "mag_sky_brightness": null,
     "noise": {
-      "py/object": "lensmodelapi.api.noise.Noise",
-      "background_rms": 0.005,
-      "with_poisson_noise": true,
-      "noise_map": {
-        "py/object": "lensmodelapi.api.fits_file.FitsFile",
-        "fits_path": null,
-        "_array_shape": {
-          "py/tuple": [
-            null,
-            null
-          ]
-        }
-      }
-    },
-    "wht_map": {
-      "py/object": "lensmodelapi.api.fits_file.FitsFile",
-      "fits_path": null,
-      "_array_shape": {
-        "py/tuple": [
-          null,
-          null
-        ]
-      }
-    },
-    "arc_mask": {
-      "py/object": "lensmodelapi.api.fits_file.FitsFile",
-      "fits_path": "arc_mask.fits",
-      "_array_shape": {
-        "py/tuple": [
-          110,
-          110
-        ]
-      }
-    },
-    "likelihood_mask": {
-      "py/object": "lensmodelapi.api.fits_file.FitsFile",
-      "fits_path": null,
-      "_array_shape": {
-        "py/tuple": [
-          null,
-          null
-        ]
-      }
+      "py/object": "lensmodelapi.api.noise.UniformGaussianNoise",
+      "type": "UniformGaussianNoise",
+      "std_dev": 0.004
     },
     "time_delays": [
       10.0,
@@ -1140,16 +1107,12 @@
     "psf": {
       "py/object": "lensmodelapi.api.psf.PSF",
       "image": {
-        "py/object": "lensmodelapi.api.fits_file.FitsFile",
+        "py/object": "lensmodelapi.api.fits_file.PixelFitsFile",
         "fits_path": "test_psf.fits",
-        "_array_shape": {
-          "py/tuple": [
-            99,
-            99
-          ]
-        }
+        "pixel_size": 0.08,
+        "num_pix_x": 99,
+        "num_pix_y": 99
       },
-      "pixel_size": 0.08,
       "description": null
     }
   },
@@ -1170,7 +1133,7 @@
     "py/seq": [
       {
         "py/object": "lensmodelapi.api.regularizations.pixelated.PixelStarlet",
-        "name": "PixelStarlet",
+        "type": "PixelStarlet",
         "documentation": "Starlets regularization",
         "parameters": {
           "lambda_hf": {
@@ -1235,7 +1198,7 @@
       },
       {
         "py/object": "lensmodelapi.api.regularizations.pixelated.PixelPositivity",
-        "name": "PixelPositivity",
+        "type": "PixelPositivity",
         "documentation": "Non-negativity constraint on pixel values",
         "parameters": {
           "lambda": {
@@ -1272,7 +1235,7 @@
       },
       {
         "py/object": "lensmodelapi.api.regularizations.pixelated.PixelCurvature",
-        "name": "PixelCurvature",
+        "type": "PixelCurvature",
         "documentation": "Curvature regularization (second spatial derivative)",
         "parameters": {
           "lambda": {
@@ -1309,7 +1272,7 @@
       },
       {
         "py/object": "lensmodelapi.api.regularizations.pixelated.PixelBLWavelet",
-        "name": "PixelBLWavelet",
+        "type": "PixelBLWavelet",
         "documentation": "Battle-Lemarie wavelet regularization",
         "parameters": {
           "lambda_hf": {
@@ -1348,6 +1311,6 @@
   },
   "standard": "coolest",
   "meta": {
-    "mode": "MOCK"
+    "mode": "MAP"
   }
 }

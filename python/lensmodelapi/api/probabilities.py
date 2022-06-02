@@ -34,19 +34,19 @@ class Prior(APIBaseObject):
 class GaussianPrior(Prior):
 
     def __init__(self, mean=None, width=None):
-        super().__init__(ptype='gaussian', 
+        super().__init__(self.__class__.__name__, 
                          mean=mean, width=width)
 
 
 class LogNormalPrior(Prior):
 
     def __init__(self, mean=None, width=None):
-        super().__init__(ptype='log-normal', 
+        super().__init__(self.__class__.__name__, 
                          mean=mean, width=width)
 
 
 class UniformPrior(Prior):
 
     def __init__(self, min_value=None, max_value=None):
-        super().__init__(ptype='uniform', 
+        super().__init__(self.__class__.__name__, 
                          min_value=min_value, max_value=max_value)

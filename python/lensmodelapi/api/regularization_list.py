@@ -29,7 +29,7 @@ class RegularizationList(list):
 
     def _create_all_ids(self):
         for j, regularization in enumerate(self):
-            regularization_id = util.regul_to_id(regularization.name, j)
+            regularization_id = util.regul_to_id(regularization.type, j)
             regularization.id = regularization_id
             for name, parameter in regularization.parameters.items():
                 param_id = f'{regularization.id}_{name}'

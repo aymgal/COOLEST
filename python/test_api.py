@@ -65,24 +65,25 @@ origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')  # <- in degrees (2
 #                                                                                           percentile_16th=0.03, percentile_84th=0.05))
 
 # Provide data file
-obs_image = None #FitsFile('test_image.fits')  # if None, COOLEST mode will be automatically set to 'mock'
-noise = Noise(background_rms=0.005, with_poisson_noise=True, noise_map=None)
-observation = Observation(image=obs_image,
+image_file = PixelFitsFile('test_image.fits', pixel_size=0.08)  # if None, COOLEST mode will be automatically set to 'mock'
+
+# Select the type of noise
+#from lensmodelapi.api.noise import InstrumentalNoise
+#noise = InstrumentalNoise()
+from lensmodelapi.api.noise import UniformGaussianNoise
+noise = UniformGaussianNoise(std_dev=0.004)
+
+observation = Observation(image=image_file,
                           noise=noise,
-                          wht_map=None,
-                          arc_mask=FitsFile('arc_mask.fits'),
-                          likelihood_mask=None,
                           time_delays=[10., 20., 40.],
                           magnification_ratios=None)
 
 # Defines the instrument
-psf = PSF(FitsFile('test_psf.fits'), pixel_size=0.08)
+psf_file = PSF(PixelFitsFile('test_psf.fits', pixel_size=0.08))
 instrument = Instrument('some instrument',
                         pixel_size=0.08, 
                         band='F160W',
-                        psf=psf)
-
-observation.update_fov_with_instrument(instrument)
+                        psf=psf_file)
 
 # Master object for the standard
 master = CoolestStandard(origin,

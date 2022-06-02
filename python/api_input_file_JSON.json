@@ -15,9 +15,11 @@
     "psf": {
       "description": null,
       "image": {
-        "fits_path": "test_psf.fits"
-      },
-      "pixel_size": 0.08
+        "fits_path": "test_psf.fits",
+        "num_pix_x": 99,
+        "num_pix_y": 99,
+        "pixel_size": 0.08
+      }
     },
     "readout": null
   },
@@ -567,44 +569,40 @@
     "imaging_data"
   ],
   "meta": {
-    "mode": "MOCK"
+    "mode": "MAP"
   },
   "observation": {
-    "arc_mask": {
-      "fits_path": "arc_mask.fits"
-    },
     "exposure_time": null,
-    "field_of_view_dec": null,
-    "field_of_view_ra": null,
+    "field_of_view_dec": [
+      null,
+      null
+    ],
+    "field_of_view_ra": [
+      null,
+      null
+    ],
     "image": {
-      "fits_path": null
-    },
-    "likelihood_mask": {
-      "fits_path": null
+      "fits_path": "test_image.fits",
+      "num_pix_x": 100,
+      "num_pix_y": 100,
+      "pixel_size": 0.08
     },
     "mag_sky_brightness": null,
     "mag_zero_point": null,
     "magnification_ratios": null,
     "noise": {
-      "background_rms": 0.005,
-      "noise_map": {
-        "fits_path": null
-      },
-      "with_poisson_noise": true
+      "std_dev": 0.004,
+      "type": "UniformGaussianNoise"
     },
     "time_delays": [
       10.0,
       20.0,
       40.0
-    ],
-    "wht_map": {
-      "fits_path": null
-    }
+    ]
   },
   "regularizations": [
     {
       "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-      "name": "PixelStarlet",
       "parameters": {
         "lambda": {
           "point_estimate": {
@@ -634,11 +632,11 @@
             "type": null
           }
         }
-      }
+      },
+      "type": "PixelStarlet"
     },
     {
       "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-      "name": "PixelPositivity",
       "parameters": {
         "lambda": {
           "point_estimate": {
@@ -654,11 +652,11 @@
             "type": null
           }
         }
-      }
+      },
+      "type": "PixelPositivity"
     },
     {
       "applied_to_profile_id": "galaxy_4-light_model-PixelatedRegularGrid_0",
-      "name": "PixelCurvature",
       "parameters": {
         "lambda": {
           "point_estimate": {
@@ -674,11 +672,11 @@
             "type": null
           }
         }
-      }
+      },
+      "type": "PixelCurvature"
     },
     {
       "applied_to_profile_id": "galaxy_1-mass_model-PixelatedPotential_1",
-      "name": "PixelBLWavelet",
       "parameters": {
         "lambda_hf": {
           "point_estimate": {
@@ -694,7 +692,8 @@
             "type": null
           }
         }
-      }
+      },
+      "type": "PixelBLWavelet"
     }
   ],
   "standard": "coolest"

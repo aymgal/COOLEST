@@ -2,7 +2,6 @@ __author__ = 'aymgal'
 
 
 from lensmodelapi.api.base import APIBaseObject
-from lensmodelapi.api.lens_model import LensModel
 from lensmodelapi.api.observation import Observation
 from lensmodelapi.api.instrument import Instrument
 from lensmodelapi.api.lensing_entity_list import LensingEntityList
