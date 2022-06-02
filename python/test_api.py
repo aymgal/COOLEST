@@ -64,14 +64,6 @@ origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')  # <- in degrees (2
 # source_1.light_model.profiles[0].parameters['R_sersic'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
 #                                                                                           percentile_16th=0.03, percentile_84th=0.05))
 
-# Define the LensModel that merges physical objects (galaxies), 
-# regularization strategies and a choice of coordinate system
-lens_model = LensModel('My Favorite Lens ever',
-                       entity_list,
-                       coordinates_origin=origin,
-                       regularizations=regularization_list,
-                       likelihoods=likelihood_list)
-
 # Provide data file
 obs_image = None #FitsFile('test_image.fits')  # if None, COOLEST mode will be automatically set to 'mock'
 noise = Noise(background_rms=0.005, with_poisson_noise=True, noise_map=None)
@@ -93,7 +85,13 @@ instrument = Instrument('some instrument',
 observation.update_fov_with_instrument(instrument)
 
 # Master object for the standard
-master = CoolestStandard(lens_model, observation, instrument, cosmology)
+master = CoolestStandard(origin,
+                         entity_list,
+                         observation, 
+                         instrument, 
+                         cosmology,
+                         regularizations=regularization_list,
+                         likelihoods=likelihood_list)
 print("FINAL OBJECT\n", master, '\n')
 
 # print supported profiles so far
