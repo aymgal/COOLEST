@@ -1,5 +1,6 @@
 {
   "py/object": "lensmodelapi.standard.CoolestStandard",
+  "mode": "MOCK",
   "coordinates_origin": {
     "py/object": "lensmodelapi.api.coordinates.CoordinatesOrigin",
     "ra": "00h11m20.244s",
@@ -1131,189 +1132,19 @@
       "imaging_data"
     ]
   },
-  "regularizations": {
-    "py/object": "lensmodelapi.api.regularization_list.RegularizationList",
-    "py/seq": [
-      {
-        "py/object": "lensmodelapi.api.regularizations.pixelated.PixelStarlet",
-        "type": "PixelStarlet",
-        "documentation": "Starlets regularization",
-        "parameters": {
-          "lambda_hf": {
-            "py/object": "lensmodelapi.api.parameter.HyperParameter",
-            "documentation": "Lagrange parameter for first starlet scale (high frequencies)",
-            "units": null,
-            "definition_range": {
-              "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-              "min_value": 0.0,
-              "max_value": null
-            },
-            "fixed": false,
-            "point_estimate": {
-              "py/object": "lensmodelapi.api.parameter.PointEstimate",
-              "value": null
-            },
-            "posterior_stats": {
-              "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-              "mean": null,
-              "median": null,
-              "percentile_16th": null,
-              "percentile_84th": null
-            },
-            "prior": {
-              "py/object": "lensmodelapi.api.probabilities.Prior",
-              "type": null
-            },
-            "latex_str": "$\\lambda_{\\rm s, hf}$",
-            "id": "regularization_model-PixelStarlet_0_lambda_hf"
-          },
-          "lambda": {
-            "py/object": "lensmodelapi.api.parameter.HyperParameter",
-            "documentation": "Lagrange parameter from second to last starlet scales (excluding coarse scale)",
-            "units": null,
-            "definition_range": {
-              "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-              "min_value": 0.0,
-              "max_value": null
-            },
-            "fixed": false,
-            "point_estimate": {
-              "py/object": "lensmodelapi.api.parameter.PointEstimate",
-              "value": null
-            },
-            "posterior_stats": {
-              "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-              "mean": null,
-              "median": null,
-              "percentile_16th": null,
-              "percentile_84th": null
-            },
-            "prior": {
-              "py/object": "lensmodelapi.api.probabilities.Prior",
-              "type": null
-            },
-            "latex_str": "$\\lambda_{\\rm s}$",
-            "id": "regularization_model-PixelStarlet_0_lambda"
-          }
-        },
-        "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-        "id": "regularization_model-PixelStarlet_0"
-      },
-      {
-        "py/object": "lensmodelapi.api.regularizations.pixelated.PixelPositivity",
-        "type": "PixelPositivity",
-        "documentation": "Non-negativity constraint on pixel values",
-        "parameters": {
-          "lambda": {
-            "py/object": "lensmodelapi.api.parameter.HyperParameter",
-            "documentation": "Lagrange parameter",
-            "units": null,
-            "definition_range": {
-              "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-              "min_value": 0.0,
-              "max_value": null
-            },
-            "fixed": false,
-            "point_estimate": {
-              "py/object": "lensmodelapi.api.parameter.PointEstimate",
-              "value": null
-            },
-            "posterior_stats": {
-              "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-              "mean": null,
-              "median": null,
-              "percentile_16th": null,
-              "percentile_84th": null
-            },
-            "prior": {
-              "py/object": "lensmodelapi.api.probabilities.Prior",
-              "type": null
-            },
-            "latex_str": "$\\lambda_{\\rm pos}$",
-            "id": "regularization_model-PixelPositivity_1_lambda"
-          }
-        },
-        "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-        "id": "regularization_model-PixelPositivity_1"
-      },
-      {
-        "py/object": "lensmodelapi.api.regularizations.pixelated.PixelCurvature",
-        "type": "PixelCurvature",
-        "documentation": "Curvature regularization (second spatial derivative)",
-        "parameters": {
-          "lambda": {
-            "py/object": "lensmodelapi.api.parameter.HyperParameter",
-            "documentation": "Lagrange parameter for curvature regularization",
-            "units": null,
-            "definition_range": {
-              "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-              "min_value": 0.0,
-              "max_value": null
-            },
-            "fixed": false,
-            "point_estimate": {
-              "py/object": "lensmodelapi.api.parameter.PointEstimate",
-              "value": null
-            },
-            "posterior_stats": {
-              "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-              "mean": null,
-              "median": null,
-              "percentile_16th": null,
-              "percentile_84th": null
-            },
-            "prior": {
-              "py/object": "lensmodelapi.api.probabilities.Prior",
-              "type": null
-            },
-            "latex_str": "$\\lambda_{\\rm curv}$",
-            "id": "regularization_model-PixelCurvature_2_lambda"
-          }
-        },
-        "applied_to_profile_id": "galaxy_4-light_model-PixelatedRegularGrid_0",
-        "id": "regularization_model-PixelCurvature_2"
-      },
-      {
-        "py/object": "lensmodelapi.api.regularizations.pixelated.PixelBLWavelet",
-        "type": "PixelBLWavelet",
-        "documentation": "Battle-Lemarie wavelet regularization",
-        "parameters": {
-          "lambda_hf": {
-            "py/object": "lensmodelapi.api.parameter.HyperParameter",
-            "documentation": "Lagrange parameter for first Battle-Lemarie scale (high frequencies)",
-            "units": null,
-            "definition_range": {
-              "py/object": "lensmodelapi.api.parameter.DefinitionRange",
-              "min_value": 0.0,
-              "max_value": null
-            },
-            "fixed": false,
-            "point_estimate": {
-              "py/object": "lensmodelapi.api.parameter.PointEstimate",
-              "value": null
-            },
-            "posterior_stats": {
-              "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-              "mean": null,
-              "median": null,
-              "percentile_16th": null,
-              "percentile_84th": null
-            },
-            "prior": {
-              "py/object": "lensmodelapi.api.probabilities.Prior",
-              "type": null
-            },
-            "latex_str": "$\\lambda_{\\rm BL, hf}$",
-            "id": "regularization_model-PixelBLWavelet_3_lambda_hf"
-          }
-        },
-        "applied_to_profile_id": "galaxy_1-mass_model-PixelatedPotential_1",
-        "id": "regularization_model-PixelBLWavelet_3"
-      }
-    ]
-  },
   "standard": "coolest",
   "meta": {
-    "mode": "MAP"
-  }
+    "mode": "MOCK"
+  },
+  "exclude_keys": [
+    "exclude_keys",
+    "documentation",
+    "id",
+    "latex_str",
+    "units",
+    "fixed",
+    "definition_range",
+    "likelihoods",
+    "regularizations"
+  ]
 }

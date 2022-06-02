@@ -568,12 +568,10 @@
       "type": "galaxy"
     }
   ],
-  "likelihoods": [
-    "imaging_data"
-  ],
   "meta": {
-    "mode": "MAP"
+    "mode": "MOCK"
   },
+  "mode": "MOCK",
   "observation": {
     "exposure_time": null,
     "field_of_view_dec": [
@@ -603,101 +601,5 @@
       40.0
     ]
   },
-  "regularizations": [
-    {
-      "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-      "parameters": {
-        "lambda": {
-          "point_estimate": {
-            "value": null
-          },
-          "posterior_stats": {
-            "mean": null,
-            "median": null,
-            "percentile_16th": null,
-            "percentile_84th": null
-          },
-          "prior": {
-            "type": null
-          }
-        },
-        "lambda_hf": {
-          "point_estimate": {
-            "value": null
-          },
-          "posterior_stats": {
-            "mean": null,
-            "median": null,
-            "percentile_16th": null,
-            "percentile_84th": null
-          },
-          "prior": {
-            "type": null
-          }
-        }
-      },
-      "type": "PixelStarlet"
-    },
-    {
-      "applied_to_profile_id": "galaxy_3-light_model-PixelatedRegularGrid_0",
-      "parameters": {
-        "lambda": {
-          "point_estimate": {
-            "value": null
-          },
-          "posterior_stats": {
-            "mean": null,
-            "median": null,
-            "percentile_16th": null,
-            "percentile_84th": null
-          },
-          "prior": {
-            "type": null
-          }
-        }
-      },
-      "type": "PixelPositivity"
-    },
-    {
-      "applied_to_profile_id": "galaxy_4-light_model-PixelatedRegularGrid_0",
-      "parameters": {
-        "lambda": {
-          "point_estimate": {
-            "value": null
-          },
-          "posterior_stats": {
-            "mean": null,
-            "median": null,
-            "percentile_16th": null,
-            "percentile_84th": null
-          },
-          "prior": {
-            "type": null
-          }
-        }
-      },
-      "type": "PixelCurvature"
-    },
-    {
-      "applied_to_profile_id": "galaxy_1-mass_model-PixelatedPotential_1",
-      "parameters": {
-        "lambda_hf": {
-          "point_estimate": {
-            "value": null
-          },
-          "posterior_stats": {
-            "mean": null,
-            "median": null,
-            "percentile_16th": null,
-            "percentile_84th": null
-          },
-          "prior": {
-            "type": null
-          }
-        }
-      },
-      "type": "PixelBLWavelet"
-    }
-  ],
   "standard": "coolest"
 }

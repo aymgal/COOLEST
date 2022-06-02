@@ -2,6 +2,8 @@ __author__ = 'aymgal'
 
 from typing import Tuple
 
+from lensmodelapi.api.base import APIBaseObject
+
 
 SUPPORTED_CHOICES = [
     'imaging_data', 
@@ -12,7 +14,7 @@ SUPPORTED_CHOICES = [
 ]
 
 
-class LikelihoodList(list):
+class LikelihoodList(list, APIBaseObject):
 
     def __init__(self, 
                  *likelihood_types: Tuple[str]) -> None:
@@ -20,3 +22,4 @@ class LikelihoodList(list):
             if ll_type not in SUPPORTED_CHOICES:
                 raise ValueError(f"Likelihood type '{ll_type}' is not supported.")
         list.__init__(self, likelihood_types)
+        APIBaseObject.__init__(self)

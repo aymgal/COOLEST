@@ -88,12 +88,12 @@ instrument = Instrument('some instrument',
                         psf=psf)
 
 # Master object for the standard
-master = CoolestStandard(origin,
+master = CoolestStandard('MOCK',
+                         origin,
                          entity_list,
                          observation, 
                          instrument, 
                          cosmology,
-                         regularizations=regularization_list,
                          likelihoods=likelihood_list)
 print("FINAL OBJECT\n", master, '\n')
 
