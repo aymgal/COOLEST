@@ -36,7 +36,7 @@ MAP_EXCLUDE_KEYS = [
 ]
 
 
-class CoolestStandard(APIBaseObject):
+class COOLEST(APIBaseObject):
 
     def __init__(self,
                  mode: str,
@@ -65,8 +65,6 @@ class CoolestStandard(APIBaseObject):
         if metadata is None:
             metadata = {}
         self.meta = metadata
-        if self.mode != 'MOCK' and not observation.image.exists:
-            raise ValueError("The mode is not 'MOCK' but the imaging data is not provided!")
         self.meta.update({'mode': mode})
 
         if self.mode == 'MOCK':

@@ -10,7 +10,7 @@ class PixelFitsFile(APIBaseObject):
     """A simple FITS file"""
     def __init__(self,
                  fits_path: str,
-                 pixel_size: float = 1.0) -> None:
+                 pixel_size: float = None) -> None:
         self.fits_path = fits_path
         self.pixel_size = pixel_size
         if self.exists:

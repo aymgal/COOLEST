@@ -1,5 +1,5 @@
 {
-  "py/object": "lensmodelapi.standard.CoolestStandard",
+  "py/object": "lensmodelapi.standard.COOLEST",
   "mode": "MOCK",
   "coordinates_origin": {
     "py/object": "lensmodelapi.api.coordinates.CoordinatesOrigin",

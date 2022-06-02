@@ -4,7 +4,7 @@
 
 from lensmodelapi.lazy import *
 from lensmodelapi import info
-from lensmodelapi.standard import CoolestStandard
+from lensmodelapi.standard import COOLEST
 from lensmodelapi.io import APISerializer
 
 from pprint import pprint
@@ -88,7 +88,7 @@ instrument = Instrument('some instrument',
                         psf=psf)
 
 # Master object for the standard
-master = CoolestStandard('MOCK',
+master = COOLEST('MOCK',
                          origin,
                          entity_list,
                          observation, 
@@ -114,8 +114,8 @@ sample_encoder_yaml.yaml_dump()
 sample_encoder_yaml.dump_yaml_to_json()
 # test construct class from YAML
 standard_master_1 = sample_encoder_yaml.yaml_load()
-print("Retrieved object is a CoolestStandard instance?", 
-      isinstance(standard_master_1, CoolestStandard))
+print("Retrieved object is a COOLEST instance?", 
+      isinstance(standard_master_1, COOLEST))
 print("Meta data:", standard_master_1.meta)
 
 # TESTS WITH JSON
@@ -124,8 +124,8 @@ sample_encoder_json = APISerializer('api_input_file_JSON',
 sample_encoder_json.json_dump()
 sample_encoder_json.json_dump_simple()
 standard_master_2 = sample_encoder_json.json_load()
-print("Retrieved object is a CoolestStandard instance?", 
-      isinstance(standard_master_2, CoolestStandard))
+print("Retrieved object is a COOLEST instance?", 
+      isinstance(standard_master_2, COOLEST))
 print("Meta data:", standard_master_2.meta)
 
 
