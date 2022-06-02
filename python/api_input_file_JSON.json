@@ -258,7 +258,7 @@
             },
             "q": {
               "point_estimate": {
-                "value": null
+                "value": 0.89
               },
               "posterior_stats": {
                 "mean": null,
@@ -316,7 +316,9 @@
                 "percentile_84th": null
               },
               "prior": {
-                "type": null
+                "mean": 2.0,
+                "type": "GaussianPrior",
+                "width": 0.2
               }
             },
             "phi": {
@@ -415,10 +417,10 @@
                 "value": null
               },
               "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
+                "mean": 0.12,
+                "median": 0.15,
+                "percentile_16th": 0.03,
+                "percentile_84th": 0.05
               },
               "prior": {
                 "type": null

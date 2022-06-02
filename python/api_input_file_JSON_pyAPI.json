@@ -118,8 +118,10 @@
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "lensmodelapi.api.probabilities.Prior",
-                    "type": null
+                    "py/object": "lensmodelapi.api.probabilities.GaussianPrior",
+                    "type": "GaussianPrior",
+                    "mean": 2.0,
+                    "width": 0.2
                   },
                   "latex_str": "$\\gamma$",
                   "id": "galaxy_1-mass_model-PEMD_0-gamma"
@@ -617,7 +619,7 @@
                   "fixed": false,
                   "point_estimate": {
                     "py/object": "lensmodelapi.api.parameter.PointEstimate",
-                    "value": null
+                    "value": 0.89
                   },
                   "posterior_stats": {
                     "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
@@ -784,10 +786,10 @@
                   },
                   "posterior_stats": {
                     "py/object": "lensmodelapi.api.probabilities.PosteriorStatistics",
-                    "mean": null,
-                    "median": null,
-                    "percentile_16th": null,
-                    "percentile_84th": null
+                    "mean": 0.12,
+                    "median": 0.15,
+                    "percentile_16th": 0.03,
+                    "percentile_84th": 0.05
                   },
                   "prior": {
                     "py/object": "lensmodelapi.api.probabilities.Prior",

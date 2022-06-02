@@ -50,19 +50,19 @@ likelihood_list = LikelihoodList('imaging_data')
 # Define the origin of the coordinates system
 origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')  # <- in degrees (2.83435, )
 
-# # TESTS
-# # - add a gaussian prior to a given parameter
-# from lensmodelapi.api.probabilities import GaussianPrior
-# lens_1.mass_model.profiles[0].parameters['gamma'].set_prior(GaussianPrior(mean=2.0, width=0.2))
+# EXAMPLE for accessing specific parameters and add priors/values/posteriors
+# - add a gaussian prior to a given parameter
+from lensmodelapi.api.probabilities import GaussianPrior
+lens_1.mass_model[0].parameters['gamma'].set_prior(GaussianPrior(mean=2.0, width=0.2))
 
-# # - add a point estimate to a given parameter
-# from lensmodelapi.api.parameter import PointEstimate
-# lens_1.light_model.profiles[1].parameters['q'].set_point_estimate(PointEstimate(value=0.89))
+# - add a point estimate to a given parameter
+from lensmodelapi.api.parameter import PointEstimate
+lens_1.light_model[1].parameters['q'].set_point_estimate(PointEstimate(value=0.89))
 
-# # - add a posterior distribution (as 0th and 1st order statistics)
-# from lensmodelapi.api.probabilities import PosteriorStatistics
-# source_1.light_model.profiles[0].parameters['R_sersic'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
-#                                                                                           percentile_16th=0.03, percentile_84th=0.05))
+# - add a posterior distribution (as 0th and 1st order statistics)
+from lensmodelapi.api.probabilities import PosteriorStatistics
+source_1.light_model[0].parameters['R_sersic'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
+                                                                                 percentile_16th=0.03, percentile_84th=0.05))
 
 # Provide data file
 image_file = PixelFitsFile('test_image.fits', pixel_size=0.08)  # if None, COOLEST mode will be automatically set to 'mock'
