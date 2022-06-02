@@ -1,0 +1,431 @@
+[
+  {
+    "description": "Singular isothermal sphere",
+    "name": "SIE",
+    "parameters": {
+      "center_x": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along x coordinates",
+        "latex_str": "$x_0$",
+        "units": null
+      },
+      "center_y": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along y coordinates",
+        "latex_str": "$y_0$",
+        "units": null
+      },
+      "phi": {
+        "definition_range": {
+          "max_value": 90.0,
+          "min_value": -90.0
+        },
+        "description": "Position angle",
+        "latex_str": "$e_2$",
+        "units": null
+      },
+      "q": {
+        "definition_range": {
+          "max_value": 1.0,
+          "min_value": 0.0
+        },
+        "description": "Axis ratio, semi-minor axis / semi-major axis",
+        "latex_str": "$e_1$",
+        "units": null
+      },
+      "theta_E": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Einstein radius",
+        "latex_str": "$\\theta_{\\rm E}$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Non-singular isothermal sphere",
+    "name": "NIE",
+    "parameters": {
+      "center_x": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along x coordinates",
+        "latex_str": "$x_0$",
+        "units": null
+      },
+      "center_y": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along y coordinates",
+        "latex_str": "$y_0$",
+        "units": null
+      },
+      "phi": {
+        "definition_range": {
+          "max_value": 90.0,
+          "min_value": -90.0
+        },
+        "description": "Position angle",
+        "latex_str": "$e_2$",
+        "units": null
+      },
+      "q": {
+        "definition_range": {
+          "max_value": 1.0,
+          "min_value": 0.0
+        },
+        "description": "Axis ratio, semi-minor axis / semi-major axis",
+        "latex_str": "$e_1$",
+        "units": null
+      },
+      "r_core": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Core radius",
+        "latex_str": "$r_{\\rm c}$",
+        "units": null
+      },
+      "theta_E": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Einstein radius",
+        "latex_str": "$\\theta_{\\rm E}$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Powerlaw elliptical mass distribution",
+    "name": "PEMD",
+    "parameters": {
+      "center_x": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along x coordinates",
+        "latex_str": "$x_0$",
+        "units": null
+      },
+      "center_y": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along y coordinates",
+        "latex_str": "$y_0$",
+        "units": null
+      },
+      "gamma": {
+        "definition_range": {
+          "max_value": 3.0,
+          "min_value": 1.0
+        },
+        "description": "Mass density slope at Einstein radius",
+        "latex_str": "$\\gamma$",
+        "units": null
+      },
+      "phi": {
+        "definition_range": {
+          "max_value": 90.0,
+          "min_value": -90.0
+        },
+        "description": "Position angle",
+        "latex_str": "$e_2$",
+        "units": null
+      },
+      "q": {
+        "definition_range": {
+          "max_value": 1.0,
+          "min_value": 0.0
+        },
+        "description": "Axis ratio, semi-minor axis / semi-major axis",
+        "latex_str": "$e_1$",
+        "units": null
+      },
+      "theta_E": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Einstein radius",
+        "latex_str": "$\\theta_{\\rm E}$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Softened powerlaw elliptical mass distribution",
+    "name": "SPEMD",
+    "parameters": {
+      "center_x": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along x coordinates",
+        "latex_str": "$x_0$",
+        "units": null
+      },
+      "center_y": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along y coordinates",
+        "latex_str": "$y_0$",
+        "units": null
+      },
+      "gamma": {
+        "definition_range": {
+          "max_value": 3.0,
+          "min_value": 1.0
+        },
+        "description": "Mass density slope at Einstein radius",
+        "latex_str": "$\\gamma$",
+        "units": null
+      },
+      "phi": {
+        "definition_range": {
+          "max_value": 90.0,
+          "min_value": -90.0
+        },
+        "description": "Position angle",
+        "latex_str": "$e_2$",
+        "units": null
+      },
+      "q": {
+        "definition_range": {
+          "max_value": 1.0,
+          "min_value": 0.0
+        },
+        "description": "Axis ratio, semi-minor axis / semi-major axis",
+        "latex_str": "$e_1$",
+        "units": null
+      },
+      "r_core": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Core radius",
+        "latex_str": "$r_{\\rm c}$",
+        "units": null
+      },
+      "theta_E": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Einstein radius",
+        "latex_str": "$\\theta_{\\rm E}$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "NFW with ellipticity introduced in the mass",
+    "name": "NFW",
+    "parameters": {
+      "center_x": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along x coordinates",
+        "latex_str": "$x_0$",
+        "units": null
+      },
+      "center_y": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along y coordinates",
+        "latex_str": "$y_0$",
+        "units": null
+      },
+      "phi": {
+        "definition_range": {
+          "max_value": 90.0,
+          "min_value": -90.0
+        },
+        "description": "Position angle",
+        "latex_str": "$e_2$",
+        "units": null
+      },
+      "q": {
+        "definition_range": {
+          "max_value": 1.0,
+          "min_value": 0.0
+        },
+        "description": "Axis ratio, semi-minor axis / semi-major axis",
+        "latex_str": "$e_1$",
+        "units": null
+      },
+      "r_s": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Radius at which the mass density profile slope transitions from -1 to -3",
+        "latex_str": "$r_{\\rm s}$",
+        "units": null
+      },
+      "rho_0": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Characteristic mass density",
+        "latex_str": "$\\rho_0$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Chameleon profile defined as the difference between two NIE profiles (elliptical truncated double isothermal profile)",
+    "name": "Chameleon",
+    "parameters": {
+      "alpha_1": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Deflection angle at 1 (in coordinates units) from the center",
+        "latex_str": "$\\alpha_1$",
+        "units": null
+      },
+      "center_x": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along x coordinates",
+        "latex_str": "$x_0$",
+        "units": null
+      },
+      "center_y": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Profile center along y coordinates",
+        "latex_str": "$y_0$",
+        "units": null
+      },
+      "phi": {
+        "definition_range": {
+          "max_value": 90.0,
+          "min_value": -90.0
+        },
+        "description": "Position angle",
+        "latex_str": "$e_2$",
+        "units": null
+      },
+      "q": {
+        "definition_range": {
+          "max_value": 1.0,
+          "min_value": 0.0
+        },
+        "description": "Axis ratio, semi-minor axis / semi-major axis",
+        "latex_str": "$e_1$",
+        "units": null
+      },
+      "w_c": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Core radius of inner NIE",
+        "latex_str": "$w{\\rm c}$",
+        "units": null
+      },
+      "w_t": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": 0.0
+        },
+        "description": "Core radius of outer NIE",
+        "latex_str": "$w{\\rm t}$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "External shear defined with a strength and orientation",
+    "name": "ExternalShear",
+    "parameters": {
+      "gamma_ext": {
+        "definition_range": {
+          "max_value": 1.0,
+          "min_value": 0.0
+        },
+        "description": "Strength of external shear",
+        "latex_str": "$\\gamma_{\\rm ext}$",
+        "units": null
+      },
+      "phi_ext": {
+        "definition_range": {
+          "max_value": 90.0,
+          "min_value": -90.0
+        },
+        "description": "Orientation of external shear",
+        "latex_str": "$\\phi_{\\rm ext}$",
+        "units": null
+      }
+    }
+  },
+  {
+    "description": "Pixelated lensing potential on a pixel grid",
+    "name": "PixelatedPotential",
+    "parameters": {
+      "pixels": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Set of pixel values",
+        "latex_str": "{\\rm pixels}",
+        "num_values": 0,
+        "units": null,
+        "x_coords": [],
+        "y_coords": []
+      }
+    }
+  },
+  {
+    "description": "Pixelated convergence on a pixel grid",
+    "name": "PixelatedConvergence",
+    "parameters": {
+      "pixels": {
+        "definition_range": {
+          "max_value": null,
+          "min_value": null
+        },
+        "description": "Set of pixel values",
+        "latex_str": "{\\rm pixels}",
+        "num_values": 0,
+        "units": null,
+        "x_coords": [],
+        "y_coords": []
+      }
+    }
+  }
+]

@@ -9,11 +9,11 @@ from lensmodelapi.api.parameter import Parameter
 class Regularization(APIBaseObject):
 
     def __init__(self,
-                 description: str, 
+                 documentation: str, 
                  parameters: Dict[str, Parameter],
                  applied_to_profile_id: str = None) -> None:
-        self.name = self.__class__.__name__  # name of children class
-        self.description = description
+        self.type = self.__class__.__name__  # name of children class
+        self.documentation = documentation
         self.parameters = parameters
         self.applied_to_profile_id = applied_to_profile_id
         super().__init__()

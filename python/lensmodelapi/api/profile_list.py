@@ -4,8 +4,6 @@ from types import ModuleType
 from typing import Tuple
 
 from lensmodelapi.api.base import APIBaseObject
-from lensmodelapi.api.profiles import mass as mass_profiles_module
-from lensmodelapi.api.profiles import light as light_profiles_module
 
 
 class ProfileList(list, APIBaseObject):
@@ -23,17 +21,3 @@ class ProfileList(list, APIBaseObject):
 
     def num_pixelated_profiles(self):
         pass  #TODO
-
-
-class MassProfileList(ProfileList):
-
-    def __init__(self, 
-                 *profile_names: Tuple[str]) -> None:
-        super().__init__(mass_profiles_module, *profile_names)
-
-
-class LightProfileList(ProfileList):
-
-    def __init__(self, 
-                 *profile_names: Tuple[str]) -> None:
-        super().__init__(light_profiles_module, *profile_names)
