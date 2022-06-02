@@ -61,7 +61,7 @@ class COOLEST(APIBaseObject):
         self.likelihoods = likelihoods
         # self.regularizations = regularizations
 
-        self.standard = 'coolest'
+        self.standard = 'COOLEST'
         if metadata is None:
             metadata = {}
         self.meta = metadata
