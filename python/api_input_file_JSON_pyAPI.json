@@ -1105,15 +1105,16 @@
     "pixel_size": 0.08,
     "readout": null,
     "psf": {
-      "py/object": "lensmodelapi.api.psf.PSF",
+      "py/object": "lensmodelapi.api.psf.PixelatedPSF",
+      "type": "PixelatedPSF",
+      "description": null,
       "image": {
         "py/object": "lensmodelapi.api.fits_file.PixelFitsFile",
         "fits_path": "test_psf.fits",
         "pixel_size": 0.08,
         "num_pix_x": 99,
         "num_pix_y": 99
-      },
-      "description": null
+      }
     }
   },
   "cosmology": {
