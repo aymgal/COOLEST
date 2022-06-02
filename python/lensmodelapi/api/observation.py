@@ -50,6 +50,14 @@ class Observation(APIBaseObject):
         assert self.image.num_pix_y  == num_pix_dec, error_message_dec
         # TODO: check pixel size value?
 
+    def set_default_field_of_view(self, instrument):
+        if not self.image.exists:
+            return
+        pixel_size = self.image.pixel_size
+        num_pix_x, num_pix_y = self.image.shape
+        self.field_of_view_ra  = ( num_pix_x*pixel_size/2, -num_pix_x*pixel_size/2)  # RA is opposite to x
+        self.field_of_view_dec = (-num_pix_y*pixel_size/2,  num_pix_y*pixel_size/2)
+
     # def _check_images(self):
     #     self._check_positive(self.wht_map, "WHT map")
     #     self._check_binary(self.arc_mask, "Arc mask")
