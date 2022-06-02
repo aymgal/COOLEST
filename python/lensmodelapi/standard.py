@@ -12,30 +12,45 @@ from lensmodelapi.api.cosmology import Cosmology
 
 
 
-# TODO: excluded keys should depend on the mode: 'MOCK', 'MAP', etc...
-EXCLUDE_KEYS = [
+SUPPORTED_MODES = ['MOCK', 'MAP']
+
+MOCK_EXCLUDE_KEYS = [
+    'exclude_keys',
     'documentation',
     'id',
     'latex_str',
     'units',
     'fixed',
     'definition_range',
+    'likelihoods',
+    'regularizations',
+]
+
+MAP_EXCLUDE_KEYS = [
+    'exclude_keys',
+    'documentation',
+    'id',
+    'latex_str',
+    'units',
+    'definition_range',
 ]
 
 
 class CoolestStandard(APIBaseObject):
 
-    _exclude_keys = EXCLUDE_KEYS
-
     def __init__(self,
+                 mode: str,
                  coordinates_origin: CoordinatesOrigin,
                  lensing_entities: LensingEntityList,
                  observation: Observation,
                  instrument: Instrument,
                  cosmology: Cosmology = None,
                  likelihoods: LikelihoodList = None,
-                 regularizations: RegularizationList = None,
+                 # regularizations: RegularizationList = None,
                  metadata: dict = None):
+        if mode not in SUPPORTED_MODES:
+            raise ValueError(f"COOLEST mode '{mode}' must be in {SUPPORTED_MODES}")
+        self.mode = mode
         if coordinates_origin is None:
             coordinates_origin = CoordinatesOrigin('0', '0')
         self.coordinates_origin = coordinates_origin
@@ -44,15 +59,19 @@ class CoolestStandard(APIBaseObject):
         self.instrument  = instrument
         self.cosmology   = cosmology
         self.likelihoods = likelihoods
-        self.regularizations = regularizations
+        # self.regularizations = regularizations
 
         self.standard = 'coolest'
         if metadata is None:
             metadata = {}
         self.meta = metadata
-        if observation.image.exists:
-            mode = 'MAP'
-        else:
-            mode = 'MOCK'
+        if self.mode != 'MOCK' and not observation.image.exists:
+            raise ValueError("The mode is not 'MOCK' but the imaging data is not provided!")
         self.meta.update({'mode': mode})
-        
+
+        if self.mode == 'MOCK':
+            self.exclude_keys = MOCK_EXCLUDE_KEYS
+        elif self.mode == 'MAP':
+            self.exclude_keys = MAP_EXCLUDE_KEYS
+        else:
+            self.exclude_keys = []
