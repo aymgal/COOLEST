@@ -1,8 +1,9 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.api.profile import MassProfile
-from lensmodelapi.api.parameter import NonLinearParameter, PixelParameterSet
+from lensmodelapi.api.profile import AnalyticalMassProfile, PixelatedMassProfile
+from lensmodelapi.api.parameter import NonLinearParameter
 from lensmodelapi.api.parameter import DefinitionRange
+from lensmodelapi.api.fits_file import MultiExtFitsFile
 
 
 __all__ = [
@@ -19,7 +20,7 @@ __all__ = [
 SUPPORTED_CHOICES = __all__
 
 
-class SIE(MassProfile):
+class SIE(AnalyticalMassProfile):
     
     def __init__(self):
         documentation = "Singular isothermal sphere"
@@ -43,7 +44,7 @@ class SIE(MassProfile):
         super().__init__(documentation, parameters)
 
 
-class NIE(MassProfile):
+class NIE(AnalyticalMassProfile):
     
     def __init__(self):
         documentation = "Non-singular isothermal sphere"
@@ -70,7 +71,7 @@ class NIE(MassProfile):
         super().__init__(documentation, parameters)
 
 
-class PEMD(MassProfile):
+class PEMD(AnalyticalMassProfile):
     
     def __init__(self):
         documentation = "Powerlaw elliptical mass distribution"
@@ -97,7 +98,7 @@ class PEMD(MassProfile):
         super().__init__(documentation, parameters)
 
 
-class SPEMD(MassProfile):
+class SPEMD(AnalyticalMassProfile):
     
     def __init__(self):
         documentation = "Softened powerlaw elliptical mass distribution"
@@ -127,7 +128,7 @@ class SPEMD(MassProfile):
         super().__init__(documentation, parameters)
 
 
-class NFW(MassProfile):
+class NFW(AnalyticalMassProfile):
     
     def __init__(self):
         documentation = "NFW with ellipticity introduced in the mass"
@@ -154,7 +155,7 @@ class NFW(MassProfile):
         super().__init__(documentation, parameters)
 
 
-class Chameleon(MassProfile):
+class Chameleon(AnalyticalMassProfile):
     
     def __init__(self):
         documentation = ("Chameleon profile defined as the difference between two NIE profiles"
@@ -185,7 +186,7 @@ class Chameleon(MassProfile):
         super().__init__(documentation, parameters)
 
 
-class ExternalShear(MassProfile):
+class ExternalShear(AnalyticalMassProfile):
     
     def __init__(self):
         documentation = "External shear defined with a strength and orientation"
@@ -200,25 +201,17 @@ class ExternalShear(MassProfile):
         super().__init__(documentation, parameters)
 
 
-class PixelatedPotential(MassProfile):
+class PixelatedPotential(PixelatedMassProfile):
     
     def __init__(self):
         documentation = "Pixelated lensing potential on a pixel grid"
-        parameters = {
-            'pixels': PixelParameterSet("Set of pixel values",
-                               DefinitionRange(),
-                               latex_str=r"{\rm pixels}"),
-        }
-        super().__init__(documentation, parameters)
+        pixels = MultiExtFitsFile(fits_path=None)
+        super().__init__(documentation, pixels)
 
 
-class PixelatedConvergence(MassProfile):
+class PixelatedConvergence(PixelatedMassProfile):
     
     def __init__(self):
         documentation = "Pixelated convergence on a pixel grid"
-        parameters = {
-            'pixels': PixelParameterSet("Set of pixel values",
-                               DefinitionRange(),
-                               latex_str=r"{\rm pixels}"),
-        }
-        super().__init__(documentation, parameters)
+        pixels = MultiExtFitsFile(fits_path=None)
+        super().__init__(documentation, pixels)

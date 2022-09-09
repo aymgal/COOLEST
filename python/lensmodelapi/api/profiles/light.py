@@ -1,12 +1,12 @@
 __author__ = 'aymgal'
 
-from lensmodelapi.api.profile import LightProfile
+from lensmodelapi.api.profile import AnalyticalLightProfile, PixelatedLightProfile
 from lensmodelapi.api.parameter import (NonLinearParameter, 
                                         LinearParameter, 
                                         LinearParameterSet, 
-                                        NonLinearParameterSet, 
-                                        PixelParameterSet)
+                                        NonLinearParameterSet)
 from lensmodelapi.api.parameter import DefinitionRange
+from lensmodelapi.api.fits_file import MultiExtFitsFile
 
 
 __all__ = [
@@ -16,12 +16,14 @@ __all__ = [
     'Shapelets',
     'LensedPS',
     'PixelatedRegularGrid',
-    'PixelatedAdaptiveGrid',
+    # 'PixelatedIrregularGrid',
+    # 'PixelatedDelaunayGrid',
+    # 'PixelatedVoronoiGrid',
 ]
 SUPPORTED_CHOICES = __all__
 
 
-class Sersic(LightProfile):
+class Sersic(AnalyticalLightProfile):
     
     def __init__(self):
         documentation = "Elliptical Sersic"
@@ -51,7 +53,7 @@ class Sersic(LightProfile):
         super().__init__(documentation, parameters)
 
 
-class Chameleon(LightProfile):
+class Chameleon(AnalyticalLightProfile):
     
     def __init__(self):
         documentation = ("Chameleon profile defined as the difference between two NIE profiles"
@@ -82,13 +84,14 @@ class Chameleon(LightProfile):
         super().__init__(documentation, parameters)
 
 
-class Shapelets(LightProfile):
+class Shapelets(AnalyticalLightProfile):
     
     def __init__(self):
-        self.n_max = None # TODO
-        num_coeffs = None # (self.n_max+1)*(self.n_max+2) / 2
         documentation = "Set of shapelet functions"
         parameters = {
+            'n_max': NonLinearParameter("Maximum order of the Shapelet decomposition",
+                               DefinitionRange(min_value=0),
+                               latex_str=r"$\n_{\rm max}$", fixed=True),
             'beta': NonLinearParameter("Shapelet characteristic scale",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$\beta$"),
@@ -105,7 +108,8 @@ class Shapelets(LightProfile):
         super().__init__(documentation, parameters)
 
         
-class LensedPS(LightProfile):
+class LensedPS(AnalyticalLightProfile):
+
     def __init__(self):
         documentation = "Set of lensed point sources"
         parameters = {
@@ -122,7 +126,7 @@ class LensedPS(LightProfile):
         super().__init__(documentation, parameters)
 
 
-class Uniform(LightProfile):
+class Uniform(AnalyticalLightProfile):
     
     def __init__(self):
         documentation = "Uniform sheet of light"
@@ -134,25 +138,9 @@ class Uniform(LightProfile):
         super().__init__(documentation, parameters)
 
 
-class PixelatedRegularGrid(LightProfile):
+class PixelatedRegularGrid(PixelatedLightProfile):
     
     def __init__(self):
         documentation = "Pixelated light profile on a pixel grid"
-        parameters = {
-            'pixels': PixelParameterSet("Set of pixel values",
-                               DefinitionRange(min_value=0.0),
-                               latex_str=r"{\rm pixels}"),
-        }
-        super().__init__(documentation, parameters)
-
-
-class PixelatedAdaptiveGrid(LightProfile):
-    
-    def __init__(self):
-        documentation = "Pixelated light profile on an adaptive (thus irregular) grid"
-        parameters = {
-            'pixels': PixelParameterSet("Set of pixel values",
-                               DefinitionRange(min_value=0.0),
-                               latex_str=r"{\rm pixels}"),
-        }
-        super().__init__(documentation, parameters)
+        pixels = MultiExtFitsFile(fits_path=None)
+        super().__init__(documentation, pixels)

@@ -4,6 +4,7 @@ from typing import Tuple
 
 from lensmodelapi.api.base import APIBaseObject
 from lensmodelapi.api.lensing_entity import LensingEntity
+from lensmodelapi.api.profile import AnalyticalProfile
 from lensmodelapi.api import util
 
 
@@ -34,6 +35,7 @@ class LensingEntityList(list, APIBaseObject):
                         elif entity.type == 'external_shear':
                             profile_id = util.ext_shear_profile_to_id(profile.type, j, i)
                         profile.id = profile_id
-                        for param_name, parameter in profile.parameters.items():
-                            param_id = f'{profile.id}-{param_name}'
-                            parameter.id = param_id
+                        if isinstance(profile, AnalyticalProfile):
+                            for param_name, parameter in profile.parameters.items():
+                                param_id = f'{profile.id}-{param_name}'
+                                parameter.id = param_id

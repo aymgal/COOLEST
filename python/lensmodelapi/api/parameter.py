@@ -15,7 +15,7 @@ __all__ = [
     'HyperParameter',
     'LinearParameterSet',
     'NonLinearParameterSet',
-    'PixelParameterSet',
+    # 'PixelParameterSet',
 ]
 
 
@@ -146,6 +146,7 @@ class LinearParameterSet(ParameterSet):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         
+        
 class NonLinearParameterSet(ParameterSet):
     """Typically for position of point sources"""
 
@@ -153,21 +154,21 @@ class NonLinearParameterSet(ParameterSet):
         super().__init__(*args, **kwargs)
 
 
-class PixelParameterSet(ParameterSet):
-    """Typically for pixelated profiles"""
+# class PixelParameterSet(ParameterSet):
+#     """Typically for pixelated profiles"""
 
-    def __init__(self, 
-                 *args,
-                 x_coords: List[float] = [],
-                 y_coords: List[float] = [],
-                 order_in_memory: str = 'C',
-                 **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        if (len(x_coords) != len(self.point_estimate.value) or 
-            len(y_coords) != len(self.point_estimate.value)):
-            raise ValueError("List of coordinates must have the same length as pixel values in `value`.")
-        self.x_coords = x_coords
-        self.y_coords = y_coords
+#     def __init__(self, 
+#                  *args,
+#                  x_coords: List[float] = [],
+#                  y_coords: List[float] = [],
+#                  order_in_memory: str = 'C',
+#                  **kwargs) -> None:
+#         super().__init__(*args, **kwargs)
+#         if (len(x_coords) != len(self.point_estimate.value) or 
+#             len(y_coords) != len(self.point_estimate.value)):
+#             raise ValueError("List of coordinates must have the same length as pixel values in `value`.")
+#         self.x_coords = x_coords
+#         self.y_coords = y_coords
 
-        # see https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html
-        self.order_in_memory = order_in_memory
+#         # see https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html
+#         self.order_in_memory = order_in_memory
