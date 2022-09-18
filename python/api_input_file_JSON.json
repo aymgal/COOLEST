@@ -367,25 +367,8 @@
           "type": "PEMD"
         },
         {
-          "parameters": {
-            "pixels": {
-              "num_values": 0,
-              "order_in_memory": "C",
-              "point_estimate": {
-                "value": []
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              },
-              "x_coords": [],
-              "y_coords": []
-            }
+          "pixels": {
+            "fits_path": null
           },
           "type": "PixelatedPotential"
         }
@@ -508,25 +491,8 @@
     {
       "light_model": [
         {
-          "parameters": {
-            "pixels": {
-              "num_values": 0,
-              "order_in_memory": "C",
-              "point_estimate": {
-                "value": []
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              },
-              "x_coords": [],
-              "y_coords": []
-            }
+          "pixels": {
+            "fits_path": null
           },
           "type": "PixelatedRegularGrid"
         }
@@ -539,25 +505,8 @@
     {
       "light_model": [
         {
-          "parameters": {
-            "pixels": {
-              "num_values": 0,
-              "order_in_memory": "C",
-              "point_estimate": {
-                "value": []
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              },
-              "x_coords": [],
-              "y_coords": []
-            }
+          "pixels": {
+            "fits_path": null
           },
           "type": "PixelatedRegularGrid"
         }
@@ -601,5 +550,5 @@
       40.0
     ]
   },
-  "standard": "coolest"
+  "standard": "COOLEST"
 }

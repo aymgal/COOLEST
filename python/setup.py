@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(
-    name='lensmodelapi',
-    packages=['lensmodelapi'],
+    name='coolest',
+    packages=['coolest'],
     include_package_data=True,
     install_requires=[],
 )

@@ -2,10 +2,10 @@
 # emulating a series of inputs from e.g. a user interface,
 # and finally write it on disk as YAML or JSON files.
 
-from lensmodelapi.lazy import *
-from lensmodelapi import info
-from lensmodelapi.standard import COOLEST
-from lensmodelapi.io import APISerializer
+from coolest.template.lazy import *
+from coolest.template import info
+from coolest.template.standard import COOLEST
+from coolest.template.io import APISerializer
 
 from pprint import pprint
 
@@ -52,15 +52,15 @@ origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')  # <- in degrees (2
 
 # EXAMPLE for accessing specific parameters and add priors/values/posteriors
 # - add a gaussian prior to a given parameter
-from lensmodelapi.api.probabilities import GaussianPrior
+from coolest.template.api.probabilities import GaussianPrior
 lens_1.mass_model[0].parameters['gamma'].set_prior(GaussianPrior(mean=2.0, width=0.2))
 
 # - add a point estimate to a given parameter
-from lensmodelapi.api.parameter import PointEstimate
+from coolest.template.api.parameter import PointEstimate
 lens_1.light_model[1].parameters['q'].set_point_estimate(PointEstimate(value=0.89))
 
 # - add a posterior distribution (as 0th and 1st order statistics)
-from lensmodelapi.api.probabilities import PosteriorStatistics
+from coolest.template.api.probabilities import PosteriorStatistics
 source_1.light_model[0].parameters['R_sersic'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
                                                                                  percentile_16th=0.03, percentile_84th=0.05))
 
@@ -68,7 +68,7 @@ source_1.light_model[0].parameters['R_sersic'].set_posterior(PosteriorStatistics
 image_file = PixelFitsFile('test_image.fits', pixel_size=0.08)  # if None, COOLEST mode will be automatically set to 'mock'
 
 # Select the type of noise
-from lensmodelapi.api.noise import InstrumentalNoise, UniformGaussianNoise
+from coolest.template.api.noise import InstrumentalNoise, UniformGaussianNoise
 #noise = InstrumentalNoise()
 noise = UniformGaussianNoise(std_dev=0.004)
 
@@ -78,7 +78,7 @@ observation = Observation(image=image_file,
                           magnification_ratios=None)
 
 # Defines the instrument
-from lensmodelapi.api.psf import PixelatedPSF, GaussianPSF
+from coolest.template.api.psf import PixelatedPSF, GaussianPSF
 psf = PixelatedPSF(PixelFitsFile('test_psf.fits', pixel_size=0.08))
 #psf = GaussianPSF(0.2)
 
@@ -103,7 +103,7 @@ pprint(info.all_supported_choices)
 
 print("#"*30 + " serialization " + "#"*30)
 # import json
-# from lensmodelapi.encoders.json import JSONProfile, JSONParameter
+# from coolest.template.encoders.json import JSONProfile, JSONParameter
 # print(json.dumps(source_1.light_model.profiles, cls=JSONProfile, indent=4))
 # print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
 
