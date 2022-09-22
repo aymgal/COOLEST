@@ -11,11 +11,11 @@ class Instrument(APIBaseObject):
                  name: str,
                  band: str,
                  pixel_size: float, 
-                 readout: float = None,
+                 readout_noise: float = None,
                  psf: PSF = None) -> None:
         self.name = name
         self.band = band
         self.pixel_size = pixel_size
-        self.readout = readout
+        self.readout_noise = readout_noise
         self.psf = psf
         super().__init__()

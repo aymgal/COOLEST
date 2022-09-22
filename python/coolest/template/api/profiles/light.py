@@ -1,13 +1,12 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.profile import (AnalyticalLightProfile, 
-                                          PixelatedLightProfile)
+from coolest.template.api.profile import Profile, AnalyticalLightProfile
 from coolest.template.api.parameter import (NonLinearParameter, 
                                             LinearParameter, 
                                             LinearParameterSet, 
-                                            NonLinearParameterSet)
+                                            NonLinearParameterSet,
+                                            PixelatedRegularGridParameter)
 from coolest.template.api.parameter import DefinitionRange
-from coolest.template.api.fits_file import MultiExtFitsFile
 
 
 __all__ = [
@@ -139,9 +138,9 @@ class Uniform(AnalyticalLightProfile):
         super().__init__(documentation, parameters)
 
 
-class PixelatedRegularGrid(PixelatedLightProfile):
-    
+class PixelatedRegularGrid(Profile):
+
     def __init__(self):
-        documentation = "Pixelated light profile on a pixel grid"
-        pixels = MultiExtFitsFile(fits_path=None)
-        super().__init__(documentation, pixels)
+        documentation = "A pixelated profile defined on a regular Cartesian grid"
+        self.pixels = PixelatedRegularGridParameter("Pixel values")
+        super().__init__(documentation)

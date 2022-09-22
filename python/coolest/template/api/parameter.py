@@ -4,6 +4,7 @@ from typing import List
 
 from coolest.template.api.base import APIBaseObject
 from coolest.template.api.probabilities import Prior, PosteriorStatistics
+from coolest.template.api.grid import PixelatedRegularGrid
 
 import numpy as np
 
@@ -36,7 +37,7 @@ class Parameter(APIBaseObject):
 
     def __init__(self, 
                  documentation: str, 
-                 definition_range: DefinitionRange,
+                 definition_range: DefinitionRange = None,
                  units: str = None,
                  fixed: bool = False,
                  point_estimate: PointEstimate = None,
@@ -154,21 +155,11 @@ class NonLinearParameterSet(ParameterSet):
         super().__init__(*args, **kwargs)
 
 
-# class PixelParameterSet(ParameterSet):
-#     """Typically for pixelated profiles"""
+class PixelatedRegularGridParameter(PixelatedRegularGrid):
+    """Typically for pixelated profiles"""
 
-#     def __init__(self, 
-#                  *args,
-#                  x_coords: List[float] = [],
-#                  y_coords: List[float] = [],
-#                  order_in_memory: str = 'C',
-#                  **kwargs) -> None:
-#         super().__init__(*args, **kwargs)
-#         if (len(x_coords) != len(self.point_estimate.value) or 
-#             len(y_coords) != len(self.point_estimate.value)):
-#             raise ValueError("List of coordinates must have the same length as pixel values in `value`.")
-#         self.x_coords = x_coords
-#         self.y_coords = y_coords
-
-#         # see https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html
-#         self.order_in_memory = order_in_memory
+    def __init__(self, documentation, 
+                 **kwargs_pixelated_grid) -> None:
+        self.documentation = documentation
+        super().__init__(**kwargs_pixelated_grid)
+        

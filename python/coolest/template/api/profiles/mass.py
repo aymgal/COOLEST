@@ -1,10 +1,9 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.profile import (AnalyticalMassProfile,
-                                          PixelatedMassProfile)
+from coolest.template.api.profile import AnalyticalMassProfile
 from coolest.template.api.parameter import NonLinearParameter
 from coolest.template.api.parameter import DefinitionRange
-from coolest.template.api.fits_file import MultiExtFitsFile
+from coolest.template.api.grid import PixelatedRegularGrid
 
 
 __all__ = [
@@ -15,8 +14,7 @@ __all__ = [
     'NFW',
     'Chameleon',
     'ExternalShear', 
-    'PixelatedPotential',
-    'PixelatedConvergence',
+    'PixelatedRegularGrid',
 ]
 SUPPORTED_CHOICES = __all__
 
@@ -201,18 +199,3 @@ class ExternalShear(AnalyticalMassProfile):
         }
         super().__init__(documentation, parameters)
 
-
-class PixelatedPotential(PixelatedMassProfile):
-    
-    def __init__(self):
-        documentation = "Pixelated lensing potential on a pixel grid"
-        pixels = MultiExtFitsFile(fits_path=None)
-        super().__init__(documentation, pixels)
-
-
-class PixelatedConvergence(PixelatedMassProfile):
-    
-    def __init__(self):
-        documentation = "Pixelated convergence on a pixel grid"
-        pixels = MultiExtFitsFile(fits_path=None)
-        super().__init__(documentation, pixels)

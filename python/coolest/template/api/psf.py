@@ -1,12 +1,11 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.fits_file import PixelFitsFile
+from coolest.template.api.grid import PixelatedRegularGrid
 from coolest.template.api.base import APIBaseObject
 
 
 class PSF(APIBaseObject):
     """Defines a Point Spread Function"""
-    # TODO: support for general pixel shape (using pixel to angle matrix)
     def __init__(self,
                  psf_type: str,
                  description: str = None,
@@ -18,12 +17,11 @@ class PSF(APIBaseObject):
         super().__init__()
 
 
-
 class PixelatedPSF(PSF):
 
-    def __init__(self, image: PixelFitsFile) -> None:
+    def __init__(self, pixels: PixelatedRegularGrid) -> None:
         psf_type = self.__class__.__name__
-        super().__init__(psf_type, image=image)
+        super().__init__(psf_type, pixels=pixels)
 
 
 class GaussianPSF(PSF):

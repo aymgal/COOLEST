@@ -1,6 +1,6 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.fits_file import PixelFitsFile
+from coolest.template.api.grid import PixelatedRegularGrid
 from coolest.template.api.base import APIBaseObject
 
 
@@ -34,14 +34,14 @@ class UniformGaussianNoise(Noise):
 class NoiseMap(Noise):
     """Noise characterized by a noise map, which contains diagonal elements of the data covariance matrix"""
 
-    def __init__(self, noise_map: PixelFitsFile) -> None:
+    def __init__(self, noise_map: PixelatedRegularGrid) -> None:
         ntype = self.__class__.__name__
         super().__init__(ntype, noise_map=noise_map)
 
 class NoiseRealization(Noise):
     """Fixed realization of the noise"""
 
-    def __init__(self, noise_realization: PixelFitsFile) -> None:
+    def __init__(self, noise_realization: PixelatedRegularGrid) -> None:
         ntype = self.__class__.__name__
         super().__init__(ntype, noise_realization=noise_realization)
 
@@ -64,6 +64,6 @@ class InstrumentalNoise(Noise):
 class DrizzledNoise(Noise):
     """Provide an exposure map (.wht extension) as output by e.g. astrodrizzle, typically for HST images"""
 
-    def __init__(self, background_rms: float, wht_map: PixelFitsFile) -> None:
+    def __init__(self, background_rms: float, wht_map: PixelatedRegularGrid) -> None:
         ntype = self.__class__.__name__
         super().__init__(ntype, background_rms=background_rms, wht_map=wht_map)

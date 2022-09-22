@@ -65,7 +65,6 @@ class COOLEST(APIBaseObject):
         if metadata is None:
             metadata = {}
         self.meta = metadata
-        self.meta.update({'mode': mode})
 
         if self.mode == 'MOCK':
             self.exclude_keys = MOCK_EXCLUDE_KEYS

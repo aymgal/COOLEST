@@ -5,7 +5,6 @@ from typing import Dict
 
 from coolest.template.api.base import APIBaseObject
 from coolest.template.api.parameter import Parameter
-from coolest.template.api.fits_file import MultiExtFitsFile
 
 
 
@@ -17,7 +16,6 @@ class Profile(APIBaseObject):
         self.documentation = documentation
         self.id = None
         super().__init__()
-
 
 
 class AnalyticalProfile(Profile):
@@ -54,27 +52,3 @@ class AnalyticalMassProfile(AnalyticalProfile):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-
-
-class PixelatedProfile(Profile):
-
-    def __init__(self,
-                 documentation: str, 
-                 pixels: MultiExtFitsFile) -> None:
-        super().__init__(documentation)
-        self.pixels = pixels
-
-    def total_num_params(self, include_fixed=False, include_hyper=True):
-        raise NotImplementedError("Number of parameters for pixelated profile is not yet implemented.")
-
-
-class PixelatedLightProfile(PixelatedProfile):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-
-class PixelatedMassProfile(PixelatedProfile):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)

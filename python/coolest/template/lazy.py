@@ -1,9 +1,9 @@
 # imports all classes that are need to be filled
 
-from coolest.template.api.fits_file import PixelFitsFile
-from coolest.template.api.noise import Noise
+from coolest.template.api.grid import PixelatedRegularGrid
 from coolest.template.api.observation import Observation
-from coolest.template.api.psf import PSF
+from coolest.template.api.psf import *
+from coolest.template.api.noise import *
 from coolest.template.api.instrument import Instrument
 from coolest.template.api.observation import Observation
 from coolest.template.api.coordinates import CoordinatesOrigin

@@ -369,8 +369,12 @@
         {
           "pixels": {
             "fits_path": null
+            "field_of_view_x": [-4, 4],
+            "field_of_view_y": [-4, 4],
+            "num_pix_x": 100,
+            "num_pix_y": 100,
+            "type": "PixelatedRegularGrid"
           },
-          "type": "PixelatedPotential"
         }
       ],
       "name": "a lens galaxy",
@@ -536,6 +540,13 @@
       "num_pix_x": 100,
       "num_pix_y": 100,
       "pixel_size": 0.08
+    },
+    "pixels": {
+      "fits_path": "test_image.fits",
+      "field_of_view_x": [0, 100],
+      "field_of_view_y": [0, 100],
+      "num_pix_x": 100,
+      "num_pix_y": 100,
     },
     "mag_sky_brightness": null,
     "mag_zero_point": null,
