@@ -14,15 +14,22 @@
     "pixel_size": 0.08,
     "psf": {
       "description": null,
-      "image": {
-        "fits_path": "test_psf.fits",
+      "pixels": {
+        "field_of_view_x": [
+          null,
+          null
+        ],
+        "field_of_view_y": [
+          null,
+          null
+        ],
+        "fits_file": "test_psf.fits",
         "num_pix_x": 99,
-        "num_pix_y": 99,
-        "pixel_size": 0.08
+        "num_pix_y": 99
       },
       "type": "PixelatedPSF"
     },
-    "readout": null
+    "readout_noise": null
   },
   "lensing_entities": [
     {
@@ -368,13 +375,19 @@
         },
         {
           "pixels": {
-            "fits_path": null
-            "field_of_view_x": [-4, 4],
-            "field_of_view_y": [-4, 4],
-            "num_pix_x": 100,
-            "num_pix_y": 100,
-            "type": "PixelatedRegularGrid"
+            "field_of_view_x": [
+              null,
+              null
+            ],
+            "field_of_view_y": [
+              null,
+              null
+            ],
+            "fits_file": "None",
+            "num_pix_x": null,
+            "num_pix_y": null
           },
+          "type": "PixelatedRegularGridPotential"
         }
       ],
       "name": "a lens galaxy",
@@ -496,7 +509,17 @@
       "light_model": [
         {
           "pixels": {
-            "fits_path": null
+            "field_of_view_x": [
+              null,
+              null
+            ],
+            "field_of_view_y": [
+              null,
+              null
+            ],
+            "fits_file": "None",
+            "num_pix_x": null,
+            "num_pix_y": null
           },
           "type": "PixelatedRegularGrid"
         }
@@ -510,7 +533,17 @@
       "light_model": [
         {
           "pixels": {
-            "fits_path": null
+            "field_of_view_x": [
+              null,
+              null
+            ],
+            "field_of_view_y": [
+              null,
+              null
+            ],
+            "fits_file": "None",
+            "num_pix_x": null,
+            "num_pix_y": null
           },
           "type": "PixelatedRegularGrid"
         }
@@ -521,45 +554,29 @@
       "type": "galaxy"
     }
   ],
-  "meta": {
-    "mode": "MOCK"
-  },
+  "meta": {},
   "mode": "MOCK",
   "observation": {
     "exposure_time": null,
-    "field_of_view_dec": [
-      null,
-      null
-    ],
-    "field_of_view_ra": [
-      null,
-      null
-    ],
-    "image": {
-      "fits_path": "test_image.fits",
-      "num_pix_x": 100,
-      "num_pix_y": 100,
-      "pixel_size": 0.08
-    },
-    "pixels": {
-      "fits_path": "test_image.fits",
-      "field_of_view_x": [0, 100],
-      "field_of_view_y": [0, 100],
-      "num_pix_x": 100,
-      "num_pix_y": 100,
-    },
     "mag_sky_brightness": null,
     "mag_zero_point": null,
-    "magnification_ratios": null,
     "noise": {
       "std_dev": 0.004,
       "type": "UniformGaussianNoise"
     },
-    "time_delays": [
-      10.0,
-      20.0,
-      40.0
-    ]
+    "pixels": {
+      "field_of_view_x": [
+        null,
+        null
+      ],
+      "field_of_view_y": [
+        null,
+        null
+      ],
+      "fits_file": "test_image.fits",
+      "num_pix_x": 100,
+      "num_pix_y": 100
+    }
   },
   "standard": "COOLEST"
 }

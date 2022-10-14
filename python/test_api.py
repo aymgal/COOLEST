@@ -29,7 +29,7 @@ source_3 = Galaxy('a GLEE source', 1.2,
 # Create a lens galaxy
 lens_1 = Galaxy('a lens galaxy', 0.5,
                 light_model=LightModel('Sersic', 'Sersic'),
-                mass_model=MassModel('PEMD', 'PixelatedPotential'))
+                mass_model=MassModel('PEMD', 'PixelatedRegularGridPotential'))
 
 # Defines the external shear
 ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
@@ -65,21 +65,18 @@ source_1.light_model[0].parameters['R_sersic'].set_posterior(PosteriorStatistics
                                                                                  percentile_16th=0.03, percentile_84th=0.05))
 
 # Provide data file
-image_file = PixelFitsFile('test_image.fits', pixel_size=0.08)  # if None, COOLEST mode will be automatically set to 'mock'
+obs_pixels = PixelatedRegularGrid('test_image.fits')  # if None, COOLEST mode will be automatically set to 'mock'
 
 # Select the type of noise
 from coolest.template.api.noise import InstrumentalNoise, UniformGaussianNoise
 #noise = InstrumentalNoise()
 noise = UniformGaussianNoise(std_dev=0.004)
 
-observation = Observation(image=image_file,
-                          noise=noise,
-                          time_delays=[10., 20., 40.],
-                          magnification_ratios=None)
+observation = Observation(pixels=obs_pixels, noise=noise)
 
 # Defines the instrument
 from coolest.template.api.psf import PixelatedPSF, GaussianPSF
-psf = PixelatedPSF(PixelFitsFile('test_psf.fits', pixel_size=0.08))
+psf = PixelatedPSF(PixelatedRegularGrid('test_psf.fits'))
 #psf = GaussianPSF(0.2)
 
 instrument = Instrument('some instrument',
@@ -107,19 +104,8 @@ print("#"*30 + " serialization " + "#"*30)
 # print(json.dumps(source_1.light_model.profiles, cls=JSONProfile, indent=4))
 # print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
 
-# TESTS WITH YAML
-sample_encoder_yaml = APISerializer('api_input_file_YAML',
-                                    obj=master, indent=2)
-sample_encoder_yaml.yaml_dump()
-sample_encoder_yaml.dump_yaml_to_json()
-# test construct class from YAML
-standard_master_1 = sample_encoder_yaml.yaml_load()
-print("Retrieved object is a COOLEST instance?", 
-      isinstance(standard_master_1, COOLEST))
-print("Meta data:", standard_master_1.meta)
-
-# TESTS WITH JSON
-sample_encoder_json = APISerializer('api_input_file_JSON', 
+# export as JSON file
+sample_encoder_json = APISerializer('coolest_template', 
                                     obj=master, indent=2)
 sample_encoder_json.json_dump()
 sample_encoder_json.json_dump_simple()

@@ -3,6 +3,7 @@
   "mode": "MOCK",
   "coordinates_origin": {
     "py/object": "coolest.template.api.coordinates.CoordinatesOrigin",
+    "documentation": "Defines the origine of the coordinate system, in RA-Dec.",
     "ra": "00h11m20.244s",
     "dec": "-08d45m51.48s"
   },
@@ -181,7 +182,7 @@
                     "py/object": "coolest.template.api.probabilities.Prior",
                     "type": null
                   },
-                  "latex_str": "$e_1$",
+                  "latex_str": "$q$",
                   "id": "galaxy_1-mass_model-PEMD_0-q"
                 },
                 "phi": {
@@ -209,7 +210,7 @@
                     "py/object": "coolest.template.api.probabilities.Prior",
                     "type": null
                   },
-                  "latex_str": "$e_2$",
+                  "latex_str": "$\\phi$",
                   "id": "galaxy_1-mass_model-PEMD_0-phi"
                 },
                 "center_x": {
@@ -271,14 +272,32 @@
               }
             },
             {
-              "py/object": "coolest.template.api.profiles.mass.PixelatedPotential",
-              "type": "PixelatedPotential",
-              "documentation": "Pixelated lensing potential on a pixel grid",
-              "id": "galaxy_1-mass_model-PixelatedPotential_1",
+              "py/object": "coolest.template.api.profiles.mass.PixelatedRegularGridPotential",
               "pixels": {
-                "py/object": "coolest.template.api.fits_file.MultiExtFitsFile",
-                "fits_path": null
-              }
+                "py/object": "coolest.template.api.parameter.PixelatedRegularGridParameter",
+                "documentation": "Pixel values",
+                "fits_file": {
+                  "py/object": "coolest.template.api.fits_file.FitsFile",
+                  "py/newargs": {
+                    "py/tuple": [
+                      "None"
+                    ]
+                  }
+                },
+                "field_of_view_x": [
+                  null,
+                  null
+                ],
+                "field_of_view_y": [
+                  null,
+                  null
+                ],
+                "num_pix_x": null,
+                "num_pix_y": null
+              },
+              "type": "PixelatedRegularGridPotential",
+              "documentation": "A pixelated profile defined on a regular Cartesian grid",
+              "id": "galaxy_1-mass_model-PixelatedRegularGridPotential_1"
             }
           ]
         },
@@ -400,7 +419,7 @@
                     "py/object": "coolest.template.api.probabilities.Prior",
                     "type": null
                   },
-                  "latex_str": "$e_1$",
+                  "latex_str": "$q$",
                   "id": "galaxy_1-light_model-Sersic_0-q"
                 },
                 "phi": {
@@ -428,7 +447,7 @@
                     "py/object": "coolest.template.api.probabilities.Prior",
                     "type": null
                   },
-                  "latex_str": "$e_2$",
+                  "latex_str": "$\\phi$",
                   "id": "galaxy_1-light_model-Sersic_0-phi"
                 },
                 "center_x": {
@@ -604,7 +623,7 @@
                     "py/object": "coolest.template.api.probabilities.Prior",
                     "type": null
                   },
-                  "latex_str": "$e_1$",
+                  "latex_str": "$q$",
                   "id": "galaxy_1-light_model-Sersic_1-q"
                 },
                 "phi": {
@@ -632,7 +651,7 @@
                     "py/object": "coolest.template.api.probabilities.Prior",
                     "type": null
                   },
-                  "latex_str": "$e_2$",
+                  "latex_str": "$\\phi$",
                   "id": "galaxy_1-light_model-Sersic_1-phi"
                 },
                 "center_x": {
@@ -823,7 +842,7 @@
                     "py/object": "coolest.template.api.probabilities.Prior",
                     "type": null
                   },
-                  "latex_str": "$e_1$",
+                  "latex_str": "$q$",
                   "id": "galaxy_2-light_model-Sersic_0-q"
                 },
                 "phi": {
@@ -851,7 +870,7 @@
                     "py/object": "coolest.template.api.probabilities.Prior",
                     "type": null
                   },
-                  "latex_str": "$e_2$",
+                  "latex_str": "$\\phi$",
                   "id": "galaxy_2-light_model-Sersic_0-phi"
                 },
                 "center_x": {
@@ -929,13 +948,29 @@
           "py/seq": [
             {
               "py/object": "coolest.template.api.profiles.light.PixelatedRegularGrid",
-              "type": "PixelatedRegularGrid",
-              "documentation": "Pixelated light profile on a pixel grid",
-              "id": "galaxy_3-light_model-PixelatedRegularGrid_0",
               "pixels": {
-                "py/object": "coolest.template.api.fits_file.MultiExtFitsFile",
-                "fits_path": null
-              }
+                "py/object": "coolest.template.api.parameter.PixelatedRegularGridParameter",
+                "documentation": "Pixel values",
+                "fits_file": {
+                  "py/object": "coolest.template.api.fits_file.FitsFile",
+                  "py/newargs": {
+                    "py/tuple": [
+                      "None"
+                    ]
+                  }
+                },
+                "field_of_view_x": {
+                  "py/id": 54
+                },
+                "field_of_view_y": {
+                  "py/id": 55
+                },
+                "num_pix_x": null,
+                "num_pix_y": null
+              },
+              "type": "PixelatedRegularGrid",
+              "documentation": "A pixelated profile defined on a regular Cartesian grid",
+              "id": "galaxy_3-light_model-PixelatedRegularGrid_0"
             }
           ]
         }
@@ -954,13 +989,29 @@
           "py/seq": [
             {
               "py/object": "coolest.template.api.profiles.light.PixelatedRegularGrid",
-              "type": "PixelatedRegularGrid",
-              "documentation": "Pixelated light profile on a pixel grid",
-              "id": "galaxy_4-light_model-PixelatedRegularGrid_0",
               "pixels": {
-                "py/object": "coolest.template.api.fits_file.MultiExtFitsFile",
-                "fits_path": null
-              }
+                "py/object": "coolest.template.api.parameter.PixelatedRegularGridParameter",
+                "documentation": "Pixel values",
+                "fits_file": {
+                  "py/object": "coolest.template.api.fits_file.FitsFile",
+                  "py/newargs": {
+                    "py/tuple": [
+                      "None"
+                    ]
+                  }
+                },
+                "field_of_view_x": {
+                  "py/id": 54
+                },
+                "field_of_view_y": {
+                  "py/id": 55
+                },
+                "num_pix_x": null,
+                "num_pix_y": null
+              },
+              "type": "PixelatedRegularGrid",
+              "documentation": "A pixelated profile defined on a regular Cartesian grid",
+              "id": "galaxy_4-light_model-PixelatedRegularGrid_0"
             }
           ]
         }
@@ -969,24 +1020,24 @@
   },
   "observation": {
     "py/object": "coolest.template.api.observation.Observation",
-    "image": {
-      "py/object": "coolest.template.api.fits_file.PixelFitsFile",
-      "fits_path": "test_image.fits",
-      "pixel_size": 0.08,
+    "pixels": {
+      "py/object": "coolest.template.api.grid.PixelatedRegularGrid",
+      "fits_file": {
+        "py/object": "coolest.template.api.fits_file.FitsFile",
+        "py/newargs": {
+          "py/tuple": [
+            "test_image.fits"
+          ]
+        }
+      },
+      "field_of_view_x": {
+        "py/id": 54
+      },
+      "field_of_view_y": {
+        "py/id": 55
+      },
       "num_pix_x": 100,
       "num_pix_y": 100
-    },
-    "field_of_view_ra": {
-      "py/tuple": [
-        null,
-        null
-      ]
-    },
-    "field_of_view_dec": {
-      "py/tuple": [
-        null,
-        null
-      ]
     },
     "exposure_time": null,
     "mag_zero_point": null,
@@ -995,28 +1046,34 @@
       "py/object": "coolest.template.api.noise.UniformGaussianNoise",
       "type": "UniformGaussianNoise",
       "std_dev": 0.004
-    },
-    "time_delays": [
-      10.0,
-      20.0,
-      40.0
-    ],
-    "magnification_ratios": null
+    }
   },
   "instrument": {
     "py/object": "coolest.template.api.instrument.Instrument",
     "name": "some instrument",
     "band": "F160W",
     "pixel_size": 0.08,
-    "readout": null,
+    "readout_noise": null,
     "psf": {
       "py/object": "coolest.template.api.psf.PixelatedPSF",
       "type": "PixelatedPSF",
       "description": null,
-      "image": {
-        "py/object": "coolest.template.api.fits_file.PixelFitsFile",
-        "fits_path": "test_psf.fits",
-        "pixel_size": 0.08,
+      "pixels": {
+        "py/object": "coolest.template.api.grid.PixelatedRegularGrid",
+        "fits_file": {
+          "py/object": "coolest.template.api.fits_file.FitsFile",
+          "py/newargs": {
+            "py/tuple": [
+              "test_psf.fits"
+            ]
+          }
+        },
+        "field_of_view_x": {
+          "py/id": 54
+        },
+        "field_of_view_y": {
+          "py/id": 55
+        },
         "num_pix_x": 99,
         "num_pix_y": 99
       }
@@ -1035,11 +1092,8 @@
     ]
   },
   "standard": "COOLEST",
-  "meta": {
-    "mode": "MOCK"
-  },
+  "meta": {},
   "exclude_keys": [
-    "exclude_keys",
     "documentation",
     "id",
     "latex_str",
@@ -1047,6 +1101,7 @@
     "fixed",
     "definition_range",
     "likelihoods",
-    "regularizations"
+    "regularizations",
+    "exclude_keys"
   ]
 }

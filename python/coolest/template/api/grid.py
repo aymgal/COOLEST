@@ -19,7 +19,7 @@ class PixelatedRegularGrid(APIBaseObject):
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
         if self.fits_file.exists:
-            data, header = self.fits_file.read()
+            array, header = self.fits_file.read()
             array_shape = array.shape
             assert array_shape == (header['NAXIS1'], header['NAXIS2'])
             self.num_pix_x, self.num_pix_y = array_shape
