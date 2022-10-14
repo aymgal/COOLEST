@@ -11,6 +11,7 @@ class CoordinatesOrigin(APIBaseObject):
     def __init__(self, 
                  ra: str = '0h0m0.0s',
                  dec: str = '0d0m0.0s') -> None:
+        self.documentation = "Defines the origine of the coordinate system, in RA-Dec."
         self.ra, self.dec = self._check_sky_coord(ra, dec)
         super().__init__()
 

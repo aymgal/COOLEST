@@ -12,10 +12,9 @@ from coolest.template.api.cosmology import Cosmology
 
 
 
-SUPPORTED_MODES = ['MOCK', 'MAP']
+SUPPORTED_MODES = ['MOCK', 'MAP', 'DOC']
 
 MOCK_EXCLUDE_KEYS = [
-    'exclude_keys',
     'documentation',
     'id',
     'latex_str',
@@ -27,11 +26,19 @@ MOCK_EXCLUDE_KEYS = [
 ]
 
 MAP_EXCLUDE_KEYS = [
-    'exclude_keys',
     'documentation',
     'id',
     'latex_str',
     'units',
+    'definition_range',
+]
+
+DOC_EXCLUDE_KEYS = [
+    'posterior_stats',
+    'prior',
+    'id',
+    'units',
+    'fixed',
     'definition_range',
 ]
 
@@ -70,5 +77,8 @@ class COOLEST(APIBaseObject):
             self.exclude_keys = MOCK_EXCLUDE_KEYS
         elif self.mode == 'MAP':
             self.exclude_keys = MAP_EXCLUDE_KEYS
+        elif self.mode == 'DOC':
+            self.exclude_keys = DOC_EXCLUDE_KEYS
         else:
             self.exclude_keys = []
+        self.exclude_keys += ['exclude_keys']

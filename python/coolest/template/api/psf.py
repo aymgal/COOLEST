@@ -4,6 +4,14 @@ from coolest.template.api.grid import PixelatedRegularGrid
 from coolest.template.api.base import APIBaseObject
 
 
+__all__ = [
+    'PixelatedPSF',
+    'GaussianPSF',
+]
+
+SUPPORTED_CHOICES = __all__
+
+
 class PSF(APIBaseObject):
     """Defines a Point Spread Function"""
     def __init__(self,
@@ -19,14 +27,14 @@ class PSF(APIBaseObject):
 
 class PixelatedPSF(PSF):
 
-    def __init__(self, pixels: PixelatedRegularGrid) -> None:
+    def __init__(self, pixels: PixelatedRegularGrid = None) -> None:
         psf_type = self.__class__.__name__
         super().__init__(psf_type, pixels=pixels)
 
 
 class GaussianPSF(PSF):
 
-    def __init__(self, std_dev) -> None:
+    def __init__(self, std_dev: float = 0.0) -> None:
         """
         std_dev will be interpreted as having units of the Instrument pixel size.
         Otherwise it can be describe in the description attribute of the PSF.

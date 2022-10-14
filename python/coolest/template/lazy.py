@@ -1,6 +1,7 @@
 # imports all classes that are need to be filled
 
 from coolest.template.api.grid import PixelatedRegularGrid
+from coolest.template.api.fits_file import FitsFile
 from coolest.template.api.observation import Observation
 from coolest.template.api.psf import *
 from coolest.template.api.noise import *
