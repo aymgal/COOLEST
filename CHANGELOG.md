@@ -38,3 +38,14 @@
     - Minor changes:
         - renaming of classes
         - COOLEST standard now supports two distinct modes: 'MAP' to store model results, and 'MOCK' for simulating an observation
+
+
+- 14/10/22
+    - Major changes:
+        - the path to submodules changed: `coolest.template.api` is now `coolest.template.classes`. This is because the API will now be formally containing analysis tools (in the future coolest.api submodule)
+        - a single PixelatedRegularGrid class is now used for the observation image data, pixelated PSF, and pixelated light and mass profiles
+
+    - Minor changes:
+        - reorganized the repository structure, `coolest` is now at the root
+        - the example of template generation is now in the `examples` directory
+        - a 'DOC' mode has been added to the root COOLEST class (for usage with the documentation website, see separate repository)
