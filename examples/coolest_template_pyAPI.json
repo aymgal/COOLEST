@@ -2,79 +2,79 @@
   "py/object": "coolest.template.standard.COOLEST",
   "mode": "MOCK",
   "coordinates_origin": {
-    "py/object": "coolest.template.api.coordinates.CoordinatesOrigin",
+    "py/object": "coolest.template.classes.coordinates.CoordinatesOrigin",
     "documentation": "Defines the origine of the coordinate system, in RA-Dec.",
     "ra": "00h11m20.244s",
     "dec": "-08d45m51.48s"
   },
   "lensing_entities": {
-    "py/object": "coolest.template.api.lensing_entity_list.LensingEntityList",
+    "py/object": "coolest.template.classes.lensing_entity_list.LensingEntityList",
     "py/seq": [
       {
-        "py/object": "coolest.template.api.external_shear.ExternalShear",
+        "py/object": "coolest.template.classes.external_shear.ExternalShear",
         "type": "external_shear",
         "name": "my lovely external shear",
         "redshift": 0.5,
         "mass_model": {
-          "py/object": "coolest.template.api.mass_light_model.MassModel",
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
           "py/seq": [
             {
-              "py/object": "coolest.template.api.profiles.mass.ExternalShear",
+              "py/object": "coolest.template.classes.profiles.mass.ExternalShear",
               "type": "ExternalShear",
               "documentation": "External shear defined with a strength and orientation",
               "id": "extshear_model_0-ExternalShear_0",
               "parameters": {
                 "gamma_ext": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Strength of external shear",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": 1.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$\\gamma_{\\rm ext}$",
                   "id": "extshear_model_0-ExternalShear_0-gamma_ext"
                 },
                 "phi_ext": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Orientation of external shear",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": -90.0,
                     "max_value": 90.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$\\phi_{\\rm ext}$",
@@ -86,42 +86,42 @@
         }
       },
       {
-        "py/object": "coolest.template.api.galaxy.Galaxy",
+        "py/object": "coolest.template.classes.galaxy.Galaxy",
         "type": "galaxy",
         "name": "a lens galaxy",
         "redshift": 0.5,
         "mass_model": {
-          "py/object": "coolest.template.api.mass_light_model.MassModel",
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
           "py/seq": [
             {
-              "py/object": "coolest.template.api.profiles.mass.PEMD",
+              "py/object": "coolest.template.classes.profiles.mass.PEMD",
               "type": "PEMD",
               "documentation": "Powerlaw elliptical mass distribution",
               "id": "galaxy_1-mass_model-PEMD_0",
               "parameters": {
                 "gamma": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Mass density slope at Einstein radius",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 1.0,
                     "max_value": 3.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.GaussianPrior",
+                    "py/object": "coolest.template.classes.probabilities.GaussianPrior",
                     "type": "GaussianPrior",
                     "mean": 2.0,
                     "width": 0.2
@@ -130,140 +130,140 @@
                   "id": "galaxy_1-mass_model-PEMD_0-gamma"
                 },
                 "theta_E": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Einstein radius",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$\\theta_{\\rm E}$",
                   "id": "galaxy_1-mass_model-PEMD_0-theta_E"
                 },
                 "q": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Axis ratio, semi-minor axis / semi-major axis",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": 1.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$q$",
                   "id": "galaxy_1-mass_model-PEMD_0-q"
                 },
                 "phi": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Position angle",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": -90.0,
                     "max_value": 90.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$\\phi$",
                   "id": "galaxy_1-mass_model-PEMD_0-phi"
                 },
                 "center_x": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Profile center along x coordinates",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": null,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$x_0$",
                   "id": "galaxy_1-mass_model-PEMD_0-center_x"
                 },
                 "center_y": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Profile center along y coordinates",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": null,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$y_0$",
@@ -272,12 +272,12 @@
               }
             },
             {
-              "py/object": "coolest.template.api.profiles.mass.PixelatedRegularGridPotential",
+              "py/object": "coolest.template.classes.profiles.mass.PixelatedRegularGridPotential",
               "pixels": {
-                "py/object": "coolest.template.api.parameter.PixelatedRegularGridParameter",
+                "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
                 "documentation": "Pixel values",
                 "fits_file": {
-                  "py/object": "coolest.template.api.fits_file.FitsFile",
+                  "py/object": "coolest.template.classes.fits_file.FitsFile",
                   "py/newargs": {
                     "py/tuple": [
                       "None"
@@ -302,205 +302,205 @@
           ]
         },
         "light_model": {
-          "py/object": "coolest.template.api.mass_light_model.LightModel",
+          "py/object": "coolest.template.classes.mass_light_model.LightModel",
           "py/seq": [
             {
-              "py/object": "coolest.template.api.profiles.light.Sersic",
+              "py/object": "coolest.template.classes.profiles.light.Sersic",
               "type": "Sersic",
               "documentation": "Elliptical Sersic",
               "id": "galaxy_1-light_model-Sersic_0",
               "parameters": {
                 "A": {
-                  "py/object": "coolest.template.api.parameter.LinearParameter",
+                  "py/object": "coolest.template.classes.parameter.LinearParameter",
                   "documentation": "Amplitude at origin",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$A$",
                   "id": "galaxy_1-light_model-Sersic_0-A"
                 },
                 "R_sersic": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Sersic radius",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$R_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_0-R_sersic"
                 },
                 "n_sersic": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Sersic index",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.5,
                     "max_value": 10.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$n_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_0-n_sersic"
                 },
                 "q": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Axis ratio, semi-minor axis / semi-major axis",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": 1.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$q$",
                   "id": "galaxy_1-light_model-Sersic_0-q"
                 },
                 "phi": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Position angle",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": -90.0,
                     "max_value": 90.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$\\phi$",
                   "id": "galaxy_1-light_model-Sersic_0-phi"
                 },
                 "center_x": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Profile center along x coordinates",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": null,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$x_0$",
                   "id": "galaxy_1-light_model-Sersic_0-center_x"
                 },
                 "center_y": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Profile center along y coordinates",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": null,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$y_0$",
@@ -509,202 +509,202 @@
               }
             },
             {
-              "py/object": "coolest.template.api.profiles.light.Sersic",
+              "py/object": "coolest.template.classes.profiles.light.Sersic",
               "type": "Sersic",
               "documentation": "Elliptical Sersic",
               "id": "galaxy_1-light_model-Sersic_1",
               "parameters": {
                 "A": {
-                  "py/object": "coolest.template.api.parameter.LinearParameter",
+                  "py/object": "coolest.template.classes.parameter.LinearParameter",
                   "documentation": "Amplitude at origin",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$A$",
                   "id": "galaxy_1-light_model-Sersic_1-A"
                 },
                 "R_sersic": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Sersic radius",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$R_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_1-R_sersic"
                 },
                 "n_sersic": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Sersic index",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.5,
                     "max_value": 10.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$n_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_1-n_sersic"
                 },
                 "q": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Axis ratio, semi-minor axis / semi-major axis",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": 1.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": 0.89
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$q$",
                   "id": "galaxy_1-light_model-Sersic_1-q"
                 },
                 "phi": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Position angle",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": -90.0,
                     "max_value": 90.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$\\phi$",
                   "id": "galaxy_1-light_model-Sersic_1-phi"
                 },
                 "center_x": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Profile center along x coordinates",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": null,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$x_0$",
                   "id": "galaxy_1-light_model-Sersic_1-center_x"
                 },
                 "center_y": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Profile center along y coordinates",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": null,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$y_0$",
@@ -716,214 +716,214 @@
         }
       },
       {
-        "py/object": "coolest.template.api.galaxy.Galaxy",
+        "py/object": "coolest.template.classes.galaxy.Galaxy",
         "type": "galaxy",
         "name": "a source galaxy",
         "redshift": 2.0,
         "mass_model": {
-          "py/object": "coolest.template.api.mass_light_model.MassModel",
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
           "py/seq": []
         },
         "light_model": {
-          "py/object": "coolest.template.api.mass_light_model.LightModel",
+          "py/object": "coolest.template.classes.mass_light_model.LightModel",
           "py/seq": [
             {
-              "py/object": "coolest.template.api.profiles.light.Sersic",
+              "py/object": "coolest.template.classes.profiles.light.Sersic",
               "type": "Sersic",
               "documentation": "Elliptical Sersic",
               "id": "galaxy_2-light_model-Sersic_0",
               "parameters": {
                 "A": {
-                  "py/object": "coolest.template.api.parameter.LinearParameter",
+                  "py/object": "coolest.template.classes.parameter.LinearParameter",
                   "documentation": "Amplitude at origin",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$A$",
                   "id": "galaxy_2-light_model-Sersic_0-A"
                 },
                 "R_sersic": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Sersic radius",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": 0.12,
                     "median": 0.15,
                     "percentile_16th": 0.03,
                     "percentile_84th": 0.05
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$R_{\\rm Sersic}$",
                   "id": "galaxy_2-light_model-Sersic_0-R_sersic"
                 },
                 "n_sersic": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Sersic index",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.5,
                     "max_value": 10.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$n_{\\rm Sersic}$",
                   "id": "galaxy_2-light_model-Sersic_0-n_sersic"
                 },
                 "q": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Axis ratio, semi-minor axis / semi-major axis",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": 0.0,
                     "max_value": 1.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$q$",
                   "id": "galaxy_2-light_model-Sersic_0-q"
                 },
                 "phi": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Position angle",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": -90.0,
                     "max_value": 90.0
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$\\phi$",
                   "id": "galaxy_2-light_model-Sersic_0-phi"
                 },
                 "center_x": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Profile center along x coordinates",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": null,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$x_0$",
                   "id": "galaxy_2-light_model-Sersic_0-center_x"
                 },
                 "center_y": {
-                  "py/object": "coolest.template.api.parameter.NonLinearParameter",
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
                   "documentation": "Profile center along y coordinates",
                   "units": null,
                   "definition_range": {
-                    "py/object": "coolest.template.api.parameter.DefinitionRange",
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
                     "min_value": null,
                     "max_value": null
                   },
                   "fixed": false,
                   "point_estimate": {
-                    "py/object": "coolest.template.api.parameter.PointEstimate",
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
                     "value": null
                   },
                   "posterior_stats": {
-                    "py/object": "coolest.template.api.probabilities.PosteriorStatistics",
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
                     "mean": null,
                     "median": null,
                     "percentile_16th": null,
                     "percentile_84th": null
                   },
                   "prior": {
-                    "py/object": "coolest.template.api.probabilities.Prior",
+                    "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null
                   },
                   "latex_str": "$y_0$",
@@ -935,24 +935,24 @@
         }
       },
       {
-        "py/object": "coolest.template.api.galaxy.Galaxy",
+        "py/object": "coolest.template.classes.galaxy.Galaxy",
         "type": "galaxy",
         "name": "another source",
         "redshift": 1.5,
         "mass_model": {
-          "py/object": "coolest.template.api.mass_light_model.MassModel",
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
           "py/seq": []
         },
         "light_model": {
-          "py/object": "coolest.template.api.mass_light_model.LightModel",
+          "py/object": "coolest.template.classes.mass_light_model.LightModel",
           "py/seq": [
             {
-              "py/object": "coolest.template.api.profiles.light.PixelatedRegularGrid",
+              "py/object": "coolest.template.classes.profiles.light.PixelatedRegularGrid",
               "pixels": {
-                "py/object": "coolest.template.api.parameter.PixelatedRegularGridParameter",
+                "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
                 "documentation": "Pixel values",
                 "fits_file": {
-                  "py/object": "coolest.template.api.fits_file.FitsFile",
+                  "py/object": "coolest.template.classes.fits_file.FitsFile",
                   "py/newargs": {
                     "py/tuple": [
                       "None"
@@ -976,24 +976,24 @@
         }
       },
       {
-        "py/object": "coolest.template.api.galaxy.Galaxy",
+        "py/object": "coolest.template.classes.galaxy.Galaxy",
         "type": "galaxy",
         "name": "a GLEE source",
         "redshift": 1.2,
         "mass_model": {
-          "py/object": "coolest.template.api.mass_light_model.MassModel",
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
           "py/seq": []
         },
         "light_model": {
-          "py/object": "coolest.template.api.mass_light_model.LightModel",
+          "py/object": "coolest.template.classes.mass_light_model.LightModel",
           "py/seq": [
             {
-              "py/object": "coolest.template.api.profiles.light.PixelatedRegularGrid",
+              "py/object": "coolest.template.classes.profiles.light.PixelatedRegularGrid",
               "pixels": {
-                "py/object": "coolest.template.api.parameter.PixelatedRegularGridParameter",
+                "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
                 "documentation": "Pixel values",
                 "fits_file": {
-                  "py/object": "coolest.template.api.fits_file.FitsFile",
+                  "py/object": "coolest.template.classes.fits_file.FitsFile",
                   "py/newargs": {
                     "py/tuple": [
                       "None"
@@ -1019,11 +1019,11 @@
     ]
   },
   "observation": {
-    "py/object": "coolest.template.api.observation.Observation",
+    "py/object": "coolest.template.classes.observation.Observation",
     "pixels": {
-      "py/object": "coolest.template.api.grid.PixelatedRegularGrid",
+      "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
       "fits_file": {
-        "py/object": "coolest.template.api.fits_file.FitsFile",
+        "py/object": "coolest.template.classes.fits_file.FitsFile",
         "py/newargs": {
           "py/tuple": [
             "test_image.fits"
@@ -1043,25 +1043,25 @@
     "mag_zero_point": null,
     "mag_sky_brightness": null,
     "noise": {
-      "py/object": "coolest.template.api.noise.UniformGaussianNoise",
+      "py/object": "coolest.template.classes.noise.UniformGaussianNoise",
       "type": "UniformGaussianNoise",
       "std_dev": 0.004
     }
   },
   "instrument": {
-    "py/object": "coolest.template.api.instrument.Instrument",
+    "py/object": "coolest.template.classes.instrument.Instrument",
     "name": "some instrument",
     "band": "F160W",
     "pixel_size": 0.08,
     "readout_noise": null,
     "psf": {
-      "py/object": "coolest.template.api.psf.PixelatedPSF",
+      "py/object": "coolest.template.classes.psf.PixelatedPSF",
       "type": "PixelatedPSF",
       "description": null,
       "pixels": {
-        "py/object": "coolest.template.api.grid.PixelatedRegularGrid",
+        "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
         "fits_file": {
-          "py/object": "coolest.template.api.fits_file.FitsFile",
+          "py/object": "coolest.template.classes.fits_file.FitsFile",
           "py/newargs": {
             "py/tuple": [
               "test_psf.fits"
@@ -1080,13 +1080,13 @@
     }
   },
   "cosmology": {
-    "py/object": "coolest.template.api.cosmology.Cosmology",
+    "py/object": "coolest.template.classes.cosmology.Cosmology",
     "H0": 73.0,
     "Om0": 0.3,
     "astropy_name": "FlatLambdaCDM"
   },
   "likelihoods": {
-    "py/object": "coolest.template.api.likelihood_list.LikelihoodList",
+    "py/object": "coolest.template.classes.likelihood_list.LikelihoodList",
     "py/seq": [
       "imaging_data"
     ]

@@ -1,14 +1,14 @@
 __author__ = 'aymgal'
 
 
-from coolest.template.api.base import APIBaseObject
-from coolest.template.api.observation import Observation
-from coolest.template.api.instrument import Instrument
-from coolest.template.api.lensing_entity_list import LensingEntityList
-from coolest.template.api.regularization_list import RegularizationList
-from coolest.template.api.likelihood_list import LikelihoodList
-from coolest.template.api.coordinates import CoordinatesOrigin
-from coolest.template.api.cosmology import Cosmology
+from coolest.template.classes.base import APIBaseObject
+from coolest.template.classes.observation import Observation
+from coolest.template.classes.instrument import Instrument
+from coolest.template.classes.lensing_entity_list import LensingEntityList
+from coolest.template.classes.regularization_list import RegularizationList
+from coolest.template.classes.likelihood_list import LikelihoodList
+from coolest.template.classes.coordinates import CoordinatesOrigin
+from coolest.template.classes.cosmology import Cosmology
 
 
 

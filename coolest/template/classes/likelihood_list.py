@@ -2,7 +2,7 @@ __author__ = 'aymgal'
 
 from typing import Tuple
 
-from coolest.template.api.base import APIBaseObject
+from coolest.template.classes.base import APIBaseObject
 
 
 SUPPORTED_CHOICES = [

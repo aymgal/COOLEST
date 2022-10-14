@@ -1,7 +1,7 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.base import APIBaseObject
-from coolest.template.api.mass_light_model import MassModel
+from coolest.template.classes.base import APIBaseObject
+from coolest.template.classes.mass_light_model import MassModel
 
 
 class LensingEntity(APIBaseObject):

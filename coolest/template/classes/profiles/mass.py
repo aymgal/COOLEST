@@ -1,10 +1,10 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.profile import Profile, AnalyticalMassProfile
-from coolest.template.api.parameter import NonLinearParameter
-from coolest.template.api.parameter import (DefinitionRange,
+from coolest.template.classes.profile import Profile, AnalyticalMassProfile
+from coolest.template.classes.parameter import NonLinearParameter
+from coolest.template.classes.parameter import (DefinitionRange,
                                             PixelatedRegularGridParameter)
-from coolest.template.api.grid import PixelatedRegularGrid
+from coolest.template.classes.grid import PixelatedRegularGrid
 
 
 __all__ = [

@@ -2,9 +2,9 @@ __author__ = 'aymgal'
 
 from typing import Tuple
 
-from coolest.template.api.profile_list import ProfileList
-from coolest.template.api.profiles import mass as mass_profiles_module
-from coolest.template.api.profiles import light as light_profiles_module
+from coolest.template.classes.profile_list import ProfileList
+from coolest.template.classes.profiles import mass as mass_profiles_module
+from coolest.template.classes.profiles import light as light_profiles_module
 
 
 class MassModel(ProfileList):

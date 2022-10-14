@@ -1,17 +1,17 @@
 # imports all classes that are need to be filled
 
-from coolest.template.api.grid import PixelatedRegularGrid
-from coolest.template.api.fits_file import FitsFile
-from coolest.template.api.observation import Observation
-from coolest.template.api.psf import *
-from coolest.template.api.noise import *
-from coolest.template.api.instrument import Instrument
-from coolest.template.api.observation import Observation
-from coolest.template.api.coordinates import CoordinatesOrigin
-from coolest.template.api.cosmology import Cosmology
-from coolest.template.api.galaxy import Galaxy
-from coolest.template.api.external_shear import ExternalShear
-from coolest.template.api.lensing_entity_list import LensingEntityList
-from coolest.template.api.mass_light_model import MassModel, LightModel
-from coolest.template.api.regularization_list import RegularizationList
-from coolest.template.api.likelihood_list import LikelihoodList
+from coolest.template.classes.grid import PixelatedRegularGrid
+from coolest.template.classes.fits_file import FitsFile
+from coolest.template.classes.observation import Observation
+from coolest.template.classes.psf import *
+from coolest.template.classes.noise import *
+from coolest.template.classes.instrument import Instrument
+from coolest.template.classes.observation import Observation
+from coolest.template.classes.coordinates import CoordinatesOrigin
+from coolest.template.classes.cosmology import Cosmology
+from coolest.template.classes.galaxy import Galaxy
+from coolest.template.classes.external_shear import ExternalShear
+from coolest.template.classes.lensing_entity_list import LensingEntityList
+from coolest.template.classes.mass_light_model import MassModel, LightModel
+from coolest.template.classes.regularization_list import RegularizationList
+from coolest.template.classes.likelihood_list import LikelihoodList

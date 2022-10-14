@@ -2,8 +2,8 @@ __author__ = 'aymgal'
 
 from typing import Dict
 
-from coolest.template.api.base import APIBaseObject
-from coolest.template.api.parameter import Parameter
+from coolest.template.classes.base import APIBaseObject
+from coolest.template.classes.parameter import Parameter
 
 
 class Regularization(APIBaseObject):

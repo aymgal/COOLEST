@@ -3,7 +3,7 @@ __author__ = 'aymgal'
 from types import ModuleType
 from typing import Tuple
 
-from coolest.template.api.base import APIBaseObject
+from coolest.template.classes.base import APIBaseObject
 
 
 class ProfileList(list, APIBaseObject):

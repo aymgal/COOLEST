@@ -1,8 +1,8 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.lensing_entity import LensingEntity
-from coolest.template.api.mass_light_model import MassModel
-from coolest.template.api import util
+from coolest.template.classes.lensing_entity import LensingEntity
+from coolest.template.classes.mass_light_model import MassModel
+from coolest.template.classes import util
 
 
 class ExternalShear(LensingEntity):

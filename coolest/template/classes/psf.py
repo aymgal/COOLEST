@@ -1,7 +1,7 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.grid import PixelatedRegularGrid
-from coolest.template.api.base import APIBaseObject
+from coolest.template.classes.grid import PixelatedRegularGrid
+from coolest.template.classes.base import APIBaseObject
 
 
 __all__ = [

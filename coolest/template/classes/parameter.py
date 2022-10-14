@@ -2,9 +2,9 @@
 
 from typing import List
 
-from coolest.template.api.base import APIBaseObject
-from coolest.template.api.probabilities import Prior, PosteriorStatistics
-from coolest.template.api.grid import PixelatedRegularGrid
+from coolest.template.classes.base import APIBaseObject
+from coolest.template.classes.probabilities import Prior, PosteriorStatistics
+from coolest.template.classes.grid import PixelatedRegularGrid
 
 import numpy as np
 

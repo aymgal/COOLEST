@@ -3,7 +3,7 @@ __author__ = 'aymgal'
 
 from astropy.coordinates import SkyCoord
 
-from coolest.template.api.base import APIBaseObject
+from coolest.template.classes.base import APIBaseObject
 
 
 class CoordinatesOrigin(APIBaseObject):

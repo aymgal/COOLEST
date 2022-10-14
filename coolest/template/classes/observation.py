@@ -4,9 +4,9 @@ from astropy.io import fits
 import numpy as np
 from typing import Tuple
 
-from coolest.template.api.grid import PixelatedRegularGrid
-from coolest.template.api.noise import Noise
-from coolest.template.api.base import APIBaseObject
+from coolest.template.classes.grid import PixelatedRegularGrid
+from coolest.template.classes.noise import Noise
+from coolest.template.classes.base import APIBaseObject
 
 
 class Observation(APIBaseObject):

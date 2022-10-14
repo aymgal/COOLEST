@@ -2,10 +2,10 @@ __author__ = 'aymgal'
 
 from typing import Tuple
 
-from coolest.template.api.base import APIBaseObject
-from coolest.template.api.lensing_entity import LensingEntity
-from coolest.template.api.profile import AnalyticalProfile
-from coolest.template.api import util
+from coolest.template.classes.base import APIBaseObject
+from coolest.template.classes.lensing_entity import LensingEntity
+from coolest.template.classes.profile import AnalyticalProfile
+from coolest.template.classes import util
 
 
 class LensingEntityList(list, APIBaseObject):

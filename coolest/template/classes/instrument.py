@@ -1,7 +1,7 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.psf import PSF
-from coolest.template.api.base import APIBaseObject
+from coolest.template.classes.psf import PSF
+from coolest.template.classes.base import APIBaseObject
 
 
 class Instrument(APIBaseObject):

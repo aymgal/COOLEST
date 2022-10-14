@@ -1,8 +1,8 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.regularization import Regularization
-from coolest.template.api.parameter import HyperParameter
-from coolest.template.api.parameter import DefinitionRange
+from coolest.template.classes.regularization import Regularization
+from coolest.template.classes.parameter import HyperParameter
+from coolest.template.classes.parameter import DefinitionRange
 
 
 __all__ = [

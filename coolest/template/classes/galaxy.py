@@ -1,7 +1,7 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.lensing_entity import LensingEntity
-from coolest.template.api.mass_light_model import MassModel, LightModel
+from coolest.template.classes.lensing_entity import LensingEntity
+from coolest.template.classes.mass_light_model import MassModel, LightModel
 
 
 class Galaxy(LensingEntity):

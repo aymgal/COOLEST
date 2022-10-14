@@ -52,15 +52,15 @@ origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')  # <- in degrees (2
 
 # EXAMPLE for accessing specific parameters and add priors/values/posteriors
 # - add a gaussian prior to a given parameter
-from coolest.template.api.probabilities import GaussianPrior
+from coolest.template.classes.probabilities import GaussianPrior
 lens_1.mass_model[0].parameters['gamma'].set_prior(GaussianPrior(mean=2.0, width=0.2))
 
 # - add a point estimate to a given parameter
-from coolest.template.api.parameter import PointEstimate
+from coolest.template.classes.parameter import PointEstimate
 lens_1.light_model[1].parameters['q'].set_point_estimate(PointEstimate(value=0.89))
 
 # - add a posterior distribution (as 0th and 1st order statistics)
-from coolest.template.api.probabilities import PosteriorStatistics
+from coolest.template.classes.probabilities import PosteriorStatistics
 source_1.light_model[0].parameters['R_sersic'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
                                                                                  percentile_16th=0.03, percentile_84th=0.05))
 
@@ -68,14 +68,14 @@ source_1.light_model[0].parameters['R_sersic'].set_posterior(PosteriorStatistics
 obs_pixels = PixelatedRegularGrid('test_image.fits')  # if None, COOLEST mode will be automatically set to 'mock'
 
 # Select the type of noise
-from coolest.template.api.noise import InstrumentalNoise, UniformGaussianNoise
+from coolest.template.classes.noise import InstrumentalNoise, UniformGaussianNoise
 #noise = InstrumentalNoise()
 noise = UniformGaussianNoise(std_dev=0.004)
 
 observation = Observation(pixels=obs_pixels, noise=noise)
 
 # Defines the instrument
-from coolest.template.api.psf import PixelatedPSF, GaussianPSF
+from coolest.template.classes.psf import PixelatedPSF, GaussianPSF
 psf = PixelatedPSF(PixelatedRegularGrid('test_psf.fits'))
 #psf = GaussianPSF(0.2)
 

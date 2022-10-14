@@ -2,9 +2,9 @@ __author__ = 'aymgal'
 
 from typing import Tuple
 
-from coolest.template.api.base import APIBaseObject
-from coolest.template.api.regularizations import pixelated as regularization_module
-from coolest.template.api import util
+from coolest.template.classes.base import APIBaseObject
+from coolest.template.classes.regularizations import pixelated as regularization_module
+from coolest.template.classes import util
 
 
 class RegularizationList(list, APIBaseObject):

@@ -2,8 +2,8 @@ __author__ = 'aymgal'
 
 from typing import Tuple
 
-from coolest.template.api.base import APIBaseObject
-from coolest.template.api.fits_file import FitsFile
+from coolest.template.classes.base import APIBaseObject
+from coolest.template.classes.fits_file import FitsFile
 
 
 class PixelatedRegularGrid(APIBaseObject):
