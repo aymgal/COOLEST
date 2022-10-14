@@ -1,8 +1,9 @@
 __author__ = 'aymgal'
 
-from coolest.template.api.profile import AnalyticalMassProfile
+from coolest.template.api.profile import Profile, AnalyticalMassProfile
 from coolest.template.api.parameter import NonLinearParameter
-from coolest.template.api.parameter import DefinitionRange
+from coolest.template.api.parameter import (DefinitionRange,
+                                            PixelatedRegularGridParameter)
 from coolest.template.api.grid import PixelatedRegularGrid
 
 
@@ -14,7 +15,7 @@ __all__ = [
     'NFW',
     'Chameleon',
     'ExternalShear', 
-    'PixelatedRegularGrid',
+    'PixelatedRegularGridPotential',
 ]
 SUPPORTED_CHOICES = __all__
 
@@ -199,3 +200,10 @@ class ExternalShear(AnalyticalMassProfile):
         }
         super().__init__(documentation, parameters)
 
+
+class PixelatedRegularGridPotential(Profile):
+
+    def __init__(self):
+        documentation = "A pixelated profile defined on a regular Cartesian grid"
+        self.pixels = PixelatedRegularGridParameter("Pixel values")
+        super().__init__(documentation)
