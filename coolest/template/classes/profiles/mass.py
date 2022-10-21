@@ -161,13 +161,13 @@ class Chameleon(AnalyticalMassProfile):
         documentation = ("Chameleon profile defined as the difference between two NIE profiles"
                        " (elliptical truncated double isothermal profile)")
         parameters = {
-            'alpha_1': NonLinearParameter("Deflection angle at 1 (in coordinates units) from the center",
+            'b': NonLinearParameter("Normalization of the profile",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$\alpha_1$"),
-            'w_c': NonLinearParameter("Core radius of inner NIE",
+            's_c': NonLinearParameter("Core radius of inner NIE",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$w{\rm c}$"),
-            'w_t': NonLinearParameter("Core radius of outer NIE",
+            's_t': NonLinearParameter("Core radius of outer NIE",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$w{\rm t}$"),
             'q': NonLinearParameter("Axis ratio, semi-minor axis / semi-major axis",

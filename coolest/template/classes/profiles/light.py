@@ -28,13 +28,13 @@ class Sersic(AnalyticalLightProfile):
     def __init__(self):
         documentation = "Elliptical Sersic"
         parameters = {
-            'A': LinearParameter("Amplitude at origin",
+            'I_eff': LinearParameter("Amplitude at the Sersic radius",
                             DefinitionRange(min_value=0.0),
-                            latex_str=r"$A$"),
-            'R_sersic': NonLinearParameter("Sersic radius",
+                            latex_str=r"$I_{\rm Sersic}$"),
+            'theta_eff': NonLinearParameter("Sersic (half-light) radius",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$R_{\rm Sersic}$"),
-            'n_sersic': NonLinearParameter("Sersic index",
+            'n': NonLinearParameter("Sersic index",
                                DefinitionRange(min_value=0.5, max_value=10.0),
                                latex_str=r"$n_{\rm Sersic}$"),
             'q': NonLinearParameter("Axis ratio, semi-minor axis / semi-major axis",
@@ -59,7 +59,7 @@ class Chameleon(AnalyticalLightProfile):
         documentation = ("Chameleon profile defined as the difference between two NIE profiles"
                        " (elliptical truncated double isothermal profile)")
         parameters = {
-            'A': LinearParameter("Central amplitude",
+            'A': LinearParameter("Normalization of the profile",
                             DefinitionRange(min_value=0.0),
                             latex_str=r"$A$"),
             'w_c': NonLinearParameter("Core radius of inner NIE",
