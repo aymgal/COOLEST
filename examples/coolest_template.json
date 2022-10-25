@@ -76,21 +76,7 @@
       "light_model": [
         {
           "parameters": {
-            "A": {
-              "point_estimate": {
-                "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              }
-            },
-            "R_sersic": {
+            "I_eff": {
               "point_estimate": {
                 "value": null
               },
@@ -132,7 +118,7 @@
                 "type": null
               }
             },
-            "n_sersic": {
+            "n": {
               "point_estimate": {
                 "value": null
               },
@@ -173,13 +159,8 @@
               "prior": {
                 "type": null
               }
-            }
-          },
-          "type": "Sersic"
-        },
-        {
-          "parameters": {
-            "A": {
+            },
+            "theta_eff": {
               "point_estimate": {
                 "value": null
               },
@@ -192,8 +173,13 @@
               "prior": {
                 "type": null
               }
-            },
-            "R_sersic": {
+            }
+          },
+          "type": "Sersic"
+        },
+        {
+          "parameters": {
+            "I_eff": {
               "point_estimate": {
                 "value": null
               },
@@ -235,7 +221,7 @@
                 "type": null
               }
             },
-            "n_sersic": {
+            "n": {
               "point_estimate": {
                 "value": null
               },
@@ -266,6 +252,20 @@
             "q": {
               "point_estimate": {
                 "value": 0.89
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "theta_eff": {
+              "point_estimate": {
+                "value": null
               },
               "posterior_stats": {
                 "mean": null,
@@ -398,7 +398,7 @@
       "light_model": [
         {
           "parameters": {
-            "A": {
+            "I_eff": {
               "point_estimate": {
                 "value": null
               },
@@ -407,20 +407,6 @@
                 "median": null,
                 "percentile_16th": null,
                 "percentile_84th": null
-              },
-              "prior": {
-                "type": null
-              }
-            },
-            "R_sersic": {
-              "point_estimate": {
-                "value": null
-              },
-              "posterior_stats": {
-                "mean": 0.12,
-                "median": 0.15,
-                "percentile_16th": 0.03,
-                "percentile_84th": 0.05
               },
               "prior": {
                 "type": null
@@ -454,7 +440,7 @@
                 "type": null
               }
             },
-            "n_sersic": {
+            "n": {
               "point_estimate": {
                 "value": null
               },
@@ -491,6 +477,20 @@
                 "median": null,
                 "percentile_16th": null,
                 "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "theta_eff": {
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": 0.12,
+                "median": 0.15,
+                "percentile_16th": 0.03,
+                "percentile_84th": 0.05
               },
               "prior": {
                 "type": null

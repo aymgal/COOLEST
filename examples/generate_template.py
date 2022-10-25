@@ -5,7 +5,7 @@
 from coolest.template.lazy import *
 from coolest.template import info
 from coolest.template.standard import COOLEST
-from coolest.template.io import APISerializer
+from coolest.template.json import JSONSerializer
 
 from pprint import pprint
 
@@ -61,7 +61,7 @@ lens_1.light_model[1].parameters['q'].set_point_estimate(PointEstimate(value=0.8
 
 # - add a posterior distribution (as 0th and 1st order statistics)
 from coolest.template.classes.probabilities import PosteriorStatistics
-source_1.light_model[0].parameters['R_sersic'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
+source_1.light_model[0].parameters['theta_eff'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
                                                                                  percentile_16th=0.03, percentile_84th=0.05))
 
 # Provide data file
@@ -105,11 +105,11 @@ print("#"*30 + " serialization " + "#"*30)
 # print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
 
 # export as JSON file
-sample_encoder_json = APISerializer('coolest_template', 
+sample_encoder_json = JSONSerializer('coolest_template', 
                                     obj=master, indent=2)
-sample_encoder_json.json_dump()
-sample_encoder_json.json_dump_simple()
-standard_master_2 = sample_encoder_json.json_load()
+sample_encoder_json.dump()
+sample_encoder_json.dump_simple()
+standard_master_2 = sample_encoder_json.load()
 print("Retrieved object is a COOLEST instance?", 
       isinstance(standard_master_2, COOLEST))
 print("Meta data:", standard_master_2.meta)

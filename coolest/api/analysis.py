@@ -1,7 +1,7 @@
 __author__ == 'XXX'
 
 
-from coolest.template.io import APISerializer
+from coolest.template.json import JSONSerializer
 
 
 class Analysis(object):
@@ -10,7 +10,7 @@ class Analysis(object):
     """
 
     def __init__(self, coolest_file_path):
-        self.coolest_data = APISerializer(coolest_file_path).json_load()
+        self.coolest_data = JSONSerializer(coolest_file_path).load()
 
     def effective_einstein_radius(self):
         pass
