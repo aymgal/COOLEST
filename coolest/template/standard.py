@@ -46,6 +46,9 @@ DOC_EXCLUDE_KEYS = [
 
 
 class COOLEST(APIBaseObject):
+    """
+    Defines the COOLEST file.
+    """
 
     def __init__(self,
                  mode: str,
@@ -54,7 +57,7 @@ class COOLEST(APIBaseObject):
                  observation: Observation,
                  instrument: Instrument,
                  cosmology: Cosmology = None,
-                 likelihoods: LikelihoodList = None,
+                 # likelihoods: LikelihoodList = None,
                  # regularizations: RegularizationList = None,
                  metadata: dict = None):
         if mode not in SUPPORTED_MODES:
@@ -67,7 +70,7 @@ class COOLEST(APIBaseObject):
         self.observation = observation
         self.instrument  = instrument
         self.cosmology   = cosmology
-        self.likelihoods = likelihoods
+        # self.likelihoods = likelihoods
         # self.regularizations = regularizations
 
         self.standard = 'COOLEST'
