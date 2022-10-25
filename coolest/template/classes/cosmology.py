@@ -5,6 +5,10 @@ from coolest.template.classes.base import APIBaseObject
 
 class Cosmology(APIBaseObject):
 
+    """Defines the cosmological model. 
+    Currently, only FlatLambdaCDM from astropy is supported, based on H0 and Omega_m.
+    """
+
     def __init__(self, 
                  H0: float,
                  Om0: float,

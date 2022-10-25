@@ -16,6 +16,11 @@ SUPPORTED_CHOICES = [
 
 class LikelihoodList(list, APIBaseObject):
 
+    """
+    A list all likelihood terms used during lens model parameters optimization. 
+    Only applicable in the 'MAP' mode.
+    """
+
     def __init__(self, 
                  *likelihood_types: Tuple[str]) -> None:
         for ll_type in likelihood_types:

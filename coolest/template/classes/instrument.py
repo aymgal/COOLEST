@@ -5,13 +5,18 @@ from coolest.template.classes.base import APIBaseObject
 
 
 class Instrument(APIBaseObject):
-    """Defines an Instrument (detector + PSF) setup"""
+    """
+    Defines the instrument used for the observation.
+    This includes the name of the telescope and detector, the filter, 
+    the pixel size, the readout noise and the point spread function (PSF).
+    """
+   
     # TODO: support for general pixel shape (using pixel to angle matrix)
     def __init__(self,
                  name: str,
                  band: str,
                  pixel_size: float, 
-                 readout_noise: float = None,
+                 readout_noise: float,
                  psf: PSF = None) -> None:
         self.name = name
         self.band = band

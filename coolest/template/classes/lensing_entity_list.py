@@ -10,9 +10,14 @@ from coolest.template.classes import util
 
 class LensingEntityList(list, APIBaseObject):
 
-    def __init__(self,
-                 *entities: Tuple[LensingEntity]):
+    """
+    The list of components that define the lensing system.
+    In COOLEST, a "lensing entity" means either a galaxy, or an external shear component.
+    """
+
+    def __init__(self, *entities: Tuple[LensingEntity]):
         list.__init__(self, entities)
+        APIBaseObject.__init__(self)
         self._create_all_ids()
 
     def num_sources():

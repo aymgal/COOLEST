@@ -10,7 +10,12 @@ from coolest.template.classes.base import APIBaseObject
 
 
 class Observation(APIBaseObject):
-    """Defines a data image, as a simple FITS file"""
+    
+    """
+    Defines the observation itself, that is the image pixels, the exposure time,
+    the noise model and/or properties, the magnitude zero-point and sky brightness.
+    """
+    
     def __init__(self, 
                  pixels: PixelatedRegularGrid = None,  # can be None for mock generation
                  exposure_time: float = None,
