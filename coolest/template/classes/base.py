@@ -28,7 +28,8 @@ class APIBaseObject(object):
 
     def __init__(self):
         #self.type, self._api_inheritance = get_class_names(self)
-        pass
+        if not hasattr(self, 'documentation') or self.documentation is None:
+            self.documentation = self.__doc__
         
     def to_JSON(self, indent=2, exclude_keys=None):
         return json.dumps(self, default=lambda o: filter_dict(o.__dict__, exclude_keys), 

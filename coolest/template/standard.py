@@ -11,6 +11,8 @@ from coolest.template.classes.coordinates import CoordinatesOrigin
 from coolest.template.classes.cosmology import Cosmology
 
 
+__all__ = ['COOLEST']
+
 
 SUPPORTED_MODES = ['MOCK', 'MAP', 'DOC']
 
