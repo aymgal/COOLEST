@@ -33,4 +33,4 @@ class PixelatedRegularGrid(APIBaseObject):
 
     @property
     def pixel_size(self):
-        return self.field_of_view_x / (num_pix_x + 1)
+        return np.abs(self.field_of_view_x[0]- self.field_of_view_x[1])/self.num_pix_x
