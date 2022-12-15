@@ -2,6 +2,7 @@
 
 ![License](https://img.shields.io/github/license/aymgal/COOLEST)
 ![PyPi python support](https://img.shields.io/badge/Python-3.7-blue)
+[![Tests](https://github.com/aymgal/COOLEST/actions/workflows/python-package.yml/badge.svg?branch=test)](https://github.com/aymgal/COOLEST/actions/workflows/python-package.yml)
 [![Coverage Status](https://coveralls.io/repos/github/aymgal/COOLEST/badge.svg)](https://coveralls.io/github/aymgal/COOLEST)
 
 
