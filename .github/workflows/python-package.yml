@@ -44,7 +44,7 @@ jobs:
     
     - name: Test with pytest
       run: |
-        pytest --cov=coolest
+        pytest --cov-report lcov --cov=coolest
     
     - name: Coveralls
       uses: coverallsapp/github-action@master
