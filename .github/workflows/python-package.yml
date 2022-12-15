@@ -46,9 +46,9 @@ jobs:
       run: |
         pytest --cov=coolest
     
-    - name: Coveralls
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          coveralls --service=github
+    # - name: Coveralls
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     run: |
+    #       coveralls --service=github
           
