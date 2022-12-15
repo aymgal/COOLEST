@@ -4,7 +4,9 @@ import numpy as np
 from typing import Dict
 
 from coolest.template.classes.base import APIBaseObject
-from coolest.template.classes.parameter import Parameter
+from coolest.template.classes.parameter import (Parameter, 
+                                                LinearParameter, LinearParameterSet,
+                                                NonLinearParameter, HyperParameter)
 
 
 
@@ -34,7 +36,7 @@ class AnalyticalProfile(Profile):
                     count += 1
             elif isinstance(parameter, LinearParameterSet):
                 if not parameter.fixed or include_fixed:
-                    count += p.num_values
+                    count += parameter.num_values
             elif isinstance(parameter, HyperParameter) and include_hyper:
                 if not parameter.fixed or include_fixed:
                     count += 1

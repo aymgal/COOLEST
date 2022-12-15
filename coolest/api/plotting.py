@@ -1,4 +1,4 @@
-__author__ == 'XXX'
+__author__ = 'XXX'
 
 
 from coolest.io.analysis import Analysis
