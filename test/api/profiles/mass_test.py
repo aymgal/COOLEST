@@ -5,6 +5,11 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 
+from coolest.api.profiles.mass import PEMD
+
+from lenstronomy.Util import param_util
+from lenstronomy.LensModel.lens_model import LensModel
+
 
 class TestPEMD(object):
 
@@ -24,14 +29,11 @@ class TestPEMD(object):
         center_y = -0.15
         
         # COOLEST
-        from coolest.api.profiles.mass import PEMD
         result = PEMD().convergence(x, y,
                                     theta_E=theta_E, gamma=gamma, phi=phi, q=q,
                                     center_x=center_x, center_y=center_y)
 
         # reference
-        from lenstronomy.Util import param_util
-        from lenstronomy.LensModel.lens_model import LensModel
         ref = LensModel(['EPL'])
         e1, e2 = param_util.phi_q2_ellipticity(phi*np.pi/180., q)
         kwargs = {
