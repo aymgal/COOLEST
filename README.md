@@ -1,5 +1,11 @@
 # COOLEST: COde-independent Organized LEns STandard
 
+![License](https://img.shields.io/github/license/aymgal/COOLEST)
+![PyPi python support](https://img.shields.io/badge/Python-3.7-blue)
+[![Tests](https://github.com/aymgal/COOLEST/actions/workflows/python-package.yml/badge.svg?branch=test)](https://github.com/aymgal/COOLEST/actions/workflows/python-package.yml)
+[![Coverage Status](https://coveralls.io/repos/github/aymgal/COOLEST/badge.svg)](https://coveralls.io/github/aymgal/COOLEST)
+
+
 ## A standard for gravitational lens modeling
 
 After a lens modeling analysis is published and available as a manuscript, it is often challenging to **(1) reproduce the results** with the same or another similar modeling software, or **(2) start a new analysis** directly based on published results, **(3) reliably and quantitatively compare results** from different analyses. Moreover, there is currently no practical way to share and store lens models within the community.
