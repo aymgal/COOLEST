@@ -3,6 +3,7 @@ __author__ = 'XXX'
 
 from coolest.api.analysis import Analysis
 from coolest.api.util import read_json_param
+import matplotlib.pyplot as plt
 
 
 class Plotting(object):
