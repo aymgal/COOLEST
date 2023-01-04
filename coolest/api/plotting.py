@@ -22,8 +22,9 @@ class Comparison_analytical(object):
     """
     Handles plot of analytical models in a comparative way
     """
-    def __init__(self,coolest_file_list, nickname_file_list):
+    def __init__(self,coolest_file_list, nickname_file_list, posterior_bool_list):
         self.file_names = nickname_file_list
+        self.posterior_bool_list = posterior_bool_list
         self.param_lens, self.param_source = read_json_param(coolest_file_list,self.file_names, lens_light=False)
 
     def plotting_routine(self,param_dict,idx_file=0):
@@ -68,7 +69,7 @@ class Comparison_analytical(object):
                 idx_col = i % 4
                 p = result[key]
                 m = markers[j]
-                if file_posterior[j]:
+                if self.posterior_bool_list[j]:
                     # UNCOMMENT IF NO ERROR BARS AVAILABLE ON SHEAR
                     #             if (j== 1) and (key=='SHEAR_0_gamma_ext' or key == 'SHEAR_0_phi_ext'):
                     #                 ax[idx_line,idx_col].plot(j,p['point_estimate'],marker=m,ls='',label=file_name)
