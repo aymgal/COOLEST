@@ -39,7 +39,7 @@ class Comparison_analytical(object):
         """
 
         #find the numer of parameters to plot and define a nice looking figure
-        number_param = len(param_dict[idx_file])
+        number_param = len(param_dict[self.file_names[idx_file]])
         unused_figs = []
         if number_param <= 4:
             print('so few parameters not implemented yet')
