@@ -24,7 +24,7 @@ def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
 
 def read_json_param(file_list, file_names, lens_light=False):
     """
-    Function to read a json file already containing a model with the results of this model fitting
+    Read several json files already containing a model with the results of this model fitting
 
     INPUT
     -----
