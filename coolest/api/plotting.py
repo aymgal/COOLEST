@@ -103,4 +103,4 @@ class Comparison_analytical(object):
         return f,ax
     def plot_lens(self,idx_file=0):
         f,ax = self.plotting_routine(self.param_lens,idx_file)
-        retrn f,ax
+        return f,ax
