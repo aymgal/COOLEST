@@ -1,7 +1,7 @@
 __author__ = 'XXX'
 
 
-from coolest.io.analysis import Analysis
+from coolest.api.analysis import Analysis
 from coolest.api.util import read_json_param
 
 
