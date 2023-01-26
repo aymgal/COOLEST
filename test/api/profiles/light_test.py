@@ -10,7 +10,7 @@ from lenstronomy.Util import param_util
 from lenstronomy.LightModel.light_model import LightModel
 
 
-class TestPEMD(object):
+class TestSersic(object):
 
     def test_surface_brightness(self):
         # define some coordinates grid
@@ -29,8 +29,8 @@ class TestPEMD(object):
         center_y = -0.15
 
         # COOLEST
-        result = Sersic().surface_brightness(x, y,I_eff=I_eff, theta_eff= theta_eff, n=n, phi = phi, q=q,
-                                             center_x = center_x, center_y = center_y)
+        result = Sersic().surface_brightness(x, y, I_eff=I_eff, theta_eff=theta_eff, n=n, phi=phi, q=q,
+                                             center_x=center_x, center_y=center_y)
 
         # reference
         ref = LightModel(['SERSIC_ELLIPSE'])
