@@ -26,18 +26,27 @@ class JSONSerializer(object):
         result = jsonpickle.encode(self.obj, indent=self.indent)
         with open(json_path, 'w') as f:
             f.write(self.obj.to_JSON(indent=self.indent, exclude_keys=exclude_keys))
-        return result
 
     def dump(self):
         json_path = self.path + self._api_suffix + '.json'
         result = jsonpickle.encode(self.obj, indent=self.indent)
         with open(json_path, 'w') as f:
             f.write(result)
-        return result
+
+    def load_simple(self):
+        json_path = self.path + '.json'
+        with open(json_path, 'r') as f:
+            content = json.loads(f.read())
+        return content  # dictionary
 
     def load(self):
         json_path = self.path + self._api_suffix + '.json'
         with open(json_path, 'r') as f:
             content = jsonpickle.decode(f.read())
-        return content
+        return content  # standard.COOLEST object
+
+    @staticmethod
+    def to_jsonpickle(self, file_read):
+        pass
+
         

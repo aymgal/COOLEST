@@ -10,7 +10,7 @@ class Analysis(object):
     """
 
     def __init__(self, coolest_file_path):
-        self.coolest_data = JSONSerializer(coolest_file_path).load()
+        self.coolest_data = JSONSerializer(coolest_file_path).load_simple()
 
     def effective_einstein_radius(self):
         pass
