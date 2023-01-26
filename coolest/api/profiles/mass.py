@@ -2,10 +2,12 @@ __author__ = 'aymgal'
 
 
 import numpy as np
+
+from coolest.template.classes.profiles.mass import PEMD as TemplatePEMD
 from coolest.api.profiles import util
 
 
-class PEMD(object):
+class PEMD(TemplatePEMD):
 
     """Power-law Elliptical Mass Distribution (a.k.a. Elliptical Power-law)"""
 
