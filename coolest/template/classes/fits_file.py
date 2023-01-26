@@ -4,14 +4,14 @@ import os
 from astropy.io import fits
 
 
-class FitsFile(str):
+class FitsFile(object):
     """A .fits file object"""
-    def __new__(cls, fits_path: str = None) -> str:
-        return str.__new__(cls, fits_path)
+    def __init__(self, path: str) -> None:
+        self.path = path
 
     @property
     def exists(self):
-        return os.path.exists(self)
+        return os.path.exists(self.path)
 
     def read(self):
-        return fits.getdata(self, header=True)
+        return fits.getdata(self.path, header=True)

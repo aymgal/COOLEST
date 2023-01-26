@@ -16,20 +16,22 @@
       "description": null,
       "pixels": {
         "field_of_view_x": [
-          null,
-          null
+          0,
+          0
         ],
         "field_of_view_y": [
-          null,
-          null
+          0,
+          0
         ],
-        "fits_file": "test_psf.fits",
+        "fits_file": {
+          "path": "test_psf.fits"
+        },
         "num_pix_x": 99,
         "num_pix_y": 99
       },
       "type": "PixelatedPSF"
     },
-    "readout_noise": null
+    "readout_noise": 4
   },
   "lensing_entities": [
     {
@@ -376,16 +378,18 @@
         {
           "pixels": {
             "field_of_view_x": [
-              null,
-              null
+              0,
+              0
             ],
             "field_of_view_y": [
-              null,
-              null
+              0,
+              0
             ],
-            "fits_file": "None",
-            "num_pix_x": null,
-            "num_pix_y": null
+            "fits_file": {
+              "path": ""
+            },
+            "num_pix_x": 0,
+            "num_pix_y": 0
           },
           "type": "PixelatedRegularGridPotential"
         }
@@ -510,16 +514,18 @@
         {
           "pixels": {
             "field_of_view_x": [
-              null,
-              null
+              0,
+              0
             ],
             "field_of_view_y": [
-              null,
-              null
+              0,
+              0
             ],
-            "fits_file": "None",
-            "num_pix_x": null,
-            "num_pix_y": null
+            "fits_file": {
+              "path": ""
+            },
+            "num_pix_x": 0,
+            "num_pix_y": 0
           },
           "type": "PixelatedRegularGrid"
         }
@@ -534,16 +540,18 @@
         {
           "pixels": {
             "field_of_view_x": [
-              null,
-              null
+              0,
+              0
             ],
             "field_of_view_y": [
-              null,
-              null
+              0,
+              0
             ],
-            "fits_file": "None",
-            "num_pix_x": null,
-            "num_pix_y": null
+            "fits_file": {
+              "path": ""
+            },
+            "num_pix_x": 0,
+            "num_pix_y": 0
           },
           "type": "PixelatedRegularGrid"
         }
@@ -566,14 +574,16 @@
     },
     "pixels": {
       "field_of_view_x": [
-        null,
-        null
+        0,
+        0
       ],
       "field_of_view_y": [
-        null,
-        null
+        0,
+        0
       ],
-      "fits_file": "test_image.fits",
+      "fits_file": {
+        "path": "test_image.fits"
+      },
       "num_pix_x": 100,
       "num_pix_y": 100
     }

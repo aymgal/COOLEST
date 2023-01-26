@@ -10,11 +10,11 @@ from coolest.template.classes.fits_file import FitsFile
 class PixelatedRegularGrid(APIBaseObject):
     
     def __init__(self, 
-                 fits_path: str = None,
-                 field_of_view_x: Tuple[float] = [None, None],
-                 field_of_view_y: Tuple[float] = [None, None],
-                 num_pix_x: int = None,
-                 num_pix_y: int = None):
+                 fits_path: str = "",
+                 field_of_view_x: Tuple[float] = (0, 0),
+                 field_of_view_y: Tuple[float] = (0, 0),
+                 num_pix_x: int = 0,
+                 num_pix_y: int = 0):
         documentation = "Pixelated light profile on a pixel grid"
         self.fits_file = FitsFile(fits_path)
         self.field_of_view_x = field_of_view_x

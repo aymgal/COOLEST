@@ -39,13 +39,13 @@ ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
 entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3)
 
 # Define regularization strategies and link them to a given profile
-regularization_list = RegularizationList(('PixelStarlet', source_2.light_model[0]),
-                                         ('PixelPositivity', source_2.light_model[0]), 
-                                         ('PixelCurvature', source_3.light_model[0]),
-                                         ('PixelBLWavelet', lens_1.mass_model[1]))
+# regularization_list = RegularizationList(('PixelStarlet', source_2.light_model[0]),
+#                                          ('PixelPositivity', source_2.light_model[0]), 
+#                                          ('PixelCurvature', source_3.light_model[0]),
+#                                          ('PixelBLWavelet', lens_1.mass_model[1]))
 
 # Choose which likelihood terms you want to include
-likelihood_list = LikelihoodList('imaging_data')
+# likelihood_list = LikelihoodList('imaging_data')
 
 # Define the origin of the coordinates system
 origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')  # <- in degrees (2.83435, )
@@ -80,6 +80,7 @@ psf = PixelatedPSF(PixelatedRegularGrid('test_psf.fits'))
 #psf = GaussianPSF(0.2)
 
 instrument = Instrument('some instrument',
+                        readout_noise=4,
                         pixel_size=0.08, 
                         band='F160W',
                         psf=psf)
@@ -90,8 +91,7 @@ master = COOLEST('MOCK',
                          entity_list,
                          observation, 
                          instrument, 
-                         cosmology,
-                         likelihoods=likelihood_list)
+                         cosmology)
 print("FINAL OBJECT\n", master, '\n')
 
 # print supported profiles so far
