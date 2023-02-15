@@ -16,7 +16,7 @@ __all__ = [
     'Shapelets',
     'LensedPS',
     'PixelatedRegularGrid',
-    # 'PixelatedIrregularGrid',
+    'IrregularGrid',
     # 'PixelatedDelaunayGrid',
     # 'PixelatedVoronoiGrid',
 ]

@@ -26,6 +26,9 @@ source_2 = Galaxy('another source', 1.5,
 source_3 = Galaxy('a GLEE source', 1.2,
                   light_model=LightModel('PixelatedRegularGrid'))
 
+source_4 = Galaxy('a VKL source', 1.2,
+                  light_model=LightModel('IrregularGrid'))
+
 # Create a lens galaxy
 lens_1 = Galaxy('a lens galaxy', 0.5,
                 light_model=LightModel('Sersic', 'Sersic'),
