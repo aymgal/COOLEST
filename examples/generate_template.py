@@ -26,6 +26,11 @@ source_2 = Galaxy('another source', 1.5,
 source_3 = Galaxy('a GLEE source', 1.2,
                   light_model=LightModel('PixelatedRegularGrid'))
 
+source_4 = Galaxy('a VKL source', 1.2,
+                  light_model=LightModel('IrregularGrid'))
+#source_4.light_model[0].pixels.set_fits('/home/giorgos/myCodes/COOLEST/mytests/dum_table.fits')
+
+
 # Create a lens galaxy
 lens_1 = Galaxy('a lens galaxy', 0.5,
                 light_model=LightModel('Sersic', 'Sersic'),
@@ -36,7 +41,7 @@ ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
                           mass_model=MassModel('ExternalShear'))
 
 # Put them in a list, which will also create unique IDs for each profile
-entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3)
+entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3, source_4)
 
 # Define regularization strategies and link them to a given profile
 # regularization_list = RegularizationList(('PixelStarlet', source_2.light_model[0]),
