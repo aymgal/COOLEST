@@ -1054,6 +1054,136 @@
             }
           ]
         }
+      },
+      {
+        "py/object": "coolest.template.classes.galaxy.Galaxy",
+        "type": "galaxy",
+        "name": "a VKL source",
+        "redshift": 1.2,
+        "mass_model": {
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
+          "py/seq": []
+        },
+        "documentation": "",
+        "light_model": {
+          "py/object": "coolest.template.classes.mass_light_model.LightModel",
+          "py/seq": [
+            {
+              "py/object": "coolest.template.classes.profiles.light.IrregularGrid",
+              "pixels": {
+                "py/object": "coolest.template.classes.parameter.IrregularGridParameter",
+                "documentation": "Pixel values",
+                "fits_file": {
+                  "py/object": "coolest.template.classes.fits_file.FitsFile",
+                  "path": "/home/giorgos/myCodes/COOLEST/mytests/dum_table.fits"
+                },
+                "field_of_view_x": {
+                  "py/tuple": [
+                    {
+                      "py/reduce": [
+                        {
+                          "py/function": "numpy.core.multiarray.scalar"
+                        },
+                        {
+                          "py/tuple": [
+                            {
+                              "py/reduce": [
+                                {
+                                  "py/type": "numpy.dtype"
+                                },
+                                {
+                                  "py/tuple": [
+                                    "f8",
+                                    false,
+                                    true
+                                  ]
+                                },
+                                {
+                                  "py/tuple": [
+                                    3,
+                                    "<",
+                                    null,
+                                    null,
+                                    null,
+                                    -1,
+                                    -1,
+                                    0
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "py/b64": "ZmZmZmZGc0A="
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "py/reduce": [
+                        {
+                          "py/function": "numpy.core.multiarray.scalar"
+                        },
+                        {
+                          "py/tuple": [
+                            {
+                              "py/id": 188
+                            },
+                            {
+                              "py/b64": "zczMzMzkdEA="
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "field_of_view_y": {
+                  "py/tuple": [
+                    {
+                      "py/reduce": [
+                        {
+                          "py/function": "numpy.core.multiarray.scalar"
+                        },
+                        {
+                          "py/tuple": [
+                            {
+                              "py/id": 188
+                            },
+                            {
+                              "py/b64": "mpmZmZnJYEA="
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "py/reduce": [
+                        {
+                          "py/function": "numpy.core.multiarray.scalar"
+                        },
+                        {
+                          "py/tuple": [
+                            {
+                              "py/id": 188
+                            },
+                            {
+                              "py/b64": "ZmZmZmaGeUA="
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "num_pix": 4
+              },
+              "type": "IrregularGrid",
+              "documentation": "A pixelated profile defined on a irregular grid of points",
+              "id": "galaxy_5-light_model-IrregularGrid_0"
+            }
+          ]
+        }
       }
     ]
   },

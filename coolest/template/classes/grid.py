@@ -52,27 +52,29 @@ class IrregularGrid(APIBaseObject):
         self.num_pix = num_pix
 
         try:
-            set_fits(fits_file)
+            self.set_fits(self.fits_path)
         except Exception as e:
             print(e) # We may want something different here
     
         super().__init__()
 
 
-    def set_fits(self,fits_file):
-        if fits_file.exists:
-            data, header = fits_file.read()
+    def set_fits(self,fits_path):
+        self.fits_file = FitsFile(fits_path)
+        if self.fits_file.exists:
+            data, header = self.fits_file.read()
             x = data.field(0)
             y = data.field(1)
-            z = data.field(3)
-            N = len(z)
-            assert self.num_pix == len(z), "Given number of grid points does not match the number of .fits table rows!"
-            if N > 0 and (self.field_of_view_x == 0 and self.field_of_view_y == 0):
+            z = data.field(2)
+            self.num_pix = len(z)
+            #assert self.num_pix == len(z), "Given number of grid points does not match the number of .fits table rows!"
+            if self.field_of_view_x == (0,0) and self.field_of_view_y == (0,0):
                 # Here we may want to check/report the overlap between the given field of view and the square encompassing the irregular grid
                 self.field_of_view_x = (min(x),max(x))
                 self.field_of_view_y = (min(y),max(y))
         else:
-            raise Exception("Input .fits file does not exist!")
+            self.num_pix = 0
+            #raise Exception("Input .fits file does not exist!")
 
         
             

@@ -560,6 +560,31 @@
       "name": "a GLEE source",
       "redshift": 1.2,
       "type": "galaxy"
+    },
+    {
+      "light_model": [
+        {
+          "pixels": {
+            "field_of_view_x": [
+              308.4,
+              334.3
+            ],
+            "field_of_view_y": [
+              134.3,
+              408.4
+            ],
+            "fits_file": {
+              "path": "/home/giorgos/myCodes/COOLEST/mytests/dum_table.fits"
+            },
+            "num_pix": 4
+          },
+          "type": "IrregularGrid"
+        }
+      ],
+      "mass_model": [],
+      "name": "a VKL source",
+      "redshift": 1.2,
+      "type": "galaxy"
     }
   ],
   "meta": {},
