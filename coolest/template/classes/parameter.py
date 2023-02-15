@@ -16,7 +16,8 @@ __all__ = [
     'HyperParameter',
     'LinearParameterSet',
     'NonLinearParameterSet',
-    # 'PixelParameterSet',
+    'PixelatedRegularGridParameter',
+    'IrregularGridParameter',
 ]
 
 
