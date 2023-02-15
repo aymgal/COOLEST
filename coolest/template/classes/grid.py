@@ -35,3 +35,13 @@ class PixelatedRegularGrid(APIBaseObject):
     @property
     def pixel_size(self):
         return np.abs(self.field_of_view_x[0]- self.field_of_view_x[1])/self.num_pix_x
+
+
+class IrregularGrid(APIBaseObject):
+    def __init__(self, 
+                 fits_path: str = "",
+                 field_of_view_x: Tuple[float] = (0, 0),
+                 field_of_view_y: Tuple[float] = (0, 0),
+                 num_pix_x: int = 0,
+                 num_pix_y: int = 0):
+        super().__init__()
