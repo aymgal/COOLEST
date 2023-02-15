@@ -135,3 +135,5 @@ dmypy.json
 # Sublime Text files
 *.sublime-project
 *.sublime-workspace
+
+mytests

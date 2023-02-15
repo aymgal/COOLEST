@@ -22,7 +22,7 @@ class PixelatedRegularGrid(APIBaseObject):
         if self.fits_file.exists:
             array, header = self.fits_file.read()
             array_shape = array.shape
-            assert array_shape == (header['NAXIS1'], header['NAXIS2'])
+            assert array_shape == (header['NAXIS1'], header['NAXIS2']), "Given dimensions do not match the .fits image!"
             self.num_pix_x, self.num_pix_y = array_shape
         else:
             self.num_pix_x, self.num_pix_y = num_pix_x, num_pix_y
@@ -37,11 +37,42 @@ class PixelatedRegularGrid(APIBaseObject):
         return np.abs(self.field_of_view_x[0]- self.field_of_view_x[1])/self.num_pix_x
 
 
+
+    
 class IrregularGrid(APIBaseObject):
     def __init__(self, 
                  fits_path: str = "",
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
-                 num_pix_x: int = 0,
-                 num_pix_y: int = 0):
+                 num_pix: int = 0):
+        documentation = "Irregular light profile, a list of (x,y,z) values"
+        self.fits_file = FitsFile(fits_path)
+        self.field_of_view_x = field_of_view_x
+        self.field_of_view_y = field_of_view_y
+        self.num_pix = num_pix
+
+        try:
+            set_fits(fits_file)
+        except Exception as e:
+            print(e) # We may want something different here
+    
         super().__init__()
+
+
+    def set_fits(self,fits_file):
+        if fits_file.exists:
+            data, header = fits_file.read()
+            x = data.field(0)
+            y = data.field(1)
+            z = data.field(3)
+            N = len(z)
+            assert self.num_pix == len(z), "Given number of grid points does not match the number of .fits table rows!"
+            if N > 0 and (self.field_of_view_x == 0 and self.field_of_view_y == 0):
+                # Here we may want to check/report the overlap between the given field of view and the square encompassing the irregular grid
+                self.field_of_view_x = (min(x),max(x))
+                self.field_of_view_y = (min(y),max(y))
+        else:
+            raise Exception("Input .fits file does not exist!")
+
+        
+            
