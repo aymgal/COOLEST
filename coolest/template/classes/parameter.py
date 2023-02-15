@@ -4,7 +4,7 @@ from typing import List
 
 from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.probabilities import Prior, PosteriorStatistics
-from coolest.template.classes.grid import PixelatedRegularGrid
+from coolest.template.classes.grid import PixelatedRegularGrid, IrregularGrid
 
 import numpy as np
 
@@ -156,6 +156,15 @@ class NonLinearParameterSet(ParameterSet):
 
 
 class PixelatedRegularGridParameter(PixelatedRegularGrid):
+    """Typically for pixelated profiles"""
+
+    def __init__(self, documentation, 
+                 **kwargs_pixelated_grid) -> None:
+        self.documentation = documentation
+        super().__init__(**kwargs_pixelated_grid)
+
+
+class IrregularGridParameter(IrregularGrid):
     """Typically for pixelated profiles"""
 
     def __init__(self, documentation, 

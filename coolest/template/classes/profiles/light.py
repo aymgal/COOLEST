@@ -2,10 +2,11 @@ __author__ = 'aymgal'
 
 from coolest.template.classes.profile import Profile, AnalyticalLightProfile
 from coolest.template.classes.parameter import (NonLinearParameter, 
-                                            LinearParameter, 
-                                            LinearParameterSet, 
-                                            NonLinearParameterSet,
-                                            PixelatedRegularGridParameter)
+                                                LinearParameter, 
+                                                LinearParameterSet, 
+                                                NonLinearParameterSet,
+                                                PixelatedRegularGridParameter,
+                                                IrregularGridParameter)
 from coolest.template.classes.parameter import DefinitionRange
 
 
@@ -17,8 +18,6 @@ __all__ = [
     'LensedPS',
     'PixelatedRegularGrid',
     'IrregularGrid',
-    # 'PixelatedDelaunayGrid',
-    # 'PixelatedVoronoiGrid',
 ]
 SUPPORTED_CHOICES = __all__
 
@@ -143,4 +142,12 @@ class PixelatedRegularGrid(Profile):
     def __init__(self):
         documentation = "A pixelated profile defined on a regular Cartesian grid"
         self.pixels = PixelatedRegularGridParameter("Pixel values")
+        super().__init__(documentation)
+
+
+class IrregularGrid(Profile):
+
+    def __init__(self):
+        documentation = "A pixelated profile defined on a irregular grid of points"
+        self.pixels = IrregularGridParameter("Pixel values")
         super().__init__(documentation)
