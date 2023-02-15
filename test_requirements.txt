@@ -1,3 +1,4 @@
 numpy>=1.20.0
 jsonpickle>=2.0.0
+astropy>=4.2.0
 lenstronomy==1.11.0
