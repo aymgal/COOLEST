@@ -1,4 +1,4 @@
-__author__ = 'aymgal'
+__author__ = 'aymgal, Giorgos Vernardos'
 
 from typing import Tuple
 import numpy as np
@@ -46,10 +46,10 @@ class IrregularGrid(APIBaseObject):
                  field_of_view_y: Tuple[float] = (0, 0),
                  num_pix: int = 0):
         documentation = "Irregular light profile, a list of (x,y,z) values"
-        self.fits_file = FitsFile(fits_path)
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
         self.num_pix = num_pix
+        self.fits_file = FitsFile(fits_path)
 
         try:
             self.set_fits(self.fits_path)
@@ -76,5 +76,14 @@ class IrregularGrid(APIBaseObject):
             self.num_pix = 0
             #raise Exception("Input .fits file does not exist!")
 
-        
             
+    def get_xyz(self):
+        if self.fits_file.exists:
+            data, header = self.fits_file.read()
+            x = data.field(0)
+            y = data.field(1)
+            z = data.field(2)
+            return x,y,z
+        else:
+            raise Exception("Input .fits file does not exist!")
+        
