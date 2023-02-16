@@ -26,8 +26,8 @@ source_2 = Galaxy('another source', 1.5,
 source_3 = Galaxy('a GLEE source', 1.2,
                   light_model=LightModel('PixelatedRegularGrid'))
 
-source_4 = Galaxy('a VKL source', 1.2,
-                  light_model=LightModel('IrregularGrid'))
+# source_4 = Galaxy('a VKL source', 1.2,
+#                   light_model=LightModel('IrregularGrid'))
 #source_4.light_model[0].pixels.set_fits('/home/giorgos/myCodes/COOLEST/mytests/dum_table.fits')
 
 
@@ -41,7 +41,7 @@ ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
                           mass_model=MassModel('ExternalShear'))
 
 # Put them in a list, which will also create unique IDs for each profile
-entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3, source_4)
+entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3)
 
 # Define regularization strategies and link them to a given profile
 # regularization_list = RegularizationList(('PixelStarlet', source_2.light_model[0]),
@@ -62,11 +62,12 @@ lens_1.mass_model[0].parameters['gamma'].set_prior(GaussianPrior(mean=2.0, width
 
 # - add a point estimate to a given parameter
 from coolest.template.classes.parameter import PointEstimate
+ext_shear.mass_model[0].parameters['gamma_ext'].set_point_estimate(0.07)
 lens_1.light_model[1].parameters['q'].set_point_estimate(PointEstimate(value=0.89))
 
 # - add a posterior distribution (as 0th and 1st order statistics)
 from coolest.template.classes.probabilities import PosteriorStatistics
-source_1.light_model[0].parameters['theta_eff'].set_posterior(PosteriorStatistics(mean=0.12, median=0.15, 
+source_1.light_model[0].parameters['theta_eff'].set_posterior(PosteriorStatistics(mean=0.11, median=0.15, 
                                                                                  percentile_16th=0.03, percentile_84th=0.05))
 
 # Provide data file
@@ -110,13 +111,18 @@ print("#"*30 + " serialization " + "#"*30)
 # print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
 
 # export as JSON file
-sample_encoder_json = JSONSerializer('coolest_template', 
+encoder_json = JSONSerializer('coolest_template', 
                                     obj=master, indent=2)
-sample_encoder_json.dump()
-sample_encoder_json.dump_simple()
-standard_master_2 = sample_encoder_json.load()
+encoder_json.dump()
+encoder_json.dump_simple()
+master_2 = encoder_json.load()
 print("Retrieved object is a COOLEST instance?", 
-      isinstance(standard_master_2, COOLEST))
-print("Meta data:", standard_master_2.meta)
+      isinstance(master_2, COOLEST))
+print("Meta data:", master_2.meta)
 
+# test reading the JSON file that does not contain jsonpickle tags
+master_3 = encoder_json.load_simple()
+print("Retrieved object is a COOLEST instance?", 
+      isinstance(master_3, COOLEST))
+print("Meta data:", master_3.meta)
 

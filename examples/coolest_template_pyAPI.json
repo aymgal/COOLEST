@@ -23,7 +23,6 @@
               "py/object": "coolest.template.classes.profiles.mass.ExternalShear",
               "type": "ExternalShear",
               "documentation": "External shear defined with a strength and orientation",
-              "id": "extshear_model_0-ExternalShear_0",
               "parameters": {
                 "gamma_ext": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -37,7 +36,7 @@
                   "fixed": false,
                   "point_estimate": {
                     "py/object": "coolest.template.classes.parameter.PointEstimate",
-                    "value": null
+                    "value": 0.07
                   },
                   "posterior_stats": {
                     "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
@@ -83,7 +82,8 @@
                   "latex_str": "$\\phi_{\\rm ext}$",
                   "id": "extshear_model_0-ExternalShear_0-phi_ext"
                 }
-              }
+              },
+              "id": "extshear_model_0-ExternalShear_0"
             }
           ]
         },
@@ -101,7 +101,6 @@
               "py/object": "coolest.template.classes.profiles.mass.PEMD",
               "type": "PEMD",
               "documentation": "Powerlaw elliptical mass distribution",
-              "id": "galaxy_1-mass_model-PEMD_0",
               "parameters": {
                 "gamma": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -279,34 +278,37 @@
                   "latex_str": "$y_0$",
                   "id": "galaxy_1-mass_model-PEMD_0-center_y"
                 }
-              }
+              },
+              "id": "galaxy_1-mass_model-PEMD_0"
             },
             {
               "py/object": "coolest.template.classes.profiles.mass.PixelatedRegularGridPotential",
-              "pixels": {
-                "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
-                "documentation": "Pixel values",
-                "fits_file": {
-                  "py/object": "coolest.template.classes.fits_file.FitsFile",
-                  "path": ""
-                },
-                "field_of_view_x": {
-                  "py/tuple": [
-                    0,
-                    0
-                  ]
-                },
-                "field_of_view_y": {
-                  "py/tuple": [
-                    0,
-                    0
-                  ]
-                },
-                "num_pix_x": 0,
-                "num_pix_y": 0
-              },
               "type": "PixelatedRegularGridPotential",
               "documentation": "A pixelated profile defined on a regular Cartesian grid",
+              "parameters": {
+                "pixels": {
+                  "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
+                  "documentation": "Pixel values",
+                  "fits_file": {
+                    "py/object": "coolest.template.classes.fits_file.FitsFile",
+                    "path": ""
+                  },
+                  "field_of_view_x": {
+                    "py/tuple": [
+                      0,
+                      0
+                    ]
+                  },
+                  "field_of_view_y": {
+                    "py/tuple": [
+                      0,
+                      0
+                    ]
+                  },
+                  "num_pix_x": 0,
+                  "num_pix_y": 0
+                }
+              },
               "id": "galaxy_1-mass_model-PixelatedRegularGridPotential_1"
             }
           ]
@@ -319,7 +321,6 @@
               "py/object": "coolest.template.classes.profiles.light.Sersic",
               "type": "Sersic",
               "documentation": "Elliptical Sersic",
-              "id": "galaxy_1-light_model-Sersic_0",
               "parameters": {
                 "I_eff": {
                   "py/object": "coolest.template.classes.parameter.LinearParameter",
@@ -524,13 +525,13 @@
                   "latex_str": "$y_0$",
                   "id": "galaxy_1-light_model-Sersic_0-center_y"
                 }
-              }
+              },
+              "id": "galaxy_1-light_model-Sersic_0"
             },
             {
               "py/object": "coolest.template.classes.profiles.light.Sersic",
               "type": "Sersic",
               "documentation": "Elliptical Sersic",
-              "id": "galaxy_1-light_model-Sersic_1",
               "parameters": {
                 "I_eff": {
                   "py/object": "coolest.template.classes.parameter.LinearParameter",
@@ -735,7 +736,8 @@
                   "latex_str": "$y_0$",
                   "id": "galaxy_1-light_model-Sersic_1-center_y"
                 }
-              }
+              },
+              "id": "galaxy_1-light_model-Sersic_1"
             }
           ]
         }
@@ -757,7 +759,6 @@
               "py/object": "coolest.template.classes.profiles.light.Sersic",
               "type": "Sersic",
               "documentation": "Elliptical Sersic",
-              "id": "galaxy_2-light_model-Sersic_0",
               "parameters": {
                 "I_eff": {
                   "py/object": "coolest.template.classes.parameter.LinearParameter",
@@ -804,7 +805,7 @@
                   },
                   "posterior_stats": {
                     "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
-                    "mean": 0.12,
+                    "mean": 0.11,
                     "median": 0.15,
                     "percentile_16th": 0.03,
                     "percentile_84th": 0.05
@@ -962,7 +963,8 @@
                   "latex_str": "$y_0$",
                   "id": "galaxy_2-light_model-Sersic_0-center_y"
                 }
-              }
+              },
+              "id": "galaxy_2-light_model-Sersic_0"
             }
           ]
         }
@@ -982,30 +984,32 @@
           "py/seq": [
             {
               "py/object": "coolest.template.classes.profiles.light.PixelatedRegularGrid",
-              "pixels": {
-                "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
-                "documentation": "Pixel values",
-                "fits_file": {
-                  "py/object": "coolest.template.classes.fits_file.FitsFile",
-                  "path": ""
-                },
-                "field_of_view_x": {
-                  "py/tuple": [
-                    0,
-                    0
-                  ]
-                },
-                "field_of_view_y": {
-                  "py/tuple": [
-                    0,
-                    0
-                  ]
-                },
-                "num_pix_x": 0,
-                "num_pix_y": 0
-              },
               "type": "PixelatedRegularGrid",
               "documentation": "A pixelated profile defined on a regular Cartesian grid",
+              "parameters": {
+                "pixels": {
+                  "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
+                  "documentation": "Pixel values",
+                  "fits_file": {
+                    "py/object": "coolest.template.classes.fits_file.FitsFile",
+                    "path": ""
+                  },
+                  "field_of_view_x": {
+                    "py/tuple": [
+                      0,
+                      0
+                    ]
+                  },
+                  "field_of_view_y": {
+                    "py/tuple": [
+                      0,
+                      0
+                    ]
+                  },
+                  "num_pix_x": 0,
+                  "num_pix_y": 0
+                }
+              },
               "id": "galaxy_3-light_model-PixelatedRegularGrid_0"
             }
           ]
@@ -1026,161 +1030,33 @@
           "py/seq": [
             {
               "py/object": "coolest.template.classes.profiles.light.PixelatedRegularGrid",
-              "pixels": {
-                "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
-                "documentation": "Pixel values",
-                "fits_file": {
-                  "py/object": "coolest.template.classes.fits_file.FitsFile",
-                  "path": ""
-                },
-                "field_of_view_x": {
-                  "py/tuple": [
-                    0,
-                    0
-                  ]
-                },
-                "field_of_view_y": {
-                  "py/tuple": [
-                    0,
-                    0
-                  ]
-                },
-                "num_pix_x": 0,
-                "num_pix_y": 0
-              },
               "type": "PixelatedRegularGrid",
               "documentation": "A pixelated profile defined on a regular Cartesian grid",
-              "id": "galaxy_4-light_model-PixelatedRegularGrid_0"
-            }
-          ]
-        }
-      },
-      {
-        "py/object": "coolest.template.classes.galaxy.Galaxy",
-        "type": "galaxy",
-        "name": "a VKL source",
-        "redshift": 1.2,
-        "mass_model": {
-          "py/object": "coolest.template.classes.mass_light_model.MassModel",
-          "py/seq": []
-        },
-        "documentation": "",
-        "light_model": {
-          "py/object": "coolest.template.classes.mass_light_model.LightModel",
-          "py/seq": [
-            {
-              "py/object": "coolest.template.classes.profiles.light.IrregularGrid",
-              "pixels": {
-                "py/object": "coolest.template.classes.parameter.IrregularGridParameter",
-                "documentation": "Pixel values",
-                "fits_file": {
-                  "py/object": "coolest.template.classes.fits_file.FitsFile",
-                  "path": "/home/giorgos/myCodes/COOLEST/mytests/dum_table.fits"
-                },
-                "field_of_view_x": {
-                  "py/tuple": [
-                    {
-                      "py/reduce": [
-                        {
-                          "py/function": "numpy.core.multiarray.scalar"
-                        },
-                        {
-                          "py/tuple": [
-                            {
-                              "py/reduce": [
-                                {
-                                  "py/type": "numpy.dtype"
-                                },
-                                {
-                                  "py/tuple": [
-                                    "f8",
-                                    false,
-                                    true
-                                  ]
-                                },
-                                {
-                                  "py/tuple": [
-                                    3,
-                                    "<",
-                                    null,
-                                    null,
-                                    null,
-                                    -1,
-                                    -1,
-                                    0
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "py/b64": "ZmZmZmZGc0A="
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "py/reduce": [
-                        {
-                          "py/function": "numpy.core.multiarray.scalar"
-                        },
-                        {
-                          "py/tuple": [
-                            {
-                              "py/id": 188
-                            },
-                            {
-                              "py/b64": "zczMzMzkdEA="
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                "field_of_view_y": {
-                  "py/tuple": [
-                    {
-                      "py/reduce": [
-                        {
-                          "py/function": "numpy.core.multiarray.scalar"
-                        },
-                        {
-                          "py/tuple": [
-                            {
-                              "py/id": 188
-                            },
-                            {
-                              "py/b64": "mpmZmZnJYEA="
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "py/reduce": [
-                        {
-                          "py/function": "numpy.core.multiarray.scalar"
-                        },
-                        {
-                          "py/tuple": [
-                            {
-                              "py/id": 188
-                            },
-                            {
-                              "py/b64": "ZmZmZmaGeUA="
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                "num_pix": 4
+              "parameters": {
+                "pixels": {
+                  "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
+                  "documentation": "Pixel values",
+                  "fits_file": {
+                    "py/object": "coolest.template.classes.fits_file.FitsFile",
+                    "path": ""
+                  },
+                  "field_of_view_x": {
+                    "py/tuple": [
+                      0,
+                      0
+                    ]
+                  },
+                  "field_of_view_y": {
+                    "py/tuple": [
+                      0,
+                      0
+                    ]
+                  },
+                  "num_pix_x": 0,
+                  "num_pix_y": 0
+                }
               },
-              "type": "IrregularGrid",
-              "documentation": "A pixelated profile defined on a irregular grid of points",
-              "id": "galaxy_5-light_model-IrregularGrid_0"
+              "id": "galaxy_4-light_model-PixelatedRegularGrid_0"
             }
           ]
         }
