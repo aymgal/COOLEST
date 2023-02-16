@@ -7,6 +7,7 @@ from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.fits_file import FitsFile
 
 
+
 class PixelatedRegularGrid(APIBaseObject):
     
     def __init__(self, 
@@ -14,16 +15,12 @@ class PixelatedRegularGrid(APIBaseObject):
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
                  num_pix_x: int = 0,
-                 num_pix_y: int = 0):
-        documentation = "Pixelated light profile on a pixel grid"
+                 num_pix_y: int = 0) -> None:
         self.fits_file = FitsFile(fits_path)
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
-        if self.fits_file.exists:
-            array, header = self.fits_file.read()
-            array_shape = array.shape
-            assert array_shape == (header['NAXIS1'], header['NAXIS2']), "Given dimensions do not match the .fits image!"
-            self.num_pix_x, self.num_pix_y = array_shape
+        if self.fits_file.exists():
+            self.num_pix_x, self.num_pix_y = self.read_pixels()
         else:
             self.num_pix_x, self.num_pix_y = num_pix_x, num_pix_y
         super().__init__()
@@ -34,34 +31,55 @@ class PixelatedRegularGrid(APIBaseObject):
 
     @property
     def pixel_size(self):
-        return np.abs(self.field_of_view_x[0]- self.field_of_view_x[1])/self.num_pix_x
+        return np.abs(self.field_of_view_x[0] - self.field_of_view_x[1]) / self.num_pix_x
+
+    def set_grid(self, fits_path, 
+                 field_of_view_x=(0, 0), field_of_view_y=(0, 0),
+                 num_pix_x=0, num_pix_y=0, check_fits_file=True):
+        self.fits_file = FitsFile(fits_path, check_exist=check_fits_file)
+        self.field_of_view_x = field_of_view_x
+        self.field_of_view_y = field_of_view_y
+        if self.fits_file.exists():
+            self.num_pix_x, self.num_pix_y = self.read_pixels()
+            # if number of pixels is also given, check that it is consistent
+            if num_pix_x != 0 and num_pix_y != 0:
+                if self.num_pix_x != num_pix_x:
+                    raise ValueError("Given number of pixels in x direction "
+                                     "is inconsistent with the fits file")
+                if self.num_pix_y != num_pix_y:
+                    raise ValueError("Given number of pixels in y direction "
+                                     "is inconsistent with the fits file")
+        else:
+            self.num_pix_x, self.num_pix_y = num_pix_x, num_pix_y
+
+    def read_pixels(self):
+        array, header = self.fits_file.read()
+        array_shape = array.shape
+        if array_shape != (header['NAXIS1'], header['NAXIS2']):
+            raise ValueError("Given dimensions do not match the .fits image!")
+        return array_shape
 
 
-
-    
 class IrregularGrid(APIBaseObject):
     def __init__(self, 
                  fits_path: str = "",
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
-                 num_pix: int = 0):
-        documentation = "Irregular light profile, a list of (x,y,z) values"
-        self.fits_file = FitsFile(fits_path)
+                 num_pix: int = 0) -> None:
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
         self.num_pix = num_pix
-
         try:
-            self.set_fits(self.fits_path)
+            self.set_fits(fits_path)
         except Exception as e:
             print(e) # We may want something different here
     
         super().__init__()
 
 
-    def set_fits(self,fits_path):
+    def set_fits(self, fits_path):
         self.fits_file = FitsFile(fits_path)
-        if self.fits_file.exists:
+        if self.fits_file.exists():
             data, header = self.fits_file.read()
             x = data.field(0)
             y = data.field(1)
