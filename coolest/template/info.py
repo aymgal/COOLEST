@@ -1,5 +1,6 @@
 # Some variables useful to access
 
+from coolest.template.classes import lensing_entity
 from coolest.template.classes.profiles import light
 from coolest.template.classes.profiles import mass
 from coolest.template.classes import noise
@@ -9,6 +10,7 @@ from coolest.template.classes import likelihood_list
 
 
 all_supported_choices = {
+    'lensing_entities': lensing_entity.SUPPORTED_CHOICES,
     'light_profiles': light.SUPPORTED_CHOICES,
     'mass_profiles': mass.SUPPORTED_CHOICES,
     'pixel_regularizations': pixel_regul.SUPPORTED_CHOICES,

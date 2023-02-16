@@ -4,6 +4,13 @@ from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.mass_light_model import MassModel
 
 
+__all__ = [
+    'LensingEntity',
+]
+
+SUPPORTED_CHOICES = ['galaxy', 'external_shear']
+
+
 class LensingEntity(APIBaseObject):
 
     def __init__(self,
