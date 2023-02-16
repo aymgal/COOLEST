@@ -42,13 +42,12 @@ class PixelatedRegularGrid(APIBaseObject):
         if self.fits_file.exists():
             self.num_pix_x, self.num_pix_y = self.read_pixels()
             # if number of pixels is also given, check that it is consistent
-            if num_pix_x != 0 and num_pix_y != 0:
-                if self.num_pix_x != num_pix_x:
-                    raise ValueError("Given number of pixels in x direction "
-                                     "is inconsistent with the fits file")
-                if self.num_pix_y != num_pix_y:
-                    raise ValueError("Given number of pixels in y direction "
-                                     "is inconsistent with the fits file")
+            if num_pix_x != 0 and self.num_pix_x != num_pix_x:
+                raise ValueError("Given number of pixels in x direction "
+                                 "is inconsistent with the fits file")
+            if num_pix_y != 0 and self.num_pix_y != num_pix_y:
+                raise ValueError("Given number of pixels in y direction "
+                                 "is inconsistent with the fits file")
         else:
             self.num_pix_x, self.num_pix_y = num_pix_x, num_pix_y
 
