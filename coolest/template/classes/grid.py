@@ -77,22 +77,34 @@ class IrregularGrid(APIBaseObject):
         super().__init__()
 
 
-    def set_fits(self, fits_path):
-        self.fits_file = FitsFile(fits_path)
-        if self.fits_file.exists():
-            data, header = self.fits_file.read()
-            x = data.field(0)
-            y = data.field(1)
-            z = data.field(2)
-            self.num_pix = len(z)
-            #assert self.num_pix == len(z), "Given number of grid points does not match the number of .fits table rows!"
-            if self.field_of_view_x == (0,0) and self.field_of_view_y == (0,0):
-                # Here we may want to check/report the overlap between the given field of view and the square encompassing the irregular grid
-                self.field_of_view_x = (min(x),max(x))
-                self.field_of_view_y = (min(y),max(y))
-        else:
-            self.num_pix = 0
-            #raise Exception("Input .fits file does not exist!")
+    def read_pixels(self):
+        data, header = self.fits_file.read()
+        x = data.field(0)
+        y = data.field(1)
+        z = data.field(2)
+        num_pix = len(z)
+        #assert self.num_pix == len(z), "Given number of grid points does not match the number of .fits table rows!"
+        if self.field_of_view_x == (0, 0) and self.field_of_view_y == (0, 0):
+            # Here we may want to check/report the overlap between the given field of view and the square encompassing the irregular grid
+            self.field_of_view_x = (min(x), max(x))
+            self.field_of_view_y = (min(y), max(y))
+        return field_of_view_x, field_of_view_y, num_pix
 
-        
+    def set_grid(self, fits_path, 
+                 field_of_view_x=(0, 0), field_of_view_y=(0, 0),
+                 num_pix=0, check_fits_file=True):
+        self.fits_file = FitsFile(fits_path, check_exist=check_fits_file)
+        if self.fits_file.exists():
+            self.field_of_view_x, self.field_of_view_y, self.num_pix = self.read_pixels()
+            if num_pix != 0 and self.num_pix != num_pix_x:
+                raise ValueError("Given number of pixels is inconsistent with the fits file")
+            if field_of_view_x != (0, 0) and field_of_view_x == self.field_of_view_x:
+                raise ValueError("Given field of view along x direction is inconsistent with the fits file")
+            if field_of_view_y != (0, 0) and field_of_view_y == self.field_of_view_y:
+                raise ValueError("Given field of view along y direction is inconsistent with the fits file")
+
+        else:
+            self.field_of_view_x = field_of_view_x
+            self.field_of_view_y = field_of_view_y
+            self.num_pix = num_pix, num_pix
             
