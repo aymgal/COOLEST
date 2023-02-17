@@ -18,7 +18,7 @@ def plot_voronoi(ax,irr_grid):
     new_regions, vertices = voronoi_finite_polygons_2d(vor)
     
     # get cell colors
-    norm = matplotlib.colors.Normalize(vmin=0,vmax=7)
+    norm = matplotlib.colors.Normalize(vmin=min(z),vmax=max(z))
     cmap = matplotlib.cm.inferno_r
     m = matplotlib.cm.ScalarMappable(norm=norm,cmap=cmap)
 
