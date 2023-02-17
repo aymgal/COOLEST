@@ -5,6 +5,7 @@ from coolest.template.classes.base import APIBaseObject
 
 
 __all__ = [
+    'Noise',
     'UniformGaussianNoise',
     'NoiseMap',
     'NoiseRealization',
@@ -12,7 +13,13 @@ __all__ = [
     'DrizzledNoise',
 ]
 
-SUPPORTED_CHOICES = __all__
+SUPPORTED_CHOICES = [
+    'UniformGaussianNoise',
+    'NoiseMap',
+    'NoiseRealization',
+    'InstrumentalNoise',
+    'DrizzledNoise'
+]
 
 
 class Noise(APIBaseObject):
@@ -21,7 +28,7 @@ class Noise(APIBaseObject):
     All supported noise types correspond to the classes below
     """
 
-    def __init__(self, ntype: str, **kwargs) -> None:
+    def __init__(self, ntype: str = None, **kwargs) -> None:
         self.type = ntype
         for key, value in kwargs.items():
             setattr(self, key, value)

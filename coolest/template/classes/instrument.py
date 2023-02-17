@@ -22,5 +22,7 @@ class Instrument(APIBaseObject):
         self.band = band
         self.pixel_size = pixel_size
         self.readout_noise = readout_noise
+        if psf is None:
+            psf = PSF()
         self.psf = psf
         super().__init__()

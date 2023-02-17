@@ -7,11 +7,10 @@ from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.fits_file import FitsFile
 
 
-
 class PixelatedRegularGrid(APIBaseObject):
     
     def __init__(self, 
-                 fits_path: str = "",
+                 fits_path: str = None,
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
                  num_pix_x: int = 0,
@@ -61,7 +60,7 @@ class PixelatedRegularGrid(APIBaseObject):
 
 class IrregularGrid(APIBaseObject):
     def __init__(self, 
-                 fits_path: str = "",
+                 fits_path: str = None,
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
                  num_pix: int = 0) -> None:
