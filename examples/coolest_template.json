@@ -40,7 +40,7 @@
           "parameters": {
             "gamma_ext": {
               "point_estimate": {
-                "value": null
+                "value": 0.07
               },
               "posterior_stats": {
                 "mean": null,
@@ -376,20 +376,22 @@
           "type": "PEMD"
         },
         {
-          "pixels": {
-            "field_of_view_x": [
-              0,
-              0
-            ],
-            "field_of_view_y": [
-              0,
-              0
-            ],
-            "fits_file": {
-              "path": ""
-            },
-            "num_pix_x": 0,
-            "num_pix_y": 0
+          "parameters": {
+            "pixels": {
+              "field_of_view_x": [
+                -3.0,
+                1.0
+              ],
+              "field_of_view_y": [
+                -2.0,
+                2.0
+              ],
+              "fits_file": {
+                "path": "test_image_2.fits"
+              },
+              "num_pix_x": 100,
+              "num_pix_y": 100
+            }
           },
           "type": "PixelatedRegularGridPotential"
         }
@@ -491,7 +493,7 @@
                 "value": null
               },
               "posterior_stats": {
-                "mean": 0.12,
+                "mean": 0.11,
                 "median": 0.15,
                 "percentile_16th": 0.03,
                 "percentile_84th": 0.05
@@ -512,20 +514,22 @@
     {
       "light_model": [
         {
-          "pixels": {
-            "field_of_view_x": [
-              0,
-              0
-            ],
-            "field_of_view_y": [
-              0,
-              0
-            ],
-            "fits_file": {
-              "path": ""
-            },
-            "num_pix_x": 0,
-            "num_pix_y": 0
+          "parameters": {
+            "pixels": {
+              "field_of_view_x": [
+                -3.0,
+                1.0
+              ],
+              "field_of_view_y": [
+                -2.0,
+                2.0
+              ],
+              "fits_file": {
+                "path": "test_image_1.fits"
+              },
+              "num_pix_x": 100,
+              "num_pix_y": 100
+            }
           },
           "type": "PixelatedRegularGrid"
         }
@@ -538,45 +542,21 @@
     {
       "light_model": [
         {
-          "pixels": {
-            "field_of_view_x": [
-              0,
-              0
-            ],
-            "field_of_view_y": [
-              0,
-              0
-            ],
-            "fits_file": {
-              "path": ""
-            },
-            "num_pix_x": 0,
-            "num_pix_y": 0
-          },
-          "type": "PixelatedRegularGrid"
-        }
-      ],
-      "mass_model": [],
-      "name": "a GLEE source",
-      "redshift": 1.2,
-      "type": "galaxy"
-    },
-    {
-      "light_model": [
-        {
-          "pixels": {
-            "field_of_view_x": [
-              308.4,
-              334.3
-            ],
-            "field_of_view_y": [
-              134.3,
-              408.4
-            ],
-            "fits_file": {
-              "path": "/home/giorgos/myCodes/COOLEST/mytests/dum_table.fits"
-            },
-            "num_pix": 4
+          "parameters": {
+            "pixels": {
+              "field_of_view_x": [
+                -4.997780580126987,
+                4.927275510068437
+              ],
+              "field_of_view_y": [
+                -4.985366653681708,
+                4.923310124735972
+              ],
+              "fits_file": {
+                "path": "dum_table.fits"
+              },
+              "num_pix": 100
+            }
           },
           "type": "IrregularGrid"
         }
@@ -594,8 +574,10 @@
     "mag_sky_brightness": null,
     "mag_zero_point": null,
     "noise": {
-      "std_dev": 0.004,
-      "type": "UniformGaussianNoise"
+      "type": "InstrumentalNoise",
+      "with_readout_noise": true,
+      "with_sky_shot_noise": true,
+      "with_target_shot_noise": true
     },
     "pixels": {
       "field_of_view_x": [

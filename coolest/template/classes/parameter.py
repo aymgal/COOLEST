@@ -16,7 +16,8 @@ __all__ = [
     'HyperParameter',
     'LinearParameterSet',
     'NonLinearParameterSet',
-    # 'PixelParameterSet',
+    'PixelatedRegularGridParameter',
+    'IrregularGridParameter',
 ]
 
 
@@ -74,13 +75,14 @@ class Parameter(APIBaseObject):
         else:
             raise ValueError("Parameter prior must be either a PointEstimate instance "
                              "or a single number (float or int) or an array (tuple, list or ndarray).")
-        val = self.point_estimate.value
-        min_val = self.definition_range.min_value
-        max_val = self.definition_range.max_value
-        if min_val is not None and np.any(np.asarray(val) < np.asarray(min_val)):
-            raise ValueError(f"Value cannot be smaller than {self.definition_range.min_value}.")
-        if max_val is not None and np.any(np.asarray(val) > np.asarray(max_val)):
-            raise ValueError(f"Value cannot be larger than {self.definition_range.max_value}.")
+        if self.point_estimate.value is not None:
+            val = self.point_estimate.value
+            min_val = self.definition_range.min_value
+            max_val = self.definition_range.max_value
+            if min_val is not None and np.any(np.asarray(val) < np.asarray(min_val)):
+                raise ValueError(f"Value cannot be smaller than {self.definition_range.min_value}.")
+            if max_val is not None and np.any(np.asarray(val) > np.asarray(max_val)):
+                raise ValueError(f"Value cannot be larger than {self.definition_range.max_value}.")
 
     def remove_point_estimate(self):
         self.point_estimate = PointEstimate()
@@ -158,17 +160,17 @@ class NonLinearParameterSet(ParameterSet):
 class PixelatedRegularGridParameter(PixelatedRegularGrid):
     """Typically for pixelated profiles"""
 
-    def __init__(self, documentation, 
-                 **kwargs_pixelated_grid) -> None:
+    def __init__(self, documentation, **kwargs_grid) -> None:
         self.documentation = documentation
-        super().__init__(**kwargs_pixelated_grid)
+        super().__init__(**kwargs_grid)
+
+    # def _set_grid()
 
 
 class IrregularGridParameter(IrregularGrid):
     """Typically for pixelated profiles"""
 
-    def __init__(self, documentation, 
-                 **kwargs_pixelated_grid) -> None:
+    def __init__(self, documentation, **kwargs_grid) -> None:
         self.documentation = documentation
-        super().__init__(**kwargs_pixelated_grid)
+        super().__init__(**kwargs_grid)
         

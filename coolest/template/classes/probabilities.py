@@ -11,6 +11,12 @@ __all__ = [
     'UniformPrior',
 ]
 
+PRIOR_SUPPORTED_CHOICES = [
+    'GaussianPrior', 
+    'LogNormalPrior',
+    'UniformPrior',
+]
+
 
 class PosteriorStatistics(APIBaseObject):
 

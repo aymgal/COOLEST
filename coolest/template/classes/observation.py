@@ -31,6 +31,8 @@ class Observation(APIBaseObject):
         self.exposure_time = exposure_time
         self.mag_zero_point = mag_zero_point          # magnitude zero-point (corresponds to 1 count per second on the detector)
         self.mag_sky_brightness = mag_sky_brightness  # sky brightness (magnitude per arcsec^2)
+        if noise is None:
+            noise = Noise()
         self.noise = noise
         # self.time_delays = time_delays
         # self.magnification_ratios = magnification_ratios
