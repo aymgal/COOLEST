@@ -2,9 +2,9 @@ import os
 import json
 import jsonpickle
 
-from coolest.template.standard import COOLEST
+from coolest.template.standard import COOLEST, SUPPORTED_MODES
 from coolest.template.lazy import *
-from coolest.template.classes.parameter import PointEstimate, PosteriorStatistics
+from coolest.template.classes.parameter import PointEstimate, PosteriorStatistics, Prior
 from coolest.template.info import all_supported_choices
 
 
@@ -17,13 +17,13 @@ class JSONSerializer(object):
                  file_path_no_ext: str, 
                  obj: object = None, 
                  indent: int = 2,
-                 check_missing_files: bool = False) -> None:
+                 check_external_files: bool = True) -> None:
         self.obj = obj
         self.path = file_path_no_ext
         self.indent = indent
         # to distinguish files that can be converted back to the python API
         self._api_suffix = '_pyAPI'
-        self._check_missing_files = check_missing_files
+        self._check_files = check_external_files
 
     def dump_simple(self, exclude_keys=None):
         if exclude_keys is None and hasattr(self.obj, 'exclude_keys'):
@@ -56,17 +56,33 @@ class JSONSerializer(object):
     def json_to_coolest(self, json_content):
         c = json_content  # shorter
 
+        # MODE
+        if c['mode'] not in SUPPORTED_MODES:
+            raise ValueError(f"The template mode can only be in '{SUPPORTED_MODES}'")
+
         # LENSING ENTITIES {GALAXY, EXTERNAL SHEAR}
         lensing_entities = self.setup_lensing_entities(c['lensing_entities'])
 
+        # CSOMOLOGY
+        cosmology = self.setup_cosmology(c['cosmology'])
+
+        # COORDINATES
+        coordinates_origin = self.setup_coordinates(c['coordinates_origin'])
+
         coolest = COOLEST(c['mode'],
-                          c['coordinates_origin'],
+                          coordinates_origin,
                           lensing_entities,
                           c['observation'],
                           c['instrument'],
-                          cosmology=c['cosmology'],
+                          cosmology=cosmology,
                           metadata=c['meta'])
         return coolest
+
+    def setup_coordinates(self, coord_orig_in):
+        return CoordinatesOrigin(**coord_orig_in)
+
+    def setup_cosmology(self, cosmology_in):
+        return Cosmology(**cosmology_in)
     
     def setup_lensing_entities(self, entities_in):
         entities_out = []
@@ -78,47 +94,59 @@ class JSONSerializer(object):
         if entity_in['type'] == 'galaxy':
             entity_out = Galaxy(entity_in['name'],
                                 entity_in['redshift'],
-                                light_model=self.setup_model(entity_in['light_model'], 'light'),
-                                mass_model=self.setup_model(entity_in['mass_model'], 'mass'))
+                                light_model=self.setup_model(entity_in, 'light_model'),
+                                mass_model=self.setup_model(entity_in, 'mass_model'))
         elif entity_in['type'] == 'external_shear':
             entity_out = ExternalShear(entity_in['name'],
                                        entity_in['redshift'],
-                                       mass_model=self.setup_model(entity_in['mass_model'], 'mass'))
+                                       mass_model=self.setup_model(entity_in, 'mass_model'))
         else:
             raise ValueError(f"Supported lensing entities are "
                              f"{all_supported_choices['lensing_entities']}")
-        self.update_model_parameters(entity_in, entity_out)
+        self.update_parameters(entity_in, entity_out)
         return entity_out
     
-    def setup_model(self, ml_model_in, model_type):
-        profile_types = [profile['type'] for profile in ml_model_in]
-        model_out = LightModel(*profile_types) if model_type == 'light' else MassModel(*profile_types)
+    def setup_model(self, entity_in, model_type):
+        profile_types = [profile['type'] for profile in entity_in[model_type]]
+        if model_type == 'light_model':
+            model_out = LightModel(*profile_types)
+        elif model_type == 'mass_model':
+            model_out = MassModel(*profile_types)
+        else:
+            raise ValueError("The `model_type` can only be 'light_model' or 'mass_model'")
         return model_out
     
-    def update_model_parameters(self, entity_in, entity_out):
-        self.update_parameters(entity_in, entity_out, 'mass_model')
-        self.update_parameters(entity_in, entity_out, 'light_model')
+    def update_parameters(self, entity_in, entity_out):
+        self.update_parameters_values(entity_in, entity_out, 'mass_model')
+        self.update_parameters_values(entity_in, entity_out, 'light_model')
 
-    def update_parameters(self, entity_in, entity_out, model_type):
+    def update_parameters_values(self, entity_in, entity_out, model_type):
         if model_type not in entity_in:
             return
         for i, profile in enumerate(entity_in[model_type]):
             # get the corresponding profile object in the model being updated
             profile_out = getattr(entity_out, model_type)[i]
 
-            # pixelated profiles, for now only one value given (point estimate)
-            if 'Grid' in profile['type']:
-                for name, values in profile['parameters'].items():
-                    assert name == 'pixels', "Grid parameters other than 'pixels' is not yet implemented."
-                    fits_path = values.pop('fits_file')['path']
-                    profile_out.parameters['pixels'].set_grid(fits_path, **values,
-                                                              check_fits_file=self._check_missing_files)
+            for name, values in profile['parameters'].items():
 
-            # other (analytical) parameters
-            else:
-                for name, values in profile['parameters'].items():
-                    pt_estim = PointEstimate(**values['point_estimate'])
-                    post_stats = PosteriorStatistics(**values['posterior_stats'])
-                    profile_out.parameters[name].set_point_estimate(pt_estim)
-                    profile_out.parameters[name].set_posterior(post_stats)
+                # pixelated profiles, for now only one value given (point estimate)
+                if 'Grid' in profile['type']:
+                    self.update_grid_parameter(profile_out, name, values)
+
+                # other (analytical) parameters
+                else:
+                    self.update_std_parameter(profile_out, name, values)
+
+    def update_grid_parameter(self, profile_out, name, values):
+        assert name == 'pixels', "Support for grid parameters other than 'pixels' is not implemented."
+        fits_path = values.pop('fits_file')['path']
+        profile_out.parameters['pixels'].set_grid(fits_path, **values,
+                                                  check_fits_file=self._check_files)
         
+    def update_std_parameter(self, profile_out, name, values):
+        pt_estim = PointEstimate(**values['point_estimate'])
+        post_stats = PosteriorStatistics(**values['posterior_stats'])
+        prior = Prior(ptype=values['prior']['type'])
+        profile_out.parameters[name].set_point_estimate(pt_estim)
+        profile_out.parameters[name].set_posterior(post_stats)
+        profile_out.parameters[name].set_prior(prior)

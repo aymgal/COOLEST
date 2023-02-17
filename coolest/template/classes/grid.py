@@ -65,14 +65,15 @@ class IrregularGrid(APIBaseObject):
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
                  num_pix: int = 0) -> None:
+        self.fits_file = FitsFile(fits_path)
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
-        self.num_pix = num_pix
-        try:
-            self.set_fits(fits_path)
-        except Exception as e:
-            print(e) # We may want something different here
-    
+        if self.fits_file.exists():
+            self.field_of_view_x, self.field_of_view_y, self.num_pix = self.read_pixels()
+        else:
+            self.field_of_view_x = field_of_view_x
+            self.field_of_view_y = field_of_view_y
+            self.num_pix = num_pix
         super().__init__()
 
 
@@ -105,5 +106,5 @@ class IrregularGrid(APIBaseObject):
         else:
             self.field_of_view_x = field_of_view_x
             self.field_of_view_y = field_of_view_y
-            self.num_pix = num_pix, num_pix
+            self.num_pix = num_pix
             
