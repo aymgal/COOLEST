@@ -379,18 +379,18 @@
           "parameters": {
             "pixels": {
               "field_of_view_x": [
-                0,
-                0
+                -3.0,
+                1.0
               ],
               "field_of_view_y": [
-                0,
-                0
+                -2.0,
+                2.0
               ],
               "fits_file": {
-                "path": ""
+                "path": "test_image_2.fits"
               },
-              "num_pix_x": 0,
-              "num_pix_y": 0
+              "num_pix_x": 100,
+              "num_pix_y": 100
             }
           },
           "type": "PixelatedRegularGridPotential"
@@ -517,18 +517,18 @@
           "parameters": {
             "pixels": {
               "field_of_view_x": [
-                0,
-                0
+                -3.0,
+                1.0
               ],
               "field_of_view_y": [
-                0,
-                0
+                -2.0,
+                2.0
               ],
               "fits_file": {
-                "path": ""
+                "path": "test_image_1.fits"
               },
-              "num_pix_x": 0,
-              "num_pix_y": 0
+              "num_pix_x": 100,
+              "num_pix_y": 100
             }
           },
           "type": "PixelatedRegularGrid"
@@ -545,25 +545,24 @@
           "parameters": {
             "pixels": {
               "field_of_view_x": [
-                0,
-                0
+                -4.997780580126987,
+                4.927275510068437
               ],
               "field_of_view_y": [
-                0,
-                0
+                -4.985366653681708,
+                4.923310124735972
               ],
               "fits_file": {
-                "path": ""
+                "path": "dum_table.fits"
               },
-              "num_pix_x": 0,
-              "num_pix_y": 0
+              "num_pix": 100
             }
           },
-          "type": "PixelatedRegularGrid"
+          "type": "IrregularGrid"
         }
       ],
       "mass_model": [],
-      "name": "a GLEE source",
+      "name": "a VKL source",
       "redshift": 1.2,
       "type": "galaxy"
     }
@@ -575,8 +574,10 @@
     "mag_sky_brightness": null,
     "mag_zero_point": null,
     "noise": {
-      "std_dev": 0.004,
-      "type": "UniformGaussianNoise"
+      "type": "InstrumentalNoise",
+      "with_readout_noise": true,
+      "with_sky_shot_noise": true,
+      "with_target_shot_noise": true
     },
     "pixels": {
       "field_of_view_x": [

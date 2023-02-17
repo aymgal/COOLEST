@@ -22,19 +22,26 @@ source_1 = Galaxy('a source galaxy', 2.0,
 
 source_2 = Galaxy('another source', 1.5,
                   light_model=LightModel('PixelatedRegularGrid'))
+source_2.light_model[0].parameters['pixels'].set_grid('test_image_1.fits',
+                                                      field_of_view_x=(-3.0, 1.0),
+                                                      field_of_view_y=(-2.0, 2.0),
+                                                      check_fits_file=True)
+print("pixel size:", source_2.light_model[0].parameters['pixels'].pixel_size)
 
-source_3 = Galaxy('a GLEE source', 1.2,
-                  light_model=LightModel('PixelatedRegularGrid'))
-
-# source_4 = Galaxy('a VKL source', 1.2,
-#                   light_model=LightModel('IrregularGrid'))
-#source_4.light_model[0].pixels.set_fits('/home/giorgos/myCodes/COOLEST/mytests/dum_table.fits')
+source_3 = Galaxy('a VKL source', 1.2,
+                  light_model=LightModel('IrregularGrid'))
+source_3.light_model[0].parameters['pixels'].set_grid('dum_table.fits',
+                                                      check_fits_file=True)
 
 
 # Create a lens galaxy
 lens_1 = Galaxy('a lens galaxy', 0.5,
                 light_model=LightModel('Sersic', 'Sersic'),
                 mass_model=MassModel('PEMD', 'PixelatedRegularGridPotential'))
+lens_1.mass_model[1].parameters['pixels'].set_grid('test_image_2.fits',
+                                                      field_of_view_x=(-3.0, 1.0),
+                                                      field_of_view_y=(-2.0, 2.0),
+                                                      check_fits_file=True)
 
 # Defines the external shear
 ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
@@ -75,8 +82,8 @@ obs_pixels = PixelatedRegularGrid('test_image.fits')  # if None, COOLEST mode wi
 
 # Select the type of noise
 from coolest.template.classes.noise import InstrumentalNoise, UniformGaussianNoise
-#noise = InstrumentalNoise()
-noise = UniformGaussianNoise(std_dev=0.004)
+noise = InstrumentalNoise()
+# noise = UniformGaussianNoise(std_dev=0.004)
 
 observation = Observation(pixels=obs_pixels, noise=noise)
 
@@ -93,11 +100,11 @@ instrument = Instrument('some instrument',
 
 # Master object for the standard
 master = COOLEST('MOCK',
-                         origin,
-                         entity_list,
-                         observation, 
-                         instrument, 
-                         cosmology)
+                 origin,
+                 entity_list,
+                 observation, 
+                 instrument, 
+                 cosmology)
 print("FINAL OBJECT\n", master, '\n')
 
 # print supported profiles so far
@@ -112,7 +119,8 @@ print("#"*30 + " serialization " + "#"*30)
 
 # export as JSON file
 encoder_json = JSONSerializer('coolest_template', 
-                                    obj=master, indent=2)
+                              obj=master, indent=2,
+                              check_external_files=False)
 encoder_json.dump()
 encoder_json.dump_simple()
 master_2 = encoder_json.load()
