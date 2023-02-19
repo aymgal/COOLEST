@@ -25,22 +25,22 @@ def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
     return image_unit_flux * flux_unit_mag
 
 
-def get_coordinates(coolest_file, offset_ra=0, offset_dec=0):
-    serializer = JSONSerializer(coolest_file_path)
-    try:
-        coolest = serializer.load()
-    except:
-        coolest = serializer.load_simple()
+def get_coolest_object(file_path, **kwargs_serializer):
+    serializer = JSONSerializer(file_path, **kwargs_serializer)
+    return serializer.load()
 
-    nx, ny = coolest.observation.pixels.shape
-    pix_scl = coolest.instrument.pixel_size
+
+def get_coordinates(coolest_object, offset_ra=0, offset_dec=0):
+    nx, ny = coolest_object.observation.pixels.shape
+    pix_scl = coolest_object.instrument.pixel_size
     half_size_x, half_size_y = nx * pix_scl / 2., ny * pix_scl / 2.
     ra_at_xy_0  = - half_size_x + pix_scl / 2.  # position of x=0 with respect to bottom left pixel
     dec_at_xy_0 = - half_size_y + pix_scl / 2.  # position of y=0 with respect to bottom left pixel
     matrix_pix2ang = pix_scl * np.eye(2)  # transformation matrix pixel <-> angle
     
     coordinates = Coordinates(nx, ny, matrix_pixel_to_radec=matrix_pix2ang,
-                              ra_at_xy_0=ra_at_xy_0, dec_at_xy_0=dec_at_xy_0)
+                              ra_at_xy_0=ra_at_xy_0 + offset_ra, 
+                              dec_at_xy_0=dec_at_xy_0 + offset_dec)
     return coordinates
 
 
@@ -48,7 +48,7 @@ def get_coordinates_set(coolest_file_list, reference=0):
     coordinates_list = []
     for coolest_file in coolest_file_list:
 
-        # TODO: compute correct offsets in case 
+        # TODO: compute correct offsets when each file has
         # obs = self.coolest.observation
         # sky_coord = SkyCoord(obs.ra, obs.dec, frame='icrs')
         # ra, dec = sky_coord.to_string(style='hmsdms').split(' ')

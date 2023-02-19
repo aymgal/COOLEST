@@ -11,8 +11,8 @@ class CompositeLightModel(object):
     Given a COOLEST object, evaluates a selection of light profiles.
     """
 
-    def __init__(self, coolest, entity_selection=[0], profile_selection='all'):
-        entities = coolest.lensing_entities
+    def __init__(self, coolest_object, entity_selection=[0], profile_selection='all'):
+        entities = coolest_object.lensing_entities
         self.profile_list = []
         self.param_list = []
         self.info_list = []
@@ -25,7 +25,7 @@ class CompositeLightModel(object):
                         self.profile_list.append(self.get_api_profile(profile))
                         self.param_list.append(self.get_point_estimates(profile))
                         self.info_list.append((entity.name, entity.redshift))
-        pixel_size = coolest.instrument.pixel_size
+        pixel_size = coolest_object.instrument.pixel_size
         if pixel_size is None:
             pixel_size = 1.
         self.pixel_area = pixel_size**2

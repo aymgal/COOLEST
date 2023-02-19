@@ -18,14 +18,15 @@ class ModelPlotter(object):
     Creates pyplot panels from a lens model stored in the COOLEST format
     """
 
-    def __init__(self, coolest_file_path):
-        self.analysis = Analysis(coolest_file_path)
+    def __init__(self, coolest_object):
+        self.analysis = Analysis(coolest_object)
         self.coolest = self.analysis.coolest
         cmap_flux = copy.copy(plt.get_cmap('magma'))
         cmap_flux.set_bad('black')
         self.cmap_flux = cmap_flux
 
-    def plot_surface_brightness(self, ax, coordinates=None, norm=None, cmap=None,
+    def plot_surface_brightness(self, ax, coordinates=None, 
+                                norm=None, cmap=None,
                                 **kwargs_selection):
         light_model = CompositeLightModel(self.coolest, **kwargs_selection)
         if norm is None:
@@ -33,9 +34,9 @@ class ModelPlotter(object):
         if cmap is None:
             cmap = self.cmap_flux
         if coordinates is not None:
-            x, y = coordinates
+            x, y = coordinates.pixel_coordinates
             image = light_model.evaluate_surface_brightness(x, y)
-            extent = [0, 1, 0, 1]  # TODO
+            extent = coordinates.extent
             im = self._plot_regular_image(ax, image, extent=extent, 
                                           cmap=self.cmap_flux, 
                                           norm=norm)
@@ -61,11 +62,11 @@ class MultiModelPlotter(object):
     Creates pyplot panels from several lens model
     """
 
-    def __init__(self, coolest_file_list):
-        self.num_models = len(coolest_file_list)
+    def __init__(self, coolest_object_list):
+        self.num_models = len(coolest_object_list)
         self.plotter_list = []
-        for file_path in coolest_file_list:
-            self.plotter_list.append(ModelPlotter(file_path))
+        for coolest in coolest_object_list:
+            self.plotter_list.append(ModelPlotter(coolest))
 
     def plot_surface_brightness(self, ax_list, coordinates=None, norm=None, cmap=None,
                                 **kwargs_selection_list):

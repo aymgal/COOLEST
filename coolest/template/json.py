@@ -33,11 +33,21 @@ class JSONSerializer(object):
         with open(json_path, 'w') as f:
             f.write(self.obj.to_JSON(indent=self.indent, exclude_keys=exclude_keys))
 
-    def dump(self):
+    def dump_jsonpickle(self):
         json_path = self.path + self._api_suffix + '.json'
         result = jsonpickle.encode(self.obj, indent=self.indent)
         with open(json_path, 'w') as f:
             f.write(result)
+
+    def load(self):
+        try:
+            content = self.load_jsonpickle()
+        except Exception as e:
+            print(f"Failed reading with jsonpickle, trying reading pure json"
+                  f" (original error: {e})")
+            content = self.load_simple()
+        assert isinstance(content, COOLEST)
+        return content
 
     def load_simple(self, as_object=True):
         json_path = self.path + '.json'
@@ -47,7 +57,7 @@ class JSONSerializer(object):
             return content  # dictionary
         return self._json_to_coolest(content)  # COOLEST object
 
-    def load(self):
+    def load_jsonpickle(self):
         json_path = self.path + self._api_suffix + '.json'
         with open(json_path, 'r') as f:
             content = jsonpickle.decode(f.read())
@@ -95,7 +105,7 @@ class JSONSerializer(object):
         # PIXEL SIZE
         instru_pix_size = coolest.instrument.pixel_size
         obs_pix_size = coolest.observation.pixels.pixel_size
-        if obs_pix_size != 0 and instru_pix_size != obs_pix_size:
+        if obs_pix_size not in (0, None) and instru_pix_size != obs_pix_size:
             raise ValueError(f"Pixel size of observation ({obs_pix_size:.4f}) is inconsistent with "
                              f"the instrument pixel size ({instru_pix_size:.4f})")
 
