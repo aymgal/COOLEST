@@ -30,7 +30,10 @@ class PixelatedRegularGrid(APIBaseObject):
 
     @property
     def pixel_size(self):
-        return np.abs(self.field_of_view_x[0] - self.field_of_view_x[1]) / self.num_pix_x
+        pix_size_x = np.abs(self.field_of_view_x[0] - self.field_of_view_x[1]) / self.num_pix_x
+        pix_size_y = np.abs(self.field_of_view_y[0] - self.field_of_view_y[1]) / self.num_pix_y
+        assert pix_size_x == pix_size_y, "Regular grid must have square pixels"
+        return pix_size_x
 
     def set_grid(self, fits_path, 
                  field_of_view_x=(0, 0), field_of_view_y=(0, 0),
