@@ -62,10 +62,7 @@ class IrregularGrid(APIBaseObject):
     def set_fits(self,fits_path):
         self.fits_file = FitsFile(fits_path)
         if self.fits_file.exists:
-            data, header = self.fits_file.read()
-            x = data.field(0)
-            y = data.field(1)
-            z = data.field(2)
+            x,y,z = self.get_xyz()
             self.num_pix = len(z)
             #assert self.num_pix == len(z), "Given number of grid points does not match the number of .fits table rows!"
             if self.field_of_view_x == (0,0) and self.field_of_view_y == (0,0):
