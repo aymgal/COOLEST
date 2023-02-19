@@ -85,7 +85,21 @@ class JSONSerializer(object):
                           instrument,
                           cosmology=cosmology,
                           metadata=metadata)
+
+        # check consistency across the whole coolest object
+        self._validate_global(coolest)
         return coolest
+
+    @staticmethod
+    def _validate_global(coolest):
+        # PIXEL SIZE
+        instru_pix_size = coolest.instrument.pixel_size
+        obs_pix_size = coolest.observation.pixels.pixel_size
+        if obs_pix_size != 0 and instru_pix_size != obs_pix_size:
+            raise ValueError(f"Pixel size of observation ({obs_pix_size:.4f}) is inconsistent with "
+                             f"the instrument pixel size ({instru_pix_size:.4f})")
+
+        # TODO: add extra checks
 
     def _setup_instrument(self, instru_in):
         psf_settings = instru_in.pop('psf')
