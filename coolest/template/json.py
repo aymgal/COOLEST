@@ -18,8 +18,14 @@ class JSONSerializer(object):
                  obj: object = None, 
                  indent: int = 2,
                  check_external_files: bool = True) -> None:
+        """
+        file_path_no_ext should be the absolute path
+        """
         self.obj = obj
+        if not os.path.isabs(file_path_no_ext):
+            raise ValueError("Path to JSON file must be an absolute path")
         self.path = file_path_no_ext
+        self._json_dir = os.path.dirname(file_path_no_ext)
         self.indent = indent
         # to distinguish files that can be converted back to the python API
         self._api_suffix = '_pyAPI'
@@ -99,8 +105,13 @@ class JSONSerializer(object):
         noise = self._setup_noise(noise_settings)
         obs_out = Observation(noise=noise, **obs_in)
         fits_path = pixels_settings.pop('fits_file')['path']
-        obs_out.pixels.set_grid(fits_path, **pixels_settings,
-                                check_fits_file=self._check_files)
+        if fits_path is not None and os.path.isabs(fits_path):
+            raise ValueError("Observation FITS file must be a relative one, "
+                             "and be placed in the same directory as the JSON file")
+        obs_out.pixels.set_grid(fits_path,
+                                check_fits_file=self._check_files,
+                                fits_file_dir=self._json_dir,
+                                **pixels_settings)
         return obs_out
 
     def _setup_coordinates(self, coord_orig_in):
@@ -163,10 +174,17 @@ class JSONSerializer(object):
                     self._update_std_parameter(profile_out, name, values)
 
     def _update_grid_parameter(self, profile_out, name, values):
-        assert name == 'pixels', "Support for grid parameters other than 'pixels' is not implemented."
+        if name != 'pixels':
+            raise NotImplementedError("Support for grid parameters other than "
+                                      "'pixels' is not implemented.")
         fits_path = values.pop('fits_file')['path']
-        profile_out.parameters['pixels'].set_grid(fits_path, **values,
-                                                  check_fits_file=self._check_files)
+        if fits_path is not None and os.path.isabs(fits_path):
+            raise ValueError(f"FITS file for profile {profile_out.type} must be a relative one, "
+                             f"and be placed in the same directory as the JSON file")
+        profile_out.parameters['pixels'].set_grid(fits_path,
+                                                  check_fits_file=self._check_files,
+                                                  fits_file_dir=self._json_dir,
+                                                  **values)
         
     def _update_std_parameter(self, profile_out, name, values):
         pt_estim = PointEstimate(**values['point_estimate'])
@@ -192,6 +210,7 @@ class JSONSerializer(object):
         if noise_type not in support['noise_types']:
             raise ValueError(f"Noise type must be in {support['noise_types']}")
         NoiseClass = getattr(noise_module, noise_type)
+        # TODO: treat specifically the types that require a pixel FITS file
         return NoiseClass(**noise_in)
 
     def _setup_psf(self, psf_in):
@@ -201,8 +220,22 @@ class JSONSerializer(object):
             return PSF()
         if psf_type not in support['psf_types']:
             raise ValueError(f"PSF type must be in {support['psf_types']}")
-        PSFClass = getattr(psf_module, psf_type)
-        return PSFClass(**psf_in)
+        print(psf_type, psf_type, psf_type)
+        PSFClass = getattr(psf_module, psf_type)        
+        if psf_type == 'PixelatedPSF':
+            pixels_settings = psf_in.pop('pixels')
+            psf_out = PSFClass(**psf_in)
+            fits_path = pixels_settings.pop('fits_file')['path']
+            if fits_path is not None and os.path.isabs(fits_path):
+                raise ValueError(f"FITS file for the pixelated PSF must be a relative one, "
+                                 f"and be placed in the same directory as the JSON file")
+            psf_out.pixels.set_grid(fits_path,
+                check_fits_file=self._check_files,
+                fits_file_dir=self._json_dir,
+                **pixels_settings)
+        else:
+            psf_out = PSFClass(**psf_in)
+        return psf_out
 
     def _check_mode(self, mode_in):
         mode_out = str(mode_in)

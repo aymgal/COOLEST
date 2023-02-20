@@ -30,6 +30,8 @@ class PixelatedPSF(PSF):
 
     def __init__(self, description: str = None, pixels: PixelatedRegularGrid = None) -> None:
         psf_type = self.__class__.__name__
+        if pixels is None:
+            pixels = PixelatedRegularGrid()
         super().__init__(psf_type, description=description, pixels=pixels)
 
 
