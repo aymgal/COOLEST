@@ -113,7 +113,7 @@ template_abs_path = os.path.join(os.getcwd(), 'coolest_template')
 encoder_json = JSONSerializer(template_abs_path, 
                               obj=master, indent=2,
                               check_external_files=False)
-encoder_json.dump()
+encoder_json.dump_jsonpickle()
 encoder_json.dump_simple()
 master_2 = encoder_json.load()
 print("Retrieved object is a COOLEST instance?", 

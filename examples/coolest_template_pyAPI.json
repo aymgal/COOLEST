@@ -1025,6 +1025,7 @@
         "py/object": "coolest.template.classes.fits_file.FitsFile",
         "path": "test_image.fits"
       },
+      "documentation": "",
       "field_of_view_x": {
         "py/tuple": [
           0,
@@ -1038,8 +1039,7 @@
         ]
       },
       "num_pix_x": 100,
-      "num_pix_y": 100,
-      "documentation": ""
+      "num_pix_y": 100
     },
     "exposure_time": null,
     "mag_zero_point": null,
@@ -1053,6 +1053,7 @@
           "py/object": "coolest.template.classes.fits_file.FitsFile",
           "path": "test_image.fits"
         },
+        "documentation": "",
         "field_of_view_x": {
           "py/tuple": [
             0,
@@ -1066,8 +1067,7 @@
           ]
         },
         "num_pix_x": 100,
-        "num_pix_y": 100,
-        "documentation": ""
+        "num_pix_y": 100
       },
       "documentation": "Noise characterized by a noise map, which contains diagonal elements of the data covariance matrix"
     },
@@ -1089,6 +1089,7 @@
           "py/object": "coolest.template.classes.fits_file.FitsFile",
           "path": "test_psf.fits"
         },
+        "documentation": "",
         "field_of_view_x": {
           "py/tuple": [
             0,
@@ -1102,8 +1103,7 @@
           ]
         },
         "num_pix_x": 99,
-        "num_pix_y": 99,
-        "documentation": ""
+        "num_pix_y": 99
       },
       "documentation": ""
     },
