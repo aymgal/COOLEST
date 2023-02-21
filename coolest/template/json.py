@@ -203,8 +203,21 @@ class JSONSerializer(object):
         if noise_type not in support['noise_types']:
             raise ValueError(f"Noise type must be in {support['noise_types']}")
         NoiseClass = getattr(noise_module, noise_type)
-        # TODO: treat specifically the types that require a pixel FITS file
-        return NoiseClass(**noise_in)
+        if noise_type == 'NoiseMap':
+            pixels_settings = noise_in.pop('noise_map')
+            noise_map = self._setup_grid(pixels_settings, PixelatedRegularGrid)
+            noise_out = NoiseClass(noise_map=noise_map, **noise_in)
+        elif noise_type == 'NoiseRealization':
+            pixels_settings = noise_in.pop('noise_realization')
+            noise_realization = self._setup_grid(pixels_settings, PixelatedRegularGrid)
+            noise_out = NoiseClass(noise_realization=noise_realization, **noise_in)
+        elif noise_type == 'DrizzledNoise':
+            pixels_settings = noise_in.pop('wht_map')
+            wht_map = self._setup_grid(pixels_settings, PixelatedRegularGrid)
+            noise_out = NoiseClass(wht_map=wht_map, **noise_in)
+        else:
+            noise_out = NoiseClass(**noise_in)
+        return noise_out
 
     def _setup_psf(self, psf_in):
         from coolest.template.classes import psf as psf_module
@@ -239,5 +252,5 @@ class JSONSerializer(object):
         return mode_out
 
     def _check_metadata(self, meta_in):
-        meta_out = str(meta_in)  # TODO: might do more checks here
+        meta_out = meta_in  # TODO: might do more checks here
         return meta_out
