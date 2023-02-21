@@ -9,6 +9,7 @@ from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from coolest.api.analysis import Analysis
 from coolest.api.light_model import CompositeLightModel
 from coolest.api.util import read_json_param
+from coolest.api.plot_util import nice_colorbar
 
 # matplotlib global settings
 plt.rc('image', interpolation='none', origin='lower') # imshow
@@ -57,6 +58,7 @@ class ModelPlotter(object):
     @staticmethod
     def _plot_regular_image(ax, image, **imshow_kwargs):
         im = ax.imshow(image, **imshow_kwargs)
+        nice_colorbar(im)
         return im
 
     @staticmethod
