@@ -1,6 +1,8 @@
 # Test script that creates a whole LensUniverse model
 # emulating a series of inputs from e.g. a user interface,
-# and finally write it on disk as YAML or JSON files.
+# and finally write it on disk as a JSON file.
+
+import os
 
 from coolest.template.lazy import *
 from coolest.template import info
@@ -22,15 +24,14 @@ source_1 = Galaxy('a source galaxy', 2.0,
 
 source_2 = Galaxy('another source', 1.5,
                   light_model=LightModel('PixelatedRegularGrid'))
-source_2.light_model[0].parameters['pixels'].set_grid('test_image_1.fits',
+source_2.light_model[0].parameters['pixels'].set_grid('test_image.fits',
                                                       field_of_view_x=(-3.0, 1.0),
-                                                      field_of_view_y=(-2.0, 2.0),
-                                                      check_fits_file=True)
+                                                      field_of_view_y=(-2.0, 2.0))
 print("pixel size:", source_2.light_model[0].parameters['pixels'].pixel_size)
 
 source_3 = Galaxy('a VKL source', 1.2,
                   light_model=LightModel('IrregularGrid'))
-source_3.light_model[0].parameters['pixels'].set_grid('dum_table.fits',
+source_3.light_model[0].parameters['pixels'].set_grid('test_irreg_grid.fits',
                                                       check_fits_file=True)
 
 
@@ -38,29 +39,19 @@ source_3.light_model[0].parameters['pixels'].set_grid('dum_table.fits',
 lens_1 = Galaxy('a lens galaxy', 0.5,
                 light_model=LightModel('Sersic', 'Sersic'),
                 mass_model=MassModel('PEMD', 'PixelatedRegularGridPotential'))
-lens_1.mass_model[1].parameters['pixels'].set_grid('test_image_2.fits',
-                                                      field_of_view_x=(-3.0, 1.0),
-                                                      field_of_view_y=(-2.0, 2.0),
-                                                      check_fits_file=True)
+lens_1.mass_model[1].parameters['pixels'].set_grid('test_image.fits',
+                                                   field_of_view_x=(-3.0, 1.0),
+                                                   field_of_view_y=(-2.0, 2.0))
 
 # Defines the external shear
 ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
                           mass_model=MassModel('ExternalShear'))
 
 # Put them in a list, which will also create unique IDs for each profile
-entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3)
-
-# Define regularization strategies and link them to a given profile
-# regularization_list = RegularizationList(('PixelStarlet', source_2.light_model[0]),
-#                                          ('PixelPositivity', source_2.light_model[0]), 
-#                                          ('PixelCurvature', source_3.light_model[0]),
-#                                          ('PixelBLWavelet', lens_1.mass_model[1]))
-
-# Choose which likelihood terms you want to include
-# likelihood_list = LikelihoodList('imaging_data')
+entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2)
 
 # Define the origin of the coordinates system
-origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')  # <- in degrees (2.83435, )
+origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')
 
 # EXAMPLE for accessing specific parameters and add priors/values/posteriors
 # - add a gaussian prior to a given parameter
@@ -81,15 +72,15 @@ source_1.light_model[0].parameters['theta_eff'].set_posterior(PosteriorStatistic
 obs_pixels = PixelatedRegularGrid('test_image.fits')  # if None, COOLEST mode will be automatically set to 'mock'
 
 # Select the type of noise
-from coolest.template.classes.noise import InstrumentalNoise, UniformGaussianNoise
-noise = InstrumentalNoise()
+# noise = InstrumentalNoise()
 # noise = UniformGaussianNoise(std_dev=0.004)
+noise = NoiseMap(noise_map=PixelatedRegularGrid('test_image.fits'))
+
 
 observation = Observation(pixels=obs_pixels, noise=noise)
 
 # Defines the instrument
-from coolest.template.classes.psf import PixelatedPSF, GaussianPSF
-psf = PixelatedPSF(PixelatedRegularGrid('test_psf.fits'))
+psf = PixelatedPSF(pixels=PixelatedRegularGrid('test_psf.fits'), description="a PSF kernel")
 #psf = GaussianPSF(0.2)
 
 instrument = Instrument('some instrument',
@@ -118,7 +109,8 @@ print("#"*30 + " serialization " + "#"*30)
 # print(json.dumps(lens_1.mass_model.profiles[1].parameters, cls=JSONParameter, indent=4))
 
 # export as JSON file
-encoder_json = JSONSerializer('coolest_template', 
+template_abs_path = os.path.join(os.getcwd(), 'coolest_template')
+encoder_json = JSONSerializer(template_abs_path, 
                               obj=master, indent=2,
                               check_external_files=False)
 encoder_json.dump()

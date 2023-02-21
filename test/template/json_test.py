@@ -1,6 +1,7 @@
 __author__ = 'aymgal'
 
 
+import os
 import pytest
 
 from coolest.template.lazy import *
@@ -12,7 +13,7 @@ class TestJSONSerialization(object):
 
     def setup(self):
         self.template_name = 'test'
-        self.check_files = False
+        self.check_files = True
 
     def test_dump_and_read_pure_json(self):
 
@@ -25,14 +26,14 @@ class TestJSONSerialization(object):
 
         source_2 = Galaxy('another source', 1.5,
                           light_model=LightModel('PixelatedRegularGrid'))
-        source_2.light_model[0].parameters['pixels'].set_grid('test_image_1.fits',
+        source_2.light_model[0].parameters['pixels'].set_grid('test/test_image.fits',  # absolute path just for unit tests
                                                               field_of_view_x=(-3.0, 1.0),
                                                               field_of_view_y=(-2.0, 2.0),
                                                               check_fits_file=self.check_files)
 
         source_3 = Galaxy('a VKL source', 1.2,
                           light_model=LightModel('IrregularGrid'))
-        source_3.light_model[0].parameters['pixels'].set_grid('dum_table.fits',
+        source_3.light_model[0].parameters['pixels'].set_grid('test/test_irreg_grid.fits',  # absolute path just for unit tests
                                                               check_fits_file=self.check_files)
 
 
@@ -40,7 +41,7 @@ class TestJSONSerialization(object):
         lens_1 = Galaxy('a lens galaxy', 0.5,
                         light_model=LightModel('Sersic', 'Sersic'),
                         mass_model=MassModel('PEMD', 'PixelatedRegularGridPotential'))
-        lens_1.mass_model[1].parameters['pixels'].set_grid('test_image_2.fits',
+        lens_1.mass_model[1].parameters['pixels'].set_grid('test/test_image.fits',  # absolute path just for unit tests
                                                               field_of_view_x=(-3.0, 1.0),
                                                               field_of_view_y=(-2.0, 2.0),
                                                               check_fits_file=self.check_files)
@@ -71,7 +72,8 @@ class TestJSONSerialization(object):
                                                                                          percentile_16th=0.03, percentile_84th=0.05))
 
         # Provide data file
-        obs_pixels = PixelatedRegularGrid('test_image.fits')  # if None, COOLEST mode will be automatically set to 'mock'
+        obs_pixels = PixelatedRegularGrid('test/test_image.fits',   # absolute path just for unit tests
+                                          check_fits_file=self.check_files)
 
         # Select the type of noise
         from coolest.template.classes.noise import InstrumentalNoise, UniformGaussianNoise
@@ -82,7 +84,8 @@ class TestJSONSerialization(object):
 
         # Defines the instrument
         from coolest.template.classes.psf import PixelatedPSF, GaussianPSF
-        psf = PixelatedPSF(PixelatedRegularGrid('test_psf.fits'))
+        psf = PixelatedPSF(PixelatedRegularGrid('test/test_psf.fits',   # absolute path just for unit tests
+                                                check_fits_file=self.check_files))
         #psf = GaussianPSF(0.2)
 
         instrument = Instrument('some instrument',
@@ -100,7 +103,8 @@ class TestJSONSerialization(object):
                           cosmology)
         
         # export as JSON file
-        serializer = JSONSerializer(self.template_name, obj=coolest,
+        template_path = os.path.join(os.getcwd(), self.template_name)
+        serializer = JSONSerializer(template_path, obj=coolest,
                                     check_external_files=self.check_files)
         serializer.dump()
         serializer.dump_simple()
@@ -109,7 +113,7 @@ class TestJSONSerialization(object):
 
         # test reading the JSON file that does not contain jsonpickle tags
         # and btw we also instantiate another JSONSerializer as a test
-        serializer_2 = JSONSerializer(self.template_name, obj=None,
+        serializer_2 = JSONSerializer(template_path, obj=None,
                                       check_external_files=self.check_files)
         coolest_3 = serializer_2.load_simple()
         assert isinstance(coolest_3, COOLEST)

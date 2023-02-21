@@ -13,7 +13,7 @@
     "name": "some instrument",
     "pixel_size": 0.08,
     "psf": {
-      "description": null,
+      "description": "a PSF kernel",
       "pixels": {
         "field_of_view_x": [
           0,
@@ -387,7 +387,7 @@
                 2.0
               ],
               "fits_file": {
-                "path": "test_image_2.fits"
+                "path": "test_image.fits"
               },
               "num_pix_x": 100,
               "num_pix_y": 100
@@ -525,7 +525,7 @@
                 2.0
               ],
               "fits_file": {
-                "path": "test_image_1.fits"
+                "path": "test_image.fits"
               },
               "num_pix_x": 100,
               "num_pix_y": 100
@@ -538,33 +538,6 @@
       "name": "another source",
       "redshift": 1.5,
       "type": "galaxy"
-    },
-    {
-      "light_model": [
-        {
-          "parameters": {
-            "pixels": {
-              "field_of_view_x": [
-                -4.997780580126987,
-                4.927275510068437
-              ],
-              "field_of_view_y": [
-                -4.985366653681708,
-                4.923310124735972
-              ],
-              "fits_file": {
-                "path": "dum_table.fits"
-              },
-              "num_pix": 100
-            }
-          },
-          "type": "IrregularGrid"
-        }
-      ],
-      "mass_model": [],
-      "name": "a VKL source",
-      "redshift": 1.2,
-      "type": "galaxy"
     }
   ],
   "meta": {},
@@ -574,10 +547,22 @@
     "mag_sky_brightness": null,
     "mag_zero_point": null,
     "noise": {
-      "type": "InstrumentalNoise",
-      "with_readout_noise": true,
-      "with_sky_shot_noise": true,
-      "with_target_shot_noise": true
+      "noise_map": {
+        "field_of_view_x": [
+          0,
+          0
+        ],
+        "field_of_view_y": [
+          0,
+          0
+        ],
+        "fits_file": {
+          "path": "test_image.fits"
+        },
+        "num_pix_x": 100,
+        "num_pix_y": 100
+      },
+      "type": "NoiseMap"
     },
     "pixels": {
       "field_of_view_x": [
