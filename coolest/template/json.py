@@ -101,17 +101,10 @@ class JSONSerializer(object):
 
     def _setup_observation(self, obs_in):
         pixels_settings = obs_in.pop('pixels')
+        pixels = self._setup_grid(pixels_settings, PixelatedRegularGrid)
         noise_settings = obs_in.pop('noise')
         noise = self._setup_noise(noise_settings)
-        obs_out = Observation(noise=noise, **obs_in)
-        fits_path = pixels_settings.pop('fits_file')['path']
-        if fits_path is not None and os.path.isabs(fits_path):
-            raise ValueError("Observation FITS file must be a relative one, "
-                             "and be placed in the same directory as the JSON file")
-        obs_out.pixels.set_grid(fits_path,
-                                check_fits_file=self._check_files,
-                                fits_file_dir=self._json_dir,
-                                **pixels_settings)
+        obs_out = Observation(pixels=pixels, noise=noise, **obs_in)
         return obs_out
 
     def _setup_coordinates(self, coord_orig_in):
@@ -177,14 +170,14 @@ class JSONSerializer(object):
         if name != 'pixels':
             raise NotImplementedError("Support for grid parameters other than "
                                       "'pixels' is not implemented.")
-        fits_path = values.pop('fits_file')['path']
-        if fits_path is not None and os.path.isabs(fits_path):
-            raise ValueError(f"FITS file for profile {profile_out.type} must be a relative one, "
-                             f"and be placed in the same directory as the JSON file")
-        profile_out.parameters['pixels'].set_grid(fits_path,
-                                                  check_fits_file=self._check_files,
-                                                  fits_file_dir=self._json_dir,
-                                                  **values)
+        if 'Regular' in profile_out.type:
+            pixels = self._setup_grid(values, PixelatedRegularGrid)
+            profile_out.parameters['pixels'] = pixels
+        elif 'Irregular' in profile_out.type:
+            pixels = self._setup_grid(values, IrregularGrid)
+            profile_out.parameters['pixels'] = pixels
+        else:
+            raise ValueError(f"Unknown grid profile ({profile_out.type})")
         
     def _update_std_parameter(self, profile_out, name, values):
         pt_estim = PointEstimate(**values['point_estimate'])
@@ -220,22 +213,24 @@ class JSONSerializer(object):
             return PSF()
         if psf_type not in support['psf_types']:
             raise ValueError(f"PSF type must be in {support['psf_types']}")
-        print(psf_type, psf_type, psf_type)
         PSFClass = getattr(psf_module, psf_type)        
         if psf_type == 'PixelatedPSF':
             pixels_settings = psf_in.pop('pixels')
-            psf_out = PSFClass(**psf_in)
-            fits_path = pixels_settings.pop('fits_file')['path']
-            if fits_path is not None and os.path.isabs(fits_path):
-                raise ValueError(f"FITS file for the pixelated PSF must be a relative one, "
-                                 f"and be placed in the same directory as the JSON file")
-            psf_out.pixels.set_grid(fits_path,
-                check_fits_file=self._check_files,
-                fits_file_dir=self._json_dir,
-                **pixels_settings)
+            pixels = self._setup_grid(pixels_settings, PixelatedRegularGrid)
+            psf_out = PSFClass(pixels=pixels, **psf_in)
         else:
             psf_out = PSFClass(**psf_in)
         return psf_out
+
+    def _setup_grid(self, grid_in, GridClass):
+        fits_path = grid_in.pop('fits_file')['path']
+        if fits_path is not None and os.path.isabs(fits_path):
+            raise ValueError(f"FITS file '{fits_path}' must be a relative path instead, "
+                             f"and placed in the same directory as the JSON file")
+        return GridClass(fits_path, 
+            check_fits_file=self._check_files, 
+            fits_file_dir=self._json_dir,
+            **grid_in)
 
     def _check_mode(self, mode_in):
         mode_out = str(mode_in)

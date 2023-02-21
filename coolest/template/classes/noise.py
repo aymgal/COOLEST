@@ -54,6 +54,8 @@ class NoiseMap(Noise):
 
     def __init__(self, noise_map: PixelatedRegularGrid = None) -> None:
         ntype = self.__class__.__name__
+        if noise_map is None:
+            noise_map = PixelatedRegularGrid()
         super().__init__(ntype, noise_map=noise_map)
 
 class NoiseRealization(Noise):
@@ -61,6 +63,8 @@ class NoiseRealization(Noise):
 
     def __init__(self, noise_realization: PixelatedRegularGrid = None) -> None:
         ntype = self.__class__.__name__
+        if noise_realization is None:
+            noise_realization = PixelatedRegularGrid()
         super().__init__(ntype, noise_realization=noise_realization)
 
 class InstrumentalNoise(Noise):
@@ -85,4 +89,6 @@ class DrizzledNoise(Noise):
     def __init__(self, background_rms: float = 0.0, 
                  wht_map: PixelatedRegularGrid = None) -> None:
         ntype = self.__class__.__name__
+        if wht_map is None:
+            wht_map = PixelatedRegularGrid()
         super().__init__(ntype, background_rms=background_rms, wht_map=wht_map)
