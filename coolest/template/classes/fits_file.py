@@ -19,5 +19,9 @@ class FitsFile(object):
             return False
         return os.path.exists(self.path)
 
-    def read(self):
-        return fits.getdata(self.path, header=True)
+    def read(self, directory=None):
+        if directory is not None:
+            path = os.path.join(directory, self.path)
+        else:
+            path = self.path
+        return fits.getdata(path, header=True)

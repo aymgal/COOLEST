@@ -53,6 +53,8 @@ class PixelatedRegularGrid(Grid):
 
     @property
     def pixel_size(self):
+        if self.num_pix_x == 0 or self.num_pix_y == 0:
+            return 0.
         pix_size_x = np.abs(self.field_of_view_x[0] - self.field_of_view_x[1]) / self.num_pix_x
         pix_size_y = np.abs(self.field_of_view_y[0] - self.field_of_view_y[1]) / self.num_pix_y
         assert pix_size_x == pix_size_y, "Regular grid must have square pixels"
@@ -93,8 +95,10 @@ class IrregularGrid(Grid):
                  num_pix: int = 0,
                  **kwargs_grid) -> None:
         super().__init__(fits_path, **kwargs_grid)
-        self.set_grid(None, field_of_view_x, field_of_view_y, 
-                      num_pix)
+        self.set_grid(None, 
+                      field_of_view_x=field_of_view_x, 
+                      field_of_view_y=field_of_view_y, 
+                      num_pix=num_pix)
 
     def read_pixels(self):
         data, header = self.fits_file.read()
