@@ -7,20 +7,45 @@ from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.fits_file import FitsFile
 
 
-class PixelatedRegularGrid(APIBaseObject):
+__all__ = [
+    'Grid',
+    'PixelatedRegularGrid',
+    'IrregularGrid',
+]
+
+SUPPORTED_CHOICES = [
+    'PixelatedRegularGrid',
+    'IrregularGrid',
+]
+
+
+class Grid(APIBaseObject):
+
+    def __init__(self,
+                 fits_path: str,
+                 check_fits_file: bool = False, 
+                 fits_file_dir: str = None) -> None:
+        self.fits_file = FitsFile(fits_path, 
+                                  check_exist=check_fits_file, 
+                                  directory=fits_file_dir)
+        super().__init__()
+
+    def set_grid(self, fits_path, check_fits_file):
+        if fits_path is not None:
+            self.fits_file = FitsFile(fits_path, check_exist=check_fits_file)
+
+
+class PixelatedRegularGrid(Grid):
     
     def __init__(self, 
                  fits_path: str = None,
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
                  num_pix_x: int = 0, num_pix_y: int = 0,
-                 check_fits_file=False, fits_file_dir=None) -> None:
-        self.fits_file = FitsFile(fits_path, 
-                                  check_exist=check_fits_file, 
-                                  directory=fits_file_dir)
+                 **kwargs_grid) -> None:
+        super().__init__(fits_path, **kwargs_grid)
         self.set_grid(None, field_of_view_x, field_of_view_y, 
                       num_pix_x, num_pix_y)
-        super().__init__()
 
     @property
     def shape(self):
@@ -37,8 +62,7 @@ class PixelatedRegularGrid(APIBaseObject):
                  field_of_view_x, field_of_view_y,
                  num_pix_x=0, num_pix_y=0,
                  check_fits_file=True):
-        if fits_path is not None:
-            self.fits_file = FitsFile(fits_path, check_exist=check_fits_file)
+        super().set_grid(fits_path, check_fits_file)
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
         if self.fits_file.exists():
@@ -61,27 +85,16 @@ class PixelatedRegularGrid(APIBaseObject):
         return array_shape
 
 
-class IrregularGrid(APIBaseObject):
+class IrregularGrid(Grid):
     def __init__(self, 
                  fits_path: str = None,
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
                  num_pix: int = 0,
-                 check_fits_file=False, fits_file_dir=None) -> None:
-        self.fits_file = FitsFile(fits_path, 
-                                  check_exist=check_fits_file, 
-                                  directory=fits_file_dir)
+                 **kwargs_grid) -> None:
+        super().__init__(fits_path, **kwargs_grid)
         self.set_grid(None, field_of_view_x, field_of_view_y, 
                       num_pix)
-        #self.field_of_view_x = field_of_view_x
-        #self.field_of_view_y = field_of_view_y
-        #if self.fits_file.exists():
-        #    self.field_of_view_x, self.field_of_view_y, self.num_pix = self.read_pixels()
-        #else:
-        #    self.field_of_view_x = field_of_view_x
-        #    self.field_of_view_y = field_of_view_y
-        #    self.num_pix = num_pix
-        super().__init__()
 
     def read_pixels(self):
         data, header = self.fits_file.read()
@@ -98,8 +111,7 @@ class IrregularGrid(APIBaseObject):
     def set_grid(self, fits_path, 
                  field_of_view_x=(0, 0), field_of_view_y=(0, 0),
                  num_pix=0, check_fits_file=True):
-        if fits_path is not None:
-            self.fits_file = FitsFile(fits_path, check_exist=check_fits_file)
+        super().set_grid(fits_path, check_fits_file)
         if self.fits_file.exists():
             self.field_of_view_x, self.field_of_view_y, self.num_pix = self.read_pixels()
             if num_pix != 0 and self.num_pix != num_pix:
