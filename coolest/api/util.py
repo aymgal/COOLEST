@@ -1,6 +1,7 @@
 __author__ = 'aymgal'
 
 
+import os
 import numpy as np
 # from astropy.coordinates import SkyCoord
 
@@ -25,9 +26,11 @@ def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
     return image_unit_flux * flux_unit_mag
 
 
-def get_coolest_object(file_path, **kwargs_serializer):
+def get_coolest_object(file_path, verbose=False, **kwargs_serializer):
+    if not os.path.isabs(file_path):
+        file_path = os.path.abspath(file_path)
     serializer = JSONSerializer(file_path, **kwargs_serializer)
-    return serializer.load()
+    return serializer.load(verbose=verbose)
 
 
 def get_coordinates(coolest_object, offset_ra=0, offset_dec=0):

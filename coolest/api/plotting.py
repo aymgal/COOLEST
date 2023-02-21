@@ -2,6 +2,7 @@ __author__ = 'aymgal', 'lynevdv'
 
 
 import copy
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 
@@ -18,17 +19,18 @@ class ModelPlotter(object):
     Creates pyplot panels from a lens model stored in the COOLEST format
     """
 
-    def __init__(self, coolest_object):
-        self.analysis = Analysis(coolest_object)
-        self.coolest = self.analysis.coolest
+    def __init__(self, coolest_object, coolest_directory=None):
+        self.coolest = coolest_object
+        self.analysis = Analysis(self.coolest)
         cmap_flux = copy.copy(plt.get_cmap('magma'))
         cmap_flux.set_bad('black')
         self.cmap_flux = cmap_flux
+        self._directory = coolest_directory
 
     def plot_surface_brightness(self, ax, coordinates=None, 
                                 norm=None, cmap=None,
                                 **kwargs_selection):
-        light_model = CompositeLightModel(self.coolest, **kwargs_selection)
+        light_model = CompositeLightModel(self.coolest, self._directory, **kwargs_selection)
         if norm is None:
             norm = LogNorm()
         if cmap is None:
@@ -41,8 +43,15 @@ class ModelPlotter(object):
                                           cmap=self.cmap_flux, 
                                           norm=norm)
         else:
-            # sb_data = light_model.surface_brightness()
-            im = self._plot_irregular_image()
+            values, extent = light_model.surface_brightness()
+            if isinstance(values, np.ndarray) and len(values.shape) == 2:
+                image = values
+                im = self._plot_regular_image(ax, values, extent=extent, 
+                                              cmap=self.cmap_flux, 
+                                              norm=norm)
+            else: # irregular grid
+                im = self._plot_voronoi_image(values)
+                image = None
         return image
         
     @staticmethod
@@ -51,7 +60,7 @@ class ModelPlotter(object):
         return im
 
     @staticmethod
-    def _plot_irregular_image(self):
+    def _plot_voronoi_image(self, points):
         # TODO: incorporate Giorgos' code here
         raise NotImplementedError()
 
