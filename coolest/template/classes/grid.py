@@ -2,6 +2,7 @@ __author__ = 'aymgal, Giorgos Vernardos'
 
 from typing import Tuple
 import numpy as np
+from scipy.interpolate import griddata
 
 from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.fits_file import FitsFile
@@ -83,4 +84,16 @@ class IrregularGrid(APIBaseObject):
             return x,y,z
         else:
             raise Exception("Input .fits file does not exist!")
+        
+
+    def get_on_grid(self,xg,yg,**kwargs):
+        x,y,z = self.get_xyz()
+
+        #print(len(x))
+        #print(xg.shape,yg.shape)
+
+        zg = griddata((x,y),z,(xg,yg),method=kwargs["method"])
+
+        return zg
+
         

@@ -7,7 +7,33 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 import numpy as np
 import sys
 
-def plot_voronoi(ax,irr_grid):
+
+def plot_interp_grid(ax,irr_grid,xg,yg,cmap='inferno',method='linear',zmax=None,extent=None,plot_points=False):
+    zg = irr_grid.get_on_grid(xg,yg,method=method)
+    if not zmax:
+        np.amax(zg)
+    norm = matplotlib.colors.Normalize(vmin=0,vmax=zmax)
+
+    xmin = np.amin(xg)
+    xmax = np.amax(xg)
+    ymin = np.amin(yg)
+    ymax = np.amax(yg)
+    
+    ax.imshow(zg,extent=(xmin,xmax,ymin,ymax),origin='lower',norm=norm,cmap=cmap,zorder=1)
+
+    if plot_points:
+        xx,yy,zz = irr_grid.get_xyz()
+        ax.scatter(xx,yy,c='white',zorder=2)
+
+    ax.set_xlim(xmin,xmax)
+    ax.set_ylim(ymin,ymax)
+    ax.set_aspect('equal')
+
+    return ax
+    
+    
+
+def plot_voronoi(ax,irr_grid,cmap='inferno',method='linear',zmax=None,extent=None,edgecolor=None,plot_points=False):
     # ax: is an instance of matplotlib axes
     # irr_grid: is an instance of IrregularGrid
 
@@ -19,23 +45,30 @@ def plot_voronoi(ax,irr_grid):
     new_regions, vertices = voronoi_finite_polygons_2d(vor)
     
     # get cell colors
-    #norm = matplotlib.colors.Normalize(vmin=min(z),vmax=max(z))
-    norm = matplotlib.colors.Normalize(vmin=0,vmax=max(z))
-    cmap = matplotlib.cm.inferno
+    if not zmax:
+        zmax = np.amax(z)
+    norm = matplotlib.colors.Normalize(vmin=0,vmax=zmax)
     m = matplotlib.cm.ScalarMappable(norm=norm,cmap=cmap)
 
     # plot voronoi points
-    #point_colors = [ m.to_rgba(v) for v in z ]
-    #ax.scatter(voronoi_points[:,0],voronoi_points[:,1],c=point_colors)
+    if plot_points:
+        #point_colors = [ m.to_rgba(v) for v in z ]
+        ax.scatter(voronoi_points[:,0],voronoi_points[:,1],c='white',zorder=2)
 
+    
     # plot voronoi cells
     for i,region in enumerate(new_regions):
         polygon = vertices[region]
         cell_color = m.to_rgba(z[i])
-        ax.fill(*zip(*polygon),alpha=1.0,facecolor=cell_color)#,edgecolor='white')
+        ax.fill(*zip(*polygon),alpha=1.0,facecolor=cell_color,edgecolor=edgecolor,zorder=1)
 
-    ax.set_xlim(irr_grid.field_of_view_x)
-    ax.set_ylim(irr_grid.field_of_view_y)
+    if extent:
+        ax.set_xlim(extent[0],extent[1])
+        ax.set_ylim(extent[2],extent[3])
+    else:
+        ax.set_xlim(irr_grid.field_of_view_x)
+        ax.set_ylim(irr_grid.field_of_view_y)
+
     ax.set_aspect('equal')
 
     return ax
@@ -147,15 +180,27 @@ source_4 = Galaxy('a VKL source', 1.2, light_model=LightModel('IrregularGrid'))
 #source_4.light_model[0].pixels.field_of_view_x = (-10,10)
 #source_4.light_model[0].pixels.field_of_view_y = (-10,10)
 #source_4.light_model[0].pixels.set_fits('/home/giorgos/myCodes/COOLEST/mytests/dum_table.fits')
-source_4.light_model[0].pixels.set_fits('/home/giorgos/myCodes/verykool/my_VKL_source.fits')
+source_4.light_model[0].pixels.set_fits('/home/giorgos/myData/VKL_runs/sourcemag22_unfiltered/gaussian_n3/VKL_coolest/my_VKL_source.fits')
 
 
 # create axes for one or more plots
-fig,ax = plt.subplots(figsize=(15,6))
+fig,ax = plt.subplots(1,2,figsize=(15,6))
+
+
+
+x_1d = np.linspace(-1.2,1.2,num=50)
+y_1d = np.linspace(-1.2,1.2,num=50)
+xg,yg = np.meshgrid(x_1d,y_1d,indexing='xy')
+ax[1] = plot_interp_grid(ax[1],source_4.light_model[0].pixels,xg,yg,method="linear")
+
 
 # This is the key command:
 # Pass an axis object and an IrregularGrid object to the plotting function
-ax = plot_voronoi(ax,source_4.light_model[0].pixels)
+ax[0] = plot_voronoi(ax[0],source_4.light_model[0].pixels,extent=(-1,1,-1,1))
+
+
+
+
 
 # save the figure
 plt.savefig('test_plot.pdf')
