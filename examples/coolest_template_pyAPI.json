@@ -291,7 +291,7 @@
                   "documentation": "Pixel values",
                   "fits_file": {
                     "py/object": "coolest.template.classes.fits_file.FitsFile",
-                    "path": "test_image_2.fits"
+                    "path": "test_image.fits"
                   },
                   "field_of_view_x": {
                     "py/tuple": [
@@ -992,7 +992,7 @@
                   "documentation": "Pixel values",
                   "fits_file": {
                     "py/object": "coolest.template.classes.fits_file.FitsFile",
-                    "path": "test_image_1.fits"
+                    "path": "test_image.fits"
                   },
                   "field_of_view_x": {
                     "py/tuple": [
@@ -1011,138 +1011,6 @@
                 }
               },
               "id": "galaxy_3-light_model-PixelatedRegularGrid_0"
-            }
-          ]
-        }
-      },
-      {
-        "py/object": "coolest.template.classes.galaxy.Galaxy",
-        "type": "galaxy",
-        "name": "a VKL source",
-        "redshift": 1.2,
-        "mass_model": {
-          "py/object": "coolest.template.classes.mass_light_model.MassModel",
-          "py/seq": []
-        },
-        "documentation": "",
-        "light_model": {
-          "py/object": "coolest.template.classes.mass_light_model.LightModel",
-          "py/seq": [
-            {
-              "py/object": "coolest.template.classes.profiles.light.IrregularGrid",
-              "type": "IrregularGrid",
-              "documentation": "A pixelated profile defined on a irregular grid of points",
-              "parameters": {
-                "pixels": {
-                  "py/object": "coolest.template.classes.parameter.IrregularGridParameter",
-                  "documentation": "Pixel positions and values",
-                  "fits_file": {
-                    "py/object": "coolest.template.classes.fits_file.FitsFile",
-                    "path": "dum_table.fits"
-                  },
-                  "field_of_view_x": {
-                    "py/tuple": [
-                      {
-                        "py/reduce": [
-                          {
-                            "py/function": "numpy.core.multiarray.scalar"
-                          },
-                          {
-                            "py/tuple": [
-                              {
-                                "py/reduce": [
-                                  {
-                                    "py/type": "numpy.dtype"
-                                  },
-                                  {
-                                    "py/tuple": [
-                                      "f8",
-                                      false,
-                                      true
-                                    ]
-                                  },
-                                  {
-                                    "py/tuple": [
-                                      3,
-                                      "<",
-                                      null,
-                                      null,
-                                      null,
-                                      -1,
-                                      -1,
-                                      0
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "py/b64": "0upAMbr9E8A="
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "py/reduce": [
-                          {
-                            "py/function": "numpy.core.multiarray.scalar"
-                          },
-                          {
-                            "py/tuple": [
-                              {
-                                "py/id": 185
-                              },
-                              {
-                                "py/b64": "rIAYtoe1E0A="
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  "field_of_view_y": {
-                    "py/tuple": [
-                      {
-                        "py/reduce": [
-                          {
-                            "py/function": "numpy.core.multiarray.scalar"
-                          },
-                          {
-                            "py/tuple": [
-                              {
-                                "py/id": 185
-                              },
-                              {
-                                "py/b64": "D4fA9APxE8A="
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "py/reduce": [
-                          {
-                            "py/function": "numpy.core.multiarray.scalar"
-                          },
-                          {
-                            "py/tuple": [
-                              {
-                                "py/id": 185
-                              },
-                              {
-                                "py/b64": "CjqXNXixE0A="
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  "num_pix": 100
-                }
-              },
-              "id": "galaxy_4-light_model-IrregularGrid_0"
             }
           ]
         }
@@ -1177,12 +1045,31 @@
     "mag_zero_point": null,
     "mag_sky_brightness": null,
     "noise": {
-      "py/object": "coolest.template.classes.noise.InstrumentalNoise",
-      "type": "InstrumentalNoise",
-      "with_readout_noise": true,
-      "with_sky_shot_noise": true,
-      "with_target_shot_noise": true,
-      "documentation": "The noise properties will be computed directly based \n    on the Instrument (i.e. readout noise) and Observation (e.g. exposure time, sky brightness, etc.)"
+      "py/object": "coolest.template.classes.noise.NoiseMap",
+      "type": "NoiseMap",
+      "noise_map": {
+        "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
+        "fits_file": {
+          "py/object": "coolest.template.classes.fits_file.FitsFile",
+          "path": "test_image.fits"
+        },
+        "field_of_view_x": {
+          "py/tuple": [
+            0,
+            0
+          ]
+        },
+        "field_of_view_y": {
+          "py/tuple": [
+            0,
+            0
+          ]
+        },
+        "num_pix_x": 100,
+        "num_pix_y": 100,
+        "documentation": ""
+      },
+      "documentation": "Noise characterized by a noise map, which contains diagonal elements of the data covariance matrix"
     },
     "documentation": "Defines the observation itself, that is the image pixels, the exposure time,\n    the noise model and/or properties, the magnitude zero-point and sky brightness."
   },
@@ -1195,7 +1082,7 @@
     "psf": {
       "py/object": "coolest.template.classes.psf.PixelatedPSF",
       "type": "PixelatedPSF",
-      "description": null,
+      "description": "a PSF kernel",
       "pixels": {
         "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
         "fits_file": {
