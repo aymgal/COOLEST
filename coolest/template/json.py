@@ -21,11 +21,13 @@ class JSONSerializer(object):
         """
         file_path_no_ext should be the absolute path
         """
-        self.obj = obj
         if not os.path.isabs(file_path_no_ext):
             raise ValueError("Path to JSON file must be an absolute path")
+        if file_path_no_ext[-5:].lower() == '.json':
+            raise ValueError("The provided template name should not contain the JSON extension")
         self.path = file_path_no_ext
         self._json_dir = os.path.dirname(file_path_no_ext)
+        self.obj = obj
         self.indent = indent
         # to distinguish files that can be converted back to the python API
         self._api_suffix = '_pyAPI'
@@ -45,12 +47,13 @@ class JSONSerializer(object):
         with open(json_path, 'w') as f:
             f.write(result)
 
-    def load(self):
+    def load(self, verbose=False):
         try:
             content = self.load_jsonpickle()
         except Exception as e:
-            print(f"Failed reading with jsonpickle, trying reading pure json"
-                  f" (original error: {e})")
+            if verbose:
+                    print(f"Failed reading with jsonpickle, trying reading pure json"
+                          f" (original error: {e})")
             content = self.load_simple()
         assert isinstance(content, COOLEST)
         return content
