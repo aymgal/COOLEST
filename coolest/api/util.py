@@ -1,8 +1,12 @@
 __author__ = 'aymgal'
 
 
+import os
 import numpy as np
+# from astropy.coordinates import SkyCoord
+
 from coolest.template.json import JSONSerializer
+from coolest.api.coordinates import Coordinates
 
 
 def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
@@ -20,6 +24,77 @@ def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
     delta_mag = mag_tot - mag_zero_point
     flux_unit_mag = 10 ** ( - delta_mag / 2.5 )
     return image_unit_flux * flux_unit_mag
+
+
+def get_coolest_object(file_path, verbose=False, **kwargs_serializer):
+    if not os.path.isabs(file_path):
+        file_path = os.path.abspath(file_path)
+    serializer = JSONSerializer(file_path, **kwargs_serializer)
+    return serializer.load(verbose=verbose)
+
+
+def get_coordinates(coolest_object, offset_ra=0., offset_dec=0.):
+    nx, ny = coolest_object.observation.pixels.shape
+    pix_scl = coolest_object.instrument.pixel_size
+    half_size_x, half_size_y = nx * pix_scl / 2., ny * pix_scl / 2.
+    ra_at_xy_0  = - half_size_x + pix_scl / 2.  # position of x=0 with respect to bottom left pixel
+    dec_at_xy_0 = - half_size_y + pix_scl / 2.  # position of y=0 with respect to bottom left pixel
+    matrix_pix2ang = pix_scl * np.eye(2)  # transformation matrix pixel <-> angle
+    
+    coordinates = Coordinates(nx, ny, matrix_pixel_to_radec=matrix_pix2ang,
+                              ra_at_xy_0=ra_at_xy_0 + offset_ra, 
+                              dec_at_xy_0=dec_at_xy_0 + offset_dec)
+    return coordinates
+
+
+def get_coordinates_set(coolest_file_list, reference=0):
+    coordinates_list = []
+    for coolest_file in coolest_file_list:
+
+        # TODO: compute correct offsets when each file has
+        # obs = self.coolest.observation
+        # sky_coord = SkyCoord(obs.ra, obs.dec, frame='icrs')
+        # ra, dec = sky_coord.to_string(style='hmsdms').split(' ')
+
+        coordinates = get_coordinates(coolest_file)
+        coordinates_list.append(coordinates)
+    return coordinates_list
+
+
+def array2image(array, nx=0, ny=0):
+    """Convert a 1d array into a 2d array.
+
+    Note: this only works when length of array is a perfect square, or else if
+    nx and ny are provided
+
+    :param array: image values
+    :type array: array of size n**2
+    :returns:  2d array
+    :raises: AttributeError, KeyError
+    """
+    if nx == 0 or ny == 0:
+        # Avoid turning n into a JAX-traced object with jax.numpy.sqrt
+        n = int(math.sqrt(len(array)))
+        if n**2 != len(array):
+            err_msg = f"Input array size {len(array)} is not a perfect square."
+            raise ValueError(err_msg)
+        nx, ny = n, n
+    image = array.reshape(int(nx), int(ny))
+    return image
+
+
+def image2array(image):
+    """Convert a 2d array into a 1d array.
+
+    :param array: image values
+    :type array: array of size (n,n)
+    :returns:  1d array
+    :raises: AttributeError, KeyError
+    """
+    # nx, ny = image.shape  # find the size of the array
+    # imgh = np.reshape(image, nx * ny)  # change the shape to be 1d
+    # return imgh
+    return image.ravel()
 
 
 def read_json_param(file_list, file_names, lens_light=False):

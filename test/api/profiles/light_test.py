@@ -29,8 +29,8 @@ class TestSersic(object):
         center_y = -0.15
 
         # COOLEST
-        result = Sersic().surface_brightness(x, y, I_eff=I_eff, theta_eff=theta_eff, n=n, phi=phi, q=q,
-                                             center_x=center_x, center_y=center_y)
+        result = Sersic().evaluate_surface_brightness(x, y, I_eff=I_eff, theta_eff=theta_eff, n=n, phi=phi, q=q,
+                                                      center_x=center_x, center_y=center_y)
 
         # reference
         ref = LightModel(['SERSIC_ELLIPSE'])

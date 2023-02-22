@@ -15,7 +15,7 @@ class TestJSONSerialization(object):
         self.template_name = 'test'
         self.check_files = True
 
-    def test_dump_and_read_pure_json(self):
+    def test_dump_and_read(self):
 
         # Setup cosmology
         cosmology = Cosmology(H0=73.0, Om0=0.3)
@@ -106,7 +106,7 @@ class TestJSONSerialization(object):
         template_path = os.path.join(os.getcwd(), self.template_name)
         serializer = JSONSerializer(template_path, obj=coolest,
                                     check_external_files=self.check_files)
-        serializer.dump()
+        serializer.dump_jsonpickle()
         serializer.dump_simple()
         coolest_2 = serializer.load()
         assert isinstance(coolest_2, COOLEST)

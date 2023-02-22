@@ -1,22 +1,106 @@
-__author__ = 'XXX'
+__author__ = 'aymgal', 'lynevdv'
 
+
+import copy
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 
 from coolest.api.analysis import Analysis
+from coolest.api.light_model import CompositeLightModel
 from coolest.api.util import read_json_param
-import matplotlib.pyplot as plt
+from coolest.api.plot_util import nice_colorbar
+
+# matplotlib global settings
+plt.rc('image', interpolation='none', origin='lower') # imshow settings
 
 
-class Plotting(object):
+class ModelPlotter(object):
     """
-    Handles computation of model-independent quantities and other analysis computations
+    Creates pyplot panels from a lens model stored in the COOLEST format
     """
 
-    def __init__(self, coolest_file_path):
-        self.analysis = Analysis(coolest_file_path)
-        self.coolest_data = self.analysis.coolest_data
+    def __init__(self, coolest_object, coolest_directory=None):
+        self.coolest = coolest_object
+        self.analysis = Analysis(self.coolest)
+        cmap_flux = copy.copy(plt.get_cmap('magma'))
+        cmap_flux.set_bad('black')
+        self.cmap_flux = cmap_flux
+        self._directory = coolest_directory
 
-    def plot_summary(self):
-        pass
+    def plot_surface_brightness(self, ax, title=None, coordinates=None, 
+                                norm=None, cmap=None,
+                                **kwargs_selection):
+        light_model = CompositeLightModel(self.coolest, self._directory, **kwargs_selection)
+        if cmap is None:
+            cmap = self.cmap_flux
+        if coordinates is not None:
+            x, y = coordinates.pixel_coordinates
+            image = light_model.evaluate_surface_brightness(x, y)
+            extent = coordinates.extent
+            im = self._plot_regular_image(ax, image, extent=extent, 
+                                          cmap=self.cmap_flux, 
+                                          norm=norm)
+        else:
+            values, extent = light_model.surface_brightness(return_extent=True)
+            if isinstance(values, np.ndarray) and len(values.shape) == 2:
+                image = values
+                im = self._plot_regular_image(ax, image, extent=extent, 
+                                              cmap=self.cmap_flux, 
+                                              norm=norm)
+            else: # irregular grid
+                values = light_model.surface_brightness()
+                im = self._plot_voronoi_image(values)
+                image = None
+        if title is not None:
+            ax.set_title(title)
+        return image
+        
+    @staticmethod
+    def _plot_regular_image(ax, image, **imshow_kwargs):
+        im = ax.imshow(image, **imshow_kwargs)
+        nice_colorbar(im)
+        return im
+
+    @staticmethod
+    def _plot_voronoi_image(self, points):
+        # TODO: incorporate Giorgos' code here
+        raise NotImplementedError()
+
+
+
+class MultiModelPlotter(object):
+    """
+    Creates pyplot panels from several lens model
+    """
+
+    def __init__(self, coolest_objects, coolest_directories=None):
+        self.num_models = len(coolest_objects)
+        if coolest_directories is None:
+            coolest_directories = self.num_models * [None]
+        self.plotter_list = []
+        for coolest, c_dir in zip(coolest_objects, coolest_directories):
+            self.plotter_list.append(ModelPlotter(coolest, coolest_directory=c_dir))
+
+    def plot_surface_brightness(self, axes, titles=None, 
+                                coordinates=None, norm=None, cmap=None,
+                                **kwargs_selection_list):
+        if kwargs_selection_list is None:
+            kwargs_selection_list = self.num_models * [{}]
+        if titles is None:
+            titles = self.num_models * [None]
+        assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
+        image_list = []
+        for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
+            kw_select = {key: val[i] for key, val in kwargs_selection_list.items()}
+            image = plotter.plot_surface_brightness(ax, coordinates=coordinates, 
+                                                    title=titles[i],
+                                                    norm=norm, cmap=cmap, **kw_select)
+            image_list.append(image)
+        return image_list
+
+
+
 
 class Comparison_analytical(object):
     """

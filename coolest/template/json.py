@@ -21,11 +21,13 @@ class JSONSerializer(object):
         """
         file_path_no_ext should be the absolute path
         """
-        self.obj = obj
         if not os.path.isabs(file_path_no_ext):
             raise ValueError("Path to JSON file must be an absolute path")
+        if file_path_no_ext[-5:].lower() == '.json':
+            raise ValueError("The provided template name should not contain the JSON extension")
         self.path = file_path_no_ext
         self._json_dir = os.path.dirname(file_path_no_ext)
+        self.obj = obj
         self.indent = indent
         # to distinguish files that can be converted back to the python API
         self._api_suffix = '_pyAPI'
@@ -39,11 +41,22 @@ class JSONSerializer(object):
         with open(json_path, 'w') as f:
             f.write(self.obj.to_JSON(indent=self.indent, exclude_keys=exclude_keys))
 
-    def dump(self):
+    def dump_jsonpickle(self):
         json_path = self.path + self._api_suffix + '.json'
         result = jsonpickle.encode(self.obj, indent=self.indent)
         with open(json_path, 'w') as f:
             f.write(result)
+
+    def load(self, verbose=False):
+        try:
+            content = self.load_jsonpickle()
+        except Exception as e:
+            if verbose:
+                    print(f"Failed reading with jsonpickle, trying reading pure json"
+                          f" (original error: {e})")
+            content = self.load_simple()
+        assert isinstance(content, COOLEST)
+        return content
 
     def load_simple(self, as_object=True):
         json_path = self.path + '.json'
@@ -53,7 +66,7 @@ class JSONSerializer(object):
             return content  # dictionary
         return self._json_to_coolest(content)  # COOLEST object
 
-    def load(self):
+    def load_jsonpickle(self):
         json_path = self.path + self._api_suffix + '.json'
         with open(json_path, 'r') as f:
             content = jsonpickle.decode(f.read())
@@ -91,7 +104,21 @@ class JSONSerializer(object):
                           instrument,
                           cosmology=cosmology,
                           metadata=metadata)
+
+        # check consistency across the whole coolest object
+        self._validate_global(coolest)
         return coolest
+
+    @staticmethod
+    def _validate_global(coolest):
+        # PIXEL SIZE
+        instru_pix_size = coolest.instrument.pixel_size
+        obs_pix_size = coolest.observation.pixels.pixel_size
+        if obs_pix_size not in (0, None) and instru_pix_size != obs_pix_size:
+            raise ValueError(f"Pixel size of observation ({obs_pix_size:.4f}) is inconsistent with "
+                             f"the instrument pixel size ({instru_pix_size:.4f})")
+
+        # TODO: add extra checks
 
     def _setup_instrument(self, instru_in):
         psf_settings = instru_in.pop('psf')
