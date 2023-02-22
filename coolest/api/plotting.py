@@ -12,7 +12,7 @@ from coolest.api.util import read_json_param
 from coolest.api.plot_util import nice_colorbar
 
 # matplotlib global settings
-plt.rc('image', interpolation='none', origin='lower') # imshow
+plt.rc('image', interpolation='none', origin='lower') # imshow settings
 
 
 class ModelPlotter(object):
@@ -28,7 +28,7 @@ class ModelPlotter(object):
         self.cmap_flux = cmap_flux
         self._directory = coolest_directory
 
-    def plot_surface_brightness(self, ax, coordinates=None, 
+    def plot_surface_brightness(self, ax, title=None, coordinates=None, 
                                 norm=None, cmap=None,
                                 **kwargs_selection):
         light_model = CompositeLightModel(self.coolest, self._directory, **kwargs_selection)
@@ -44,15 +44,18 @@ class ModelPlotter(object):
                                           cmap=self.cmap_flux, 
                                           norm=norm)
         else:
-            values, extent = light_model.surface_brightness()
+            values, extent = light_model.surface_brightness(return_extent=True)
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
-                im = self._plot_regular_image(ax, values, extent=extent, 
+                im = self._plot_regular_image(ax, image, extent=extent, 
                                               cmap=self.cmap_flux, 
                                               norm=norm)
             else: # irregular grid
+                values = light_model.surface_brightness()
                 im = self._plot_voronoi_image(values)
                 image = None
+        if title is not None:
+            ax.set_title(title)
         return image
         
     @staticmethod
@@ -79,15 +82,19 @@ class MultiModelPlotter(object):
         for coolest in coolest_object_list:
             self.plotter_list.append(ModelPlotter(coolest))
 
-    def plot_surface_brightness(self, ax_list, coordinates=None, norm=None, cmap=None,
+    def plot_surface_brightness(self, axes, titles=None, 
+                                coordinates=None, norm=None, cmap=None,
                                 **kwargs_selection_list):
         if kwargs_selection_list is None:
             kwargs_selection_list = self.num_models * [{}]
-        assert len(ax_list) == self.num_models, "Inconsistent number of subplot axes"
+        if titles is None:
+            titles = self.num_models * [None]
+        assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         image_list = []
-        for i, (ax, plotter) in enumerate(zip(ax_list, self.plotter_list)):
+        for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
             kw_select = {key: val[i] for key, val in kwargs_selection_list.items()}
-            image = plotter.plot_surface_brightness(ax, coordinates=coordinates,
+            image = plotter.plot_surface_brightness(ax, coordinates=coordinates, 
+                                                    title=titles[i],
                                                     norm=norm, cmap=cmap, **kw_select)
             image_list.append(image)
         return image_list

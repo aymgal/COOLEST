@@ -33,7 +33,7 @@ def get_coolest_object(file_path, verbose=False, **kwargs_serializer):
     return serializer.load(verbose=verbose)
 
 
-def get_coordinates(coolest_object, offset_ra=0, offset_dec=0):
+def get_coordinates(coolest_object, offset_ra=0., offset_dec=0.):
     nx, ny = coolest_object.observation.pixels.shape
     pix_scl = coolest_object.instrument.pixel_size
     half_size_x, half_size_y = nx * pix_scl / 2., ny * pix_scl / 2.
