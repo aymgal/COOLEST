@@ -32,8 +32,6 @@ class ModelPlotter(object):
                                 norm=None, cmap=None,
                                 **kwargs_selection):
         light_model = CompositeLightModel(self.coolest, self._directory, **kwargs_selection)
-        if norm is None:
-            norm = LogNorm()
         if cmap is None:
             cmap = self.cmap_flux
         if coordinates is not None:
@@ -76,11 +74,13 @@ class MultiModelPlotter(object):
     Creates pyplot panels from several lens model
     """
 
-    def __init__(self, coolest_object_list):
-        self.num_models = len(coolest_object_list)
+    def __init__(self, coolest_objects, coolest_directories=None):
+        self.num_models = len(coolest_objects)
+        if coolest_directories is None:
+            coolest_directories = self.num_models * [None]
         self.plotter_list = []
-        for coolest in coolest_object_list:
-            self.plotter_list.append(ModelPlotter(coolest))
+        for coolest, c_dir in zip(coolest_objects, coolest_directories):
+            self.plotter_list.append(ModelPlotter(coolest, coolest_directory=c_dir))
 
     def plot_surface_brightness(self, axes, titles=None, 
                                 coordinates=None, norm=None, cmap=None,
