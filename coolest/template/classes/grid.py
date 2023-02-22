@@ -1,7 +1,8 @@
-__author__ = 'aymgal'
+__author__ = 'aymgal, Giorgos Vernardos'
 
 from typing import Tuple
 import numpy as np
+import warnings
 
 from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.fits_file import FitsFile
@@ -68,7 +69,7 @@ class PixelatedRegularGrid(Grid):
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
         if self.fits_file.exists():
-            self.num_pix_x, self.num_pix_y = self.read_pixels()
+            self.num_pix_x, self.num_pix_y = self.read_fits()
             # if number of pixels is also given, check that it is consistent
             if num_pix_x != 0 and self.num_pix_x != num_pix_x:
                 raise ValueError("Given number of pixels in x direction "
@@ -79,12 +80,16 @@ class PixelatedRegularGrid(Grid):
         else:
             self.num_pix_x, self.num_pix_y = num_pix_x, num_pix_y
 
-    def read_pixels(self):
+    def read_fits(self):
         array, header = self.fits_file.read()
         array_shape = array.shape
         if array_shape != (header['NAXIS1'], header['NAXIS2']):
-            raise ValueError("Given dimensions do not match the .fits image!")
+            warnings.warn("Image dimensions do not match the FITS header")
         return array_shape
+
+    def get_pixels(self, directory=None):
+        array, _ = self.fits_file.read()
+        return array
 
 
 class IrregularGrid(Grid):
@@ -100,11 +105,25 @@ class IrregularGrid(Grid):
                       field_of_view_y=field_of_view_y, 
                       num_pix=num_pix)
 
-    def read_pixels(self):
-        data, header = self.fits_file.read()
-        x = data.field(0)
-        y = data.field(1)
-        z = data.field(2)
+    def set_grid(self, fits_path, 
+                 field_of_view_x=(0, 0), field_of_view_y=(0, 0),
+                 num_pix=0, check_fits_file=True):
+        super().set_grid(fits_path, check_fits_file)
+        if self.fits_file.exists():
+            self.field_of_view_x, self.field_of_view_y, self.num_pix = self.read_fits()
+            if num_pix != 0 and self.num_pix != num_pix:
+                raise ValueError("Given number of pixels is inconsistent with the fits file")
+            if field_of_view_x != (0, 0) and field_of_view_x == self.field_of_view_x:
+                raise ValueError("Given field of view along x direction is inconsistent with the fits file")
+            if field_of_view_y != (0, 0) and field_of_view_y == self.field_of_view_y:
+                raise ValueError("Given field of view along y direction is inconsistent with the fits file")
+        else:
+            self.field_of_view_x = field_of_view_x
+            self.field_of_view_y = field_of_view_y
+            self.num_pix = num_pix
+
+    def read_fits(self):
+        x, y, z = self.get_xyz()
         num_pix = len(z)
         #assert self.num_pix == len(z), "Given number of grid points does not match the number of .fits table rows!"
         # Here we may want to check/report the overlap between the given field of view and the square encompassing the irregular grid
@@ -112,21 +131,9 @@ class IrregularGrid(Grid):
         field_of_view_y = (min(y), max(y))
         return field_of_view_x, field_of_view_y, num_pix
 
-    def set_grid(self, fits_path, 
-                 field_of_view_x=(0, 0), field_of_view_y=(0, 0),
-                 num_pix=0, check_fits_file=True):
-        super().set_grid(fits_path, check_fits_file)
-        if self.fits_file.exists():
-            self.field_of_view_x, self.field_of_view_y, self.num_pix = self.read_pixels()
-            if num_pix != 0 and self.num_pix != num_pix:
-                raise ValueError("Given number of pixels is inconsistent with the fits file")
-            if field_of_view_x != (0, 0) and field_of_view_x == self.field_of_view_x:
-                raise ValueError("Given field of view along x direction is inconsistent with the fits file")
-            if field_of_view_y != (0, 0) and field_of_view_y == self.field_of_view_y:
-                raise ValueError("Given field of view along y direction is inconsistent with the fits file")
-
-        else:
-            self.field_of_view_x = field_of_view_x
-            self.field_of_view_y = field_of_view_y
-            self.num_pix = num_pix
-            
+    def get_xyz(self, directory=None):
+        data, _ = self.fits_file.read(directory=directory)
+        x = data.field(0)
+        y = data.field(1)
+        z = data.field(2)
+        return x, y, z
