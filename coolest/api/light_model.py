@@ -84,7 +84,7 @@ class CompositeLightModel(object):
     @staticmethod
     def _get_grid_params(profile_in, fits_dir):
         if profile_in.type == 'PixelatedRegularGrid':
-            data, header = profile_in.parameters['pixels'].fits_file.read(directory=fits_dir)
+            data = profile_in.parameters['pixels'].get_pixels(directory=fits_dir)
             parameters = {'pixels': data}
             fov_x = profile_in.parameters['pixels'].field_of_view_x
             fov_y = profile_in.parameters['pixels'].field_of_view_y
@@ -92,9 +92,12 @@ class CompositeLightModel(object):
             npix_y = profile_in.parameters['pixels'].num_pix_y
             fixed_parameters = (fov_x, fov_y, npix_x, npix_y)
         elif profile_in.type == 'IrregularGrid':
-            x, y, z = profile_in.parameters['pixels'].fits_file.get_xyz()
-            parameters = {'x': y, 'y': y, 'z': z}
-            fixed_parameters = ()
+            x, y, z = profile_in.parameters['pixels'].get_xyz(directory=fits_dir)
+            parameters = {'x': x, 'y': y, 'z': z}
+            fov_x = profile_in.parameters['pixels'].field_of_view_x
+            fov_y = profile_in.parameters['pixels'].field_of_view_y
+            npix = profile_in.parameters['pixels'].num_pix
+            fixed_parameters = (fov_x, fov_y, npix)
         return parameters, fixed_parameters
 
     @staticmethod

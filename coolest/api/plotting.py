@@ -9,7 +9,7 @@ from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from coolest.api.analysis import Analysis
 from coolest.api.light_model import CompositeLightModel
 from coolest.api.util import read_json_param
-from coolest.api.plot_util import nice_colorbar
+from coolest.api import plot_util as plut
 
 # matplotlib global settings
 plt.rc('image', interpolation='none', origin='lower') # imshow settings
@@ -29,7 +29,7 @@ class ModelPlotter(object):
         self._directory = coolest_directory
 
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
-                                norm=None, cmap=None,
+                                extent=None, norm=None, cmap=None,
                                 **kwargs_selection):
         light_model = CompositeLightModel(self.coolest, self._directory, **kwargs_selection)
         if cmap is None:
@@ -38,35 +38,42 @@ class ModelPlotter(object):
             x, y = coordinates.pixel_coordinates
             image = light_model.evaluate_surface_brightness(x, y)
             extent = coordinates.extent
-            im = self._plot_regular_image(ax, image, extent=extent, 
-                                          cmap=self.cmap_flux, 
-                                          norm=norm)
+            self._plot_regular_grid(ax, image, extent=extent, 
+                                    cmap=self.cmap_flux, 
+                                    norm=norm)
         else:
-            values, extent = light_model.surface_brightness(return_extent=True)
+            values, extent_model = light_model.surface_brightness(return_extent=True)
+            if extent is None:
+                extent = extent_model
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
-                im = self._plot_regular_image(ax, image, extent=extent, 
-                                              cmap=self.cmap_flux, 
-                                              norm=norm)
-            else: # irregular grid
-                values = light_model.surface_brightness()
-                im = self._plot_voronoi_image(values)
+                self._plot_regular_grid(ax, image, extent=extent, 
+                                        cmap=self.cmap_flux, 
+                                        norm=norm)
+            else:
+                points = values
+                self._plot_irregular_grid(ax, points, extent, norm=norm, 
+                                          cmap=self.cmap_flux)
                 image = None
         if title is not None:
             ax.set_title(title)
         return image
         
     @staticmethod
-    def _plot_regular_image(ax, image, **imshow_kwargs):
+    def _plot_regular_grid(ax, image, **imshow_kwargs):
         im = ax.imshow(image, **imshow_kwargs)
-        nice_colorbar(im)
-        return im
+        plut.nice_colorbar(im)
+        return ax
 
     @staticmethod
-    def _plot_voronoi_image(self, points):
-        # TODO: incorporate Giorgos' code here
-        raise NotImplementedError()
-
+    def _plot_irregular_grid(ax, points, extent, norm=None, cmap=None):
+        x, y, z = points
+        ax = plut.plot_voronoi(ax, x, y, z, norm=norm, cmap=cmap)
+        ax.set_xlim(extent[0], extent[1])
+        ax.set_ylim(extent[2], extent[3])
+        ax.set_aspect('equal', 'box')
+        #plt.colorbar()
+        return ax
 
 
 class MultiModelPlotter(object):

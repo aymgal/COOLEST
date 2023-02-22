@@ -109,5 +109,16 @@ class IrregularGrid(BaseLightProfile):
     def surface_brightness(self, x=None, y=None, z=None):
         """Returns the surface brightness pixels"""
         if x is None or y is None or z is None:
-            return 0.
+            return np.zeros(self._n), np.zeros(self._n), np.zeros(self._n)
         return x, y, z
+
+    def evaluate_surface_brightness(self, x_eval, y_eval, x=None, y=None, z=None):
+        raise NotImplementedError()
+
+    def get_extent(self):
+        return [
+            self._fov_x[0], 
+            self._fov_x[1], 
+            self._fov_y[0], 
+            self._fov_y[1]
+        ]
