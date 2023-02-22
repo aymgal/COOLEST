@@ -57,10 +57,13 @@ class CompositeLightModel(object):
 
     def evaluate_surface_brightness(self, x, y):
         """Evaluates the surface brightness at given coordinates"""
-        image = np.ones_like(x)
+        image = np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
-            image += profile.evaluate_surface_brightness(x, y, **params)
-        return image * self.pixel_area
+            flux_k = profile.evaluate_surface_brightness(x, y, **params)
+            if profile.units == 'flux_per_ang':
+                flux_k *= self.pixel_area
+            image += flux_k
+        return image
 
     @staticmethod
     def _get_api_profile(profile_in, *args):
