@@ -11,12 +11,15 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 
 
-def plot_voronoi(ax, x, y, z, norm=None, cmap=None):
+def plot_voronoi(ax, x, y, z, norm=None, cmap=None, zmax=None, 
+                 edgecolor=None, zorder=1):
 
     if cmap is None:
         cmap = plt.get_cmap('inferno')
     if norm is None:
-        norm = Normalize(0, max(z))
+        if zmax is None:
+            zmax = np.amax(z)
+        norm = Normalize(0, zmax)
 
     # get voronoi regions
     voronoi_points = np.column_stack((x,y))
@@ -34,8 +37,9 @@ def plot_voronoi(ax, x, y, z, norm=None, cmap=None):
     for i, region in enumerate(new_regions):
         polygon = vertices[region]
         cell_color = m.to_rgba(z[i])
-        ax.fill(*zip(*polygon),alpha=1.0,facecolor=cell_color)#,edgecolor='white')
-    return ax
+        ax.fill(*zip(*polygon), facecolor=cell_color, alpha=1, 
+                edgecolor=edgecolor, zorder=zorder)
+    return m
 
 
 def voronoi_finite_polygons_2d(vor,radius=None):
@@ -143,11 +147,12 @@ def std_colorbar_residuals(mappable, res_map, vmin, vmax, label=None, fontsize=1
     return std_colorbar(mappable, label=label, fontsize=fontsize, 
                         label_kwargs=label_kwargs, **colorbar_kwargs)
 
-def nice_colorbar(mappable, position='right', pad=0.1, size='5%', label=None, fontsize=12, 
+def nice_colorbar(mappable, ax=None, position='right', pad=0.1, size='5%', label=None, fontsize=12, 
                   invisible=False, max_nbins=None,
                   divider_kwargs={}, colorbar_kwargs={}, label_kwargs={}):
     divider_kwargs.update({'position': position, 'pad': pad, 'size': size})
-    ax = mappable.axes
+    if ax is None:
+        ax = mappable.axes
     divider = make_axes_locatable(ax)
     cax = divider.append_axes(**divider_kwargs)
     if invisible:
@@ -164,7 +169,7 @@ def nice_colorbar(mappable, position='right', pad=0.1, size='5%', label=None, fo
         cb.update_ticks()
     return cb
 
-def nice_colorbar_residuals(mappable, res_map, vmin, vmax, position='right', pad=0.1, size='5%', 
+def nice_colorbar_residuals(mappable, res_map, vmin, vmax, ax=None, position='right', pad=0.1, size='5%', 
                             invisible=False, label=None, fontsize=12,
                             divider_kwargs={}, colorbar_kwargs={}, label_kwargs={}):
     if res_map.min() < vmin and res_map.max() > vmax:
@@ -176,6 +181,6 @@ def nice_colorbar_residuals(mappable, res_map, vmin, vmax, position='right', pad
     else:
         cb_extend = 'neither'
     colorbar_kwargs.update({'extend': cb_extend})
-    return nice_colorbar(mappable, position=position, pad=pad, size=size, label=label, fontsize=fontsize,
+    return nice_colorbar(mappable, ax=ax, position=position, pad=pad, size=size, label=label, fontsize=fontsize,
                   invisible=invisible, colorbar_kwargs=colorbar_kwargs, label_kwargs=label_kwargs,
                   divider_kwargs=divider_kwargs)

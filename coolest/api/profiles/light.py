@@ -2,6 +2,7 @@ __author__ = 'lynevdv'
 
 
 import numpy as np
+from scipy.interpolate import griddata
 
 from coolest.api.profiles import util
 
@@ -101,10 +102,12 @@ class IrregularGrid(BaseLightProfile):
 
     _units = 'flux_per_pix'
 
-    def __init__(self, field_of_view_x, field_of_view_y, num_pix):
+    def __init__(self, field_of_view_x, field_of_view_y, num_pix,
+                 interpolation_method='cubic'):
         self._fov_x = field_of_view_x
         self._fov_y = field_of_view_y
         self._n = num_pix
+        self._interp_method = interpolation_method
 
     def surface_brightness(self, x=None, y=None, z=None):
         """Returns the surface brightness pixels"""
@@ -113,7 +116,8 @@ class IrregularGrid(BaseLightProfile):
         return x, y, z
 
     def evaluate_surface_brightness(self, x_eval, y_eval, x=None, y=None, z=None):
-        raise NotImplementedError()
+        z_eval = griddata((x, y), z, (x_eval, y_eval), method=self._interp_method)
+        return z_eval
 
     def get_extent(self):
         return [

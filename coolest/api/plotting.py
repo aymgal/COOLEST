@@ -30,7 +30,7 @@ class ModelPlotter(object):
 
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
                                 extent=None, norm=None, cmap=None,
-                                **kwargs_selection):
+                                plot_points_irreg=False, **kwargs_selection):
         light_model = CompositeLightModel(self.coolest, self._directory, **kwargs_selection)
         if cmap is None:
             cmap = self.cmap_flux
@@ -53,7 +53,8 @@ class ModelPlotter(object):
             else:
                 points = values
                 self._plot_irregular_grid(ax, points, extent, norm=norm, 
-                                          cmap=self.cmap_flux)
+                                          cmap=self.cmap_flux, 
+                                          plot_points=plot_points_irreg)
                 image = None
         if title is not None:
             ax.set_title(title)
@@ -66,13 +67,16 @@ class ModelPlotter(object):
         return ax
 
     @staticmethod
-    def _plot_irregular_grid(ax, points, extent, norm=None, cmap=None):
+    def _plot_irregular_grid(ax, points, extent, norm=None, cmap=None, 
+                             plot_points=False):
         x, y, z = points
-        ax = plut.plot_voronoi(ax, x, y, z, norm=norm, cmap=cmap)
+        m = plut.plot_voronoi(ax, x, y, z, norm=norm, cmap=cmap, zorder=1)
         ax.set_xlim(extent[0], extent[1])
         ax.set_ylim(extent[2], extent[3])
         ax.set_aspect('equal', 'box')
-        #plt.colorbar()
+        plut.nice_colorbar(m, ax=ax)
+        if plot_points:
+            ax.scatter(x, y, s=5, c='white', marker='.', alpha=0.4, zorder=2)
         return ax
 
 
