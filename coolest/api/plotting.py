@@ -5,6 +5,7 @@ import copy
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
+from matplotlib.colors import ListedColormap
 
 from coolest.api.analysis import Analysis
 from coolest.api.light_model import CompositeLightModel
@@ -23,10 +24,14 @@ class ModelPlotter(object):
     def __init__(self, coolest_object, coolest_directory=None):
         self.coolest = coolest_object
         self.analysis = Analysis(self.coolest)
-        cmap_flux = copy.copy(plt.get_cmap('magma'))
-        cmap_flux.set_bad('black')
-        self.cmap_flux = cmap_flux
         self._directory = coolest_directory
+
+        self.cmap_flux = copy.copy(plt.get_cmap('magma'))
+        self.cmap_flux.set_bad('black')
+
+        cmap_colors = self.cmap_flux(np.linspace(0, 1, 256))
+        cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
+        self.cmap_flux_mod = ListedColormap(cmap_colors)
 
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
                                 extent=None, norm=None, cmap=None,
@@ -39,7 +44,7 @@ class ModelPlotter(object):
             image = light_model.evaluate_surface_brightness(x, y)
             extent = coordinates.extent
             self._plot_regular_grid(ax, image, extent=extent, 
-                                    cmap=self.cmap_flux, 
+                                    cmap=self.cmap_flux_mod, 
                                     norm=norm)
         else:
             values, extent_model = light_model.surface_brightness(return_extent=True)
@@ -48,12 +53,12 @@ class ModelPlotter(object):
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
                 self._plot_regular_grid(ax, image, extent=extent, 
-                                        cmap=self.cmap_flux, 
+                                        cmap=self.cmap_flux_mod, 
                                         norm=norm)
             else:
                 points = values
                 self._plot_irregular_grid(ax, points, extent, norm=norm, 
-                                          cmap=self.cmap_flux, 
+                                          cmap=self.cmap_flux_mod, 
                                           plot_points=plot_points_irreg)
                 image = None
         if title is not None:

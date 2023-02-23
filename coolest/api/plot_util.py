@@ -11,15 +11,17 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 
 
-def plot_voronoi(ax, x, y, z, norm=None, cmap=None, zmax=None, 
+def plot_voronoi(ax, x, y, z, norm=None, cmap=None, zmin=None, zmax=None, 
                  edgecolor=None, zorder=1):
 
     if cmap is None:
         cmap = plt.get_cmap('inferno')
     if norm is None:
+        if zmin is None:
+            zmin = np.min(z)
         if zmax is None:
-            zmax = np.amax(z)
-        norm = Normalize(0, zmax)
+            zmax = np.max(z)
+        norm = Normalize(zmin, zmax)
 
     # get voronoi regions
     voronoi_points = np.column_stack((x,y))
