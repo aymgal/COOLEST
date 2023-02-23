@@ -5,11 +5,12 @@ import copy
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
+from matplotlib.colors import ListedColormap
 
 from coolest.api.analysis import Analysis
 from coolest.api.light_model import CompositeLightModel
 from coolest.api.util import read_json_param
-from coolest.api.plot_util import nice_colorbar
+from coolest.api import plot_util as plut
 
 # matplotlib global settings
 plt.rc('image', interpolation='none', origin='lower') # imshow settings
@@ -23,14 +24,18 @@ class ModelPlotter(object):
     def __init__(self, coolest_object, coolest_directory=None):
         self.coolest = coolest_object
         self.analysis = Analysis(self.coolest)
-        cmap_flux = copy.copy(plt.get_cmap('magma'))
-        cmap_flux.set_bad('black')
-        self.cmap_flux = cmap_flux
         self._directory = coolest_directory
 
+        self.cmap_flux = copy.copy(plt.get_cmap('magma'))
+        self.cmap_flux.set_bad('black')
+
+        cmap_colors = self.cmap_flux(np.linspace(0, 1, 256))
+        cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
+        self.cmap_flux_mod = ListedColormap(cmap_colors)
+
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
-                                norm=None, cmap=None,
-                                **kwargs_selection):
+                                extent=None, norm=None, cmap=None,
+                                plot_points_irreg=False, **kwargs_selection):
         light_model = CompositeLightModel(self.coolest, self._directory, **kwargs_selection)
         if cmap is None:
             cmap = self.cmap_flux
@@ -38,35 +43,46 @@ class ModelPlotter(object):
             x, y = coordinates.pixel_coordinates
             image = light_model.evaluate_surface_brightness(x, y)
             extent = coordinates.extent
-            im = self._plot_regular_image(ax, image, extent=extent, 
-                                          cmap=self.cmap_flux, 
-                                          norm=norm)
+            self._plot_regular_grid(ax, image, extent=extent, 
+                                    cmap=self.cmap_flux_mod, 
+                                    norm=norm)
         else:
-            values, extent = light_model.surface_brightness(return_extent=True)
+            values, extent_model = light_model.surface_brightness(return_extent=True)
+            if extent is None:
+                extent = extent_model
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
-                im = self._plot_regular_image(ax, image, extent=extent, 
-                                              cmap=self.cmap_flux, 
-                                              norm=norm)
-            else: # irregular grid
-                values = light_model.surface_brightness()
-                im = self._plot_voronoi_image(values)
+                self._plot_regular_grid(ax, image, extent=extent, 
+                                        cmap=self.cmap_flux_mod, 
+                                        norm=norm)
+            else:
+                points = values
+                self._plot_irregular_grid(ax, points, extent, norm=norm, 
+                                          cmap=self.cmap_flux_mod, 
+                                          plot_points=plot_points_irreg)
                 image = None
         if title is not None:
             ax.set_title(title)
         return image
         
     @staticmethod
-    def _plot_regular_image(ax, image, **imshow_kwargs):
+    def _plot_regular_grid(ax, image, **imshow_kwargs):
         im = ax.imshow(image, **imshow_kwargs)
-        nice_colorbar(im)
-        return im
+        plut.nice_colorbar(im)
+        return ax
 
     @staticmethod
-    def _plot_voronoi_image(self, points):
-        # TODO: incorporate Giorgos' code here
-        raise NotImplementedError()
-
+    def _plot_irregular_grid(ax, points, extent, norm=None, cmap=None, 
+                             plot_points=False):
+        x, y, z = points
+        m = plut.plot_voronoi(ax, x, y, z, norm=norm, cmap=cmap, zorder=1)
+        ax.set_xlim(extent[0], extent[1])
+        ax.set_ylim(extent[2], extent[3])
+        ax.set_aspect('equal', 'box')
+        plut.nice_colorbar(m, ax=ax)
+        if plot_points:
+            ax.scatter(x, y, s=5, c='white', marker='.', alpha=0.4, zorder=2)
+        return ax
 
 
 class MultiModelPlotter(object):
