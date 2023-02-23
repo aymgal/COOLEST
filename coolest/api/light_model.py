@@ -91,6 +91,7 @@ class CompositeLightModel(object):
             npix_x = profile_in.parameters['pixels'].num_pix_x
             npix_y = profile_in.parameters['pixels'].num_pix_y
             fixed_parameters = (fov_x, fov_y, npix_x, npix_y)
+            
         elif profile_in.type == 'IrregularGrid':
             x, y, z = profile_in.parameters['pixels'].get_xyz(directory=fits_dir)
             parameters = {'x': x, 'y': y, 'z': z}

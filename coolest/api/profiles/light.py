@@ -1,8 +1,8 @@
-__author__ = 'lynevdv'
+__author__ = 'aymgal', 'lynevdv', 'Giorgos Vernardos'
 
 
 import numpy as np
-from scipy.interpolate import griddata
+from scipy import interpolate
 
 from coolest.api.profiles import util
 
@@ -25,7 +25,7 @@ class BaseLightProfile(object):
     @property
     def units(self):
         if not hasattr(self, '_units'):
-            raise NotImplementedError(f"Units for profile {self.__class__.__name__} is not defined")
+            raise ValueError(f"Units for profile {self.__class__.__name__} must be specified")
         if self._units not in ('flux_per_pix', 'flux_per_ang'):
             raise ValueError(f"Unsupported units type {self._units}")
         return self._units
@@ -45,6 +45,26 @@ class Sersic(BaseLightProfile):
         x_t, y_t = util.shift_rotate_elliptical(x, y, phi, q, center_x, center_y)
         bn = 1.9992*n - 0.3271
         return I_eff * np.exp( - bn * ( (np.sqrt(x_t**2+y_t**2) / theta_eff )**(1./n) -1. ) )
+
+
+class Shapelets(BaseLightProfile):
+
+    """Elliptical Sersic"""
+
+    _units = 'flux_per_ang'
+
+    def __init__(self):
+        from lenstronomy.LightModel.Profiles.shapelets import ShapeletSet
+        self._backend = ShapeletSet()
+
+    def surface_brightness(self, amps=0, n_max=0, beta=0, center_x=0, center_y=0):
+        raise ValueError("Surface brightness of a set of shapelets can only be evaluated")
+
+    def evaluate_surface_brightness(self, x, y, amps=0, n_max=0, beta=0, center_x=0, center_y=0):
+        """Returns the surface brightness at the given position (x, y)"""
+        x_, y_ = x.flatten(), y.flatten()
+        flux = self._backend.function(x_, y_, amps, n_max, beta, center_x=center_x, center_y=center_y)
+        return flux.reshape(*x.shape)
 
 
 class PixelatedRegularGrid(BaseLightProfile):
@@ -116,7 +136,8 @@ class IrregularGrid(BaseLightProfile):
         return x, y, z
 
     def evaluate_surface_brightness(self, x_eval, y_eval, x=None, y=None, z=None):
-        z_eval = griddata((x, y), z, (x_eval, y_eval), method=self._interp_method)
+        z_eval = interpolate.griddata((x, y), z, (x_eval, y_eval), 
+                                      method=self._interp_method)
         return z_eval
 
     def get_extent(self):
