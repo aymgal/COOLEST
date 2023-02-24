@@ -39,8 +39,7 @@ def plot_voronoi(ax, x, y, z, norm=None, cmap=None, zmin=None, zmax=None,
     for i, region in enumerate(new_regions):
         polygon = vertices[region]
         cell_color = m.to_rgba(z[i])
-        ax.fill(*zip(*polygon), facecolor=cell_color, alpha=1, 
-                edgecolor=edgecolor, zorder=zorder)
+        ax.fill(*zip(*polygon), facecolor=cell_color, edgecolor=edgecolor, zorder=zorder)
     return m
 
 
