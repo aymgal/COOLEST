@@ -29,8 +29,7 @@ coordinates = util.get_coordinates(coolest_vkl1)
 x, y = coordinates.pixel_coordinates
 print("data extent:", coordinates.plt_extent)
 
-coordinates_src = coordinates.create_new_coordinates(pixel_scale_factor=0.1,
-                                                     grid_shape=(1.8, 1.8))
+coordinates_src = coordinates.create_new_coordinates(pixel_scale_factor=0.1,grid_shape=(1.8, 1.8))
 x_src, y_src = coordinates_src.pixel_coordinates
 print("new coordinates extent:", coordinates_src.plt_extent)
 
@@ -61,5 +60,5 @@ plotter.plot_surface_brightness(
 #axes[1, 0].axis('off')
 #axes[1, 1].axis('off')
 fig.tight_layout()
-plt.show()
-
+#plt.show()
+plt.savefig("voronoi_src.pdf")
