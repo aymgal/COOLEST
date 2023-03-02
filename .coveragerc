@@ -1,2 +1,2 @@
 [run]
-omit = coolest/template/*
+# omit = coolest/template/classes

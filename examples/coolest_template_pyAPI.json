@@ -5,10 +5,11 @@
     "py/object": "coolest.template.classes.coordinates.CoordinatesOrigin",
     "ra": "00h11m20.244s",
     "dec": "-08d45m51.48s",
-    "documentation": "\n    Defines the origin of the coordinate system, in RA-Dec.\n    "
+    "documentation": "Defines the origin of the coordinate system, given in RA-Dec.\n    That origin is then assumed to lie at the center of a data pixel."
   },
   "lensing_entities": {
     "py/object": "coolest.template.classes.lensing_entity_list.LensingEntityList",
+    "documentation": "The list of components that define the lensing system.\n    In COOLEST, a \"lensing entity\" means either a galaxy, or an external shear component.",
     "py/seq": [
       {
         "py/object": "coolest.template.classes.external_shear.ExternalShear",
@@ -22,7 +23,6 @@
               "py/object": "coolest.template.classes.profiles.mass.ExternalShear",
               "type": "ExternalShear",
               "documentation": "External shear defined with a strength and orientation",
-              "id": "extshear_model_0-ExternalShear_0",
               "parameters": {
                 "gamma_ext": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -36,7 +36,7 @@
                   "fixed": false,
                   "point_estimate": {
                     "py/object": "coolest.template.classes.parameter.PointEstimate",
-                    "value": null
+                    "value": 0.07
                   },
                   "posterior_stats": {
                     "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
@@ -48,7 +48,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$\\gamma_{\\rm ext}$",
                   "id": "extshear_model_0-ExternalShear_0-gamma_ext"
@@ -77,16 +77,17 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$\\phi_{\\rm ext}$",
                   "id": "extshear_model_0-ExternalShear_0-phi_ext"
                 }
-              }
+              },
+              "id": "extshear_model_0-ExternalShear_0"
             }
           ]
         },
-        "documentation": null
+        "documentation": ""
       },
       {
         "py/object": "coolest.template.classes.galaxy.Galaxy",
@@ -100,7 +101,6 @@
               "py/object": "coolest.template.classes.profiles.mass.PEMD",
               "type": "PEMD",
               "documentation": "Powerlaw elliptical mass distribution",
-              "id": "galaxy_1-mass_model-PEMD_0",
               "parameters": {
                 "gamma": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -128,7 +128,7 @@
                     "type": "GaussianPrior",
                     "mean": 2.0,
                     "width": 0.2,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$\\gamma$",
                   "id": "galaxy_1-mass_model-PEMD_0-gamma"
@@ -157,7 +157,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$\\theta_{\\rm E}$",
                   "id": "galaxy_1-mass_model-PEMD_0-theta_E"
@@ -186,7 +186,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$q$",
                   "id": "galaxy_1-mass_model-PEMD_0-q"
@@ -215,7 +215,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$\\phi$",
                   "id": "galaxy_1-mass_model-PEMD_0-phi"
@@ -244,7 +244,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$x_0$",
                   "id": "galaxy_1-mass_model-PEMD_0-center_x"
@@ -273,44 +273,47 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$y_0$",
                   "id": "galaxy_1-mass_model-PEMD_0-center_y"
                 }
-              }
+              },
+              "id": "galaxy_1-mass_model-PEMD_0"
             },
             {
               "py/object": "coolest.template.classes.profiles.mass.PixelatedRegularGridPotential",
-              "pixels": {
-                "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
-                "documentation": "Pixel values",
-                "fits_file": {
-                  "py/object": "coolest.template.classes.fits_file.FitsFile",
-                  "py/newargs": {
-                    "py/tuple": [
-                      "None"
-                    ]
-                  }
-                },
-                "field_of_view_x": [
-                  null,
-                  null
-                ],
-                "field_of_view_y": [
-                  null,
-                  null
-                ],
-                "num_pix_x": null,
-                "num_pix_y": null
-              },
               "type": "PixelatedRegularGridPotential",
               "documentation": "A pixelated profile defined on a regular Cartesian grid",
+              "parameters": {
+                "pixels": {
+                  "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
+                  "documentation": "Pixel values",
+                  "fits_file": {
+                    "py/object": "coolest.template.classes.fits_file.FitsFile",
+                    "path": "test_image.fits"
+                  },
+                  "field_of_view_x": {
+                    "py/tuple": [
+                      -3.0,
+                      1.0
+                    ]
+                  },
+                  "field_of_view_y": {
+                    "py/tuple": [
+                      -2.0,
+                      2.0
+                    ]
+                  },
+                  "num_pix_x": 100,
+                  "num_pix_y": 100
+                }
+              },
               "id": "galaxy_1-mass_model-PixelatedRegularGridPotential_1"
             }
           ]
         },
-        "documentation": null,
+        "documentation": "",
         "light_model": {
           "py/object": "coolest.template.classes.mass_light_model.LightModel",
           "py/seq": [
@@ -318,7 +321,6 @@
               "py/object": "coolest.template.classes.profiles.light.Sersic",
               "type": "Sersic",
               "documentation": "Elliptical Sersic",
-              "id": "galaxy_1-light_model-Sersic_0",
               "parameters": {
                 "I_eff": {
                   "py/object": "coolest.template.classes.parameter.LinearParameter",
@@ -344,7 +346,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$I_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_0-I_eff"
@@ -373,7 +375,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$R_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_0-theta_eff"
@@ -402,7 +404,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$n_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_0-n"
@@ -431,7 +433,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$q$",
                   "id": "galaxy_1-light_model-Sersic_0-q"
@@ -460,7 +462,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$\\phi$",
                   "id": "galaxy_1-light_model-Sersic_0-phi"
@@ -489,7 +491,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$x_0$",
                   "id": "galaxy_1-light_model-Sersic_0-center_x"
@@ -518,18 +520,18 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$y_0$",
                   "id": "galaxy_1-light_model-Sersic_0-center_y"
                 }
-              }
+              },
+              "id": "galaxy_1-light_model-Sersic_0"
             },
             {
               "py/object": "coolest.template.classes.profiles.light.Sersic",
               "type": "Sersic",
               "documentation": "Elliptical Sersic",
-              "id": "galaxy_1-light_model-Sersic_1",
               "parameters": {
                 "I_eff": {
                   "py/object": "coolest.template.classes.parameter.LinearParameter",
@@ -555,7 +557,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$I_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_1-I_eff"
@@ -584,7 +586,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$R_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_1-theta_eff"
@@ -613,7 +615,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$n_{\\rm Sersic}$",
                   "id": "galaxy_1-light_model-Sersic_1-n"
@@ -642,7 +644,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$q$",
                   "id": "galaxy_1-light_model-Sersic_1-q"
@@ -671,7 +673,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$\\phi$",
                   "id": "galaxy_1-light_model-Sersic_1-phi"
@@ -700,7 +702,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$x_0$",
                   "id": "galaxy_1-light_model-Sersic_1-center_x"
@@ -729,12 +731,13 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$y_0$",
                   "id": "galaxy_1-light_model-Sersic_1-center_y"
                 }
-              }
+              },
+              "id": "galaxy_1-light_model-Sersic_1"
             }
           ]
         }
@@ -748,7 +751,7 @@
           "py/object": "coolest.template.classes.mass_light_model.MassModel",
           "py/seq": []
         },
-        "documentation": null,
+        "documentation": "",
         "light_model": {
           "py/object": "coolest.template.classes.mass_light_model.LightModel",
           "py/seq": [
@@ -756,7 +759,6 @@
               "py/object": "coolest.template.classes.profiles.light.Sersic",
               "type": "Sersic",
               "documentation": "Elliptical Sersic",
-              "id": "galaxy_2-light_model-Sersic_0",
               "parameters": {
                 "I_eff": {
                   "py/object": "coolest.template.classes.parameter.LinearParameter",
@@ -782,7 +784,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$I_{\\rm Sersic}$",
                   "id": "galaxy_2-light_model-Sersic_0-I_eff"
@@ -803,7 +805,7 @@
                   },
                   "posterior_stats": {
                     "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
-                    "mean": 0.12,
+                    "mean": 0.11,
                     "median": 0.15,
                     "percentile_16th": 0.03,
                     "percentile_84th": 0.05
@@ -811,7 +813,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$R_{\\rm Sersic}$",
                   "id": "galaxy_2-light_model-Sersic_0-theta_eff"
@@ -840,7 +842,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$n_{\\rm Sersic}$",
                   "id": "galaxy_2-light_model-Sersic_0-n"
@@ -869,7 +871,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$q$",
                   "id": "galaxy_2-light_model-Sersic_0-q"
@@ -898,7 +900,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$\\phi$",
                   "id": "galaxy_2-light_model-Sersic_0-phi"
@@ -927,7 +929,7 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$x_0$",
                   "id": "galaxy_2-light_model-Sersic_0-center_x"
@@ -956,12 +958,13 @@
                   "prior": {
                     "py/object": "coolest.template.classes.probabilities.Prior",
                     "type": null,
-                    "documentation": null
+                    "documentation": ""
                   },
                   "latex_str": "$y_0$",
                   "id": "galaxy_2-light_model-Sersic_0-center_y"
                 }
-              }
+              },
+              "id": "galaxy_2-light_model-Sersic_0"
             }
           ]
         }
@@ -975,77 +978,39 @@
           "py/object": "coolest.template.classes.mass_light_model.MassModel",
           "py/seq": []
         },
-        "documentation": null,
+        "documentation": "",
         "light_model": {
           "py/object": "coolest.template.classes.mass_light_model.LightModel",
           "py/seq": [
             {
               "py/object": "coolest.template.classes.profiles.light.PixelatedRegularGrid",
-              "pixels": {
-                "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
-                "documentation": "Pixel values",
-                "fits_file": {
-                  "py/object": "coolest.template.classes.fits_file.FitsFile",
-                  "py/newargs": {
-                    "py/tuple": [
-                      "None"
-                    ]
-                  }
-                },
-                "field_of_view_x": {
-                  "py/id": 54
-                },
-                "field_of_view_y": {
-                  "py/id": 55
-                },
-                "num_pix_x": null,
-                "num_pix_y": null
-              },
               "type": "PixelatedRegularGrid",
               "documentation": "A pixelated profile defined on a regular Cartesian grid",
+              "parameters": {
+                "pixels": {
+                  "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
+                  "documentation": "Pixel values",
+                  "fits_file": {
+                    "py/object": "coolest.template.classes.fits_file.FitsFile",
+                    "path": "test_image.fits"
+                  },
+                  "field_of_view_x": {
+                    "py/tuple": [
+                      -3.0,
+                      1.0
+                    ]
+                  },
+                  "field_of_view_y": {
+                    "py/tuple": [
+                      -2.0,
+                      2.0
+                    ]
+                  },
+                  "num_pix_x": 100,
+                  "num_pix_y": 100
+                }
+              },
               "id": "galaxy_3-light_model-PixelatedRegularGrid_0"
-            }
-          ]
-        }
-      },
-      {
-        "py/object": "coolest.template.classes.galaxy.Galaxy",
-        "type": "galaxy",
-        "name": "a GLEE source",
-        "redshift": 1.2,
-        "mass_model": {
-          "py/object": "coolest.template.classes.mass_light_model.MassModel",
-          "py/seq": []
-        },
-        "documentation": null,
-        "light_model": {
-          "py/object": "coolest.template.classes.mass_light_model.LightModel",
-          "py/seq": [
-            {
-              "py/object": "coolest.template.classes.profiles.light.PixelatedRegularGrid",
-              "pixels": {
-                "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
-                "documentation": "Pixel values",
-                "fits_file": {
-                  "py/object": "coolest.template.classes.fits_file.FitsFile",
-                  "py/newargs": {
-                    "py/tuple": [
-                      "None"
-                    ]
-                  }
-                },
-                "field_of_view_x": {
-                  "py/id": 54
-                },
-                "field_of_view_y": {
-                  "py/id": 55
-                },
-                "num_pix_x": null,
-                "num_pix_y": null
-              },
-              "type": "PixelatedRegularGrid",
-              "documentation": "A pixelated profile defined on a regular Cartesian grid",
-              "id": "galaxy_4-light_model-PixelatedRegularGrid_0"
             }
           ]
         }
@@ -1058,80 +1023,98 @@
       "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
       "fits_file": {
         "py/object": "coolest.template.classes.fits_file.FitsFile",
-        "py/newargs": {
-          "py/tuple": [
-            "test_image.fits"
-          ]
-        }
+        "path": "test_image.fits"
       },
+      "documentation": "",
       "field_of_view_x": {
-        "py/id": 54
+        "py/tuple": [
+          0,
+          0
+        ]
       },
       "field_of_view_y": {
-        "py/id": 55
+        "py/tuple": [
+          0,
+          0
+        ]
       },
       "num_pix_x": 100,
-      "num_pix_y": 100,
-      "documentation": null
+      "num_pix_y": 100
     },
     "exposure_time": null,
     "mag_zero_point": null,
     "mag_sky_brightness": null,
     "noise": {
-      "py/object": "coolest.template.classes.noise.UniformGaussianNoise",
-      "type": "UniformGaussianNoise",
-      "std_dev": 0.004,
-      "documentation": "Uniform gaussian noise given a standard deviation, with 0 mean"
+      "py/object": "coolest.template.classes.noise.NoiseMap",
+      "type": "NoiseMap",
+      "noise_map": {
+        "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
+        "fits_file": {
+          "py/object": "coolest.template.classes.fits_file.FitsFile",
+          "path": "test_image.fits"
+        },
+        "documentation": "",
+        "field_of_view_x": {
+          "py/tuple": [
+            0,
+            0
+          ]
+        },
+        "field_of_view_y": {
+          "py/tuple": [
+            0,
+            0
+          ]
+        },
+        "num_pix_x": 100,
+        "num_pix_y": 100
+      },
+      "documentation": "Noise characterized by a noise map, which contains diagonal elements of the data covariance matrix"
     },
-    "documentation": "Defines a data image, as a simple FITS file"
+    "documentation": "Defines the observation itself, that is the image pixels, the exposure time,\n    the noise model and/or properties, the magnitude zero-point and sky brightness."
   },
   "instrument": {
     "py/object": "coolest.template.classes.instrument.Instrument",
     "name": "some instrument",
     "band": "F160W",
     "pixel_size": 0.08,
-    "readout_noise": null,
+    "readout_noise": 4,
     "psf": {
       "py/object": "coolest.template.classes.psf.PixelatedPSF",
       "type": "PixelatedPSF",
-      "description": null,
+      "description": "a PSF kernel",
       "pixels": {
         "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
         "fits_file": {
           "py/object": "coolest.template.classes.fits_file.FitsFile",
-          "py/newargs": {
-            "py/tuple": [
-              "test_psf.fits"
-            ]
-          }
+          "path": "test_psf.fits"
         },
+        "documentation": "",
         "field_of_view_x": {
-          "py/id": 54
+          "py/tuple": [
+            0,
+            0
+          ]
         },
         "field_of_view_y": {
-          "py/id": 55
+          "py/tuple": [
+            0,
+            0
+          ]
         },
         "num_pix_x": 99,
-        "num_pix_y": 99,
-        "documentation": null
+        "num_pix_y": 99
       },
-      "documentation": null
+      "documentation": ""
     },
-    "documentation": "Defines an Instrument (detector + PSF) setup"
+    "documentation": "Defines the instrument used for the observation.\n    This includes the name of the telescope and detector, the filter, \n    the pixel size, the readout noise and the point spread function (PSF)."
   },
   "cosmology": {
     "py/object": "coolest.template.classes.cosmology.Cosmology",
     "H0": 73.0,
     "Om0": 0.3,
     "astropy_name": "FlatLambdaCDM",
-    "documentation": null
-  },
-  "likelihoods": {
-    "py/object": "coolest.template.classes.likelihood_list.LikelihoodList",
-    "documentation": null,
-    "py/seq": [
-      "imaging_data"
-    ]
+    "documentation": "Defines the cosmological model. \n    Currently, only FlatLambdaCDM from astropy is supported, based on H0 and Omega_m."
   },
   "standard": "COOLEST",
   "meta": {},

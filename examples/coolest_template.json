@@ -13,23 +13,25 @@
     "name": "some instrument",
     "pixel_size": 0.08,
     "psf": {
-      "description": null,
+      "description": "a PSF kernel",
       "pixels": {
         "field_of_view_x": [
-          null,
-          null
+          0,
+          0
         ],
         "field_of_view_y": [
-          null,
-          null
+          0,
+          0
         ],
-        "fits_file": "test_psf.fits",
+        "fits_file": {
+          "path": "test_psf.fits"
+        },
         "num_pix_x": 99,
         "num_pix_y": 99
       },
       "type": "PixelatedPSF"
     },
-    "readout_noise": null
+    "readout_noise": 4
   },
   "lensing_entities": [
     {
@@ -38,7 +40,7 @@
           "parameters": {
             "gamma_ext": {
               "point_estimate": {
-                "value": null
+                "value": 0.07
               },
               "posterior_stats": {
                 "mean": null,
@@ -374,18 +376,22 @@
           "type": "PEMD"
         },
         {
-          "pixels": {
-            "field_of_view_x": [
-              null,
-              null
-            ],
-            "field_of_view_y": [
-              null,
-              null
-            ],
-            "fits_file": "None",
-            "num_pix_x": null,
-            "num_pix_y": null
+          "parameters": {
+            "pixels": {
+              "field_of_view_x": [
+                -3.0,
+                1.0
+              ],
+              "field_of_view_y": [
+                -2.0,
+                2.0
+              ],
+              "fits_file": {
+                "path": "test_image.fits"
+              },
+              "num_pix_x": 100,
+              "num_pix_y": 100
+            }
           },
           "type": "PixelatedRegularGridPotential"
         }
@@ -487,7 +493,7 @@
                 "value": null
               },
               "posterior_stats": {
-                "mean": 0.12,
+                "mean": 0.11,
                 "median": 0.15,
                 "percentile_16th": 0.03,
                 "percentile_84th": 0.05
@@ -508,18 +514,22 @@
     {
       "light_model": [
         {
-          "pixels": {
-            "field_of_view_x": [
-              null,
-              null
-            ],
-            "field_of_view_y": [
-              null,
-              null
-            ],
-            "fits_file": "None",
-            "num_pix_x": null,
-            "num_pix_y": null
+          "parameters": {
+            "pixels": {
+              "field_of_view_x": [
+                -3.0,
+                1.0
+              ],
+              "field_of_view_y": [
+                -2.0,
+                2.0
+              ],
+              "fits_file": {
+                "path": "test_image.fits"
+              },
+              "num_pix_x": 100,
+              "num_pix_y": 100
+            }
           },
           "type": "PixelatedRegularGrid"
         }
@@ -527,30 +537,6 @@
       "mass_model": [],
       "name": "another source",
       "redshift": 1.5,
-      "type": "galaxy"
-    },
-    {
-      "light_model": [
-        {
-          "pixels": {
-            "field_of_view_x": [
-              null,
-              null
-            ],
-            "field_of_view_y": [
-              null,
-              null
-            ],
-            "fits_file": "None",
-            "num_pix_x": null,
-            "num_pix_y": null
-          },
-          "type": "PixelatedRegularGrid"
-        }
-      ],
-      "mass_model": [],
-      "name": "a GLEE source",
-      "redshift": 1.2,
       "type": "galaxy"
     }
   ],
@@ -561,19 +547,35 @@
     "mag_sky_brightness": null,
     "mag_zero_point": null,
     "noise": {
-      "std_dev": 0.004,
-      "type": "UniformGaussianNoise"
+      "noise_map": {
+        "field_of_view_x": [
+          0,
+          0
+        ],
+        "field_of_view_y": [
+          0,
+          0
+        ],
+        "fits_file": {
+          "path": "test_image.fits"
+        },
+        "num_pix_x": 100,
+        "num_pix_y": 100
+      },
+      "type": "NoiseMap"
     },
     "pixels": {
       "field_of_view_x": [
-        null,
-        null
+        0,
+        0
       ],
       "field_of_view_y": [
-        null,
-        null
+        0,
+        0
       ],
-      "fits_file": "test_image.fits",
+      "fits_file": {
+        "path": "test_image.fits"
+      },
       "num_pix_x": 100,
       "num_pix_y": 100
     }

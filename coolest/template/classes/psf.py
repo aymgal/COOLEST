@@ -5,6 +5,7 @@ from coolest.template.classes.base import APIBaseObject
 
 
 __all__ = [
+    'PSF',
     'PixelatedPSF',
     'GaussianPSF',
 ]
@@ -27,17 +28,19 @@ class PSF(APIBaseObject):
 
 class PixelatedPSF(PSF):
 
-    def __init__(self, pixels: PixelatedRegularGrid = None) -> None:
+    def __init__(self, pixels: PixelatedRegularGrid = None, description: str = None) -> None:
         psf_type = self.__class__.__name__
-        super().__init__(psf_type, pixels=pixels)
+        if pixels is None:
+            pixels = PixelatedRegularGrid()
+        super().__init__(psf_type, description=description, pixels=pixels)
 
 
 class GaussianPSF(PSF):
 
-    def __init__(self, std_dev: float = 0.0) -> None:
+    def __init__(self, description: str = None, std_dev: float = 0.0) -> None:
         """
         std_dev will be interpreted as having units of the Instrument pixel size.
         Otherwise it can be describe in the description attribute of the PSF.
         """
         psf_type = self.__class__.__name__
-        super().__init__(psf_type, std_dev=std_dev)
+        super().__init__(psf_type, description=description, std_dev=std_dev)

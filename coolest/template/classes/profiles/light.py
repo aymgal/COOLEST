@@ -1,11 +1,12 @@
 __author__ = 'aymgal'
 
-from coolest.template.classes.profile import Profile, AnalyticalLightProfile
+from coolest.template.classes.profile import Profile, AnalyticalProfile
 from coolest.template.classes.parameter import (NonLinearParameter, 
-                                            LinearParameter, 
-                                            LinearParameterSet, 
-                                            NonLinearParameterSet,
-                                            PixelatedRegularGridParameter)
+                                                LinearParameter, 
+                                                LinearParameterSet, 
+                                                NonLinearParameterSet,
+                                                PixelatedRegularGridParameter,
+                                                IrregularGridParameter)
 from coolest.template.classes.parameter import DefinitionRange
 
 
@@ -16,14 +17,12 @@ __all__ = [
     'Shapelets',
     'LensedPS',
     'PixelatedRegularGrid',
-    # 'PixelatedIrregularGrid',
-    # 'PixelatedDelaunayGrid',
-    # 'PixelatedVoronoiGrid',
+    'IrregularGrid',
 ]
 SUPPORTED_CHOICES = __all__
 
 
-class Sersic(AnalyticalLightProfile):
+class Sersic(AnalyticalProfile):
     
     def __init__(self):
         documentation = "Elliptical Sersic"
@@ -53,7 +52,7 @@ class Sersic(AnalyticalLightProfile):
         super().__init__(documentation, parameters)
 
 
-class Chameleon(AnalyticalLightProfile):
+class Chameleon(AnalyticalProfile):
     
     def __init__(self):
         documentation = ("Chameleon profile defined as the difference between two NIE profiles"
@@ -84,7 +83,7 @@ class Chameleon(AnalyticalLightProfile):
         super().__init__(documentation, parameters)
 
 
-class Shapelets(AnalyticalLightProfile):
+class Shapelets(AnalyticalProfile):
     
     def __init__(self):
         documentation = "Set of shapelet functions"
@@ -108,7 +107,7 @@ class Shapelets(AnalyticalLightProfile):
         super().__init__(documentation, parameters)
 
         
-class LensedPS(AnalyticalLightProfile):
+class LensedPS(AnalyticalProfile):
 
     def __init__(self):
         documentation = "Set of lensed point sources"
@@ -126,7 +125,7 @@ class LensedPS(AnalyticalLightProfile):
         super().__init__(documentation, parameters)
 
 
-class Uniform(AnalyticalLightProfile):
+class Uniform(AnalyticalProfile):
     
     def __init__(self):
         documentation = "Uniform sheet of light"
@@ -142,5 +141,17 @@ class PixelatedRegularGrid(Profile):
 
     def __init__(self):
         documentation = "A pixelated profile defined on a regular Cartesian grid"
-        self.pixels = PixelatedRegularGridParameter("Pixel values")
-        super().__init__(documentation)
+        parameters = {
+            'pixels': PixelatedRegularGridParameter("Pixel values")
+        }
+        super().__init__(documentation, parameters)
+
+
+class IrregularGrid(Profile):
+
+    def __init__(self):
+        documentation = "A pixelated profile defined on a irregular grid of points"
+        parameters = {
+            'pixels': IrregularGridParameter("Pixel positions and values")
+        }
+        super().__init__(documentation, parameters)

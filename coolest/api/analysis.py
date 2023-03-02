@@ -1,5 +1,7 @@
-__author__ = 'XXX'
+__author__ = 'aymgal'
 
+
+from astropy.coordinates import SkyCoord
 
 from coolest.template.json import JSONSerializer
 
@@ -9,8 +11,8 @@ class Analysis(object):
     Handles computation of model-independent quantities and other analysis computations
     """
 
-    def __init__(self, coolest_file_path):
-        self.coolest_data = JSONSerializer(coolest_file_path).load()
+    def __init__(self, coolest_object, **kwargs_json):
+        self.coolest = coolest_object
 
     def effective_einstein_radius(self):
         pass

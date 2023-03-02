@@ -1,6 +1,6 @@
 __author__ = 'aymgal'
 
-from coolest.template.classes.profile import Profile, AnalyticalMassProfile
+from coolest.template.classes.profile import Profile, AnalyticalProfile
 from coolest.template.classes.parameter import NonLinearParameter
 from coolest.template.classes.parameter import (DefinitionRange,
                                             PixelatedRegularGridParameter)
@@ -20,7 +20,7 @@ __all__ = [
 SUPPORTED_CHOICES = __all__
 
 
-class SIE(AnalyticalMassProfile):
+class SIE(AnalyticalProfile):
     
     def __init__(self):
         documentation = "Singular isothermal sphere"
@@ -44,7 +44,7 @@ class SIE(AnalyticalMassProfile):
         super().__init__(documentation, parameters)
 
 
-class NIE(AnalyticalMassProfile):
+class NIE(AnalyticalProfile):
     
     def __init__(self):
         documentation = "Non-singular isothermal sphere"
@@ -71,7 +71,7 @@ class NIE(AnalyticalMassProfile):
         super().__init__(documentation, parameters)
 
 
-class PEMD(AnalyticalMassProfile):
+class PEMD(AnalyticalProfile):
     
     def __init__(self):
         documentation = "Powerlaw elliptical mass distribution"
@@ -98,7 +98,7 @@ class PEMD(AnalyticalMassProfile):
         super().__init__(documentation, parameters)
 
 
-class SPEMD(AnalyticalMassProfile):
+class SPEMD(AnalyticalProfile):
     
     def __init__(self):
         documentation = "Softened powerlaw elliptical mass distribution"
@@ -128,7 +128,7 @@ class SPEMD(AnalyticalMassProfile):
         super().__init__(documentation, parameters)
 
 
-class NFW(AnalyticalMassProfile):
+class NFW(AnalyticalProfile):
     
     def __init__(self):
         documentation = "NFW with ellipticity introduced in the mass"
@@ -155,7 +155,7 @@ class NFW(AnalyticalMassProfile):
         super().__init__(documentation, parameters)
 
 
-class Chameleon(AnalyticalMassProfile):
+class Chameleon(AnalyticalProfile):
     
     def __init__(self):
         documentation = ("Chameleon profile defined as the difference between two NIE profiles"
@@ -186,7 +186,7 @@ class Chameleon(AnalyticalMassProfile):
         super().__init__(documentation, parameters)
 
 
-class ExternalShear(AnalyticalMassProfile):
+class ExternalShear(AnalyticalProfile):
     
     def __init__(self):
         documentation = "External shear defined with a strength and orientation"
@@ -205,5 +205,7 @@ class PixelatedRegularGridPotential(Profile):
 
     def __init__(self):
         documentation = "A pixelated profile defined on a regular Cartesian grid"
-        self.pixels = PixelatedRegularGridParameter("Pixel values")
-        super().__init__(documentation)
+        parameters = {
+            'pixels': PixelatedRegularGridParameter("Pixel values")
+        }
+        super().__init__(documentation, parameters)
