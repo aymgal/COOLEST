@@ -88,9 +88,9 @@ class TestJSONSerialization(object):
                                                 check_fits_file=self.check_files))
         #psf = GaussianPSF(0.2)
 
-        instrument = Instrument('some instrument',
-                                readout_noise=4,
-                                pixel_size=0.08, 
+        instrument = Instrument(0.08,  # pixel size
+                                name='some instrument',
+                                readout_noise=4, 
                                 band='F160W',
                                 psf=psf)
 

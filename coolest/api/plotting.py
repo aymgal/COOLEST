@@ -27,14 +27,14 @@ class ModelPlotter(object):
         self._directory = coolest_directory
 
         self.cmap_flux = copy.copy(plt.get_cmap('magma'))
-        self.cmap_flux.set_bad('black')
+        self.cmap_flux.set_bad('#222222')
 
-        cmap_colors = self.cmap_flux(np.linspace(0, 1, 256))
-        cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
-        self.cmap_flux_mod = ListedColormap(cmap_colors)
+        #cmap_colors = self.cmap_flux(np.linspace(0, 1, 256))
+        #cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
+        #self.cmap_flux_mod = ListedColormap(cmap_colors)
 
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
-                                extent=None, norm=None, cmap=None,
+                                extent=None, norm=None, cmap=None, neg_values_as_bad=True,
                                 plot_points_irreg=False, **kwargs_selection):
         light_model = CompositeLightModel(self.coolest, self._directory, **kwargs_selection)
         if cmap is None:
@@ -44,7 +44,8 @@ class ModelPlotter(object):
             image = light_model.evaluate_surface_brightness(x, y)
             extent = coordinates.extent
             self._plot_regular_grid(ax, image, extent=extent, 
-                                    cmap=self.cmap_flux_mod, 
+                                    cmap=self.cmap_flux,
+                                    neg_values_as_bad=neg_values_as_bad, 
                                     norm=norm)
         else:
             values, extent_model = light_model.surface_brightness(return_extent=True)
@@ -53,12 +54,14 @@ class ModelPlotter(object):
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
                 self._plot_regular_grid(ax, image, extent=extent, 
-                                        cmap=self.cmap_flux_mod, 
+                                        cmap=self.cmap_flux, 
+                                        neg_values_as_bad=neg_values_as_bad,
                                         norm=norm)
             else:
                 points = values
                 self._plot_irregular_grid(ax, points, extent, norm=norm, 
-                                          cmap=self.cmap_flux_mod, 
+                                          cmap=self.cmap_flux, 
+                                          neg_values_as_bad=neg_values_as_bad,
                                           plot_points=plot_points_irreg)
                 image = None
         if title is not None:
@@ -66,16 +69,24 @@ class ModelPlotter(object):
         return image
         
     @staticmethod
-    def _plot_regular_grid(ax, image, **imshow_kwargs):
+    def _plot_regular_grid(ax, image_, neg_values_as_bad=True, **imshow_kwargs):
+        if neg_values_as_bad:
+            image = np.copy(image_)
+            image[image < 0] = np.nan
+        else:
+            image = image_
+        if neg_values_as_bad:
+            image[image < 0] = np.nan
         im = ax.imshow(image, **imshow_kwargs)
         plut.nice_colorbar(im)
         return ax
 
     @staticmethod
-    def _plot_irregular_grid(ax, points, extent, norm=None, cmap=None, 
-                             plot_points=False):
+    def _plot_irregular_grid(ax, points, extent, neg_values_as_bad=True,
+                             norm=None, cmap=None, plot_points=False):
         x, y, z = points
-        m = plut.plot_voronoi(ax, x, y, z, norm=norm, cmap=cmap, zorder=1)
+        m = plut.plot_voronoi(ax, x, y, z, neg_values_as_bad=neg_values_as_bad, 
+                              norm=norm, cmap=cmap, zorder=1)
         ax.set_xlim(extent[0], extent[1])
         ax.set_ylim(extent[2], extent[3])
         ax.set_aspect('equal', 'box')
