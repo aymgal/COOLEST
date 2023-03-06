@@ -1,6 +1,7 @@
 import os
 import json
 import jsonpickle
+import math
 
 from coolest.template.standard import COOLEST
 from coolest.template.lazy import *
@@ -114,9 +115,11 @@ class JSONSerializer(object):
         # PIXEL SIZE
         instru_pix_size = coolest.instrument.pixel_size
         obs_pix_size = coolest.observation.pixels.pixel_size
-        if obs_pix_size not in (0, None) and instru_pix_size != obs_pix_size:
-            raise ValueError(f"Pixel size of observation ({obs_pix_size:.4f}) is inconsistent with "
-                             f"the instrument pixel size ({instru_pix_size:.4f})")
+        isclose_bool = math.isclose(instru_pix_size, obs_pix_size,
+                                    rel_tol=1e-09, abs_tol=0.0)
+        if obs_pix_size not in (0, None) and not isclose_bool:
+            raise ValueError(f"Pixel size of observation ({obs_pix_size}) is inconsistent with "
+                             f"the instrument pixel size ({instru_pix_size})")
 
         # TODO: add extra checks
 
