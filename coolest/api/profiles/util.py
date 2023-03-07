@@ -5,14 +5,26 @@ import numpy as np
 from scipy import ndimage
 
 
-def shift_rotate_elliptical(x, y, phi, q, center_x, center_y):
-    phi_rad = phi * np.pi / 180.
+
+def eastofnorth2normalradians(phi_in):
+    phi_out = (phi_in - 90.) * np.pi / 180.
+    return phi_out
+
+def shift(x, y, center_x, center_y):
     x_shift = x - center_x
     y_shift = y - center_y
-    cos_phi = np.cos(phi_rad)
-    sin_phi = np.sin(phi_rad)
-    x_trans = cos_phi * x_shift + sin_phi * y_shift
-    y_trans = -sin_phi * x_shift + cos_phi * y_shift
+    return x_shift, y_shift
+
+def rotate(x, y, phi_radians):
+    cos_phi = np.cos(phi_radians)
+    sin_phi = np.sin(phi_radians)
+    x_trans = cos_phi * x + sin_phi * y
+    y_trans = -sin_phi * x + cos_phi * y
+    return x_trans, y_trans
+
+def shift_rotate_elliptical(x, y, phi_radians, q, center_x, center_y):
+    x_shift, y_shift = shift(x, y, center_x, center_y)
+    x_trans, y_trans = rotate(x_shift, y_shift, phi_radians)
     return x_trans * np.sqrt(q), y_trans / np.sqrt(q)
 
 
