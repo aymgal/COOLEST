@@ -2,6 +2,7 @@ __author__ = 'aymgal', 'lynevdv'
 
 
 import copy
+import logging
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
@@ -15,6 +16,8 @@ from coolest.api import plot_util as plut
 # matplotlib global settings
 plt.rc('image', interpolation='none', origin='lower') # imshow settings
 
+# logging settings
+logging.getLogger().setLevel(logging.INFO)
 
 class ModelPlotter(object):
     """
@@ -31,6 +34,7 @@ class ModelPlotter(object):
 
         self.cmap_mag = plt.get_cmap('twilight_shifted')
         self.cmap_conv = plt.get_cmap('cividis')
+        self.cmap_res = plt.get_cmap('RdBu_r')
 
         #cmap_colors = self.cmap_flux(np.linspace(0, 1, 256))
         #cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
@@ -71,21 +75,41 @@ class ModelPlotter(object):
             ax.set_title(title)
         return image
 
-    def plot_image_model(self, ax, title=None,
+    def plot_model_image(self, ax, supersampling=5, convolved=False, title=None,
                          norm=None, cmap=None, neg_values_as_bad=False,
                          kw_source=None, kw_lens_mass=None):
+        if cmap is None:
+            cmap = self.cmap_flux
         lens_model = ComposableLensModel(self.coolest, self._directory,
                                          kwargs_selection_source=kw_source,
                                          kwargs_selection_lens_mass=kw_lens_mass)
-        if cmap is None:
-            cmap = self.cmap_flux
-        coordinates = util.get_coordinates(self.coolest)
+        image, coordinates = lens_model.model_image(supersampling=supersampling, 
+                                                    convolved=convolved)
         extent = coordinates.extent
-        x, y = coordinates.pixel_coordinates
-        image = lens_model.evaluate_lensed_surface_brightness(x, y)
         self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
+                                norm=norm)
+        if title is not None:
+            ax.set_title(title)
+        return image
+
+    def plot_model_residuals(self, ax, supersampling=5, mask=None, title=None,
+                             norm=None, cmap=None, 
+                             kw_source=None, kw_lens_mass=None):
+        if cmap is None:
+            cmap = self.cmap_res
+        if norm is None:
+            norm = Normalize(-6, 6)
+        lens_model = ComposableLensModel(self.coolest, self._directory,
+                                         kwargs_selection_source=kw_source,
+                                         kwargs_selection_lens_mass=kw_lens_mass)
+        image, coordinates = lens_model.model_residuals(supersampling=supersampling, 
+                                                        mask=mask)
+        extent = coordinates.extent
+        self._plot_regular_grid(ax, image, extent=extent, 
+                                cmap=cmap,
+                                neg_values_as_bad=False, 
                                 norm=norm)
         if title is not None:
             ax.set_title(title)

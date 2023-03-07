@@ -100,6 +100,7 @@ class PixelatedRegularGrid(BaseLightProfile):
 
     def evaluate_surface_brightness(self, x, y, pixels=None):
         extent = self.get_extent()
+        # TODO: check extent is correct
         points = (
             np.linspace(extent[2], extent[3], self._ny, endpoint=True),
             np.linspace(extent[0], extent[1], self._nx, endpoint=True),

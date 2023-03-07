@@ -3,6 +3,9 @@ __author__ = 'aymgal'
 
 import numpy as np
 import warnings
+from scipy import signal
+
+from coolest.api import util
 
 
 class BaseComposableModel(object):
@@ -191,20 +194,73 @@ class ComposableLensModel(object):
 
     def __init__(self, coolest_object, coolest_directory=None, 
                  kwargs_selection_source=None, kwargs_selection_lens_mass=None):
+        self.coolest = coolest_object
+        self.coord_obs = util.get_coordinates(self.coolest)
         self.lens_mass = ComposableMassModel(coolest_object, 
-                                       coolest_directory,
-                                       **kwargs_selection_lens_mass)
+                                             coolest_directory,
+                                             **kwargs_selection_lens_mass)
         self.source = ComposableLightModel(coolest_object, 
                                           coolest_directory,
                                           **kwargs_selection_source)
 
+    def model_image(self, supersampling=5, convolved=True):
+        obs = self.coolest.observation
+        psf = self.coolest.instrument.psf
+        if convolved is True and psf.type == 'PixelatedPSF':
+            scale_factor = obs.pixels.pixel_size / psf.pixels.pixel_size
+            supersampling_conv = int(round(scale_factor))
+            print("supersampling_conv:", supersampling_conv, obs.pixels.pixel_size / psf.pixels.pixel_size)
+            if supersampling_conv < 1:
+                raise ValueError("PSF pixel size smaller than data pixel size")
+        if supersampling < 1:
+            raise ValueError("Supersampling must be >= 1")
+        if convolved is True and supersampling_conv > supersampling:
+            supersampling = supersampling_conv
+            logging.warning("Supersampling factor adapted to the PSF pixel size")
+        coord_eval = self.coord_obs.create_new_coordinates(pixel_scale_factor=1./supersampling)
+        x, y = coord_eval.pixel_coordinates
+        image = self.evaluate_lensed_surface_brightness(x, y)
+        if convolved is True:
+            if psf.type != 'PixelatedPSF':
+                raise NotImplementedError
+            kernel = psf.pixels.get_pixels()
+            assert kernel.sum() == 1.
+            if supersampling_conv == supersampling:
+                # first convolve...
+                image = signal.fftconvolve(image, kernel, mode='same')
+                # ...then dowsnscale 
+                image = util.downsampling(image, factor=supersampling)
+            elif supersampling_conv == 1:
+                # first dowsnscale...
+                image = util.downsampling(image, factor=supersampling)
+                # ...then convolve
+                image = signal.fftconvolve(image, kernel, mode='same')
+        elif supersampling > 1:
+            image = util.downsampling(image, factor=supersampling)
+        return image, self.coord_obs
+
+    def model_residuals(self, supersampling=5, mask=None):
+        model, _ = self.model_image(supersampling=supersampling, 
+                                    convolved=True)
+        data = self.coolest.observation.pixels.get_pixels()
+        noise = self.coolest.observation.noise
+        if noise.type != 'NoiseMap':
+            raise NotImplementedError
+        sigma = noise.noise_map.get_pixels()
+        if mask is None:
+            mask = np.ones_like(model)
+        return ((data - model) / sigma) * mask, self.coord_obs
+
     def evaluate_lensed_surface_brightness(self, x, y):
         """Evaluates the surface brightness of a lensed source at given coordinates"""
         # ray-shooting
-        alpha_x, alpha_y = self.lens_mass.evaluate_deflection(x, y)
-        x_rs, y_rs = x - alpha_x, y - alpha_y  # beta = theta - alpha(theta)
+        x_rs, y_rs = self.ray_shooting(x, y)
         # evaluates at ray-shooted coordinates
-        image = self.source.evaluate_surface_brightness(x_rs, y_rs)
-        # TODO: convolve with PSF?
-        return image
+        lensed_image = self.source.evaluate_surface_brightness(x_rs, y_rs)
+        return lensed_image
 
+    def ray_shooting(self, x, y):
+        """evaluates the lens equation beta = theta - alpha(theta)"""
+        alpha_x, alpha_y = self.lens_mass.evaluate_deflection(x, y)
+        x_rs, y_rs = x - alpha_x, y - alpha_y
+        return x_rs, y_rs
