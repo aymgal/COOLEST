@@ -24,9 +24,9 @@ class ModelPlotter(object):
     Creates pyplot panels from a lens model stored in the COOLEST format
     """
 
-    def __init__(self, coolest_object, coolest_directory=None, color_bad_values='#111111'):
+    def __init__(self, coolest_object, coolest_directory=None, 
+                 color_bad_values='#111111'):
         self.coolest = coolest_object
-        self.analysis = Analysis(self.coolest)
         self._directory = coolest_directory
 
         self.cmap_flux = copy.copy(plt.get_cmap('magma'))

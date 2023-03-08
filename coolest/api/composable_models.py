@@ -55,6 +55,16 @@ class BaseComposableModel(object):
                         info_list.append((entity.name, entity.redshift))
         return profile_list, param_list, info_list
 
+    def estimate_center(self):
+        # TODO: improve this (for now simply considers the first profile that has a center)
+        for profile, params in zip(self.profile_list, self.param_list):
+            if 'center_x' in params:
+                center_x = params['center_x']
+                center_y = params['center_y']
+                logging.info(f"Picked center from profile '{profile.type}'")
+                return center_x, center_y
+        raise ValueError("Could not estimate a center from the composed model")
+
     @staticmethod
     def _get_api_profile(model_type, profile_in, *args):
         """
@@ -171,10 +181,10 @@ class ComposableMassModel(BaseComposableModel):
 
     def evaluate_convergence(self, x, y):
         """Evaluates the surface brightness at given coordinates"""
-        psi = np.zeros_like(x)
+        kappa = np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
-            psi += profile.convergence(x, y, **params)
-        return psi
+            kappa += profile.convergence(x, y, **params)
+        return kappa
 
     def evaluate_magnification(self, x, y):
         """Evaluates the surface brightness at given coordinates"""
