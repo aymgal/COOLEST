@@ -42,7 +42,8 @@ class Sersic(BaseLightProfile):
 
     def evaluate_surface_brightness(self, x, y, I_eff=1., theta_eff=2., n=4., phi=0., q=1., center_x=0., center_y=0.):
         """Returns the surface brightness at the given position (x, y)"""
-        x_t, y_t = util.shift_rotate_elliptical(x, y, phi, q, center_x, center_y)
+        phi_ = util.eastofnorth2normalradians(phi)
+        x_t, y_t = util.shift_rotate_elliptical(x, y, phi_, q, center_x, center_y)
         bn = 1.9992*n - 0.3271
         return I_eff * np.exp( - bn * ( (np.sqrt(x_t**2+y_t**2) / theta_eff )**(1./n) -1. ) )
 
@@ -63,7 +64,12 @@ class Shapelets(BaseLightProfile):
     def evaluate_surface_brightness(self, x, y, amps=0, n_max=0, beta=0, center_x=0, center_y=0):
         """Returns the surface brightness at the given position (x, y)"""
         x_, y_ = x.flatten(), y.flatten()
-        flux = self._backend.function(x_, y_, amps, n_max, beta, center_x=center_x, center_y=center_y)
+        
+        # TODO: temporary patch:
+        center_x_tmp = -center_x
+        x_tmp = -x_
+
+        flux = self._backend.function(x_tmp, y_, amps, n_max, beta, center_x=center_x_tmp, center_y=center_y)
         return flux.reshape(*x.shape)
 
 
@@ -94,6 +100,7 @@ class PixelatedRegularGrid(BaseLightProfile):
 
     def evaluate_surface_brightness(self, x, y, pixels=None):
         extent = self.get_extent()
+        # TODO: check extent is correct
         points = (
             np.linspace(extent[2], extent[3], self._ny, endpoint=True),
             np.linspace(extent[0], extent[1], self._nx, endpoint=True),

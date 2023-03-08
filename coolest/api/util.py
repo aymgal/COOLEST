@@ -40,7 +40,6 @@ def get_coordinates(coolest_object, offset_ra=0., offset_dec=0.):
     ra_at_xy_0  = - half_size_x + pix_scl / 2.  # position of x=0 with respect to bottom left pixel
     dec_at_xy_0 = - half_size_y + pix_scl / 2.  # position of y=0 with respect to bottom left pixel
     matrix_pix2ang = pix_scl * np.eye(2)  # transformation matrix pixel <-> angle
-    
     coordinates = Coordinates(nx, ny, matrix_pixel_to_radec=matrix_pix2ang,
                               ra_at_xy_0=ra_at_xy_0 + offset_ra, 
                               dec_at_xy_0=dec_at_xy_0 + offset_dec)
@@ -95,6 +94,20 @@ def image2array(image):
     # imgh = np.reshape(image, nx * ny)  # change the shape to be 1d
     # return imgh
     return image.ravel()
+
+
+def downsampling(image, factor=1):
+    if factor < 1:
+        raise ValueError(f"Downscaling factor must be > 1")
+    if factor == 1:
+        return image
+    f = int(factor)
+    nx, ny = np.shape(image)
+    if int(nx/f) == nx/f and int(ny/f) == ny/f:
+        down = image.reshape([int(nx/f), f, int(ny/f), f]).mean(3).mean(1)
+        return down
+    else:
+        raise ValueError(f"Downscaling factor {factor} is not possible with shape ({nx}, {ny})")
 
 
 def read_json_param(file_list, file_names, lens_light=False):

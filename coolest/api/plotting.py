@@ -2,32 +2,39 @@ __author__ = 'aymgal', 'lynevdv'
 
 
 import copy
+import logging
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from matplotlib.colors import ListedColormap
 
 from coolest.api.analysis import Analysis
-from coolest.api.light_model import CompositeLightModel
-from coolest.api.util import read_json_param
+from coolest.api.composable_models import *
+from coolest.api import util
 from coolest.api import plot_util as plut
 
 # matplotlib global settings
 plt.rc('image', interpolation='none', origin='lower') # imshow settings
 
+# logging settings
+logging.getLogger().setLevel(logging.INFO)
 
 class ModelPlotter(object):
     """
     Creates pyplot panels from a lens model stored in the COOLEST format
     """
 
-    def __init__(self, coolest_object, coolest_directory=None):
+    def __init__(self, coolest_object, coolest_directory=None, color_bad_values='#111111'):
         self.coolest = coolest_object
         self.analysis = Analysis(self.coolest)
         self._directory = coolest_directory
 
         self.cmap_flux = copy.copy(plt.get_cmap('magma'))
-        self.cmap_flux.set_bad('#222222')
+        self.cmap_flux.set_bad(color_bad_values)
+
+        self.cmap_mag = plt.get_cmap('twilight_shifted')
+        self.cmap_conv = plt.get_cmap('cividis')
+        self.cmap_res = plt.get_cmap('RdBu_r')
 
         #cmap_colors = self.cmap_flux(np.linspace(0, 1, 256))
         #cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
@@ -36,7 +43,7 @@ class ModelPlotter(object):
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
                                 extent=None, norm=None, cmap=None, neg_values_as_bad=True,
                                 plot_points_irreg=False, **kwargs_selection):
-        light_model = CompositeLightModel(self.coolest, self._directory, **kwargs_selection)
+        light_model = ComposableLightModel(self.coolest, self._directory, **kwargs_selection)
         if cmap is None:
             cmap = self.cmap_flux
         if coordinates is not None:
@@ -44,7 +51,7 @@ class ModelPlotter(object):
             image = light_model.evaluate_surface_brightness(x, y)
             extent = coordinates.extent
             self._plot_regular_grid(ax, image, extent=extent, 
-                                    cmap=self.cmap_flux,
+                                    cmap=cmap,
                                     neg_values_as_bad=neg_values_as_bad, 
                                     norm=norm)
         else:
@@ -54,16 +61,96 @@ class ModelPlotter(object):
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
                 self._plot_regular_grid(ax, image, extent=extent, 
-                                        cmap=self.cmap_flux, 
+                                        cmap=cmap, 
                                         neg_values_as_bad=neg_values_as_bad,
                                         norm=norm)
             else:
                 points = values
                 self._plot_irregular_grid(ax, points, extent, norm=norm, 
-                                          cmap=self.cmap_flux, 
+                                          cmap=cmap, 
                                           neg_values_as_bad=neg_values_as_bad,
                                           plot_points=plot_points_irreg)
                 image = None
+        if title is not None:
+            ax.set_title(title)
+        return image
+
+    def plot_model_image(self, ax, supersampling=5, convolved=False, title=None,
+                         norm=None, cmap=None, neg_values_as_bad=False,
+                         kw_source=None, kw_lens_mass=None):
+        if cmap is None:
+            cmap = self.cmap_flux
+        lens_model = ComposableLensModel(self.coolest, self._directory,
+                                         kwargs_selection_source=kw_source,
+                                         kwargs_selection_lens_mass=kw_lens_mass)
+        image, coordinates = lens_model.model_image(supersampling=supersampling, 
+                                                    convolved=convolved)
+        extent = coordinates.extent
+        self._plot_regular_grid(ax, image, extent=extent, 
+                                cmap=cmap,
+                                neg_values_as_bad=neg_values_as_bad, 
+                                norm=norm)
+        if title is not None:
+            ax.set_title(title)
+        return image
+
+    def plot_model_residuals(self, ax, supersampling=5, mask=None, title=None,
+                             norm=None, cmap=None, 
+                             kw_source=None, kw_lens_mass=None):
+        if cmap is None:
+            cmap = self.cmap_res
+        if norm is None:
+            norm = Normalize(-6, 6)
+        lens_model = ComposableLensModel(self.coolest, self._directory,
+                                         kwargs_selection_source=kw_source,
+                                         kwargs_selection_lens_mass=kw_lens_mass)
+        image, coordinates = lens_model.model_residuals(supersampling=supersampling, 
+                                                        mask=mask)
+        extent = coordinates.extent
+        self._plot_regular_grid(ax, image, extent=extent, 
+                                cmap=cmap,
+                                neg_values_as_bad=False, 
+                                norm=norm)
+        if title is not None:
+            ax.set_title(title)
+        return image
+
+    def plot_convergence(self, ax, title=None,
+                         norm=None, cmap=None, neg_values_as_bad=False,
+                         **kwargs_selection):
+        mass_model = ComposableMassModel(self.coolest, self._directory,
+                                         **kwargs_selection)
+        if cmap is None:
+            cmap = self.cmap_conv
+        coordinates = util.get_coordinates(self.coolest)
+        extent = coordinates.extent
+        x, y = coordinates.pixel_coordinates
+        image = mass_model.evaluate_convergence(x, y)
+        self._plot_regular_grid(ax, image, extent=extent, 
+                                cmap=cmap,
+                                neg_values_as_bad=neg_values_as_bad, 
+                                norm=norm)
+        if title is not None:
+            ax.set_title(title)
+        return image
+
+    def plot_magnification(self, ax, title=None,
+                          norm=None, cmap=None, neg_values_as_bad=False,
+                          **kwargs_selection):
+        mass_model = ComposableMassModel(self.coolest, self._directory,
+                                         **kwargs_selection)
+        if cmap is None:
+            cmap = self.cmap_mag
+        if norm is None:
+            norm = Normalize(-10, 10)
+        coordinates = util.get_coordinates(self.coolest)
+        extent = coordinates.extent
+        x, y = coordinates.pixel_coordinates
+        image = mass_model.evaluate_magnification(x, y)
+        self._plot_regular_grid(ax, image, extent=extent, 
+                                cmap=cmap,
+                                neg_values_as_bad=neg_values_as_bad, 
+                                norm=norm)
         if title is not None:
             ax.set_title(title)
         return image
@@ -111,6 +198,7 @@ class MultiModelPlotter(object):
 
     def plot_surface_brightness(self, axes, titles=None, 
                                 coordinates=None, norm=None, cmap=None,
+                                neg_values_as_bad=True,
                                 **kwargs_selection_list):
         if kwargs_selection_list is None:
             kwargs_selection_list = self.num_models * [{}]
@@ -122,6 +210,7 @@ class MultiModelPlotter(object):
             kw_select = {key: val[i] for key, val in kwargs_selection_list.items()}
             image = plotter.plot_surface_brightness(ax, coordinates=coordinates, 
                                                     title=titles[i],
+                                                    neg_values_as_bad=neg_values_as_bad,
                                                     norm=norm, cmap=cmap, **kw_select)
             image_list.append(image)
         return image_list
@@ -136,7 +225,7 @@ class Comparison_analytical(object):
     def __init__(self,coolest_file_list, nickname_file_list, posterior_bool_list):
         self.file_names = nickname_file_list
         self.posterior_bool_list = posterior_bool_list
-        self.param_lens, self.param_source = read_json_param(coolest_file_list,self.file_names, lens_light=False)
+        self.param_lens, self.param_source = util.read_json_param(coolest_file_list,self.file_names, lens_light=False)
 
     def plotting_routine(self,param_dict,idx_file=0):
         """
