@@ -15,7 +15,7 @@ class FitsFile(object):
 
     @property
     def abs_path(self):
-        if self._directory is None:
+        if not hasattr(self, '_directory') or self._directory is None:
             return self.path
         return os.path.join(self._directory, self.path)
 
@@ -25,4 +25,11 @@ class FitsFile(object):
         return os.path.exists(self.abs_path)
 
     def read(self, directory=None):
-        return fits.getdata(self.abs_path, header=True)
+        """directory must be given when _directory attribute has been set beforehand"""
+        if not hasattr(self, '_directory'):
+            if directory is None:
+                raise ValueError("You must provide a FITS file directory if none has been set")
+            abs_path = os.path.join(directory, self.path)
+        else:
+            abs_path = self.abs_path
+        return fits.getdata(abs_path, header=True)

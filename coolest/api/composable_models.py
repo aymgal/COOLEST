@@ -2,10 +2,15 @@ __author__ = 'aymgal'
 
 
 import numpy as np
-import warnings
+import math
+import logging
 from scipy import signal
 
 from coolest.api import util
+
+
+# logging settings
+logging.getLogger().setLevel(logging.INFO)
 
 
 class BaseComposableModel(object):
@@ -16,6 +21,7 @@ class BaseComposableModel(object):
     def __init__(self, model_type, coolest_object, coolest_directory=None, 
                  entity_selection=[0], profile_selection='all'):
         entities = coolest_object.lensing_entities
+        self.directory = coolest_directory
         self.profile_list, self.param_list, self.info_list \
             = self.select_profiles(model_type, entities, 
                                    entity_selection, profile_selection,
@@ -122,8 +128,8 @@ class ComposableLightModel(BaseComposableModel):
     def surface_brightness(self, return_extent=False):
         """Returns the surface brightness as stored in the COOLEST file"""
         if self.num_profiles > 1:
-            warnings.warn("When more than a single light profile has been selected, "
-                          "the method `surface_brightness()` only considers the first profile")
+            logging.warning("When more than a single light profile has been selected, "
+                            "the method `surface_brightness()` only considers the first profile")
         values = self.profile_list[0].surface_brightness(**self.param_list[0])
         if return_extent:
             extent = self.profile_list[0].get_extent()
@@ -196,6 +202,7 @@ class ComposableLensModel(object):
                  kwargs_selection_source=None, kwargs_selection_lens_mass=None):
         self.coolest = coolest_object
         self.coord_obs = util.get_coordinates(self.coolest)
+        self.directory = coolest_directory
         self.lens_mass = ComposableMassModel(coolest_object, 
                                              coolest_directory,
                                              **kwargs_selection_lens_mass)
@@ -209,31 +216,38 @@ class ComposableLensModel(object):
         if convolved is True and psf.type == 'PixelatedPSF':
             scale_factor = obs.pixels.pixel_size / psf.pixels.pixel_size
             supersampling_conv = int(round(scale_factor))
-            print("supersampling_conv:", supersampling_conv, obs.pixels.pixel_size / psf.pixels.pixel_size)
+            if not math.isclose(scale_factor, supersampling_conv):
+                raise ValueError(f"PSF supersampling ({scale_factor}) not close to an integer?")
             if supersampling_conv < 1:
                 raise ValueError("PSF pixel size smaller than data pixel size")
         if supersampling < 1:
             raise ValueError("Supersampling must be >= 1")
         if convolved is True and supersampling_conv > supersampling:
             supersampling = supersampling_conv
-            logging.warning("Supersampling factor adapted to the PSF pixel size")
+            logging.warning(f"Supersampling adapted to the PSF pixel size ({supersampling})")
         coord_eval = self.coord_obs.create_new_coordinates(pixel_scale_factor=1./supersampling)
         x, y = coord_eval.pixel_coordinates
         image = self.evaluate_lensed_surface_brightness(x, y)
         if convolved is True:
             if psf.type != 'PixelatedPSF':
                 raise NotImplementedError
-            kernel = psf.pixels.get_pixels()
-            assert kernel.sum() == 1.
+            kernel = psf.pixels.get_pixels(directory=self.directory)
+            kernel_sum = kernel.sum()
+            if not math.isclose(kernel_sum, 1., abs_tol=1e-3):
+                logging.warning(f"PSF kernel is not normalized (sum={kernel_sum}), "
+                                "so it is normalized before convolution")
+                kernel /= kernel_sum
+            if np.isnan(image).any():
+                logging.warning("Found NaN values in image prior to convolution; "
+                                "there are replaced by zeros before convolution")
+                np.nan_to_num(image, copy=False, nan=0., posinf=None, neginf=None)
             if supersampling_conv == supersampling:
-                # first convolve...
+                # first convolve then dowsnscale 
                 image = signal.fftconvolve(image, kernel, mode='same')
-                # ...then dowsnscale 
                 image = util.downsampling(image, factor=supersampling)
             elif supersampling_conv == 1:
-                # first dowsnscale...
+                # first dowsnscale then convolve
                 image = util.downsampling(image, factor=supersampling)
-                # ...then convolve
                 image = signal.fftconvolve(image, kernel, mode='same')
         elif supersampling > 1:
             image = util.downsampling(image, factor=supersampling)
@@ -242,11 +256,11 @@ class ComposableLensModel(object):
     def model_residuals(self, supersampling=5, mask=None):
         model, _ = self.model_image(supersampling=supersampling, 
                                     convolved=True)
-        data = self.coolest.observation.pixels.get_pixels()
+        data = self.coolest.observation.pixels.get_pixels(directory=self.directory)
         noise = self.coolest.observation.noise
         if noise.type != 'NoiseMap':
             raise NotImplementedError
-        sigma = noise.noise_map.get_pixels()
+        sigma = noise.noise_map.get_pixels(directory=self.directory)
         if mask is None:
             mask = np.ones_like(model)
         return ((data - model) / sigma) * mask, self.coord_obs

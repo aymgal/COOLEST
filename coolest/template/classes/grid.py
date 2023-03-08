@@ -88,7 +88,7 @@ class PixelatedRegularGrid(Grid):
         return array_shape
 
     def get_pixels(self, directory=None):
-        array, _ = self.fits_file.read()
+        array, _ = self.fits_file.read(directory=directory)
         return array
 
 
