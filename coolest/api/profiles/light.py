@@ -22,6 +22,9 @@ class BaseLightProfile(object):
     def get_extent(self):
         return None
 
+    def get_coordinates(self):
+        return None
+
     @property
     def units(self):
         if not hasattr(self, '_units'):
@@ -64,12 +67,7 @@ class Shapelets(BaseLightProfile):
     def evaluate_surface_brightness(self, x, y, amps=0, n_max=0, beta=0, center_x=0, center_y=0):
         """Returns the surface brightness at the given position (x, y)"""
         x_, y_ = x.flatten(), y.flatten()
-        
-        # TODO: temporary patch:
-        center_x_tmp = -center_x
-        x_tmp = -x_
-
-        flux = self._backend.function(x_tmp, y_, amps, n_max, beta, center_x=center_x_tmp, center_y=center_y)
+        flux = self._backend.function(x_, y_, amps, n_max, beta, center_x=center_x, center_y=center_y)
         return flux.reshape(*x.shape)
 
 
@@ -121,6 +119,10 @@ class PixelatedRegularGrid(BaseLightProfile):
             self._fov_y[0] - half_pix_y, 
             self._fov_y[1] + half_pix_y
         ]
+
+    def get_coordinates(self):
+        from coolest.api.util import get_coordinates_from_regular_grid
+        return get_coordinates_from_regular_grid(self._fov_x, self._fov_y, self._nx, self._ny)
 
 
 class IrregularGrid(BaseLightProfile):
