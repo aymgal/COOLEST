@@ -19,7 +19,11 @@ class BaseComposableModel(object):
     """
 
     def __init__(self, model_type, coolest_object, coolest_directory=None, 
-                 entity_selection=[0], profile_selection='all'):
+                 entity_selection=None, profile_selection=None):
+        if entity_selection is None:
+            entity_selection = [0]
+        if profile_selection is None:
+            profile_selection='all'
         entities = coolest_object.lensing_entities
         self.directory = coolest_directory
         self.profile_list, self.param_list, self.info_list \
@@ -123,8 +127,7 @@ class ComposableLightModel(BaseComposableModel):
     """
 
     def __init__(self, coolest_object, coolest_directory=None, 
-                 entity_selection=[0], profile_selection='all'):
-        entities = coolest_object.lensing_entities
+                 entity_selection=None, profile_selection=None):
         super().__init__('light_model', coolest_object, 
                          coolest_directory=coolest_directory,
                          entity_selection=entity_selection,
@@ -135,15 +138,17 @@ class ComposableLightModel(BaseComposableModel):
         else:
             self.pixel_area = pixel_size**2
 
-    def surface_brightness(self, return_extent=False):
+    def surface_brightness(self, return_extra=False):
         """Returns the surface brightness as stored in the COOLEST file"""
         if self.num_profiles > 1:
             logging.warning("When more than a single light profile has been selected, "
                             "the method `surface_brightness()` only considers the first profile")
-        values = self.profile_list[0].surface_brightness(**self.param_list[0])
-        if return_extent:
-            extent = self.profile_list[0].get_extent()
-            return values, extent
+        profile = self.profile_list[0]
+        values = profile.surface_brightness(**self.param_list[0])
+        if return_extra:
+            extent = profile.get_extent()
+            coordinates = profile.get_coordinates()
+            return values, extent, coordinates
         return values
 
     def evaluate_surface_brightness(self, x, y):
@@ -163,8 +168,7 @@ class ComposableMassModel(BaseComposableModel):
     """
 
     def __init__(self, coolest_object, coolest_directory=None, 
-                 entity_selection=[0], profile_selection='all'):
-        entities = coolest_object.lensing_entities
+                 entity_selection=None, profile_selection=None):
         super().__init__('mass_model', coolest_object, 
                          coolest_directory=coolest_directory,
                          entity_selection=entity_selection,
@@ -213,6 +217,10 @@ class ComposableLensModel(object):
         self.coolest = coolest_object
         self.coord_obs = util.get_coordinates(self.coolest)
         self.directory = coolest_directory
+        if kwargs_selection_source is None:
+            kwargs_selection_source = {}
+        if kwargs_selection_lens_mass is None:
+            kwargs_selection_lens_mass = {}
         self.lens_mass = ComposableMassModel(coolest_object, 
                                              coolest_directory,
                                              **kwargs_selection_lens_mass)

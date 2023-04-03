@@ -19,6 +19,7 @@ plt.rc('image', interpolation='none', origin='lower') # imshow settings
 # logging settings
 logging.getLogger().setLevel(logging.INFO)
 
+
 class ModelPlotter(object):
     """
     Creates pyplot panels from a lens model stored in the COOLEST format
@@ -42,8 +43,10 @@ class ModelPlotter(object):
 
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
                                 extent=None, norm=None, cmap=None, neg_values_as_bad=True,
-                                plot_points_irreg=False, **kwargs_selection):
-        light_model = ComposableLightModel(self.coolest, self._directory, **kwargs_selection)
+                                plot_points_irreg=False, kwargs_light=None):
+        if kwargs_light is None:
+            kwargs_light = {}
+        light_model = ComposableLightModel(self.coolest, self._directory, **kwargs_light)
         if cmap is None:
             cmap = self.cmap_flux
         if coordinates is not None:
@@ -55,7 +58,7 @@ class ModelPlotter(object):
                                     neg_values_as_bad=neg_values_as_bad, 
                                     norm=norm)
         else:
-            values, extent_model = light_model.surface_brightness(return_extent=True)
+            values, extent_model, coordinates = light_model.surface_brightness(return_extra=True)
             if extent is None:
                 extent = extent_model
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
@@ -73,16 +76,16 @@ class ModelPlotter(object):
                 image = None
         if title is not None:
             ax.set_title(title)
-        return image
+        return image, coordinates
 
     def plot_model_image(self, ax, supersampling=5, convolved=False, title=None,
                          norm=None, cmap=None, neg_values_as_bad=False,
-                         kw_source=None, kw_lens_mass=None):
+                         kwargs_source=None, kwargs_lens_mass=None):
         if cmap is None:
             cmap = self.cmap_flux
         lens_model = ComposableLensModel(self.coolest, self._directory,
-                                         kwargs_selection_source=kw_source,
-                                         kwargs_selection_lens_mass=kw_lens_mass)
+                                         kwargs_selection_source=kwargs_source,
+                                         kwargs_selection_lens_mass=kwargs_lens_mass)
         image, coordinates = lens_model.model_image(supersampling=supersampling, 
                                                     convolved=convolved)
         extent = coordinates.extent
@@ -96,14 +99,14 @@ class ModelPlotter(object):
 
     def plot_model_residuals(self, ax, supersampling=5, mask=None, title=None,
                              norm=None, cmap=None, 
-                             kw_source=None, kw_lens_mass=None):
+                             kwargs_source=None, kwargs_lens_mass=None):
         if cmap is None:
             cmap = self.cmap_res
         if norm is None:
             norm = Normalize(-6, 6)
         lens_model = ComposableLensModel(self.coolest, self._directory,
-                                         kwargs_selection_source=kw_source,
-                                         kwargs_selection_lens_mass=kw_lens_mass)
+                                         kwargs_selection_source=kwargs_source,
+                                         kwargs_selection_lens_mass=kwargs_lens_mass)
         image, coordinates = lens_model.model_residuals(supersampling=supersampling, 
                                                         mask=mask)
         extent = coordinates.extent
@@ -117,9 +120,11 @@ class ModelPlotter(object):
 
     def plot_convergence(self, ax, title=None,
                          norm=None, cmap=None, neg_values_as_bad=False,
-                         **kwargs_selection):
+                         kwargs_lens_mass=None):
+        if kwargs_lens_mass is None:
+            kwargs_lens_mass = {}
         mass_model = ComposableMassModel(self.coolest, self._directory,
-                                         **kwargs_selection)
+                                         **kwargs_lens_mass)
         if cmap is None:
             cmap = self.cmap_conv
         coordinates = util.get_coordinates(self.coolest)
@@ -136,9 +141,11 @@ class ModelPlotter(object):
 
     def plot_magnification(self, ax, title=None,
                           norm=None, cmap=None, neg_values_as_bad=False,
-                          **kwargs_selection):
+                          kwargs_lens_mass=None):
+        if kwargs_lens_mass is None:
+            kwargs_lens_mass = {}
         mass_model = ComposableMassModel(self.coolest, self._directory,
-                                         **kwargs_selection)
+                                         **kwargs_lens_mass)
         if cmap is None:
             cmap = self.cmap_mag
         if norm is None:
@@ -196,26 +203,67 @@ class MultiModelPlotter(object):
         for coolest, c_dir in zip(coolest_objects, coolest_directories):
             self.plotter_list.append(ModelPlotter(coolest, coolest_directory=c_dir))
 
-    def plot_surface_brightness(self, axes, titles=None, 
-                                coordinates=None, norm=None, cmap=None,
-                                neg_values_as_bad=True,
-                                **kwargs_selection_list):
-        if kwargs_selection_list is None:
-            kwargs_selection_list = self.num_models * [{}]
-        if titles is None:
-            titles = self.num_models * [None]
+    def plot_surface_brightness(self, axes, titles=None, **kwargs):
+        return self._plot_light_multi('plot_surface_brightness', "surf. brightness", axes, titles=titles, **kwargs)
+
+    def plot_model_image(self, axes, titles=None, **kwargs):
+        return self._plot_lens_model_multi('plot_model_image', "model", axes, titles=titles, **kwargs)
+
+    def plot_model_residuals(self, axes, titles=None, **kwargs):
+        return self._plot_lens_model_multi('plot_model_residuals', "residuals", axes, titles=titles, **kwargs)
+
+    def plot_convergence(self, axes, titles=None, **kwargs):
+        return self._plot_lens_model_multi('plot_convergence', "convergence", axes, titles=titles, **kwargs)
+
+    def plot_magnification(self, axes, titles=None, **kwargs):
+        return self._plot_lens_model_multi('plot_magnification', "magnification", axes, titles=titles, **kwargs)
+
+    def _plot_light_multi(self, method_name, default_title, axes, titles=None, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
+        if titles is None:
+            titles = self.num_models * [default_title]
+        kwargs_ = copy.deepcopy(kwargs)
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
-            kw_select = {key: val[i] for key, val in kwargs_selection_list.items()}
-            image = plotter.plot_surface_brightness(ax, coordinates=coordinates, 
-                                                    title=titles[i],
-                                                    neg_values_as_bad=neg_values_as_bad,
-                                                    norm=norm, cmap=cmap, **kw_select)
+            if ax is None:
+                continue
+            if 'kwargs_light' in kwargs:
+                kwargs_['kwargs_light'] = {k: v[i] for k, v in kwargs['kwargs_light'].items()}
+            image = getattr(plotter, method_name)(ax, title=titles[i], **kwargs_)
             image_list.append(image)
         return image_list
 
+    def _plot_mass_multi(self, method_name, default_title, axes, titles=None, **kwargs):
+        assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
+        if titles is None:
+            titles = self.num_models * [default_title]
+        kwargs_ = copy.deepcopy(kwargs)
+        image_list = []
+        for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
+            if ax is None:
+                continue
+            if 'kwargs_lens_mass' in kwargs:
+                kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
+            image = getattr(plotter, method_name)(ax, title=titles[i], **kwargs_)
+            image_list.append(image)
+        return image_list
 
+    def _plot_lens_model_multi(self, method_name, default_title, axes, titles=None, kwargs_select=None, **kwargs):
+        assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
+        if titles is None:
+            titles = self.num_models * [default_title]
+        kwargs_ = copy.deepcopy(kwargs)
+        image_list = []
+        for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
+            if ax is None:
+                continue
+            if 'kwargs_source' in kwargs:
+                kwargs_['kwargs_source'] = {k: v[i] for k, v in kwargs['kwargs_source'].items()}
+            if 'kwargs_lens_mass' in kwargs:
+                kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
+            image = getattr(plotter, method_name)(ax, title=titles[i], **kwargs_)
+            image_list.append(image)
+        return image_list
 
 
 class Comparison_analytical(object):

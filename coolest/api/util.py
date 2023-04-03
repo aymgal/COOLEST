@@ -6,7 +6,6 @@ import numpy as np
 # from astropy.coordinates import SkyCoord
 
 from coolest.template.json import JSONSerializer
-from coolest.api.coordinates import Coordinates
 
 
 def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
@@ -34,16 +33,29 @@ def get_coolest_object(file_path, verbose=False, **kwargs_serializer):
 
 
 def get_coordinates(coolest_object, offset_ra=0., offset_dec=0.):
+    from coolest.api.coordinates import Coordinates  # prevents circular import errors
     nx, ny = coolest_object.observation.pixels.shape
     pix_scl = coolest_object.instrument.pixel_size
     half_size_x, half_size_y = nx * pix_scl / 2., ny * pix_scl / 2.
     ra_at_xy_0  = - half_size_x + pix_scl / 2.  # position of x=0 with respect to bottom left pixel
     dec_at_xy_0 = - half_size_y + pix_scl / 2.  # position of y=0 with respect to bottom left pixel
     matrix_pix2ang = pix_scl * np.eye(2)  # transformation matrix pixel <-> angle
-    coordinates = Coordinates(nx, ny, matrix_pixel_to_radec=matrix_pix2ang,
-                              ra_at_xy_0=ra_at_xy_0 + offset_ra, 
-                              dec_at_xy_0=dec_at_xy_0 + offset_dec)
-    return coordinates
+    return Coordinates(nx, ny, matrix_pixel_to_radec=matrix_pix2ang,
+                       ra_at_xy_0=ra_at_xy_0 + offset_ra, 
+                       dec_at_xy_0=dec_at_xy_0 + offset_dec)
+
+
+def get_coordinates_from_regular_grid(field_of_view_x, field_of_view_y, num_pix_x, num_pix_y):
+    from coolest.api.coordinates import Coordinates  # prevents circular import errors
+    pix_scl_x = np.abs(field_of_view_x[0] - field_of_view_x[1]) / num_pix_x
+    pix_scl_y = np.abs(field_of_view_y[0] - field_of_view_y[1]) / num_pix_y
+    matrix_pix2ang = np.array([[pix_scl_x, 0.], [0., pix_scl_y]])
+    ra_at_xy_0  = field_of_view_x[0] + pix_scl_x / 2.
+    dec_at_xy_0 = field_of_view_y[0] + pix_scl_y / 2.
+    return Coordinates(
+        num_pix_x, num_pix_y, matrix_pixel_to_radec=matrix_pix2ang,
+        ra_at_xy_0=ra_at_xy_0, dec_at_xy_0=dec_at_xy_0,
+    )
 
 
 def get_coordinates_set(coolest_file_list, reference=0):
