@@ -97,28 +97,16 @@ class PixelatedRegularGrid(BaseLightProfile):
         return pixels
 
     def evaluate_surface_brightness(self, x, y, pixels=None):
-        extent = self.get_extent()
-        # TODO: check extent is correct
-        points = (
-            np.linspace(extent[2], extent[3], self._ny, endpoint=True),
-            np.linspace(extent[0], extent[1], self._nx, endpoint=True),
-        )
-        values = pixels
-        interp = util.CartesianGridInterpolator(points, values, 
-                                                method=self._interp_method)
+        coordinates = self.get_coordinates()
+        points = coordinates.pixel_axes
+        interp = util.CartesianGridInterpolator(points, pixels, method=self._interp_method)
         points_eval = np.array([y.ravel(), x.ravel()]).T
-        values_eval = interp(points_eval).reshape(*x.shape)
-        return values_eval
+        pixels_eval = interp(points_eval).reshape(*x.shape)
+        return pixels_eval
 
     def get_extent(self):
-        half_pix_x = self._pix_scl_x / 2.
-        half_pix_y = self._pix_scl_y / 2.
-        return [
-            self._fov_x[0] - half_pix_x, 
-            self._fov_x[1] + half_pix_x, 
-            self._fov_y[0] - half_pix_y, 
-            self._fov_y[1] + half_pix_y
-        ]
+        coordinates = self.get_coordinates()
+        return coordinates.plt_extent
 
     def get_coordinates(self):
         from coolest.api.util import get_coordinates_from_regular_grid
