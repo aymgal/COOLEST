@@ -21,9 +21,24 @@ class BaseComposableModel(object):
     def __init__(self, model_type, coolest_object, coolest_directory=None, 
                  entity_selection=None, profile_selection=None):
         if entity_selection is None:
-            entity_selection = [0]
+            # finds the first entity that has a light profile
+            entity_selection = None
+            for i, entity in enumerate(coolest_object.lensing_entities):
+                if model_type == 'light_model' \
+                    and entity.type == 'galaxy' \
+                    and len(entity.light_model) > 0:
+                    entity_selection = [i]
+                    break
+                elif model_type == 'mass_model' \
+                    and len(entity.mass_model) > 0:
+                    entity_selection = [i]
+                    break
+            if entity_selection is None:
+                raise ValueError("No lensing entity with light profiles have been found")
+            else:
+                logging.info(f"Found valid profile for lensing entity (index {i}) for model type '{model_type}'")
         if profile_selection is None:
-            profile_selection='all'
+            profile_selection = 'all'
         entities = coolest_object.lensing_entities
         self.directory = coolest_directory
         self.profile_list, self.param_list, self.info_list \
@@ -126,12 +141,10 @@ class ComposableLightModel(BaseComposableModel):
     Given a COOLEST object, evaluates a selection of light profiles.
     """
 
-    def __init__(self, coolest_object, coolest_directory=None, 
-                 entity_selection=None, profile_selection=None):
+    def __init__(self, coolest_object, coolest_directory=None, **kwargs_selection):
         super().__init__('light_model', coolest_object, 
                          coolest_directory=coolest_directory,
-                         entity_selection=entity_selection,
-                         profile_selection=profile_selection)
+                         **kwargs_selection)
         pixel_size = coolest_object.instrument.pixel_size
         if pixel_size is None:
             self.pixel_area = 1.
@@ -167,12 +180,10 @@ class ComposableMassModel(BaseComposableModel):
     Given a COOLEST object, evaluates a selection of light profiles.
     """
 
-    def __init__(self, coolest_object, coolest_directory=None, 
-                 entity_selection=None, profile_selection=None):
+    def __init__(self, coolest_object, coolest_directory=None, **kwargs_selection):
         super().__init__('mass_model', coolest_object, 
                          coolest_directory=coolest_directory,
-                         entity_selection=entity_selection,
-                         profile_selection=profile_selection)
+                         **kwargs_selection)
 
     def evaluate_deflection(self, x, y):
         """Evaluates the surface brightness at given coordinates"""

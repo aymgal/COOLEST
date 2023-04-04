@@ -12,18 +12,17 @@ class Analysis(object):
     Handles computation of model-independent quantities and other analysis computations
     """
 
-    def __init__(self, coolest_object, coolest_directory,
-                 coordinates=None, **kwargs_selection):
+    def __init__(self, coolest_object, coolest_directory, supersampling=1):
         self.coolest = coolest_object
-        if coordinates is None:
-            coordinates = util.get_coordinates(self.coolest)
-        self.coordinates = coordinates
-        # select the mass profiles to consider
-        self.mass_model = ComposableMassModel(self.coolest, coolest_directory, **kwargs_selection)
+        self.coolest_dir = coolest_directory
+        base_coordinates = util.get_coordinates(self.coolest)
+        if supersampling > 1:
+            self.coordinates = base_coordinates.create_new_coordinates(pixel_scale_factor=1./supersampling)
+        else:
+            self.coordinates = base_coordinates
 
-    def effective_einstein_radius(self, center=None, 
-                                  initial_guess=1, initial_delta_pix=10, 
-                                  n_iter=5, return_accuracy=False):
+    def effective_einstein_radius(self, center=None, initial_guess=1, initial_delta_pix=10, 
+                                  n_iter=5, return_accuracy=False, **kwargs_selection):
         """
         Calculates Einstein radius for a kappa grid starting from an initial guess with large step size and zeroing in from there.
         Uses the grid from the create_kappa_image which is built from the coolest file.
@@ -34,13 +33,17 @@ class Analysis(object):
         :param n_iter: int; number of iterations, default = 5
         :param return_accuracy: bool; if True, return estimate of accuracy as well as R_Ein value
         """
+        if kwargs_selection is None:
+            kwargs_selection = {}
+        mass_model = ComposableMassModel(self.coolest, self.coolest_dir, **kwargs_selection)
+
         # get an image of the convergence
         x, y = self.coordinates.pixel_coordinates
-        kappa_image = self.mass_model.evaluate_convergence(x, y)
+        kappa_image = mass_model.evaluate_convergence(x, y)
 
         # select a center
         if center is None:
-            center_x, center_y = self.mass_model.estimate_center()
+            center_x, center_y = mass_model.estimate_center()
         else:
             center_x, center_y = center
 
@@ -115,8 +118,14 @@ class Analysis(object):
         else:
             return r_Ein
 
-    def effective_radial_slope(self):
+    def effective_radial_slope(self, **kwargs_selection):
+        if kwargs_selection is None:
+            kwargs_selection = {}
+        mass_model = ComposableMassModel(self.coolest, self.coolest_dir, **kwargs_selection)
         raise NotImplementedError
 
-    def half_light_radius(self):
+    def half_light_radius(self, **kwargs_selection):
+        if kwargs_selection is None:
+            kwargs_selection = {}
+        light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
         raise NotImplementedError
