@@ -4,11 +4,16 @@ __author__ = 'aymgal', 'lynevdv', 'Giorgos Vernardos'
 import numpy as np
 from scipy import interpolate
 
+from coolest.template.classes.profiles.light import (Sersic as TemplateSersic,
+                                                     Shapelets as TemplateShapelets,
+                                                     PixelatedRegularGrid as TemplatePixelatedRegularGrid,
+                                                     IrregularGrid as TemplateIrregularGrid)
 from coolest.api.profiles import util
 
 
 class BaseLightProfile(object):
 
+    _template_class = None
     _units = None
 
     def surface_brightness(self, **params):
@@ -33,12 +38,27 @@ class BaseLightProfile(object):
             raise ValueError(f"Unsupported units type {self._units}")
         return self._units
 
+    @property
+    def template_class(self):
+        if self._template_class is None:
+            raise RuntimeError("No template class has been set by mass profile class")
+        return self._template_class
+
+    @property
+    def type(self):
+        return self.template_class.type
+
+    @property
+    def parameter_names(self):
+        return list(self.template_class.parameters.keys())
+
 
 class Sersic(BaseLightProfile):
 
     """Elliptical Sersic"""
 
     _units = 'flux_per_ang'
+    _template_class = TemplateSersic()
 
     def surface_brightness(self, I_eff=1., theta_eff=2., n=4., phi=0., q=1., center_x=0., center_y=0.):
         raise ValueError("Sersic surface brightness can only be evaluated")
@@ -56,6 +76,7 @@ class Shapelets(BaseLightProfile):
     """Elliptical Sersic"""
 
     _units = 'flux_per_ang'
+    _template_class = TemplateShapelets()
 
     def __init__(self):
         from lenstronomy.LightModel.Profiles.shapelets import ShapeletSet
@@ -76,6 +97,7 @@ class PixelatedRegularGrid(BaseLightProfile):
     """Pixelated profile on a regular grid"""
 
     _units = 'flux_per_pix'
+    _template_class = TemplatePixelatedRegularGrid()
 
     def __init__(self, field_of_view_x, field_of_view_y, num_pix_x, num_pix_y,
                  interpolation_method='cubic'):
@@ -118,6 +140,7 @@ class IrregularGrid(BaseLightProfile):
     """Pixelated profile on an irregular grid of points {x, y, z}"""
 
     _units = 'flux_per_pix'
+    _template_class = TemplateIrregularGrid()
 
     def __init__(self, field_of_view_x, field_of_view_y, num_pix,
                  interpolation_method='cubic'):

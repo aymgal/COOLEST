@@ -173,6 +173,8 @@ class JSONSerializer(object):
             model_out = MassModel(*profile_types)
         else:
             raise ValueError("The `model_type` can only be 'light_model' or 'mass_model'")
+        if len(model_out) > 0:
+            print("model_out", model_out, model_out[0].type)
         return model_out
     
     def _update_parameters(self, entity_in, entity_out):

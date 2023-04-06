@@ -21,7 +21,7 @@ class BaseComposableModel(object):
     def __init__(self, model_type, coolest_object, coolest_directory=None, 
                  entity_selection=None, profile_selection=None):
         if entity_selection is None:
-            # finds the first entity that has a light profile
+            # finds the first entity that has a 'model_type' profile
             entity_selection = None
             for i, entity in enumerate(coolest_object.lensing_entities):
                 if model_type == 'light_model' \
