@@ -2,6 +2,7 @@ __author__ = 'aymgal'
 
 import numpy as np
 from astropy.coordinates import SkyCoord
+import warnings
 
 from coolest.api.composable_models import *
 from coolest.api import util
@@ -192,6 +193,17 @@ class Analysis(object):
             center_x, center_y = light_model.estimate_center()
         else:
             center_x, center_y = center
+        
+        #if limit of integration exceeds FoV, raise warning
+        x_FoV=self.coolest.observation.pixels.field_of_view_x
+        y_FoV=self.coolest.observation.pixels.field_of_view_y
+        out_of_FoV=False
+        if center_x - outer_radius < x_FoV[0] or center_x + outer_radius > x_FoV[1]:
+            out_of_FoV=True
+        if center_y - outer_radius < y_FoV[0] or center_y + outer_radius > y_FoV[1]:
+            out_of_FoV=True
+        if out_of_FoV is True:
+            warnings.warn("Warning: Outer limit of integration exceeds FoV; effective radius may not be accurate.")
             
         #initialize
         grid_res=np.abs(x[0,0]-x[0,1])
