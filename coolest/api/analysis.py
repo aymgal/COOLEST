@@ -168,8 +168,9 @@ class Analysis(object):
             closest_r = self.find_nearest(r_vec,r_eval) #just takes closest r. Could rebuild it to interpolate.
             return slope[r_vec==closest_r]
             
-    def half_light_radius(self, outer_radius=10, center=None, initial_guess=1, initial_delta_pix=10, 
-                                  n_iter=5,**kwargs_selection):
+    def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
+                               initial_guess=1, initial_delta_pix=10, 
+                               n_iter=5, **kwargs_selection):
         """
         Numerically calculates effective radius from pixelated surface brightness, using outer_radius as the limit of integration.
         Not strictly equivalent to effective radius unless outer radius is infinite, which would require an infinite grid and cannot be done with pixelated profiles
@@ -185,8 +186,12 @@ class Analysis(object):
             kwargs_selection = {}
         light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
         # get an image of the convergence
-        x, y = self.coordinates.pixel_coordinates
+        if coordinates is None:
+            x, y = self.coordinates.pixel_coordinates
+        else:
+            x, y = coordinates.pixel_coordinates
         light_image = light_model.evaluate_surface_brightness(x, y)
+        light_image[np.isnan(light_image)] = 0.
 
         # select a center
         if center is None:
