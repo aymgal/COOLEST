@@ -41,6 +41,21 @@ class ModelPlotter(object):
         #cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
         #self.cmap_flux_mod = ListedColormap(cmap_colors)
 
+    def plot_data_image(self, ax, title=None, norm=None, cmap=None, neg_values_as_bad=False):
+        if cmap is None:
+            cmap = self.cmap_flux
+        coordinates = util.get_coordinates(self.coolest)
+        extent = coordinates.plt_extent
+        image = self.coolest.observation.pixels.get_pixels(directory=self._directory)
+        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
+                                cmap=cmap,
+                                neg_values_as_bad=neg_values_as_bad, 
+                                norm=norm)
+        cb.set_label("flux")
+        if title is not None:
+            ax.set_title(title)
+        return image
+
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
                                 extent=None, norm=None, cmap=None, neg_values_as_bad=True,
                                 plot_points_irreg=False, kwargs_light=None):
@@ -52,28 +67,27 @@ class ModelPlotter(object):
         if coordinates is not None:
             x, y = coordinates.pixel_coordinates
             image = light_model.evaluate_surface_brightness(x, y)
-            extent = coordinates.extent
-            self._plot_regular_grid(ax, image, extent=extent, 
-                                    cmap=cmap,
-                                    neg_values_as_bad=neg_values_as_bad, 
-                                    norm=norm)
+            extent = coordinates.plt_extent
+            ax, cb = self._plot_regular_grid(ax, image, extent=extent, cmap=cmap,
+                                             neg_values_as_bad=neg_values_as_bad, 
+                                             norm=norm)
         else:
             values, extent_model, coordinates = light_model.surface_brightness(return_extra=True)
             if extent is None:
                 extent = extent_model
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
-                self._plot_regular_grid(ax, image, extent=extent, 
+                ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
                                         cmap=cmap, 
                                         neg_values_as_bad=neg_values_as_bad,
                                         norm=norm)
             else:
                 points = values
-                self._plot_irregular_grid(ax, points, extent, norm=norm, 
-                                          cmap=cmap, 
-                                          neg_values_as_bad=neg_values_as_bad,
-                                          plot_points=plot_points_irreg)
+                ax, cb = self._plot_irregular_grid(ax, points, extent, norm=norm, cmap=cmap, 
+                                                   neg_values_as_bad=neg_values_as_bad,
+                                                   plot_points=plot_points_irreg)
                 image = None
+        cb.set_label("flux")
         if title is not None:
             ax.set_title(title)
         return image, coordinates
@@ -88,17 +102,18 @@ class ModelPlotter(object):
                                          kwargs_selection_lens_mass=kwargs_lens_mass)
         image, coordinates = lens_model.model_image(supersampling=supersampling, 
                                                     convolved=convolved)
-        extent = coordinates.extent
-        self._plot_regular_grid(ax, image, extent=extent, 
+        extent = coordinates.plt_extent
+        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm)
+        cb.set_label("flux")
         if title is not None:
             ax.set_title(title)
         return image
 
     def plot_model_residuals(self, ax, supersampling=5, mask=None, title=None,
-                             norm=None, cmap=None, 
+                             norm=None, cmap=None, add_chi2_label=False, chi2_fontsize=12,
                              kwargs_source=None, kwargs_lens_mass=None):
         if cmap is None:
             cmap = self.cmap_res
@@ -109,11 +124,18 @@ class ModelPlotter(object):
                                          kwargs_selection_lens_mass=kwargs_lens_mass)
         image, coordinates = lens_model.model_residuals(supersampling=supersampling, 
                                                         mask=mask)
-        extent = coordinates.extent
-        self._plot_regular_grid(ax, image, extent=extent, 
+        extent = coordinates.plt_extent
+        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=False, 
                                 norm=norm)
+        cb.set_label("(data $-$ model) / noise")
+        if add_chi2_label is True:
+            num_constraints = np.size(image) if mask is None else np.sum(mask)
+            red_chi2 = np.sum(image**2) / num_constraints
+            ax.text(0.05, 0.05, r'$\chi^2_\nu$='+f'{red_chi2:.2f}', color='black', alpha=1, 
+                    fontsize=chi2_fontsize, va='bottom', ha='left', transform=ax.transAxes,
+                    bbox={'color': 'white', 'alpha': 0.6})
         if title is not None:
             ax.set_title(title)
         return image
@@ -128,13 +150,14 @@ class ModelPlotter(object):
         if cmap is None:
             cmap = self.cmap_conv
         coordinates = util.get_coordinates(self.coolest)
-        extent = coordinates.extent
+        extent = coordinates.plt_extent
         x, y = coordinates.pixel_coordinates
         image = mass_model.evaluate_convergence(x, y)
-        self._plot_regular_grid(ax, image, extent=extent, 
+        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm)
+        cb.set_label(r"$\kappa$")
         if title is not None:
             ax.set_title(title)
         return image
@@ -151,13 +174,14 @@ class ModelPlotter(object):
         if norm is None:
             norm = Normalize(-10, 10)
         coordinates = util.get_coordinates(self.coolest)
-        extent = coordinates.extent
+        extent = coordinates.plt_extent
         x, y = coordinates.pixel_coordinates
         image = mass_model.evaluate_magnification(x, y)
-        self._plot_regular_grid(ax, image, extent=extent, 
+        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm)
+        cb.set_label(r"$\mu$")
         if title is not None:
             ax.set_title(title)
         return image
@@ -172,8 +196,11 @@ class ModelPlotter(object):
         if neg_values_as_bad:
             image[image < 0] = np.nan
         im = ax.imshow(image, **imshow_kwargs)
-        plut.nice_colorbar(im)
-        return ax
+        im.set_rasterized(True)
+        cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+        ax.xaxis.set_major_locator(plt.MaxNLocator(3))
+        ax.yaxis.set_major_locator(plt.MaxNLocator(3))
+        return ax, cb
 
     @staticmethod
     def _plot_irregular_grid(ax, points, extent, neg_values_as_bad=True,
@@ -184,10 +211,12 @@ class ModelPlotter(object):
         ax.set_xlim(extent[0], extent[1])
         ax.set_ylim(extent[2], extent[3])
         ax.set_aspect('equal', 'box')
-        plut.nice_colorbar(m, ax=ax)
+        ax.xaxis.set_major_locator(plt.MaxNLocator(3))
+        ax.yaxis.set_major_locator(plt.MaxNLocator(3))
+        cb = plut.nice_colorbar(m, ax=ax, max_nbins=4)
         if plot_points:
             ax.scatter(x, y, s=5, c='white', marker='.', alpha=0.4, zorder=2)
-        return ax
+        return ax, cb
 
 
 class MultiModelPlotter(object):
@@ -205,6 +234,9 @@ class MultiModelPlotter(object):
 
     def plot_surface_brightness(self, axes, titles=None, **kwargs):
         return self._plot_light_multi('plot_surface_brightness', "surf. brightness", axes, titles=titles, **kwargs)
+
+    def plot_data_image(self, axes, titles=None, **kwargs):
+        return self._plot_data_multi("data", axes, titles=titles, **kwargs)
 
     def plot_model_image(self, axes, titles=None, **kwargs):
         return self._plot_lens_model_multi('plot_model_image', "model", axes, titles=titles, **kwargs)
@@ -262,6 +294,18 @@ class MultiModelPlotter(object):
             if 'kwargs_lens_mass' in kwargs:
                 kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
             image = getattr(plotter, method_name)(ax, title=titles[i], **kwargs_)
+            image_list.append(image)
+        return image_list
+
+    def _plot_data_multi(self, default_title, axes, titles=None, **kwargs):
+        assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
+        if titles is None:
+            titles = self.num_models * [default_title]
+        image_list = []
+        for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
+            if ax is None:
+                continue
+            image = getattr(plotter, 'plot_data_image')(ax, title=titles[i], **kwargs)
             image_list.append(image)
         return image_list
 
