@@ -1,3 +1,4 @@
+---
 title: 'COOLEST: COde-independent Organized LEns STandard'
 tags:
   - Python
@@ -23,24 +24,49 @@ James-Franck-Straße 1, 85748 Garching, Germany
    index: 2
  - name: Independent Researcher, Country
    index: 3
-date: 13 August 2017
+date: 21 April 2023
 bibliography: paper.bib
-
-# Optional fields if submitting to a AAS journal too, see this blog post:
-# https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
-aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
-aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
 # Summary
 
-Write the abstract.
+The current cosmological model $\Lambda$CDM is more and more challenged by a number of observations of the Universe. In particular, observations seem to favor different properties of dark matter and dark energy than previously thought. Strong gravitational lensing (SGL) is one of the best observational tools to address these challenges, because it reveals the distribution of any type of matter and can be used to constrain the properties of dark energy.
+
+Extracting information from SGL data requires the careful analysis of images of gravitational lenses, a process referred to as _lens modeling_. Over the past twenty years, several lens modeling codes have been developed and used in published works. Unfortunately, there is currently no efficient and systematic way to access these published results and use them directly for new studies, which slows down new research and causes a waste of research time. The reason is simple: these modeling codes being based on different assumptions and conventions, bridging the gap between them is a challenging task.
+
+Here we introduce COOLEST---the COde-independent Organized LEnsing STandard---to the lensing community, which allows researchers to, _independently of the original modeling code_:
+
+- store lens models in a JSON format that is easy to read and manipulate, and lightweight;
+- group together all necessary data, model and inference files (as images and array in FITS and pickled formats);
+- compute a set of key lensing quantities in a model-independent way;
+- generate publication-ready figures via an Python API to compare models side-to-side.
+
+Any lens modeling code can adhere to this standard via a small interface that converts code-dependent quantities to the COOLEST conventions. The documentation and all Python routines incorporated in the API are meant to keep development time to a minimum for code developers.
+
+![Figure generated with the Plotting API of COOLEST, comparing lens models obtained with three different modeling codes (numbered 1 to 3). Top row, from left to right: simulated observation of a strongly lensed source, best-fit models produced by two different codes (using different field of views), model residuals from model 1. Bottom row: source models 1 and 2 evaluated at the same sky coordinates, source model 2 on its original (regular) pixelated grid, and source model 3 on its original (irregular) pixelated grid. \label{fig:example_plotting_api}](coolest_plot_example.png)
+
 
 # Statement of need
 
-Explain why the new software is needed in the field.
+In SGL studies, th lens modeling step is often the most time-consuming. The complexity of a lens model primarily depends on the resolution of the observed lens images and its signal-to-noise (S/N). While low-resolution and noisy images can be modeled with simply parametrized functions ($\sim 10^1$ parameters), high-resolution and deep images require much more complexity ($\sim 10^2$ to $10^4$ parameters) and many otimization steps before successfully modeling the observation. Moreover, different scientific goals do not warrant the same modeling effort, which naturally influences model complexity. Other types of observation (e.g., in radio wavelengths) are not directly obtained as images and thus require extra lens modeling steps.
 
-# Mathematics
+Such a large variety of data sets and scientific objectives have led to the development of different lens modeling codes. These codes may be written in different languages and generally based on fundamentally different assumptions, some are not open-source, and some may not be well-documented. Consequently, when a new SGL study gets published, it is very challending and time-consuming (sometimes impossible) to use these new results to start a new lens modeling analysis, should it be with the same code or with a different code that is better suited to the new objective. Moreover, comparing lens models with previously published models is as challening, exactly for the same reasons. So far, there is no standard way to describe, store and share lens modeling products to accelerate SGL research.
+
+This is the motivation behind COOLEST: since all lens modeling products follow same theoretical principles, we propose a standard based on a set of precise conventions such that lens models can be described _independently of the original modeling code_. Important lens modeling products typically include the lens mass distribution, the unconvolved surface brightness of both the lens and the (unlensed) source galaxies, as well as a model of the point spread function of the instrument. COOLEST offers a simple way to describe a lens model: a _single directory_ which contains a JSON file that stores most of the observed data and lens model information, and optionally links to external files (with .fits and .pkl extenstions) that contain observational data, model images, and inference data such as MCMC chains.
+
+
+
+# Content of the standard
+
+COOLEST is composed of three distinct building blocks:
+
+- Conventions: a document summarizing the _fixed_ conventions adopted by the standard;
+- Template system (`coolest.template`): a Python interface to create, store and manipulate COOLEST template and external files;
+- Analysis & plotting API (`coolest.api`): a Python interface to compute key lensing quantities and generate different plots.
+
+
+
+<!-- # Mathematics
 
 Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
 
@@ -55,9 +81,9 @@ You can also use plain \LaTeX for equations
 \begin{equation}\label{eq:fourier}
 \hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
 \end{equation}
-and refer to \autoref{eq:fourier} from text.
+and refer to \autoref{eq:fourier} from text. -->
 
-# Citations
+<!-- # Citations
 
 Citations to entries in paper.bib should be in
 [rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
@@ -78,11 +104,27 @@ Figures can be included like this:
 and referenced from text using \autoref{fig:example}.
 
 Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
+![Caption for example figure.](figure.png){ width=20% } -->
+
+
+# Related software
+
+Lens modeling codes (ADD REFERENCES):
+
+- `Lenstronomy`
+- `PyAutoLens`
+- `Herculens`
+- `VKL`
+- `giga-lens`
+
+Lens model databases:
+
+- ???
+
 
 # Acknowledgements
 
-We acknowledge contributions from XXX.
+The authors thank XXX for useful discussion. This work is supported by the Swiss National Science Foundation (SNSF, Post.Doc Mobility grant XXX). XXXXXX
 
 # References
 
