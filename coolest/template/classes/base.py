@@ -34,9 +34,16 @@ def filter_dict(dictionary, exclude_keys=None):
 
 
 class APIBaseObject(object):
-    """Base class for all API objects"""
+    """Abstract class on which all COOLEST template classes are based.
+    This handles the filtering of attributes and automatic documentation attributes.
+
+    
+    """
 
     def __init__(self):
+        """Creates a `documentation` attribute based on the docstring 
+        of the child class.
+        """
         #self.type, self._api_inheritance = get_class_names(self)
         if not hasattr(self, 'documentation') or self.documentation is None:
             if self.__doc__ is not None:
@@ -46,5 +53,16 @@ class APIBaseObject(object):
         # self.fields = Fields(self.__init__)
         
     def to_JSON(self, indent=2, exclude_keys=None):
+        """Returns a JSON representation of `self`, filtering out specific attributes
+        based on their name.
+
+        Parameters
+        ----------
+        indent : int, optional
+            Indentation to be used in the JSON representation, by default 2
+        exclude_keys : list, optional
+            List of attribute names to be excluded from the JSON representation
+            (see `standard` submodule for examples), by default None
+        """
         return json.dumps(self, default=lambda o: filter_dict(o.__dict__, exclude_keys), 
                           sort_keys=True, indent=indent)

@@ -22,20 +22,58 @@ __all__ = [
 
 
 class DefinitionRange(APIBaseObject):
+    """Defines the interval over which a parameter is defined.
 
+    Parameters
+    ----------
+    min_value : (int, float), optional
+        Lower bound of the interval (inclusive), by default None
+    max_value : (int, float), optional
+        Upper bound of the interval (inclusive), by default None
+    """
+    
     def __init__(self, min_value=None, max_value=None):
         self.min_value = min_value
         self.max_value = max_value
 
 
 class PointEstimate(APIBaseObject):
+    """Define a point in the parameter space.
 
+    Parameters
+    ----------
+    value : float, optional
+        Value of the parameter, by default None
+    """
+    
     def __init__(self, value=None):
         self.value = value
 
 
 class Parameter(APIBaseObject):
+    """Base class of a generic model parameter.
 
+    Parameters
+    ----------
+    documentation : str
+        Short description of the parameter.
+    definition_range : DefinitionRange, optional
+        Interval over which the parameter is defined, by default None
+    units : str, optional
+        Unit of the parameter, if any, by default None
+    fixed : bool, optional
+        If True, the parameter is considered fixed 
+        (i.e. should not be, or has not be optimized), by default False
+    point_estimate : PointEstimate, optional
+        Point-estimate value of the parameter, by default None
+    posterior_stats : PosteriorStatistics, optional
+        Summary statistics of the marginalized posterior 
+        distribution of the parameter, by default None
+    prior : Prior, optional
+        Prior assigned the parameter, if any, by default None
+    latex_str : str, optional
+        LaTeX representation of the parameter, by default None
+    """
     def __init__(self, 
                  documentation: str, 
                  definition_range: DefinitionRange = None,
@@ -113,26 +151,33 @@ class Parameter(APIBaseObject):
 
 
 class NonLinearParameter(Parameter):
+    """Define a non-linear parameter of a lens model
+    
+    Warning: this class may be removed in the future.
+    """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
 class LinearParameter(Parameter):
+    """Define a hyper-parameter of a lens model
+    
+    Warning: this class may be removed in the future."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
 class HyperParameter(Parameter):
-    """Typically for pixelated profiles"""
+    """Define a hyper-parameter of a model"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)        
 
 
 class ParameterSet(Parameter):
-    """Typically for pixelated profiles"""
+    """Typically for analytical basis sets"""
 
     def __init__(self, *args, **kwargs) -> None:
         if 'point_estimate' not in kwargs or kwargs['point_estimate'] is None:
@@ -144,7 +189,7 @@ class ParameterSet(Parameter):
 
 
 class LinearParameterSet(ParameterSet):
-    """Typically for pixelated profiles"""
+    """Typically for analytical basis sets"""
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -163,8 +208,6 @@ class PixelatedRegularGridParameter(PixelatedRegularGrid):
     def __init__(self, documentation, **kwargs_grid) -> None:
         self.documentation = documentation
         super().__init__(**kwargs_grid)
-
-    # def _set_grid()
 
 
 class IrregularGridParameter(IrregularGrid):
