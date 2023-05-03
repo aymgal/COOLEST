@@ -4,3 +4,4 @@ sphinx-autoapi
 sphinx-autobuild
 sphinx-book-theme
 sphinx-design
+myst-nb
