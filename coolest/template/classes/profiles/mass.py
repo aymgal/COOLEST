@@ -21,7 +21,7 @@ SUPPORTED_CHOICES = __all__
 
 
 class SIE(AnalyticalProfile):
-    """Singular isothermal elliptical mass density profile.
+    """Singular isothermal ellipsoidal profile.
 
     This profile is described by the following parameters:
 
@@ -55,7 +55,17 @@ class SIE(AnalyticalProfile):
 
 
 class NIE(AnalyticalProfile):
-    """Non-singular isothermal elliptical mass density profile.
+    """Non-singular isothermal ellipsoidal profile.
+
+    This profile is described by the following parameters:
+
+    - 'theta_E': Einstein radius
+    - 'r_core: core radius
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+
     """
     
     def __init__(self):
@@ -83,7 +93,17 @@ class NIE(AnalyticalProfile):
 
 
 class PEMD(AnalyticalProfile):
-    """Singular isothermal elliptical mass density profile.
+    """Power-law elliptical mass density profile, 
+    also called the Elliptical Power-law profile (EPL).
+
+    This profile is described by the following parameters:
+
+    - 'gamma': logarithmic radial slope
+    - 'theta_E': Einstein radius
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
     """
     
     def __init__(self):
@@ -111,7 +131,17 @@ class PEMD(AnalyticalProfile):
 
 
 class SPEMD(AnalyticalProfile):
-    """Softened powerlaw elliptical mass distribution
+    """Softened power-law elliptical mass density profile.
+
+    This profile is described by the following parameters:
+
+    - 'gamma': negative logarithmic radial slope
+    - 'theta_E': Einstein radius
+    - 'r_core': core radius
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
     """
     
     def __init__(self):
@@ -142,6 +172,17 @@ class SPEMD(AnalyticalProfile):
 
 
 class NFW(AnalyticalProfile):
+    """Navarro-Frenk-White mass profile.
+
+    This profile is described by the following parameters:
+
+    - 'r_s': transition radis from logarithmic radial slope -1 to -3 
+    - 'rho_0': characteristic mass density
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+    """
     
     def __init__(self):
         parameters = {
@@ -168,6 +209,18 @@ class NFW(AnalyticalProfile):
 
 
 class Chameleon(AnalyticalProfile):
+    """'Chameleon' mass profile defined as the difference between 
+    two concentric NIE profiles.
+
+    This profile is described by the following parameters:
+    - 'b': normalization of the profile
+    - 's_c': core radius of the innver NIE
+    - 's_t': core radius of the outer NIE
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+    """
     
     def __init__(self):
         parameters = {
@@ -197,7 +250,12 @@ class Chameleon(AnalyticalProfile):
 
 
 class ExternalShear(AnalyticalProfile):
-    "External shear defined with a strength and orientation"""
+    """External shear defined with a strength and orientation.
+    
+    This profile is described by the following parameters:
+    - 'gamma_ext': strength of the shear field
+    - 'phi_ext': orientation of the shear field
+    """
     
     def __init__(self):
         parameters = {
@@ -212,6 +270,11 @@ class ExternalShear(AnalyticalProfile):
 
 
 class PixelatedRegularGridPotential(Profile):
+    """Lens potential defined on a grid of regular pixels.
+
+    This profile is described by the following parameters:
+    - 'pixels': 2D array of pixel values
+    """
 
     def __init__(self):
         parameters = {

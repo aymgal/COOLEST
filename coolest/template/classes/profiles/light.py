@@ -24,6 +24,15 @@ SUPPORTED_CHOICES = __all__
 
 class Sersic(AnalyticalProfile):
     """Surface brightness described by an elliptical Sérsic profile.
+
+    This profile is described by the following parameters:
+    - 'I_eff': amplitude at the effective radius
+    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius
+    - 'n': Sersic index
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
     """
     
     def __init__(self):
@@ -56,6 +65,15 @@ class Sersic(AnalyticalProfile):
 class Chameleon(AnalyticalProfile):
     """Surface brightness described by an elliptical Chameleon profile,
     defined as the difference between two NIE profiles.
+
+    This profile is described by the following parameters:
+    - 'A': normalization of the profile
+    - 's_c': core radius of the innver NIE
+    - 's_t': core radius of the outer NIE
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
     """
     
     def __init__(self):
@@ -113,6 +131,11 @@ class Shapelets(AnalyticalProfile):
         
 class LensedPS(AnalyticalProfile):
     """Surface brightness of a set of point sources after being lensed. 
+
+    This profile is described by the following parameters:
+    - 'ra_list': list of coordinates along the x axis
+    - 'dec_list': list of coordinates along the y axis
+    - 'amps': list of amplitudes
     """
 
     def __init__(self):
@@ -133,6 +156,9 @@ class LensedPS(AnalyticalProfile):
 
 class Uniform(AnalyticalProfile):
     """Uniform surface brightness profile.
+
+    This profile is described by the following parameters:
+    - 'A': amplitude
     """
     
     def __init__(self):
@@ -147,6 +173,9 @@ class Uniform(AnalyticalProfile):
 
 class PixelatedRegularGrid(Profile):
     """Surface brightness described on a regular grid of pixels.
+
+    This profile is described by the following parameters:
+    - 'pixels': 2D array of pixel values
     """
 
     def __init__(self):
@@ -158,6 +187,9 @@ class PixelatedRegularGrid(Profile):
 
 class IrregularGrid(Profile):
     """Surface brightness described on an irregular grid of pixels.
+
+    This profile is described by the following parameters:
+    - 'pixels': set of 2D coordinates and associated pixel values (x, y, z)
     """
 
     def __init__(self):
