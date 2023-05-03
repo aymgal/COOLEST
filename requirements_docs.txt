@@ -1,0 +1,6 @@
+-e ./
+sphinx
+sphinx-autoapi
+sphinx-autobuild
+sphinx-book-theme
+sphinx-design
