@@ -213,6 +213,7 @@ class Chameleon(AnalyticalProfile):
     two concentric NIE profiles.
 
     This profile is described by the following parameters:
+    
     - 'b': normalization of the profile
     - 's_c': core radius of the innver NIE
     - 's_t': core radius of the outer NIE
@@ -253,6 +254,7 @@ class ExternalShear(AnalyticalProfile):
     """External shear defined with a strength and orientation.
     
     This profile is described by the following parameters:
+
     - 'gamma_ext': strength of the shear field
     - 'phi_ext': orientation of the shear field
     """
@@ -273,6 +275,7 @@ class PixelatedRegularGridPotential(Profile):
     """Lens potential defined on a grid of regular pixels.
 
     This profile is described by the following parameters:
+
     - 'pixels': 2D array of pixel values
     """
 

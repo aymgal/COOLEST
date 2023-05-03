@@ -26,6 +26,7 @@ class Sersic(AnalyticalProfile):
     """Surface brightness described by an elliptical Sérsic profile.
 
     This profile is described by the following parameters:
+    
     - 'I_eff': amplitude at the effective radius
     - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius
     - 'n': Sersic index
@@ -67,6 +68,7 @@ class Chameleon(AnalyticalProfile):
     defined as the difference between two NIE profiles.
 
     This profile is described by the following parameters:
+    
     - 'A': normalization of the profile
     - 's_c': core radius of the innver NIE
     - 's_t': core radius of the outer NIE
@@ -133,6 +135,7 @@ class LensedPS(AnalyticalProfile):
     """Surface brightness of a set of point sources after being lensed. 
 
     This profile is described by the following parameters:
+    
     - 'ra_list': list of coordinates along the x axis
     - 'dec_list': list of coordinates along the y axis
     - 'amps': list of amplitudes
@@ -158,6 +161,7 @@ class Uniform(AnalyticalProfile):
     """Uniform surface brightness profile.
 
     This profile is described by the following parameters:
+    
     - 'A': amplitude
     """
     
@@ -175,6 +179,7 @@ class PixelatedRegularGrid(Profile):
     """Surface brightness described on a regular grid of pixels.
 
     This profile is described by the following parameters:
+    
     - 'pixels': 2D array of pixel values
     """
 
@@ -189,6 +194,7 @@ class IrregularGrid(Profile):
     """Surface brightness described on an irregular grid of pixels.
 
     This profile is described by the following parameters:
+    
     - 'pixels': set of 2D coordinates and associated pixel values (x, y, z)
     """
 
