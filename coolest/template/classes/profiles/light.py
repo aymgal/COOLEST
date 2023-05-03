@@ -27,7 +27,6 @@ class Sersic(AnalyticalProfile):
     """
     
     def __init__(self):
-        documentation = "Elliptical Sersic"
         parameters = {
             'I_eff': LinearParameter("Amplitude at the Sersic radius",
                             DefinitionRange(min_value=0.0),
@@ -51,16 +50,15 @@ class Sersic(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class Chameleon(AnalyticalProfile):
-    """Surface brightness described by an elliptical Chameleon profile.
+    """Surface brightness described by an elliptical Chameleon profile,
+    defined as the difference between two NIE profiles.
     """
     
     def __init__(self):
-        documentation = ("Chameleon profile defined as the difference between two NIE profiles"
-                       " (elliptical truncated double isothermal profile)")
         parameters = {
             'A': LinearParameter("Normalization of the profile",
                             DefinitionRange(min_value=0.0),
@@ -84,7 +82,7 @@ class Chameleon(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class Shapelets(AnalyticalProfile):
@@ -110,7 +108,7 @@ class Shapelets(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$A$"),
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
         
 class LensedPS(AnalyticalProfile):
@@ -130,7 +128,7 @@ class LensedPS(AnalyticalProfile):
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$A$"),
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class Uniform(AnalyticalProfile):
@@ -144,7 +142,7 @@ class Uniform(AnalyticalProfile):
                             DefinitionRange(min_value=0.0),
                             latex_str=r"$A$"),
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class PixelatedRegularGrid(Profile):
@@ -152,11 +150,10 @@ class PixelatedRegularGrid(Profile):
     """
 
     def __init__(self):
-        documentation = "A pixelated profile defined on a regular Cartesian grid"
         parameters = {
             'pixels': PixelatedRegularGridParameter("Pixel values")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class IrregularGrid(Profile):
@@ -164,8 +161,7 @@ class IrregularGrid(Profile):
     """
 
     def __init__(self):
-        documentation = "A pixelated profile defined on a irregular grid of points"
         parameters = {
             'pixels': IrregularGridParameter("Pixel positions and values")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)

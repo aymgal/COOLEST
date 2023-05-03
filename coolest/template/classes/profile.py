@@ -17,17 +17,12 @@ class Profile(APIBaseObject):
 
     Parameters
     ----------
-    documentation : str
-        Short text that describes the profile.
-    parameters : Dict[
+    parameters : Dict[(str, Parameter)]
         Dictionary of Parameters objects keyed by parameter name.
     """
 
-    def __init__(self,
-                 documentation: str, 
-                 parameters: Dict[(str, Parameter)]) -> None:
+    def __init__(self, parameters: Dict[(str, Parameter)]) -> None:
         self.type = self.__class__.__name__  # name of children class
-        self.documentation = documentation
         self.parameters = parameters
         self.id = None
         super().__init__()
@@ -39,17 +34,13 @@ class AnalyticalProfile(Profile):
 
     Parameters
     ----------
-    documentation : str
-        Short text that describes the profile.
-    parameters : Dict[
+    parameters : Dict[(str, Parameter)]
         Dictionary of Parameters objects keyed by parameter name.
     """
 
-    def __init__(self,
-                 documentation: str, 
-                 parameters: Dict[(str, Parameter)]) -> None:
+    def __init__(self, parameters: Dict[(str, Parameter)]) -> None:
         """"""
-        super().__init__(documentation, parameters=parameters)
+        super().__init__(parameters)
         
     def total_num_params(self, include_fixed=False, include_hyper=True):
         """Compute the number of parameter of the profile.

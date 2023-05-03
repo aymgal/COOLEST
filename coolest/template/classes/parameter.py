@@ -163,7 +163,8 @@ class NonLinearParameter(Parameter):
 class LinearParameter(Parameter):
     """Define a hyper-parameter of a lens model
     
-    Warning: this class may be removed in the future."""
+    Warning: this class may be removed in the future, as it has adds unncessary abstraction level.
+    """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -189,14 +190,19 @@ class ParameterSet(Parameter):
 
 
 class LinearParameterSet(ParameterSet):
-    """Typically for analytical basis sets"""
+    """Typically for analytical basis sets.
+
+    Warning: this class may be removed in the future, as it has adds unncessary abstraction level.
+    """
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         
         
 class NonLinearParameterSet(ParameterSet):
-    """Typically for position of point sources"""
+    """Typically for position of point sources.
+    
+    Warning: this class may be removed in the future, as it has adds unncessary abstraction level."""
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

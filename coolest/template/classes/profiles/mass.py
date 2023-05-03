@@ -21,9 +21,19 @@ SUPPORTED_CHOICES = __all__
 
 
 class SIE(AnalyticalProfile):
+    """Singular isothermal elliptical mass density profile.
+
+    This profile is described by the following parameters:
+
+    - 'theta_E': Einstein radius
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+
+    """
     
     def __init__(self):
-        documentation = "Singular isothermal sphere"
         parameters = {
             'theta_E': NonLinearParameter("Einstein radius",
                                           DefinitionRange(min_value=0.0),
@@ -41,13 +51,14 @@ class SIE(AnalyticalProfile):
                                            DefinitionRange(),
                                            latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class NIE(AnalyticalProfile):
+    """Non-singular isothermal elliptical mass density profile.
+    """
     
     def __init__(self):
-        documentation = "Non-singular isothermal sphere"
         parameters = {
             'theta_E': NonLinearParameter("Einstein radius",
                                DefinitionRange(min_value=0.0),
@@ -68,13 +79,14 @@ class NIE(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class PEMD(AnalyticalProfile):
+    """Singular isothermal elliptical mass density profile.
+    """
     
     def __init__(self):
-        documentation = "Powerlaw elliptical mass distribution"
         parameters = {
             'gamma': NonLinearParameter("Mass density slope at Einstein radius",
                                DefinitionRange(min_value=1.0, max_value=3.0),
@@ -95,13 +107,14 @@ class PEMD(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class SPEMD(AnalyticalProfile):
+    """Softened powerlaw elliptical mass distribution
+    """
     
     def __init__(self):
-        documentation = "Softened powerlaw elliptical mass distribution"
         parameters = {
             'gamma': NonLinearParameter("Mass density slope at Einstein radius",
                                DefinitionRange(min_value=1.0, max_value=3.0),
@@ -125,13 +138,12 @@ class SPEMD(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class NFW(AnalyticalProfile):
     
     def __init__(self):
-        documentation = "NFW with ellipticity introduced in the mass"
         parameters = {
             'r_s': NonLinearParameter("Radius at which the mass density profile slope transitions from -1 to -3",
                                DefinitionRange(min_value=0.0),
@@ -152,14 +164,12 @@ class NFW(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class Chameleon(AnalyticalProfile):
     
     def __init__(self):
-        documentation = ("Chameleon profile defined as the difference between two NIE profiles"
-                       " (elliptical truncated double isothermal profile)")
         parameters = {
             'b': NonLinearParameter("Normalization of the profile",
                                DefinitionRange(min_value=0.0),
@@ -183,13 +193,13 @@ class Chameleon(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class ExternalShear(AnalyticalProfile):
+    "External shear defined with a strength and orientation"""
     
     def __init__(self):
-        documentation = "External shear defined with a strength and orientation"
         parameters = {
             'gamma_ext': NonLinearParameter("Strength of external shear",
                                DefinitionRange(min_value=0., max_value=1.0),
@@ -198,14 +208,13 @@ class ExternalShear(AnalyticalProfile):
                                DefinitionRange(min_value=-90., max_value=90.),
                                latex_str=r"$\phi_{\rm ext}$"),
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class PixelatedRegularGridPotential(Profile):
 
     def __init__(self):
-        documentation = "A pixelated profile defined on a regular Cartesian grid"
         parameters = {
             'pixels': PixelatedRegularGridParameter("Pixel values")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)

@@ -56,13 +56,13 @@ class COOLEST(APIBaseObject):
             Mode of the stored lens model described in the COOLEST object.
             Should be one of the following:
 
-            - 'MOCK': the object describes a mock observation of a lens;
+            - `'MOCK'`: the object describes a mock observation of a lens;
 
-            - 'MAP': the object describes a maximum a posteriori point estimates 
+            - `'MAP'`: the object describes a maximum a posteriori point estimates 
             (best-fit values) lens model, possibly including statistics 
             regarding the posterior distribution of lens model parameters;
 
-            - 'DOC': the object contains all description of profiles and parameters,
+            - `'DOC'`: the object contains all description of profiles and parameters,
             (only relevant for generating documentation products).
 
             The mode affects which attributes a stored in the JSON representation 
