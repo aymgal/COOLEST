@@ -11,8 +11,7 @@ class Galaxy(LensingEntity):
                  redshift: float,
                  light_model: LightModel = None,
                  mass_model: MassModel = None) -> None:
-        super().__init__('galaxy', name, redshift, 
-                         mass_model=mass_model)
+        super().__init__(name, redshift, mass_model=mass_model)
         if light_model is None:
             light_model = LightModel()
         self.light_model = light_model

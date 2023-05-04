@@ -8,17 +8,16 @@ __all__ = [
     'LensingEntity',
 ]
 
-SUPPORTED_CHOICES = ['galaxy', 'external_shear']
+SUPPORTED_CHOICES = ['Galaxy', 'ExternalShear']
 
 
 class LensingEntity(APIBaseObject):
 
     def __init__(self,
-                 type_: str,
                  name: str,
                  redshift: float,
                  mass_model: MassModel = None) -> None:
-        self.type = type_
+        self.type = self.__class__.__name__  # name of the children class
         self.name = name
         if redshift is not None and redshift < 0:
             raise ValueError("Redshift cannot be negative.")

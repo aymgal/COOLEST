@@ -247,12 +247,12 @@ class JSONSerializer(object):
         return entities_out
     
     def _setup_lensing_entity(self, entity_in):
-        if entity_in['type'] == 'galaxy':
+        if entity_in['type'] == 'Galaxy':
             entity_out = Galaxy(entity_in['name'],
                                 entity_in['redshift'],
                                 light_model=self._setup_model(entity_in, 'light_model'),
                                 mass_model=self._setup_model(entity_in, 'mass_model'))
-        elif entity_in['type'] == 'external_shear':
+        elif entity_in['type'] == 'ExternalShear':
             entity_out = ExternalShear(entity_in['name'],
                                        entity_in['redshift'],
                                        mass_model=self._setup_model(entity_in, 'mass_model'))

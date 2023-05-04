@@ -35,9 +35,9 @@ class LensingEntityList(list, APIBaseObject):
                 model = getattr(entity, f'{model_type}_model', None)
                 if model is not None:
                     for j, profile in enumerate(model):
-                        if entity.type == 'galaxy':
+                        if entity.type == 'Galaxy':
                             profile_id = util.galaxy_profile_to_id(model_type, profile.type, j, i)
-                        elif entity.type == 'external_shear':
+                        elif entity.type == 'ExternalShear':
                             profile_id = util.ext_shear_profile_to_id(profile.type, j, i)
                         profile.id = profile_id
                         if isinstance(profile, AnalyticalProfile):
