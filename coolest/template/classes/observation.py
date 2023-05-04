@@ -12,8 +12,7 @@ from coolest.template.classes.base import APIBaseObject
 class Observation(APIBaseObject):
     
     """
-    Defines the observation itself, that is the image pixels, the exposure time,
-    the noise model and/or properties, the magnitude zero-point and sky brightness.
+    
     """
     
     def __init__(self, 
@@ -25,6 +24,24 @@ class Observation(APIBaseObject):
                  # time_delays: list = None,
                  # magnification_ratios: list = None
                  ) -> None:
+        """Defines the observation itself, that is the image pixels, 
+        the exposure time, the noise model and/or properties, the magnitude 
+        zero-point and sky brightness.
+
+        Parameters
+        ----------
+        pixels : PixelatedRegularGrid, optional
+            Regular 2D Grid instance for the observed / mock data pixels, by default None
+        noise : Noise, optional
+            Instance of a Noise object associated with the modeling 
+            of the data pixels, by default None
+        mag_zero_point : float, optional
+            Zero-point magnitude, which corresponds to the 1 electron per second
+            hitting the detecor (given in mag), by default None
+        mag_sky_brightness : float, optional
+            Magnitude due to sky brightness (given in mag per arcsec^2), 
+            by default None
+        """
         if pixels is None:
             pixels = PixelatedRegularGrid()
         self.pixels = pixels

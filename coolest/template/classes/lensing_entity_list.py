@@ -14,7 +14,7 @@ class LensingEntityList(list, APIBaseObject):
 
     Parameters
     ----------
-    entities : LensingEntity instances
+    *entities : LensingEntity instances
         As many LensingEntity instances as required
     """
 
