@@ -47,8 +47,8 @@ class TestJSONSerialization(object):
                                                               check_fits_file=self.check_files)
 
         # Defines the external shear
-        ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
-                                  mass_model=MassModel('ExternalShear'))
+        ext_shear = MassField('my lovely external shear', lens_1.redshift,
+                              mass_model=MassModel('ExternalShear'))
 
         # Put them in a list, which will also create unique IDs for each profile
         entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3)

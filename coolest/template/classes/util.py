@@ -5,8 +5,8 @@ __author__ = 'aymgal'
 def galaxy_profile_to_id(model_type, profile_name, profile_idx, galaxy_idx):
     return f'galaxy_{galaxy_idx}-{model_type}_model-{profile_name}_{profile_idx}'
 
-def ext_shear_profile_to_id(profile_name, profile_idx, extshear_idx):
-    return f'extshear_model_{extshear_idx}-{profile_name}_{profile_idx}'
+def mass_field_profile_to_id(profile_name, profile_idx, field_idx):
+    return f'massfield_model_{field_idx}-{profile_name}_{profile_idx}'
 
 def galaxy_id_to_profile(id_str):
     galaxy_str, model_str, profile_str = id_str.split('-')

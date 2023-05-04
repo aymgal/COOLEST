@@ -162,7 +162,7 @@ class JSONSerializer(object):
         # MODE
         mode = self._check_mode(c['mode'])
 
-        # LENSING ENTITIES {GALAXY, EXTERNAL SHEAR}
+        # LENSING ENTITIES {GALAXY, MASSFIELDS}
         lensing_entities = self._setup_lensing_entities(c['lensing_entities'])
 
         # CSOMOLOGY
@@ -252,10 +252,10 @@ class JSONSerializer(object):
                                 entity_in['redshift'],
                                 light_model=self._setup_model(entity_in, 'light_model'),
                                 mass_model=self._setup_model(entity_in, 'mass_model'))
-        elif entity_in['type'] == 'ExternalShear':
-            entity_out = ExternalShear(entity_in['name'],
-                                       entity_in['redshift'],
-                                       mass_model=self._setup_model(entity_in, 'mass_model'))
+        elif entity_in['type'] == 'MassField':
+            entity_out = MassField(entity_in['name'],
+                                   entity_in['redshift'],
+                                   mass_model=self._setup_model(entity_in, 'mass_model'))
         else:
             raise ValueError(f"Supported lensing entities are "
                              f"{support['lensing_entities']}")

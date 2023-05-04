@@ -9,10 +9,13 @@ from coolest.template.classes import util
 
 
 class LensingEntityList(list, APIBaseObject):
+    """The list of components that define the lensing system.
+    In COOLEST, a 'lensing entity' is typically a galaxy or an external shear.
 
-    """
-    The list of components that define the lensing system.
-    In COOLEST, a "lensing entity" means either a galaxy, or an external shear component.
+    Parameters
+    ----------
+    entities : LensingEntity instances
+        As many LensingEntity instances as required
     """
 
     def __init__(self, *entities: Tuple[LensingEntity]):
@@ -20,16 +23,9 @@ class LensingEntityList(list, APIBaseObject):
         APIBaseObject.__init__(self)
         self._create_all_ids()
 
-    def num_sources():
-        raise NotImplementedError("Couting number of source galaxies is not yet implemented.")
-
-    def num_lenses():
-        raise NotImplementedError("Couting number of source galaxies is not yet implemented.")
-
-    def num_external_shear():
-        raise NotImplementedError("Couting number of external shear is not yet implemented.")
-
     def _create_all_ids(self):
+        """Creates a unique identifier for each model profiles and profile parameters.
+        """
         for i, entity in enumerate(self):
             for model_type in ['light', 'mass']:
                 model = getattr(entity, f'{model_type}_model', None)
@@ -37,8 +33,8 @@ class LensingEntityList(list, APIBaseObject):
                     for j, profile in enumerate(model):
                         if entity.type == 'Galaxy':
                             profile_id = util.galaxy_profile_to_id(model_type, profile.type, j, i)
-                        elif entity.type == 'ExternalShear':
-                            profile_id = util.ext_shear_profile_to_id(profile.type, j, i)
+                        elif entity.type == 'MassField':
+                            profile_id = util.mass_field_profile_to_id(profile.type, j, i)
                         profile.id = profile_id
                         if isinstance(profile, AnalyticalProfile):
                             for param_name, parameter in profile.parameters.items():
