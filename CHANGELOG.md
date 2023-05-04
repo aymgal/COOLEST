@@ -6,6 +6,8 @@
 
 - The type of lensing entity now reflects their class name. For instance, before it was `'galaxy'`, now it is `'Galaxy'`.
 
+- The single parameter of the `GaussianPSF` has changed from the standard deviation `std_dev` to the more widely used full width at half maximum `fwhm`.
+
 
 ## 14/10/22
 
