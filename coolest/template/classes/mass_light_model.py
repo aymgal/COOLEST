@@ -9,6 +9,12 @@ from coolest.template.classes.profiles import light as light_profiles_module
 
 class MassModel(ProfileList):
     """Describes a mass model of a lensing entity as a list of (mass) profiles
+    
+    Parameters
+    ----------
+    *profile_names : str
+        Names of the mass profiles, following corresponding class names in
+        the coolest.template.classes.profiles.mass submodule.
     """
 
     def __init__(self, 
@@ -18,6 +24,12 @@ class MassModel(ProfileList):
 
 class LightModel(ProfileList):
     """Describes a light model of a lensing entity as a list of (light) profiles
+
+    Parameters
+    ----------
+    *profile_names : str
+        Names of the light profiles, following corresponding class names in
+        the coolest.template.classes.profiles.light submodule.
     """
 
     def __init__(self, 

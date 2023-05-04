@@ -102,6 +102,22 @@ class Parameter(APIBaseObject):
         super().__init__()
         
     def set_point_estimate(self, point_estimate):
+        """Set the point estimate value of the parameter.
+
+        Parameters
+        ----------
+        point_estimate : int, float, list, PointEstimate
+            Parameter value, or directly a PointEstimate instance.
+
+        Raises
+        ------
+        ValueError
+            If the provided point_estimate has not a supported type.
+        ValueError
+            If the parameter value is below its minimum allowed value.
+        ValueError
+            If the parameter value is above its maximum allowed value.
+        """
         if isinstance(point_estimate, (float, int, list)):
             self.point_estimate = PointEstimate(value=point_estimate)
         elif isinstance(point_estimate, tuple):
@@ -123,30 +139,62 @@ class Parameter(APIBaseObject):
                 raise ValueError(f"Value cannot be larger than {self.definition_range.max_value}.")
 
     def remove_point_estimate(self):
+        """Remove the current point estimate of the parameter.
+        """
         self.point_estimate = PointEstimate()
 
     def set_posterior(self, posterior_stats):
+        """Set the posterior statistics of the parameter.
+
+        Parameters
+        ----------
+        posterior_stats : PosteriorStatistics
+            Instance of the PosteriorStatistics object.
+
+        Raises
+        ------
+        ValueError
+            If the argument is not a PosteriorStatistics instance.
+        """
         if not isinstance(posterior_stats, PosteriorStatistics):
             raise ValueError("Parameter prior must be a PosteriorStatistics instance.")
         self.posterior_stats = posterior_stats
 
     def remove_posterior(self):
+        """Remove the current posterior statistics of the parameter.
+        """
         self.posterior_stats = PosteriorStatistics()
 
     def set_prior(self, prior):
+        """Associate a prior distribution to the parameter.
+
+        Parameters
+        ----------
+        prior : Prior
+            Instance of Prior object.
+
+        Raises
+        ------
+        ValueError
+            If the argument is not a Prior instance.
+        """
         if not isinstance(prior, Prior):
             raise ValueError("Parameter prior must be a Prior instance.")
         self.prior = prior
 
     def remove_prior(self):
+        """Remove the current posterior statistics of the parameter.
+        """
         self.prior = Prior()
 
     def fix(self):
+        """Set the fixed attribute to True, marking it as fixed."""
         if self.point_estimate.value is None:
             raise ValueError("Cannot fix parameter as no point estimate value has been set.")
         self.fixed = True
 
     def unfix(self):
+        """Set the fixed attribute to False, marking as free to vary"""
         self.fixed = False
 
 
