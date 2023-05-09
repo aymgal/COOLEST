@@ -1,7 +1,16 @@
 -e ./
+
 sphinx
 sphinx-autoapi
 sphinx-autobuild
 sphinx-book-theme
 sphinx-design
+sphinxcontrib.bibtex
+sphinx-math-dollar
 myst-nb
+jupytext
+
+numpy
+scipy
+ipython
+matplotlib

@@ -28,7 +28,10 @@ extensions = [
     'myst_nb',  # supports markdown .md files
     'sphinx_design', # responsive design components
     'autoapi.extension',  # generates autoapi directory
+    "sphinx_math_dollar",  # allows to write LaTeX in .md files
+    "sphinxcontrib.bibtex",
 ]
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -58,6 +61,14 @@ source_suffix = {
     ".ipynb": "myst-nb", 
     ".md": "myst-nb"
 }
+
+nb_custom_formats = {
+    ".md": ["jupytext.reads", {"fmt": "mystnb"}],
+}
+myst_enable_extensions = ["colon_fence"]
+
+autosummary_generate = True
+add_module_names = False  # prevent cluttering the doc with the full submodule path
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -89,3 +100,7 @@ def skip_util_classes(app, what, name, obj, skip, options):
 
 def setup(sphinx):
     sphinx.connect("autoapi-skip-member", skip_util_classes)
+
+
+bibtex_bibfiles = ["refs.bib"]
+bibtex_default_style = "alpha"  # alpha, plain, unsrt, unsrtalpha
