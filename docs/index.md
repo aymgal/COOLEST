@@ -1,6 +1,6 @@
 # Welcome to the COOLEST documentation!
 
-COOLEST stands for **COde-independent Organized LEns STandard** and its goal is to accelerate strong gravitational lensing research by provided a unifying standard to express lens models.
+COOLEST stands for **COde-independent Organized LEns STandard** and its goal is to accelerate strong gravitational lensing research by providing a unifying standard to express lens models.
 
 ```{warning}
 This documentation is currently in progress, so expect changes in the following weeks!
@@ -18,17 +18,16 @@ We provide a Python API to *generate*, *manipulate* and *update* COOLEST files. 
 
 Ultimately, the goal is that each widely used modeling software packages has an interface that converts code-specific model choices and parameter values to COOLEST conventions. This way, all lens modeling results---best-fit parameter values, posterior distributions---can be saved effortlessly to this standard, ready to be shared and used for further analyses.
 
-
 ```{toctree}
 ---
 hidden:
-caption: Conventions
+caption: The standard
 maxdepth: 2
 ---
-Coordinates system <conventions/coordinates>
-Ellipticity parametrization <conventions/ellipticity>
-What is a "lensing entity"? <conventions/lensing_entities>
-Supported profiles <conventions/model_profiles/index>
+General conventions <conventions>
+What is a "lensing entity"? <template_file/lensing_entities>
+Mock data vs best-fit model <template_file/modes>
+Supported models <models/index>
 ```
 
 ```{toctree}

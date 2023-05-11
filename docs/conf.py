@@ -76,7 +76,7 @@ add_module_names = False  # prevent cluttering the doc with the full submodule p
 html_static_path = ["_static"]
 html_title = ""
 html_logo = "_static/coolest_logo.png"
-# html_css_files = ["custom.css"]
+html_css_files = ["custom.css"]
 
 # Skip files we do not want to be included in the documentation
 def skip_util_classes(app, what, name, obj, skip, options):
