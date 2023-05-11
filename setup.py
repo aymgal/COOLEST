@@ -5,4 +5,5 @@ setup(
     packages=['coolest'],
     include_package_data=True,
     install_requires=[],
+    package_dir={'coolest': 'coolest'},
 )
