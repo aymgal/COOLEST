@@ -33,6 +33,15 @@ Supported models <models/index>
 ```{toctree}
 ---
 hidden:
+caption: Examples
+maxdepth: 1
+---
+Codes compliant with COOLEST <examples/existing_interfaces>
+```
+
+```{toctree}
+---
+hidden:
 caption: API Reference
 maxdepth: 3
 ---

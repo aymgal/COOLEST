@@ -1,5 +1,6 @@
 .navbar-brand img {
-    width: 200px;
+    width: 160px;
+    transform: rotate(90deg);
 }
 
 /* Add a line break between the arguments of each function.
