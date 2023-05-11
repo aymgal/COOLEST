@@ -3,6 +3,11 @@
     transform: rotate(90deg);
 }
 
+.centered {
+    text-align: center;
+}
+
+
 /* Add a line break between the arguments of each function.
    Taken from: https://github.com/sphinx-doc/sphinx/issues/1514#issuecomment-742703082
 */

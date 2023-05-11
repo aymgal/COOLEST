@@ -8,6 +8,6 @@ The following modeling codes already have an interface with COOLEST:
 
 - [__*Herculens*__](https://github.com/lenstronomy/lenstronomy) ([Galan et al. 2022](https://ui.adsabs.harvard.edu/abs/2022A%26A...668A.155G/abstract)), via its [`Standard.coolest_exporter`](https://github.com/austinpeel/herculens/blob/main/herculens/Standard/coolest_exporter.py) submodule;
 
-- [__*VKL*__](https://github.com/lenstronomy/lenstronomy) ([Vernardos et al. 2022](https://ui.adsabs.harvard.edu/abs/2022MNRAS.516.1347V/abstract)).
+- [__*VKL*__](https://github.com/gvernard/verykool) ([Vernardos et al. 2022](https://ui.adsabs.harvard.edu/abs/2022MNRAS.516.1347V/abstract)).
 
 If you have questions or comments about the development of a COOLEST interface for your modeling code, please [reach out to us](mailto:aymeric.galan@gmail.com). In case of an issue with the COOLEST API, we advise you to open an [issue on GitHub](https://github.com/aymgal/COOLEST/issues/new).

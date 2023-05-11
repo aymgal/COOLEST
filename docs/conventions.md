@@ -15,7 +15,10 @@ The standard relies on a set of fixed conventions, that are implicitly assumed b
 - Quantities are expressed in a **cartesian coordinate system** $(x, y)$, the $x$ axis positively increasing to the right, the $y$ axis positively increasing upwards. Since coordinates are then always aligned with the image axes, this is a more intuitive description compared to (RA, Dec).
 - Position angles and orientations (usually denoted $\phi$) are measured counter-clockwise from the positive $y$ axis. Thus it is similar to the frequently used "East-of-North" convention.
 
-<img src="_static/coordinates.png" alt="drawing" width="600"/>
+<p class="centered">
+    <img src="_static/coordinates.png" alt="drawing" width="600"/>
+</p>
+
 
 ## Notations
 
