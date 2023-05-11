@@ -22,6 +22,7 @@ MOCK_EXCLUDE_KEYS = [
     'latex_str',
     'units',
     'fixed',
+    'posterior_stats',
     'definition_range',
     'likelihoods',
     'regularizations',
