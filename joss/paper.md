@@ -17,8 +17,7 @@ authors:
     corresponding: true # (This is how to denote the corresponding author)
     affiliation: 3
 affiliations:
-  - name: Technical University of Munich, TUM School of Natural Sciences, Department of Physics,
-James-Franck-Strasse 1, 85748 Garching, Germany
+  - name: Technical University of Munich, TUM School of Natural Sciences, Department of Physics, James-Franck-Strasse 1, 85748 Garching, Germany
     index: 1
   - name: Institution Name, Country
     index: 2
