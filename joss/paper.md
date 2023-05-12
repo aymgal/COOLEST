@@ -17,13 +17,13 @@ authors:
     corresponding: true # (This is how to denote the corresponding author)
     affiliation: 3
 affiliations:
- - name: Technical University of Munich, TUM School of Natural Sciences, Department of Physics,
-James-Franck-Straße 1, 85748 Garching, Germany
-   index: 1
- - name: Institution Name, Country
-   index: 2
- - name: Independent Researcher, Country
-   index: 3
+  - name: Technical University of Munich, TUM School of Natural Sciences, Department of Physics,
+James-Franck-Strasse 1, 85748 Garching, Germany
+    index: 1
+  - name: Institution Name, Country
+    index: 2
+  - name: Independent Researcher, Country
+    index: 3
 date: 21 April 2023
 bibliography: paper.bib
 ---
@@ -52,19 +52,19 @@ In SGL studies, the lens modeling step is often the most time-consuming. The com
 
 Such a large variety of data sets and scientific objectives have led to the development of different lens modeling codes. These codes may be written in different programming languages and generally based on fundamentally different assumptions, some are not open-source, and some may not be well-documented. Consequently, when a new SGL study gets published, it is very challenging and time-consuming (sometimes impossible) to use these new results to start a new lens modeling analysis, should it be with the same code or with a different code that is better suited to the new objective. Moreover, comparing lens models with previously published models is as challening, exactly for the same reasons. So far, there is no standard way to describe, store and share lens modeling products to accelerate SGL research.
 
-This is the motivation behind COOLEST: since all lens modeling products follow same theoretical principles, we propose a standard based on a set of precise conventions such that lens models can be described _independently of the original modeling code_. Important lens modeling products typically include the lens mass distribution, the unconvolved surface brightness of both the lens and the (unlensed) source galaxies, as well as a model of the point spread function of the instrument. COOLEST offers a simple way to describe a lens model: a _single directory_ which contains a JSON file that stores most of the observed data and lens model information, and optionally links to external files (with .fits and .pkl extenstions) that contain observational data, model images, and inference data such as MCMC chains.
-
-
+This is the motivation behind COOLEST: since all lens modeling products follow same theoretical principles, we propose a standard based on a set of precise conventions such that lens models can be described _independently of the original modeling code_. Important lens modeling products typically include the lens mass distribution, the unconvolved surface brightness of both the lens and the (unlensed) source galaxies, as well as a model of the point spread function of the instrument. COOLEST offers a simple and human-readable way to describe a lens model, summarized in a single JSON template file, and optionally links to external files (with .fits and .pkl extenstions), all stored within a single directory. Since the content of the template follows a set well-defined conventions, it can be compared effortlessly with other models that are compliant with COOLEST. Such a lightweight storage of the lens model makes it very easy to share and refer to it for later analyses. [_It is also well-suited for storage in databases (REF TO SLED?)._]
 
 # Content of the standard
 
 COOLEST is composed of three distinct building blocks:
 
-- Conventions: a document summarizing the _fixed_ conventions adopted by the standard;
-- Template system (`coolest.template`): a Python interface to create, store and manipulate COOLEST template and external files;
-- Analysis & plotting API (`coolest.api`): a Python interface to compute key lensing quantities and generate different plots.
+- __Conventions__: documentation that describes all the _fixed_ conventions adopted by the standard, such as the coordinate systems and units;
+- __Template system__ (`coolest.template`): a Python interface to create, store and manipulate COOLEST template and external files;
+- __Analysis & plotting API__ (`coolest.api`): a Python interface to compute key lensing quantities and generate different plots.
 
+The template file stores most of the data and lens model information, including observational and instrumental properties, model choices that describe the gravitational lens. 
 
+that contain observational data, model images, and inference data such as MCMC chains.
 
 <!-- # Mathematics
 
@@ -109,13 +109,16 @@ Figure sizes can be customized by adding an optional second parameter:
 
 # Related software
 
-Lens modeling codes (ADD REFERENCES):
+The following lens modeling codes already have an interface with COOLEST:
 
-- `Lenstronomy`
-- `PyAutoLens`
-- `Herculens`
-- `VKL`
-- `giga-lens`
+- `Lenstronomy` (ADD REF)
+- `Herculens` (ADD REF)
+- `VKL` (ADD REF)
+
+Other lens modeling codes:
+
+- `PyAutoLens` (ADD REF)
+- `giga-lens` (ADD REF)
 
 Lens model databases:
 

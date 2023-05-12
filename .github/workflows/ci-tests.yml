@@ -51,6 +51,3 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: coverage.lcov
-
-    - name: Open Journals PDF Generator
-      uses: openjournals/openjournals-draft-action@v.1.0
