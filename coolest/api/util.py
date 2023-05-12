@@ -32,17 +32,17 @@ def get_coolest_object(file_path, verbose=False, **kwargs_serializer):
     return serializer.load(verbose=verbose)
 
 
-def get_coordinates(coolest_object, offset_ra=0., offset_dec=0.):
+def get_coordinates(coolest_object, offset_x=0., offset_y=0.):
     from coolest.api.coordinates import Coordinates  # prevents circular import errors
     nx, ny = coolest_object.observation.pixels.shape
     pix_scl = coolest_object.instrument.pixel_size
     half_size_x, half_size_y = nx * pix_scl / 2., ny * pix_scl / 2.
-    ra_at_xy_0  = - half_size_x + pix_scl / 2.  # position of x=0 with respect to bottom left pixel
-    dec_at_xy_0 = - half_size_y + pix_scl / 2.  # position of y=0 with respect to bottom left pixel
+    x_at_ij_0  = - half_size_x + pix_scl / 2.  # position of x=0 with respect to bottom left pixel
+    y_at_ij_0 = - half_size_y + pix_scl / 2.  # position of y=0 with respect to bottom left pixel
     matrix_pix2ang = pix_scl * np.eye(2)  # transformation matrix pixel <-> angle
-    return Coordinates(nx, ny, matrix_pixel_to_radec=matrix_pix2ang,
-                       ra_at_xy_0=ra_at_xy_0 + offset_ra, 
-                       dec_at_xy_0=dec_at_xy_0 + offset_dec)
+    return Coordinates(nx, ny, matrix_ij_to_xy=matrix_pix2ang,
+                       x_at_ij_0=x_at_ij_0 + offset_x, 
+                       y_at_ij_0=y_at_ij_0 + offset_y)
 
 
 def get_coordinates_from_regular_grid(field_of_view_x, field_of_view_y, num_pix_x, num_pix_y):
@@ -50,11 +50,11 @@ def get_coordinates_from_regular_grid(field_of_view_x, field_of_view_y, num_pix_
     pix_scl_x = np.abs(field_of_view_x[0] - field_of_view_x[1]) / num_pix_x
     pix_scl_y = np.abs(field_of_view_y[0] - field_of_view_y[1]) / num_pix_y
     matrix_pix2ang = np.array([[pix_scl_x, 0.], [0., pix_scl_y]])
-    ra_at_xy_0  = field_of_view_x[0] + pix_scl_x / 2.
-    dec_at_xy_0 = field_of_view_y[0] + pix_scl_y / 2.
+    x_at_ij_0  = field_of_view_x[0] + pix_scl_x / 2.
+    y_at_ij_0 = field_of_view_y[0] + pix_scl_y / 2.
     return Coordinates(
-        num_pix_x, num_pix_y, matrix_pixel_to_radec=matrix_pix2ang,
-        ra_at_xy_0=ra_at_xy_0, dec_at_xy_0=dec_at_xy_0,
+        num_pix_x, num_pix_y, matrix_ij_to_xy=matrix_pix2ang,
+        x_at_ij_0=x_at_ij_0, y_at_ij_0=y_at_ij_0,
     )
 
 
