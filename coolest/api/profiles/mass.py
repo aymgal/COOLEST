@@ -11,6 +11,13 @@ from coolest.api.profiles import util
 
 
 class BaseMassProfile(object):
+    """Base class to define a mass profile to compute lensing quantities.
+    Each specific class must be consistent with the equivalent class from the
+    coolest.template submodule.
+
+    NOTE: in the future, a new coolest.profiles submodule will merge
+    profile definitions that are currently split between coolest.template and coolest.api. 
+    """
 
     _template_class = None
 

@@ -14,9 +14,9 @@ class Analysis(object):
 
     Parameters
     ----------
-    coolest_object : _type_
+    coolest_object : COOLEST
         COOLEST instance
-    coolest_directory : _type_
+    coolest_directory : str
         Directory which contains the COOLEST template and other data files
     supersampling : int, optional
         Supersampling factor (relative to the instrument pixel size)
