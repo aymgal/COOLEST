@@ -95,7 +95,7 @@ class TestJSONSerialization(object):
                                 psf=psf)
 
         # Master object for the standard
-        coolest = COOLEST('MOCK',
+        coolest = COOLEST('MAP',
                           origin,
                           entity_list,
                           observation, 

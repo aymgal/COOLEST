@@ -308,11 +308,13 @@ class JSONSerializer(object):
         
     def _update_std_parameter(self, profile_out, name, values):
         pt_estim = PointEstimate(**values['point_estimate'])
-        post_stats = PosteriorStatistics(**values['posterior_stats'])
-        prior = self._setup_prior(values['prior'])
         profile_out.parameters[name].set_point_estimate(pt_estim)
-        profile_out.parameters[name].set_posterior(post_stats)
-        profile_out.parameters[name].set_prior(prior)
+        if 'posterior_stats' in values:
+            post_stats = PosteriorStatistics(**values['posterior_stats'])
+            profile_out.parameters[name].set_posterior(post_stats)
+        if 'prior' in values:
+            prior = self._setup_prior(values['prior'])
+            profile_out.parameters[name].set_prior(prior)
 
     def _setup_prior(self, prior_in):
         from coolest.template.classes import probabilities as proba_module
