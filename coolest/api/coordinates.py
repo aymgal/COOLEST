@@ -8,27 +8,27 @@ from coolest.api import util
 
 
 class Coordinates(object):
+    """Object that holds the grid of pixel coordinates and provides
+    conversions between coordinates in pixel units ('i', 'j') 
+    and physical ('x', 'y', in arcseconds) units.
+
+    Parameters
+    ----------
+    nx : int
+        Number of pixels along the x axis
+    ny : int
+        Number of pixels along the y axis
+    matrix_ij_to_xy : 2x2 ndarray
+        Matrix such that when multiplied to vector of coordinates in pixel
+        units, it returns the vector in physical units.
+        Note that it should be diagonal according to COOLEST conventions.
+    x_at_ij_0 : physical
+        x-coordinate of the pixel with index (0, 0)
+    y_at_ij_0 : _type_
+        y-coordinate of the pixel with index (0, 0)
+    """
 
     def __init__(self, nx, ny, matrix_ij_to_xy, x_at_ij_0, y_at_ij_0):
-        """Object that holds the grid of pixel coordinates and provides
-        conversions between coordinates in pixel units ('i', 'j') 
-        and physical ('x', 'y', in arcseconds) units.
-
-        Parameters
-        ----------
-        nx : int
-            Number of pixels along the x axis
-        ny : int
-            Number of pixels along the y axis
-        matrix_ij_to_xy : 2x2 ndarray
-            Matrix such that when multiplied to vector of coordinates in pixel
-            units, it returns the vector in physical units.
-            Note that it should be diagonal according to COOLEST conventions.
-        x_at_ij_0 : physical
-            x-coordinate of the pixel with index (0, 0)
-        y_at_ij_0 : _type_
-            y-coordinate of the pixel with index (0, 0)
-        """
         self._matrix_pix2ang = matrix_ij_to_xy
         self._matrix_ang2pix = np.linalg.inv(self._matrix_pix2ang)
         self._ra_at_xy_0 = x_at_ij_0
@@ -138,6 +138,23 @@ class Coordinates(object):
 
     def create_new_coordinates(self, pixel_scale_factor=None, 
                                grid_center=None, grid_shape=None):
+        """Based on the current coordinates, creates a sub-coordinates system
+        potentially shifted, with a different pixel size and field-of-view.
+
+        Parameters
+        ----------
+        pixel_scale_factor : float, optional
+            Ratio between the new pixel size and the original pixel size, by default None
+        grid_center : (float, float), optional
+            x and y center coordinates of the new coordinates grid, by default None
+        grid_shape : (float, float), optional
+            Width and height (in arcsec) of the new coordinates grid, by default None
+
+        Returns
+        -------
+        Coordinates
+            New instance of a Coordinates object
+        """
         unchanged_count = 0
         if grid_center is None or grid_center == self.center:
             grid_center_ = self.center

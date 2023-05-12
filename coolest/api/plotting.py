@@ -21,8 +21,17 @@ logging.getLogger().setLevel(logging.INFO)
 
 
 class ModelPlotter(object):
-    """
-    Creates pyplot panels from a lens model stored in the COOLEST format
+    """Create pyplot panels from a lens model stored in the COOLEST format.
+
+    Parameters
+    ----------
+    coolest_object : COOLEST
+        COOLEST instance
+    coolest_directory : str, optional
+        Directory which contains the COOLEST template, by default None
+    color_bad_values : str, optional
+        Color assigned to NaN values (typically negative values in log-scale), 
+        by default '#111111' (dark gray)
     """
 
     def __init__(self, coolest_object, coolest_directory=None, 
@@ -42,6 +51,7 @@ class ModelPlotter(object):
         #self.cmap_flux_mod = ListedColormap(cmap_colors)
 
     def plot_data_image(self, ax, title=None, norm=None, cmap=None, neg_values_as_bad=False):
+        """plt.imshow panel with the data image"""
         if cmap is None:
             cmap = self.cmap_flux
         coordinates = util.get_coordinates(self.coolest)
@@ -59,6 +69,8 @@ class ModelPlotter(object):
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
                                 extent=None, norm=None, cmap=None, neg_values_as_bad=True,
                                 plot_points_irreg=False, kwargs_light=None):
+        """plt.imshow panel showing the surface brightness of the (unlensed)
+        lensing entity selected via kwargs_light (see ComposableLightModel docstring)"""
         if kwargs_light is None:
             kwargs_light = {}
         light_model = ComposableLightModel(self.coolest, self._directory, **kwargs_light)
@@ -95,6 +107,9 @@ class ModelPlotter(object):
     def plot_model_image(self, ax, supersampling=5, convolved=False, title=None,
                          norm=None, cmap=None, neg_values_as_bad=False,
                          kwargs_source=None, kwargs_lens_mass=None):
+        """plt.imshow panel showing the surface brightness of the (lensed)
+        selected lensing entities (see ComposableLensModel docstring)
+        """
         if cmap is None:
             cmap = self.cmap_flux
         lens_model = ComposableLensModel(self.coolest, self._directory,
@@ -115,6 +130,7 @@ class ModelPlotter(object):
     def plot_model_residuals(self, ax, supersampling=5, mask=None, title=None,
                              norm=None, cmap=None, add_chi2_label=False, chi2_fontsize=12,
                              kwargs_source=None, kwargs_lens_mass=None):
+        """plt.imshow panel showing the normalized model residuals image"""
         if cmap is None:
             cmap = self.cmap_res
         if norm is None:
@@ -143,6 +159,9 @@ class ModelPlotter(object):
     def plot_convergence(self, ax, title=None,
                          norm=None, cmap=None, neg_values_as_bad=False,
                          kwargs_lens_mass=None):
+        """plt.imshow panel showing the 2D convergence map associated to the
+        selected lensing entities (see ComposableMassModel docstring)
+        """
         if kwargs_lens_mass is None:
             kwargs_lens_mass = {}
         mass_model = ComposableMassModel(self.coolest, self._directory,
@@ -165,6 +184,9 @@ class ModelPlotter(object):
     def plot_magnification(self, ax, title=None,
                           norm=None, cmap=None, neg_values_as_bad=False,
                           kwargs_lens_mass=None):
+        """plt.imshow panel showing the 2D magnification map associated to the
+        selected lensing entities (see ComposableMassModel docstring)
+        """
         if kwargs_lens_mass is None:
             kwargs_lens_mass = {}
         mass_model = ComposableMassModel(self.coolest, self._directory,
@@ -220,17 +242,28 @@ class ModelPlotter(object):
 
 
 class MultiModelPlotter(object):
-    """
-    Creates pyplot panels from several lens model
+    """Wrapper around a set of ModelPlotter instances to produce panels that
+    consistently compare different models, evaluated on the same
+    coordinates systems.
+
+    Parameters
+    ----------
+    coolest_objects : list
+        List of COOLEST instances
+    coolest_directories : list, optional
+        List of directories corresponding to each COOLEST instance, by default None
+    kwargs_plotter : dict, optional
+        Additional keyword arguments passed to ModelPlotter
     """
 
-    def __init__(self, coolest_objects, coolest_directories=None):
+    def __init__(self, coolest_objects, coolest_directories=None, **kwargs_plotter):
         self.num_models = len(coolest_objects)
         if coolest_directories is None:
             coolest_directories = self.num_models * [None]
         self.plotter_list = []
         for coolest, c_dir in zip(coolest_objects, coolest_directories):
-            self.plotter_list.append(ModelPlotter(coolest, coolest_directory=c_dir))
+            self.plotter_list.append(ModelPlotter(coolest, coolest_directory=c_dir,
+                                                  **kwargs_plotter))
 
     def plot_surface_brightness(self, axes, titles=None, **kwargs):
         return self._plot_light_multi('plot_surface_brightness', "surf. brightness", axes, titles=titles, **kwargs)
@@ -311,13 +344,24 @@ class MultiModelPlotter(object):
 
 
 class Comparison_analytical(object):
+    """Handles plot of analytical models in a comparative way
+
+    Parameters
+    ----------
+    coolest_file_list : list
+        List of paths to COOLEST templates
+    nickname_file_list : list
+        List of shorter names related to each COOLEST model
+    posterior_bool_list : list
+        List of bool to toggle errorbars on point-estimate values
     """
-    Handles plot of analytical models in a comparative way
-    """
+
     def __init__(self,coolest_file_list, nickname_file_list, posterior_bool_list):
         self.file_names = nickname_file_list
         self.posterior_bool_list = posterior_bool_list
-        self.param_lens, self.param_source = util.read_json_param(coolest_file_list,self.file_names, lens_light=False)
+        self.param_lens, self.param_source = util.read_json_param(coolest_file_list,
+                                                                  self.file_names, 
+                                                                  lens_light=False)
 
     def plotting_routine(self,param_dict,idx_file=0):
         """
@@ -392,9 +436,11 @@ class Comparison_analytical(object):
         plt.tight_layout()
         plt.show()
         return f,ax
+    
     def plot_source(self,idx_file=0):
         f,ax = self.plotting_routine(self.param_source,idx_file)
         return f,ax
+    
     def plot_lens(self,idx_file=0):
         f,ax = self.plotting_routine(self.param_lens,idx_file)
         return f,ax

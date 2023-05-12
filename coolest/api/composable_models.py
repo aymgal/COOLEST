@@ -14,8 +14,30 @@ logging.getLogger().setLevel(logging.INFO)
 
 
 class BaseComposableModel(object):
-    """
-    Given a COOLEST object, evaluates a selection of mass or light profiles.
+    """Given a COOLEST object, evaluates a selection of mass or light profiles.
+    This class serves as parent for more specific classes and should not be 
+    instantiated by the user.
+
+    Parameters
+    ----------
+    model_type : str
+        Either 'light_model' or 'mass_model'
+    coolest_object : COOLEST
+        COOLEST instance
+    coolest_directory : str, optional
+        Directory which contains the COOLEST template, by default None
+    entity_selection : list, optional
+        List of indices of the lensing entities to consider; If None, 
+        selects the first entity which has a model of type model_type, by default None
+    profile_selection : list, optional
+        List of either lists of indices, or 'all', for selecting which (mass or light) profile 
+        of a given lensing entity to consider. If None, selects all the 
+        profiles of within the corresponding entity, by default None
+
+    Raises
+    ------
+    ValueError
+        No valid entity found or no profiles found.
     """
 
     def __init__(self, model_type, coolest_object, coolest_directory=None, 
@@ -137,8 +159,26 @@ class BaseComposableModel(object):
 
 
 class ComposableLightModel(BaseComposableModel):
-    """
-    Given a COOLEST object, evaluates a selection of light profiles.
+    """Given a COOLEST object, evaluates a selection of entity and their light profiles.
+
+    Parameters
+    ----------
+    coolest_object : COOLEST
+        COOLEST instance
+    coolest_directory : str, optional
+        Directory which contains the COOLEST template, by default None
+    entity_selection : list, optional
+        List of indices of the lensing entities to consider; If None, 
+        selects the first entity that has a light model, by default None
+    profile_selection : list, optional
+        List of either lists of indices, or 'all', for selecting which light profile 
+        of a given lensing entity to consider. If None, selects all the 
+        profiles of within the corresponding entity, by default None
+
+    Raises
+    ------
+    ValueError
+        No valid entity found or no profiles found.
     """
 
     def __init__(self, coolest_object, coolest_directory=None, **kwargs_selection):
@@ -176,8 +216,26 @@ class ComposableLightModel(BaseComposableModel):
 
 
 class ComposableMassModel(BaseComposableModel):
-    """
-    Given a COOLEST object, evaluates a selection of light profiles.
+    """Given a COOLEST object, evaluates a selection of entity and their mass profiles.
+
+    Parameters
+    ----------
+    coolest_object : COOLEST
+        COOLEST instance
+    coolest_directory : str, optional
+        Directory which contains the COOLEST template, by default None
+    entity_selection : list, optional
+        List of indices of the lensing entities to consider; If None, 
+        selects the first entity that has a mass model, by default None
+    profile_selection : list, optional
+        List of either lists of indices, or 'all', for selecting which mass profile 
+        of a given lensing entity to consider. If None, selects all the 
+        profiles of within the corresponding entity, by default None
+
+    Raises
+    ------
+    ValueError
+        No valid entity found or no profiles found.
     """
 
     def __init__(self, coolest_object, coolest_directory=None, **kwargs_selection):
@@ -219,8 +277,27 @@ class ComposableMassModel(BaseComposableModel):
 
 
 class ComposableLensModel(object):
-    """
-    Given a COOLEST object, evaluates a selection of light profiles.
+    """Given a COOLEST object, evaluates a selection of entity and 
+    their mass and light profiles, typically to construct an image of the lens.
+
+    Parameters
+    ----------
+    coolest_object : COOLEST
+        COOLEST instance
+    coolest_directory : str, optional
+        Directory which contains the COOLEST template, by default None
+    entity_selection : list, optional
+        List of indices of the lensing entities to consider; If None, 
+        selects the first entity that has a light/mass model, by default None
+    profile_selection : list, optional
+        List of either lists of indices, or 'all', for selecting which light/mass profile 
+        of a given lensing entity to consider. If None, selects all the 
+        profiles of within the corresponding entity, by default None
+
+    Raises
+    ------
+    ValueError
+        No valid entity found or no profiles found.
     """
 
     def __init__(self, coolest_object, coolest_directory=None, 
@@ -240,6 +317,7 @@ class ComposableLensModel(object):
                                           **kwargs_selection_source)
 
     def model_image(self, supersampling=5, convolved=True):
+        """generates an image of the lens based on the selected model components"""
         obs = self.coolest.observation
         psf = self.coolest.instrument.psf
         if convolved is True and psf.type == 'PixelatedPSF':
@@ -283,6 +361,7 @@ class ComposableLensModel(object):
         return image, self.coord_obs
 
     def model_residuals(self, supersampling=5, mask=None):
+        """computes the normalized residuals map as (data - model) / sigma"""
         model, _ = self.model_image(supersampling=supersampling, 
                                     convolved=True)
         data = self.coolest.observation.pixels.get_pixels(directory=self.directory)

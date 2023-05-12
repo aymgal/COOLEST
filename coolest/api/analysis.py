@@ -9,8 +9,18 @@ from coolest.api import util
 
 
 class Analysis(object):
-    """
-    Handles computation of model-independent quantities and other analysis computations
+    """Handles computation of model-independent quantities 
+    and other analysis computations.
+
+    Parameters
+    ----------
+    coolest_object : _type_
+        COOLEST instance
+    coolest_directory : _type_
+        Directory which contains the COOLEST template and other data files
+    supersampling : int, optional
+        Supersampling factor (relative to the instrument pixel size)
+        that defines the grid on which computations are performed, by default 1
     """
 
     def __init__(self, coolest_object, coolest_directory, supersampling=1):
@@ -24,15 +34,31 @@ class Analysis(object):
 
     def effective_einstein_radius(self, center=None, initial_guess=1, initial_delta_pix=10, 
                                   n_iter=5, return_accuracy=False, **kwargs_selection):
-        """
-        Calculates Einstein radius for a kappa grid starting from an initial guess with large step size and zeroing in from there.
+        """Calculates Einstein radius for a kappa grid starting from an initial guess with large step size and zeroing in from there.
         Uses the grid from the create_kappa_image which is built from the coolest file.
 
-        :param center: (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image
-        :param initial_guess: initial guess for Einstein radius, default = 1
-        :param initial_delta_pix: initial step size before shrinking in future iterations, default = 10 pixels
-        :param n_iter: int; number of iterations, default = 5
-        :param return_accuracy: bool; if True, return estimate of accuracy as well as R_Ein value
+        Parameters
+        ----------
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image, by default None
+        initial_guess : int, optional
+            initial guess for Einstein radius, by default 1
+        initial_delta_pix : int, optional
+            initial step size before shrinking in future iterations, by default 10
+        n_iter : int, optional
+            number of iterations, by default 5
+        return_accuracy : bool, optional
+            if True, return estimate of accuracy as well as R_Ein value, by default False
+
+        Returns
+        -------
+        float, or (float, float) if return_accuracy is True
+            Effective Einstein radius
+
+        Raises
+        ------
+        Warning
+            If the algorithm is running for more than 100 loops.
         """
         if kwargs_selection is None:
             kwargs_selection = {}
@@ -119,12 +145,20 @@ class Analysis(object):
         else:
             return r_Ein
 
-    def kappa_1d_profile(self, center=None, r_vec=np.linspace(0,10,100),**kwargs_selection):
-        """
-        Calculates 1D profile using the kappa grid.
+    def kappa_1d_profile(self, center=None, r_vec=np.linspace(0, 10, 100),**kwargs_selection):
+        """Calculates 1D profile using the kappa grid.
 
-        :param center: (x, y)-coordinates of the center from which to calculate; if None, use the value from create_kappa_image
-        :param r_vec: range of radii over which to calculate the 1D profile
+        Parameters
+        ----------
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate; if None, use the value from , by default None
+        r_vec : _type_, optional
+            range of radii over which to calculate the 1D profile, by default np.linspace(0, 10, 100)
+
+        Returns
+        -------
+        (array, array)
+            kappa values and associated radius values
         """
         if kwargs_selection is None:
             kwargs_selection = {}
@@ -146,18 +180,24 @@ class Analysis(object):
             kappa_profile[r_i]=np.mean(kappa_image[in_radial_bin])
         return kappa_profile, r_vec
 
-    def effective_radial_slope(self, r_eval=None, center=None, r_vec=np.linspace(0,10,100),**kwargs_selection):
-        """
-        Numerically calculates slope of the kappa profile. Because this is defined on a grid, it is not as accurate or robust as
+    def effective_radial_slope(self, r_eval=None, center=None, r_vec=np.linspace(0, 10, 100),**kwargs_selection):
+        """Numerically calculates slope of the kappa profile. Because this is defined on a grid, it is not as accurate or robust as
         an analytical calculation. 
 
-        :param r_eval: float, radius at which to return a single value of the slope (e.g. Einstein radius). 
-                        If None (default), returns slope for all values in r_vec
-        :param center: (x, y)-coordinates of the center from which to calculate; if None, use the value from create_kappa_image
-        :param r_vec: range of radii over which to calculate the 1D profile
-        
+        Parameters
+        ----------
+        r_eval : float, optional
+            radius at which to return a single value of the slope (e.g. Einstein radius). If None (default), returns slope for all values in r_vec, by default None
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate; if None, use the value from create_kappa_image, by default None
+        r_vec : array-like, optional
+            range of radii over which to calculate the 1D profile, by default np.linspace(0, 10, 100)
+
+        Returns
+        -------
+        float
+            Effective slope
         """
-        
         kappa_profile, r_vec =self.kappa_1d_profile(center=center, r_vec=r_vec, **kwargs_selection)
         rise=np.log10(kappa_profile[:-1])-np.log10(kappa_profile[1:])
         run=np.log10(r_vec[:-1])-np.log10(r_vec[1:])
@@ -171,17 +211,35 @@ class Analysis(object):
     def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
                                initial_guess=1, initial_delta_pix=10, 
                                n_iter=5, **kwargs_selection):
+        """        
+
+
+        Parameters
+        ----------
+        outer_radius : int, optional
+            outer limit of integration within which half the light is calculated to estimate the effective radius, by default 10
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image, by default None
+        coordinates : Coordinates, optional
+            Instance of a Coordinates object to be used for the computation.
+            If None, will use an instance based on the Instrument, by default None
+        initial_guess : int, optional
+            initial guess for effective radius, by default 1
+        initial_delta_pix : int, optional
+            initial step size before shrinking in future iterations, by default 10
+        n_iter : int, optional
+            number of iterations, by default 5
+
+        Returns
+        -------
+        float
+            Effective radius
+
+        Raises
+        ------
+        Warning
+            If integration loop exceeds outer bound before convergence.
         """
-        Numerically calculates effective radius from pixelated surface brightness, using outer_radius as the limit of integration.
-        Not strictly equivalent to effective radius unless outer radius is infinite, which would require an infinite grid and cannot be done with pixelated profiles
-        
-        :param outer_radius: outer limit of integration within which half the light is calculated to estimate the effective radius
-        :param center: (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image
-        :param initial_guess: initial guess for effective radius, default = 1
-        :param initial_delta_pix: initial step size before shrinking in future iterations, default = 10 pixels
-        :param n_iter: int; number of iterations, default = 5
-        """
-        
         if kwargs_selection is None:
             kwargs_selection = {}
         light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
@@ -245,3 +303,4 @@ class Analysis(object):
         array = np.asarray(array)
         idx = (np.abs(array - value)).argmin()
         return array[idx]
+    

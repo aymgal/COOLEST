@@ -10,6 +10,6 @@ Currently, a lensing entity can be any of the following types:
 
 - [**`Galaxy`**](https://coolest.readthedocs.io/en/latest/autoapi/coolest/template/classes/galaxy/index.html#coolest.template.classes.galaxy.Galaxy): describes a galaxy with a mass model and light model, each of this model being composed of a list of profiles. If a galaxy is only lensed, it does not need a mass model; conversely if the light distribution of a galaxy is ignored, it can be empty.
 
-- [**`Galaxy`**](https://coolest.readthedocs.io/en/latest/autoapi/coolest/template/classes/mass_field/index.html#coolest.template.classes.mass_field.MassField): describes a generic field of massive objects, for instance an external shear field.
+- [**`MassField`**](https://coolest.readthedocs.io/en/latest/autoapi/coolest/template/classes/mass_field/index.html#coolest.template.classes.mass_field.MassField): describes a generic field of massive objects, for instance an external shear field.
 
 In the template, the `'type'` key should thus be one of the above types.
