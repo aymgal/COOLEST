@@ -9,21 +9,32 @@ tags:
 authors:
   - name: Aymeric Galan
     orcid: 0000-0003-2547-9815
-    equal-contrib: true
-    affiliation: "1" # (Multiple affiliations must be quoted)
-    corresponding: true # (This is how to denote the corresponding author)
-  - name: Author Without ORCID
-    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
-    affiliation: 2
-  - name: Author with no affiliation
+    affiliation: "1,2"
+    corresponding: true
+  - name: Lyne Van de Vyvere
+    orcid: 0000-0002-0585-4203
+    affiliation: 3
+  - name: Matthew R. Gomer
+    orcid: 0000-0001-5562-3879
+    affiliation: 4
+  - name: Georgios Vernardos
+    orcid: 0000-0001-8554-7248
+    affiliation: "1,5"
+  - name: Dominique Sluse
+    orcid: 0000-0001-6116-2095
     affiliation: 3
 affiliations:
-  - name: Technical University of Munich, TUM School of Natural Sciences, Department of Physics, James-Franck-Strasse 1, 85748 Garching, Germany
+  - name: Institute of Physics, Laboratory of Astrophysics, École Polytechnique Fédérale de Lausanne (EPFL),
+Switzerland
     index: 1
-  - name: Institution Name, Country
+  - name: Technical University of Munich, TUM School of Natural Sciences, Department of Physics, James-Franck-Strasse 1, 85748 Garching, Germany
     index: 2
-  - name: Independent Researcher, Country
+  - name: STAR Institute, Quartier Agora, Allée du Six Août, 19c, 4000 Liège, Belgium
     index: 3
+  - name: XXX
+    index: 4
+  - name: Department of Physics and Astronomy, Lehman College, City University of New York, 250 Bedford Park Boulevard West, Bronx, NY 10468-1589, USA
+    index: 5
 date: 16 Mai 2023
 bibliography: paper.bib
 ---
@@ -54,7 +65,7 @@ Such a large variety of data sets and scientific objectives have led to the deve
 
 This is the motivation behind COOLEST: because lens modeling products follow the same theoretical foundations, we could built a standard based on precise conventions so that lens models can be described _independently of the original modeling code_. Important lens modeling products typically include the lens mass distribution, the unconvolved surface brightness of both the lens and the (unlensed) source galaxies, as well as a model of the point spread function of the instrument. COOLEST offers a simple and human-readable way to describe a lens model, summarized in a single JSON template file, and optionally links to external files (with .fits and .pkl extenstions), all stored within a single directory. At the core of the template is a list of _lensing entities_, which allow to describe the gravitational lens directly in terms of physical objects (i.e., galaxies or quasars), alongside more abstract lensing components called _mass fields_ (i.e., external shear or flexion shift fields). Since the content of the template follows a set well-defined conventions, it can be compared effortlessly with other models that are compliant with COOLEST. Additionally, since physical objects like galaxies are directly encoded in the template, it enables straightforward access to relevant quantities that are useful for non-lensing studies, such as those focusing on galaxy evolution.
 
-Such a concise storage provides a practical way to share a given lens model and refer to it for later analyses. In addition to the advantages mentioned above, this standard is particularly appropriate in the context of the remarkable increase of the number of known gravitational lenses. Upcoming large scale surveys will discover many thousands of such systems, which will rapidly trigger many new lens modeling analyses. Large databases are beeing built to record all known and future gravitational lenses [__ref to SLED?__]. The standard we propose, powered by its lightweight storage system, is the ideal tool for storing existing lens models (with proper publication references, if any) alongside the lens information, directly within the database. Moreover, we anticipate that the analysis and plotting API we provide will be useful to generate on-the-fly products that researchers can easily retrieve online from the database servers.
+Such a concise storage provides a practical way to share a given lens model and refer to it for later analyses. In addition to the advantages mentioned above, this standard is particularly appropriate in the context of the remarkable increase of the number of known gravitational lenses. Upcoming large scale surveys will discover many thousands of such systems, which will rapidly trigger many new lens modeling analyses. Large databases are beeing built to record all known and future gravitational lenses [__ref to SLED?__]. The standard we propose, powered by its lightweight storage system, suitable for storing existing lens models (with proper publication references, if any) directly within the database, alongside the lens information. Moreover, we anticipate that the analysis and plotting API we provide will be useful to generate on-the-fly products that researchers can easily retrieve online from the database servers.
 
 # Content of the standard
 
@@ -64,51 +75,11 @@ COOLEST is composed of three distinct building blocks:
 - __Template system__ (`coolest.template`): a Python interface to create, store and manipulate COOLEST template and external files;
 - __Analysis & plotting API__ (`coolest.api`): a Python interface to compute key lensing quantities and generate different plots.
 
-The template file stores most of the data and lens model information, including observational and instrumental properties, and particular model choices that describe the gravitational lens. It stores indivual model parameter values (as point estimates), as well as a description of their prior distribution (if any) and first-order statistics of their posterior distributions (e.g., from MCMC chains). An example of such a [template file](https://github.com/aymgal/COOLEST/blob/main/examples/coolest_template.json), and how to generate and fill one, is provided on our GitHub repository.
+The template file stores most of the data and lens model information, including observational and instrumental properties, and particular model choices that describe the gravitational lens. It stores indivual model parameter values (as point estimates), as well as a description of their prior distribution (if any) and first-order statistics of their posterior distributions (e.g., from MCMC chains). An example of such a [template file](https://github.com/aymgal/COOLEST/blob/main/examples), and how to generate and fill one, is provided on our GitHub repository.
 
 The parent directory of that template, depending on the application, can also contain observational data, model images and PSF models. Additionally, the `'meta'` field of the template is also used to refer to inference data such as MCMC chains, stored in separate files.
 
-All details regarding the conventions and Python interfaces are given on the COOLEST [documentation website](https://coolest.readthedocs.io).
-
-<!-- # Mathematics
-
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
-
-Double dollars make self-standing equations:
-
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
-
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text. -->
-
-<!-- # Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
-
-# Figures
-
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
-
-Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% } -->
+All details regarding the conventions and Python interfaces are given on the COOLEST [documentation website](https://coolest.readthedocs.io). We warmly encourage the lensing community to adhere to the proposed standard, provide feedback and contribute to its development.
 
 # Related software
 
