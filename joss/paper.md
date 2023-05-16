@@ -115,7 +115,7 @@ Figure sizes can be customized by adding an optional second parameter:
 The following lens modeling codes already have at least a minimal interface with COOLEST:
 
 - `Lenstronomy` [@lenstronomy2018; @lenstronomy2021]
-- `Herculens` [@herculens2021]
+- `Herculens` [@herculens2022]
 - `VKL` [@vkl2022]
 
 Other lens modeling codes:
