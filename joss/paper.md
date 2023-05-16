@@ -3,18 +3,19 @@ title: 'COOLEST: COde-independent Organized LEns STandard'
 tags:
   - Python
   - astronomy
-  - strong lensing
+  - gravitational lensing
   - lens modeling
+  - standard
 authors:
   - name: Aymeric Galan
     orcid: 0000-0003-2547-9815
     equal-contrib: true
     affiliation: "1" # (Multiple affiliations must be quoted)
+    corresponding: true # (This is how to denote the corresponding author)
   - name: Author Without ORCID
     equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
     affiliation: 2
   - name: Author with no affiliation
-    corresponding: true # (This is how to denote the corresponding author)
     affiliation: 3
 affiliations:
   - name: Technical University of Munich, TUM School of Natural Sciences, Department of Physics, James-Franck-Strasse 1, 85748 Garching, Germany
@@ -23,7 +24,7 @@ affiliations:
     index: 2
   - name: Independent Researcher, Country
     index: 3
-date: 21 April 2023
+date: 16 Mai 2023
 bibliography: paper.bib
 ---
 
@@ -109,30 +110,28 @@ and referenced from text using \autoref{fig:example}.
 Figure sizes can be customized by adding an optional second parameter:
 ![Caption for example figure.](figure.png){ width=20% } -->
 
-
 # Related software
 
 The following lens modeling codes already have at least a minimal interface with COOLEST:
 
-- `Lenstronomy` `[@lenstronomy2018; @lenstronomy2021]`
-- `Herculens` `[@herculens2021]`
-- `VKL` `[@vkl2022]`
+- `Lenstronomy` [@lenstronomy2018; @lenstronomy2021]
+- `Herculens` [@herculens2021]
+- `VKL` [@vkl2022]
 
 Other lens modeling codes:
 
-- `GLEE` `[@glee2010; @glee2012]`
-- `PyAutoLens` `[@pyautolens2015; @pyautolens2018; @pyautolens2021]`
-- `giga-lens` `[@gigalens2022]`
+- `GLEE` [@glee2010; @glee2012]
+- `PyAutoLens` [@pyautolens2015; @pyautolens2018; @pyautolens2021]
+- `giga-lens` [@gigalens2022]
 
-Lens model databases:
+**_Others? (should we cite all those referenced [here](https://github.com/lenstronomy/lenstronomy/blob/main/Paper/paper.md)?)_**
 
-- ???
+**_Cluster-scale modeling codes?_**
 
+**_Refer to lens databases?_**
 
 # Acknowledgements
 
 The authors thank XXX for useful discussion. This work is supported by the Swiss National Science Foundation (SNSF, Post.Doc Mobility grant XXX). XXXXXX
 
 # References
-
-XXX.
