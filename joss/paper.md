@@ -100,6 +100,6 @@ Other lens modeling codes:
 
 # Acknowledgements
 
-The authors thank XXX for useful discussion. This work is supported by the Swiss National Science Foundation (SNSF, Post.Doc Mobility grant XXX). XXXXXX
+The authors thank XXX for useful discussion. This work is supported by the Swiss National Science Foundation (SNSF, Post.Doc Mobility grant XXX). This project has received funding from the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation program (grant agreement No 787886).  XXXXXX
 
 # References
