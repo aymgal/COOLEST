@@ -16,10 +16,10 @@ authors:
     affiliation: 3
   - name: Matthew R. Gomer
     orcid: 0000-0001-5562-3879
-    affiliation: 4
+    affiliation: 3
   - name: Georgios Vernardos
     orcid: 0000-0001-8554-7248
-    affiliation: "1,5"
+    affiliation: "1,4"
   - name: Dominique Sluse
     orcid: 0000-0001-6116-2095
     affiliation: 3
@@ -30,10 +30,8 @@ affiliations:
     index: 2
   - name: STAR Institute, Quartier Agora, Allée du Six Août, 19c, 4000 Liège, Belgium
     index: 3
-  - name: XXX
-    index: 4
   - name: Department of Physics and Astronomy, Lehman College, City University of New York, 250 Bedford Park Boulevard West, Bronx, NY 10468-1589, USA
-    index: 5
+    index: 4
 date: 16 Mai 2023
 bibliography: paper.bib
 ---
