@@ -24,8 +24,7 @@ authors:
     orcid: 0000-0001-6116-2095
     affiliation: 3
 affiliations:
-  - name: Institute of Physics, Laboratory of Astrophysics, École Polytechnique Fédérale de Lausanne (EPFL),
-Switzerland
+  - name: Institute of Physics, Laboratory of Astrophysics, École Polytechnique Fédérale de Lausanne (EPFL), Switzerland
     index: 1
   - name: Technical University of Munich, TUM School of Natural Sciences, Department of Physics, James-Franck-Strasse 1, 85748 Garching, Germany
     index: 2
