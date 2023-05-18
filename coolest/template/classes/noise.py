@@ -13,13 +13,7 @@ __all__ = [
     'DrizzledNoise',
 ]
 
-SUPPORTED_CHOICES = [
-    'UniformGaussianNoise',
-    'NoiseMap',
-    'NoiseRealization',
-    'InstrumentalNoise',
-    'DrizzledNoise'
-]
+SUPPORTED_CHOICES = list(set(__all__) - {'Noise'})
 
 
 class Noise(APIBaseObject):

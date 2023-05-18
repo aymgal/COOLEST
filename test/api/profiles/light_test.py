@@ -34,7 +34,7 @@ class TestSersic(object):
 
         # reference
         ref = LightModel(['SERSIC_ELLIPSE'])
-        e1, e2 = param_util.phi_q2_ellipticity(phi * np.pi / 180., q)
+        e1, e2 = param_util.phi_q2_ellipticity((phi + 90.) * np.pi / 180., q)
         kwargs = {
             'amp': I_eff,
             'R_sersic': theta_eff,

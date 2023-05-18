@@ -10,7 +10,7 @@ __all__ = [
     'GaussianPSF',
 ]
 
-SUPPORTED_CHOICES = __all__
+SUPPORTED_CHOICES = list(set(__all__) - {'PSF'})
 
 
 class PSF(APIBaseObject):

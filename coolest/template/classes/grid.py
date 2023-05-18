@@ -43,8 +43,8 @@ class PixelatedRegularGrid(Grid):
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
                  num_pix_x: int = 0, num_pix_y: int = 0,
-                 **kwargs_grid) -> None:
-        super().__init__(fits_path, **kwargs_grid)
+                 **kwargs_file) -> None:
+        super().__init__(fits_path, **kwargs_file)
         self.set_grid(None, field_of_view_x, field_of_view_y, 
                       num_pix_x, num_pix_y)
 
@@ -88,7 +88,7 @@ class PixelatedRegularGrid(Grid):
         return array_shape
 
     def get_pixels(self, directory=None):
-        array, _ = self.fits_file.read()
+        array, _ = self.fits_file.read(directory=directory)
         return array
 
 
@@ -98,8 +98,8 @@ class IrregularGrid(Grid):
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
                  num_pix: int = 0,
-                 **kwargs_grid) -> None:
-        super().__init__(fits_path, **kwargs_grid)
+                 **kwargs_file) -> None:
+        super().__init__(fits_path, **kwargs_file)
         self.set_grid(None, 
                       field_of_view_x=field_of_view_x, 
                       field_of_view_y=field_of_view_y, 

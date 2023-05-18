@@ -13,10 +13,10 @@ class Instrument(APIBaseObject):
    
     # TODO: support for general pixel shape (using pixel to angle matrix)
     def __init__(self,
-                 name: str,
-                 band: str,
-                 pixel_size: float, 
-                 readout_noise: float,
+                 pixel_size: float,
+                 name: str = "",
+                 band: str = "",
+                 readout_noise: float = 0.,
                  psf: PSF = None) -> None:
         self.name = name
         self.band = band
