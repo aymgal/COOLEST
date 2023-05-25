@@ -1,3 +1,7 @@
+---
+bibliography: ../joss/paper.bib
+---
+
 # Welcome to the COOLEST documentation!
 
 COOLEST stands for **COde-independent Organized LEns STandard** and its goal is to accelerate strong gravitational lensing research by providing a unifying standard to express lens models.
@@ -42,11 +46,20 @@ Codes compliant with COOLEST <examples/existing_interfaces>
 ```{toctree}
 ---
 hidden:
-caption: API Reference
+caption: Reference
 maxdepth: 3
 ---
 The COOLEST object <autoapi/coolest/template/standard/index>
-Mass & Light profiles <autoapi/coolest/template/classes/profiles/index>
-Analysis & Plotting API <autoapi/coolest/api/index>
-Template system <autoapi/coolest/template/index>
+Template file system <autoapi/coolest/template/index>
+Template model profiles <autoapi/coolest/template/classes/profiles/index>
+API for analysis & plotting <autoapi/coolest/api/index>
+API model profiles <autoapi/coolest/api/profiles/index>
+```
+
+```{toctree}
+---
+hidden:
+maxdepth: 1
+---
+Bibliography <bib.rst>
 ```

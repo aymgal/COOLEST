@@ -56,7 +56,7 @@ class PEMD(BaseMassProfile):
 
     """
     Power-law Elliptical Mass Distribution (a.k.a. Elliptical Power-law)
-    Implementations from lenstronomy (Birrer et al.) and Tessore et al. 2015 were used.
+    This follows implementations in lenstronomy (:cite:t:`lenstronomy2018`:, :cite:t:`lenstronomy2021`:) based on the formulae :cite:p:`Tessore2015`:.
     """
 
     # TODO: use parameter values (point estimates, prior, etc...) contained in the template?

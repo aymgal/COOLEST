@@ -177,7 +177,7 @@ class NFW(AnalyticalProfile):
     This profile is described by the following parameters:
 
     - 'r_s': transition radis from logarithmic radial slope -1 to -3 
-    - 'rho_0': characteristic mass density
+    - 'rho_c': characteristic mass density
     - 'q': axis ratio (semi-major axis / semi-minor axis)
     - 'phi': position angle
     - 'center_x': position along the x coordinate
@@ -189,9 +189,9 @@ class NFW(AnalyticalProfile):
             'r_s': NonLinearParameter("Radius at which the mass density profile slope transitions from -1 to -3",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$r_{\rm s}$"),
-            'rho_0': NonLinearParameter("Characteristic mass density",
+            'rho_c': NonLinearParameter("Characteristic mass density",
                                DefinitionRange(min_value=0.0),
-                               latex_str=r"$\rho_0$"),
+                               latex_str=r"$\rho_c$"),
             'q': NonLinearParameter("Axis ratio, semi-minor axis / semi-major axis",
                                      DefinitionRange(min_value=0.0, max_value=1.0),
                                      latex_str=r"$q$"),
