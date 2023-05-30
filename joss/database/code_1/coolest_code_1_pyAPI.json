@@ -10,8 +10,8 @@
     "py/object": "coolest.template.classes.lensing_entity_list.LensingEntityList",
     "py/seq": [
       {
-        "py/object": "coolest.template.classes.external_shear.ExternalShear",
-        "type": "external_shear",
+        "py/object": "coolest.template.classes.mass_field.MassField",
+        "type": "MassField",
         "name": "an external shear",
         "redshift": 1,
         "mass_model": {
@@ -86,7 +86,7 @@
       },
       {
         "py/object": "coolest.template.classes.galaxy.Galaxy",
-        "type": "galaxy",
+        "type": "Galaxy",
         "name": "a lens galaxy",
         "redshift": 1,
         "mass_model": {
@@ -277,7 +277,7 @@
       },
       {
         "py/object": "coolest.template.classes.galaxy.Galaxy",
-        "type": "galaxy",
+        "type": "Galaxy",
         "name": "an analytical source galaxy",
         "redshift": 2,
         "mass_model": {
@@ -708,15 +708,15 @@
         "path": "OBS_HST_WFPC2-F814W.fits"
       },
       "field_of_view_x": [
-        5,
-        -5
-      ],
-      "field_of_view_y": [
-        -5,
-        5
-      ],
-      "num_pix_x": 100,
-      "num_pix_y": 100
+          -3.4,
+          3.4
+        ],
+        "field_of_view_y": [
+          -3.4,
+          3.4
+        ],
+      "num_pix_x": 68,
+      "num_pix_y": 68
     },
     "exposure_time": null,
     "mag_zero_point": null,
@@ -731,15 +731,15 @@
           "path": "HST_WFPC2-F814W_sigma_map.fits"
         },
         "field_of_view_x": [
-          5,
-          -5
+          -3.4,
+          3.4
         ],
         "field_of_view_y": [
-          -5,
-          5
+          -3.4,
+          3.4
         ],
-        "num_pix_x": 100,
-        "num_pix_y": 100
+        "num_pix_x": 68,
+        "num_pix_y": 68
       }
     }
   },

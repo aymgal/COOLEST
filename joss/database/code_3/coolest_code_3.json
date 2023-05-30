@@ -72,7 +72,7 @@
       ],
       "name": "extshear",
       "redshift": 0.5,
-      "type": "external_shear"
+      "type": "MassField"
     },
     {
       "light_model": [],
@@ -169,7 +169,7 @@
       ],
       "name": "lens",
       "redshift": 0.5,
-      "type": "galaxy"
+      "type": "Galaxy"
     },
     {
       "light_model": [
@@ -194,7 +194,7 @@
       "mass_model": [],
       "name": "source",
       "redshift": 2.0,
-      "type": "galaxy"
+      "type": "Galaxy"
     }
   ],
   "meta": {
