@@ -21,9 +21,9 @@ _**TODO**: add references to publications_
 
 ### Singular isothermal power-law
 
-_Implemented in_
-- [x] `coolest.template`
-- [x] `coolest.api`
+``` {admonition} Availability
+Implemented in both `coolest.template` and `coolest.api`.
+```
 
 The **singular power-law ellipsoid** (SIE) lens potential is given by
 $$
@@ -44,6 +44,10 @@ $$
 
 ### Cored generic power-law
 
+``` {admonition} Availability
+Implemented in `coolest.template`.
+```
+
 The convergence of a SPEMD profile is the following :
 $$
   \kappa_{\rm SPEMD}(x,y) = \frac{3-\gamma}{2} \left(\frac{b}{\sqrt{qx^2+y^2/q + s^2}} \right)^{\gamma -1}
@@ -53,17 +57,15 @@ with $\gamma$ the logarithmic power-law slope (when $\gamma=2$, the profile is i
 
 ### Generic power-law profile
 
-_Available in_
-- [x] `coolest.template`
-- [x] `coolest.api`
+_Implemented in `coolest.template` and `coolest.api`._
 
 The PEMD profile is characterized by the same equation with $s=0$; in this case, $b$ is thus equal to the Einstein radius as define in our conventions.
 
 ### Cored isothermal power-law
 
-_Available in_
-- [x] `coolest.template`
-- [ ] `coolest.api`
+``` {admonition} Availability
+Implemented in `coolest.template`.
+```
 
 The Non-singular Isothermal Ellipsoid (NIE) is the special case of a SPEMD, with isothermal slope $\gamma=2$. The convergence is thus
 $$
@@ -76,6 +78,10 @@ where the Einstein radius is equal to $b$ for no core ($s=0$). For a small cored
 
 ### Navarro-Frenk-White
 
+``` {admonition} Availability
+Implemented in `coolest.template`.
+```
+
 The **Navarro, Frenk, and White** NFW profile is defined using 3D characteristic density $\rho_c$, and 3D scale radius $r_s$ as
 $$
   \rho(r) = \frac{\rho_c}{(r/r_s)(1+r/r_s)^2} \ .
@@ -85,10 +91,49 @@ Projection into 2D and addition of ellipticity is defined by \cite{Golse2002}.
 
 ## Baryonic matter profiles
 
-NFW, Chameleon, etc...
+``` {admonition} Availability
+Implemented in `coolest.template`.
+```
+
+Following [Dutton et al. 2011](https://ui.adsabs.harvard.edu/abs/2011MNRAS.417.1621D/exportcitation), the chameleon profile is defined as the difference between two NIE profiles with different core radii $s_{\rm c}$ and $s_{\rm t}$. The former defines an overall core radius, and latter defines a truncation radius (hence $s_{\rm t} > s_{\rm c}$). The two NIE components have the same normalization $b$ to ensure the
+total mass is finite. The convergence of the chameleon profile is thus
+$$
+\begin{align}
+  \nonumber
+  \kappa_{\rm chm}(x, y) &\equiv \kappa_{\rm NIE, c}(x, y) - \kappa_{\rm NIE, t}(x, y) \\
+  \nonumber
+  &= \frac{b}{2} \left[ \frac{1}{\sqrt{qx^2 + y^2/q + s_{\rm c}^2}} - \frac{1}{\sqrt{qx^2 + y^2/q + s_{\rm t}^2}} \right] \ .
+\end{align}
+$$
+The lens potential and deflection angles are similarly defined, as the difference of the potentials and deflections of two NIEs.
 
 ## Massive fields
 
-- External shear
+### External shear
 
-- Flexion shift
+``` {admonition} Availability
+Implemented in both `coolest.template` and `coolest.api`.
+```
+
+The lens potential due to shear only with respect to the origin and for an angle $\phi$ measured counter-clockwise from the positive x-axis, is given by:
+$$
+  \psi(\boldsymbol{r}) \equiv \psi(r,\phi) = \frac{r^2}{2} \, \gamma_{\rm ext} \, \cos\left[ 2 (\phi - \phi_{\rm ext}) \right],
+$$
+or equivalently:
+$$  
+  \psi(x,y) = \frac12 \, \gamma_1 \, (x^2 - y^2) + \gamma_2 \, x \, y,
+$$
+where in the last equation we set:
+$$
+  \gamma_1 = \gamma_{\rm ext} \, \cos (2 \phi_{\rm ext}) \quad \mathrm{and} \quad \gamma_2 = \gamma_{\rm ext} \, \sin (2 \phi_{\rm ext}).
+$$
+The angle and magnitude of the shear are related to its $\gamma_1$ and $\gamma_2$ components through:
+$$
+  \gamma_{\rm ext} = \sqrt{\gamma_1^2 + \gamma_2^2} \quad \mathrm{and} \quad \phi_{\rm ext} = \frac12 \tan^{-1} \left( \frac{\gamma_2}{\gamma_1} \right).
+$$
+
+### Flexion shift
+
+``` {admonition} Availability
+Soon implemented in `coolest.template`.
+```

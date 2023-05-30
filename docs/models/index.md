@@ -14,7 +14,7 @@ The different profiles are split into two broad categories:
 ```{toctree}
 ---
 hidden:
-caption: Supported models
+caption: Supported profiles
 maxdepth: 1
 ---
 Mass profiles <mass>

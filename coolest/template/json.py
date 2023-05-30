@@ -20,25 +20,25 @@ class JSONSerializer(object):
     For the latter, the JSON file should end with the suffix `'_pyAPI'` (before the .json extension).
     
     Parameters
-        ----------
-        file_path_no_ext : str
-            Path to the JSON template, or the one to be created.
-            It should NOT include the .json extension nor the optional _pyAPI
-        obj : object, optional
-            Instance of the COOLEST object (from the `standard` module) 
-            to be encoded, by default None
-        indent : int, optional
-            Number of spaces used to indent lines in the JSON file, by default 2
-        check_external_files : bool, optional
-            If True, will check the existence of external (e.g., FITS files) 
-            specified within the JSON template, by default True
+    ----------
+    file_path_no_ext : str
+        Path to the JSON template, or the one to be created.
+        It should NOT include the .json extension nor the optional _pyAPI
+    obj : object, optional
+        Instance of the COOLEST object (from the `standard` module) 
+        to be encoded, by default None
+    indent : int, optional
+        Number of spaces used to indent lines in the JSON file, by default 2
+    check_external_files : bool, optional
+        If True, will check the existence of external (e.g., FITS files) 
+        specified within the JSON template, by default True
 
-        Raises
-        ------
-        ValueError
-            If the provided path to the JSON file is not an absolute path
-        ValueError
-            If the provided path contains the .json extension
+    Raises
+    ------
+    ValueError
+        If the provided path to the JSON file is not an absolute path
+    ValueError
+        If the provided path contains the .json extension
     """
 
     def __init__(self,

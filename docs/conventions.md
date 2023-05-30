@@ -8,7 +8,6 @@ The standard relies on a set of fixed conventions, that are implicitly assumed b
 - Position angles and orientations are given in **degrees**, by default in the interval $(-90^\circ, +90^\circ]$. This typically holds true for profiles with 180° symmetry such as elliptical profiles and external shear. Otherwise, it is explicitly mentioned in the profile definition.
 - data and model images (e.g., including pixelated light profiles) are assumed to be given in **electrons per second**. If these units are evidently not suitable to the type of data (e.g., radio wavelenghts), the alternative units must be specified in the `'meta'` section of the template.
 
-
 ## Coordinates system
 
 - The origin of the coordinate system in which all quantities are defined is fixed by a **single absolute J2000 coordinate**, given in `0h:0m:0.0s` (right ascension) and `0d:0m:0.0s` (declination) format. Any dependence on a specific field-of-view should be subtracted out.
