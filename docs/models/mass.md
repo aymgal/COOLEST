@@ -15,7 +15,7 @@ kernelspec:
 
 The equations for elliptical profiles provided in the following are valid for coordinates $(x,y)$ centered on the origin and with the major axis of the ellipsoid along the $x$ axis which corresponds to a position angle $\phi=-90^\circ$ following COOLEST conventions.
 
-_**TODO**: add references to publications_
+<!-- _**TODO**: add references to publications_ -->
 
 ## Total mass profiles
 

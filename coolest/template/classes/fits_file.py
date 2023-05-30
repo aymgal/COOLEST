@@ -6,28 +6,28 @@ from astropy.io import fits
 
 
 class FitsFile(object):
-    """"""
+    """Class that represents a FITS file on the disk.
+
+    Parameters
+    ----------
+    path : str
+        Path to the FITS file, depending on usage either relative or absolute.
+    directory : str, optional
+        Absolute directory containing the FITS file, 
+        in case `path` is a relative, by default None
+    check_exist : bool, optional
+        If True, will check if the FITS file exists when the object is 
+        instantiated, by default False
+
+    Raises
+    ------
+    RuntimeError
+        If the FITS file does not exist on the disk.
+    """
+
     def __init__(self, path: str, 
                  directory: str = None, 
                  check_exist: bool = False) -> None:
-        """Class that represents a FITS file on the disk.
-
-        Parameters
-        ----------
-        path : str
-            Path to the FITS file, depending on usage either relative or absolute.
-        directory : str, optional
-            Absolute directory containing the FITS file, 
-            in case `path` is a relative, by default None
-        check_exist : bool, optional
-            If True, will check if the FITS file exists when the object is 
-            instantiated, by default False
-
-        Raises
-        ------
-        RuntimeError
-            If the FITS file does not exist on the disk.
-        """
         self.path = path
         self._directory = directory
         if not self.exists() and check_exist:
