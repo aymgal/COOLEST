@@ -6,9 +6,11 @@ bibliography: ../joss/paper.bib
 
 COOLEST stands for **COde-independent Organized LEns STandard** and its goal is to accelerate strong gravitational lensing research by providing a unifying standard to express lens models.
 
+<!--
 ```{warning}
 This documentation is currently in progress, so expect changes in the following weeks!
 ```
+-->
 
 ## The challenge
 
@@ -38,9 +40,10 @@ Supported profiles <models/index>
 ---
 hidden:
 caption: Examples
-maxdepth: 1
+maxdepth: 2
 ---
 Codes compliant with COOLEST <examples/existing_interfaces>
+Python notebooks <notebooks/index>
 ```
 
 ```{toctree}

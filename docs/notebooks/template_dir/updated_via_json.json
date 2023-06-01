@@ -24,7 +24,7 @@
           0
         ],
         "fits_file": {
-          "path": "test_psf.fits"
+          "path": "psf_kernel.fits"
         },
         "num_pix_x": 0,
         "num_pix_y": 0
@@ -412,7 +412,7 @@
                 2.0
               ],
               "fits_file": {
-                "path": "test_image.fits"
+                "path": "regul_grid_image.fits"
               },
               "num_pix_x": 0,
               "num_pix_y": 0
@@ -557,7 +557,7 @@
                 2.0
               ],
               "fits_file": {
-                "path": "test_image.fits"
+                "path": "regul_grid_image.fits"
               },
               "num_pix_x": 0,
               "num_pix_y": 0
@@ -585,7 +585,7 @@
                 0
               ],
               "fits_file": {
-                "path": "test_irreg_grid.fits"
+                "path": "irreg_grid_pixels.fits"
               },
               "num_pix": 0
             }
@@ -621,7 +621,7 @@
         0
       ],
       "fits_file": {
-        "path": "test_image.fits"
+        "path": "obs.fits"
       },
       "num_pix_x": 0,
       "num_pix_y": 0

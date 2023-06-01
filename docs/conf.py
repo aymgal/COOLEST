@@ -29,7 +29,8 @@ extensions = [
     'sphinx_design', # responsive design components
     'autoapi.extension',  # generates autoapi directory
     "sphinx_math_dollar",  # allows to write LaTeX in .md files
-    "sphinxcontrib.bibtex",
+    "sphinxcontrib.bibtex",  # handles bibtext entries for citations
+    "nbsphinx", # for embedding jupyter notebooks as doc pages
 ]
 
 

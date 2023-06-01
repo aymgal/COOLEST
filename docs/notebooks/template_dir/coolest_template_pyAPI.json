@@ -290,7 +290,7 @@
                   "documentation": "Pixel values",
                   "fits_file": {
                     "py/object": "coolest.template.classes.fits_file.FitsFile",
-                    "path": "test_image.fits",
+                    "path": "regul_grid_image.fits",
                     "_directory": null
                   },
                   "field_of_view_x": {
@@ -992,7 +992,7 @@
                   "documentation": "Pixel values",
                   "fits_file": {
                     "py/object": "coolest.template.classes.fits_file.FitsFile",
-                    "path": "test_image.fits",
+                    "path": "regul_grid_image.fits",
                     "_directory": null
                   },
                   "field_of_view_x": {
@@ -1039,7 +1039,7 @@
                   "documentation": "Pixel positions and values",
                   "fits_file": {
                     "py/object": "coolest.template.classes.fits_file.FitsFile",
-                    "path": "test_irreg_grid.fits",
+                    "path": "irreg_grid_pixels.fits",
                     "_directory": null
                   },
                   "field_of_view_x": {
@@ -1071,7 +1071,7 @@
       "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
       "fits_file": {
         "py/object": "coolest.template.classes.fits_file.FitsFile",
-        "path": "test_image.fits",
+        "path": "obs.fits",
         "_directory": null
       },
       "documentation": "Class that represents a grid of values defined on a regular, Cartesian grid.\n\n    Parameters\n    ----------\n    fits_path : str\n        Path to the FITS file in which the values (and perhaps the coordinates)\n        are stored. This should be relative to the final COOLEST template file.\n    field_of_view_x : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the x direction (i.e., left side of the leftmost pixel and \n        rightside of the rightmost pixel), by default (0, 0)\n    field_of_view_y : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the y direction (i.e., bottom side of the lower pixel and \n        top side of the upper pixel), by default (0, 0)\n    num_pix_x : int, optional\n        Number of pixels along the x direction, by default 0\n    num_pix_y : int, optional\n        Number of pixels along the y direction, by default 0\n    **kwargs_file : dic, optional\n        Any remaining keyword arguments for FitsFile",
@@ -1117,7 +1117,7 @@
         "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
         "fits_file": {
           "py/object": "coolest.template.classes.fits_file.FitsFile",
-          "path": "test_psf.fits",
+          "path": "psf_kernel.fits",
           "_directory": null
         },
         "documentation": "Class that represents a grid of values defined on a regular, Cartesian grid.\n\n    Parameters\n    ----------\n    fits_path : str\n        Path to the FITS file in which the values (and perhaps the coordinates)\n        are stored. This should be relative to the final COOLEST template file.\n    field_of_view_x : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the x direction (i.e., left side of the leftmost pixel and \n        rightside of the rightmost pixel), by default (0, 0)\n    field_of_view_y : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the y direction (i.e., bottom side of the lower pixel and \n        top side of the upper pixel), by default (0, 0)\n    num_pix_x : int, optional\n        Number of pixels along the x direction, by default 0\n    num_pix_y : int, optional\n        Number of pixels along the y direction, by default 0\n    **kwargs_file : dic, optional\n        Any remaining keyword arguments for FitsFile",

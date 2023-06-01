@@ -24,7 +24,7 @@
           0
         ],
         "fits_file": {
-          "path": "test_psf.fits"
+          "path": "psf_kernel.fits"
         },
         "num_pix_x": 0,
         "num_pix_y": 0
@@ -44,10 +44,10 @@
                 "value": 0.07
               },
               "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
+                "mean": 0.03,
+                "median": 0.031,
+                "percentile_16th": 0.02,
+                "percentile_84th": 0.03
               },
               "prior": {
                 "type": null
@@ -391,7 +391,9 @@
                 "percentile_84th": null
               },
               "prior": {
-                "type": null
+                "mean": 1.0,
+                "type": "GaussianPrior",
+                "width": 0.01
               }
             }
           },
@@ -409,7 +411,7 @@
                 2.0
               ],
               "fits_file": {
-                "path": "test_image.fits"
+                "path": "regul_grid_image.fits"
               },
               "num_pix_x": 0,
               "num_pix_y": 0
@@ -519,7 +521,7 @@
             "theta_eff": {
               "fixed": false,
               "point_estimate": {
-                "value": null
+                "value": 0.8
               },
               "posterior_stats": {
                 "mean": 0.11,
@@ -554,7 +556,7 @@
                 2.0
               ],
               "fits_file": {
-                "path": "test_image.fits"
+                "path": "regul_grid_image.fits"
               },
               "num_pix_x": 0,
               "num_pix_y": 0
@@ -582,7 +584,7 @@
                 0
               ],
               "fits_file": {
-                "path": "test_irreg_grid.fits"
+                "path": "irreg_grid_pixels.fits"
               },
               "num_pix": 0
             }
@@ -618,7 +620,7 @@
         0
       ],
       "fits_file": {
-        "path": "test_image.fits"
+        "path": "obs.fits"
       },
       "num_pix_x": 0,
       "num_pix_y": 0
