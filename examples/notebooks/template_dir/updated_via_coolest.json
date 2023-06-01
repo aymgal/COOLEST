@@ -1,0 +1,630 @@
+{
+  "coordinates_origin": {
+    "dec": "-08d45m51.48s",
+    "ra": "00h11m20.244s"
+  },
+  "cosmology": {
+    "H0": 73.0,
+    "Om0": 0.3,
+    "astropy_name": "FlatLambdaCDM"
+  },
+  "instrument": {
+    "band": "F160W",
+    "name": "some instrument",
+    "pixel_size": 0.08,
+    "psf": {
+      "description": null,
+      "pixels": {
+        "field_of_view_x": [
+          0,
+          0
+        ],
+        "field_of_view_y": [
+          0,
+          0
+        ],
+        "fits_file": {
+          "path": "test_psf.fits"
+        },
+        "num_pix_x": 0,
+        "num_pix_y": 0
+      },
+      "type": "PixelatedPSF"
+    },
+    "readout_noise": 4
+  },
+  "lensing_entities": [
+    {
+      "mass_model": [
+        {
+          "parameters": {
+            "gamma_ext": {
+              "fixed": false,
+              "point_estimate": {
+                "value": 0.07
+              },
+              "posterior_stats": {
+                "mean": 0.03,
+                "median": 0.031,
+                "percentile_16th": 0.02,
+                "percentile_84th": 0.03
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "phi_ext": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            }
+          },
+          "type": "ExternalShear"
+        }
+      ],
+      "name": "my lovely external shear",
+      "redshift": 0.5,
+      "type": "MassField"
+    },
+    {
+      "light_model": [
+        {
+          "parameters": {
+            "I_eff": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "center_x": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "center_y": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "n": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "phi": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "q": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "theta_eff": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            }
+          },
+          "type": "Sersic"
+        },
+        {
+          "parameters": {
+            "I_eff": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "center_x": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "center_y": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "n": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "phi": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "q": {
+              "fixed": false,
+              "point_estimate": {
+                "value": 0.89
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "theta_eff": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            }
+          },
+          "type": "Sersic"
+        }
+      ],
+      "mass_model": [
+        {
+          "parameters": {
+            "center_x": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "center_y": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "gamma": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "mean": 2.0,
+                "type": "GaussianPrior",
+                "width": 0.2
+              }
+            },
+            "phi": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "q": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "theta_E": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "mean": 1.0,
+                "type": "GaussianPrior",
+                "width": 0.01
+              }
+            }
+          },
+          "type": "PEMD"
+        },
+        {
+          "parameters": {
+            "pixels": {
+              "field_of_view_x": [
+                -3.0,
+                1.0
+              ],
+              "field_of_view_y": [
+                -2.0,
+                2.0
+              ],
+              "fits_file": {
+                "path": "test_image.fits"
+              },
+              "num_pix_x": 0,
+              "num_pix_y": 0
+            }
+          },
+          "type": "PixelatedRegularGridPotential"
+        }
+      ],
+      "name": "a lens galaxy",
+      "redshift": 0.5,
+      "type": "Galaxy"
+    },
+    {
+      "light_model": [
+        {
+          "parameters": {
+            "I_eff": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "center_x": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "center_y": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "n": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "phi": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "q": {
+              "fixed": false,
+              "point_estimate": {
+                "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
+              },
+              "prior": {
+                "type": null
+              }
+            },
+            "theta_eff": {
+              "fixed": false,
+              "point_estimate": {
+                "value": 0.8
+              },
+              "posterior_stats": {
+                "mean": 0.11,
+                "median": 0.15,
+                "percentile_16th": 0.03,
+                "percentile_84th": 0.05
+              },
+              "prior": {
+                "type": null
+              }
+            }
+          },
+          "type": "Sersic"
+        }
+      ],
+      "mass_model": [],
+      "name": "a source galaxy",
+      "redshift": 2.0,
+      "type": "Galaxy"
+    },
+    {
+      "light_model": [
+        {
+          "parameters": {
+            "pixels": {
+              "field_of_view_x": [
+                -3.0,
+                1.0
+              ],
+              "field_of_view_y": [
+                -2.0,
+                2.0
+              ],
+              "fits_file": {
+                "path": "test_image.fits"
+              },
+              "num_pix_x": 0,
+              "num_pix_y": 0
+            }
+          },
+          "type": "PixelatedRegularGrid"
+        }
+      ],
+      "mass_model": [],
+      "name": "another source",
+      "redshift": 1.5,
+      "type": "Galaxy"
+    },
+    {
+      "light_model": [
+        {
+          "parameters": {
+            "pixels": {
+              "field_of_view_x": [
+                0,
+                0
+              ],
+              "field_of_view_y": [
+                0,
+                0
+              ],
+              "fits_file": {
+                "path": "test_irreg_grid.fits"
+              },
+              "num_pix": 0
+            }
+          },
+          "type": "IrregularGrid"
+        }
+      ],
+      "mass_model": [],
+      "name": "a VKL source",
+      "redshift": 1.2,
+      "type": "Galaxy"
+    }
+  ],
+  "meta": {},
+  "mode": "MAP",
+  "observation": {
+    "exposure_time": null,
+    "mag_sky_brightness": null,
+    "mag_zero_point": null,
+    "noise": {
+      "type": "InstrumentalNoise",
+      "with_readout_noise": true,
+      "with_sky_shot_noise": true,
+      "with_target_shot_noise": true
+    },
+    "pixels": {
+      "field_of_view_x": [
+        0,
+        0
+      ],
+      "field_of_view_y": [
+        0,
+        0
+      ],
+      "fits_file": {
+        "path": "test_image.fits"
+      },
+      "num_pix_x": 0,
+      "num_pix_y": 0
+    }
+  },
+  "standard": "COOLEST"
+}
