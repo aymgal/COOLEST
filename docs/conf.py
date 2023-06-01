@@ -30,7 +30,7 @@ extensions = [
     'autoapi.extension',  # generates autoapi directory
     "sphinx_math_dollar",  # allows to write LaTeX in .md files
     "sphinxcontrib.bibtex",  # handles bibtext entries for citations
-    "nbsphinx", # for embedding jupyter notebooks as doc pages
+    # "nbsphinx", # for embedding jupyter notebooks as doc pages
 ]
 
 
