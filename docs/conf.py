@@ -68,6 +68,9 @@ nb_custom_formats = {
 }
 myst_enable_extensions = ["colon_fence"]
 
+# do not re-compile notebooks when generating the html documentation
+nb_execution_mode = "off"
+
 autosummary_generate = True
 add_module_names = False  # prevent cluttering the doc with the full submodule path
 
