@@ -1,6 +1,6 @@
 # COOLEST example notebooks
 
-We provide the following Python notebooks as example use cases of the COOLEST interface.
+We provide a series of [Python notebooks](https://github.com/aymgal/COOLEST/tree/master/docs/notebooks) for showing different use cases of the COOLEST interface.
 
 ```{toctree}
 ---

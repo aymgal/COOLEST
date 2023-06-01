@@ -8,6 +8,7 @@ sphinx-design
 sphinxcontrib.bibtex
 sphinx-math-dollar
 myst-nb
+nbsphinx
 jupytext
 
 numpy
