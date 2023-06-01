@@ -51,7 +51,7 @@ Here we introduce COOLEST---the COde-independent Organized LEnsing STandard---to
 
 Any lens modeling code can adhere to this standard via a small interface that converts code-dependent quantities to the COOLEST conventions. The documentation and all Python routines incorporated in the API serve to keep development time to a minimum for code developers. Figure \autoref{fig:example_plotting_api} below gives a concrete example of panels generated with the plotting API, alongside quantities computed with the analysis API.
 
-![Figure generated from the output of 3 different lens modeling codes after converting it to the COOLEST standard and using the accompanying plotting API. In this example, each code models the source in fundamentally different ways: analytically with shapelets (model 1), using wavelets on a regular grid (model 2), using the semi-linear inversion technique on an adaptive grid (model 3). The top left panel shows the (simulated) observation, while the bottom left panel shows model residuals (residuals from other models are indistinguishable). Remaining column, from left to right, contain for each code the image of the model (top row) and the image of the reconstructed source (bottom row). \label{fig:example_plotting_api}](coolest_plot_example.png)
+![Figure generated from the output of 3 different lens modeling codes after converting it to the COOLEST standard and using the accompanying plotting API. In this example, each code models the source in fundamentally different ways: analytically with shapelets (model 1), using wavelets on a regular grid (model 2) and using the semi-linear inversion technique on an adaptive grid (model 3). The top left panel shows the (simulated) observation, while the bottom left panel shows model residuals (residuals from other models are indistinguishable). Remaining columns, from left to right, contain for each code the image of the model (top row) and the image of the reconstructed source (bottom row). \label{fig:example_plotting_api}](coolest_plot_example.png)
 
 # Statement of need
 
@@ -91,13 +91,13 @@ Lens modeling codes that already have an interface with COOLEST:
 - `VKL` [@vkl2022]
 - `Lenstronomy` [@lenstronomy2021]
 
-Examples of other published lens modeling codes:
+Examples of other lens modeling codes:
 
+- `giga-lens` [@gigalens2022]
 - `PyAutoLens` [@pyautolens2021]
-- `GLEE` [@glee2010]
 - `GLaD` [@glad2020]
 - `GLASS ` [@glass2020]
-- `giga-lens` [@gigalens2022]
+- `GLEE` [@glee2010]
 - `lenstool ` [@lenstool2007]
 
 # Acknowledgements
