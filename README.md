@@ -24,11 +24,7 @@ COOLEST is composed of three distinct building blocks:
 
 ## Examples
 
-### Compact storage of a lens models
-
-See the [`examples`](examples) directory to see typical JSON template files describing lens models.
-
-### Side-to-side model comparison
+See the [`example notebooks`](docs/notebooks) directory to generate and manipulate typical JSON template files describing lens models. Below is an example of plot generated using the `coolest.api` submodule.
 
 ![Example lens model comparison using the COOLEST plotting and analysis capabilities](joss/coolest_plot_example.png)
 
@@ -51,7 +47,7 @@ pip install -r requirements.txt
 pip install [-e] .
 ```
 
-For testing the installation try running `python -c "import coolest"` in the terminal, or run some of the example scripts and notebooks from the [examples](examples) directory.
+For testing the installation try running `python -c "import coolest"` in the terminal, or run some of the example notebooks from the [documentation](docs/notebooks) directory.
 
 _There will be soon the possibility to install_ `coolest` _directly from PyPi and Conda._
 
