@@ -16,7 +16,7 @@ This documentation is currently in progress, so expect changes in the following 
 
 After a lens modeling analysis is published and available as a manuscript, it is challenging to **(1) reproduce the results** with the same or another similar modeling software, or **(2) start a new analysis** directly based on published results, **(3) reliably and quantitatively compare results** from different analyses. Moreover, there is currently no practical way to share and store lens models within the lensing community.
 
-## A unifying standard as the solution
+## A unifying standard
 
 COOLEST proposes a solution to the above problems, as it is a standard for **describing, storing and sharing lens models** more easily, independently of the specific modeling techniques and software packages. The main element of COOLEST is a unique JSON hierarchical template file, that stores in a human-readable way the necessary lens model data. Another key element is a suit of visualization tools that automatically produces a series of images, plots and other analysis products from a COOLEST file.
 
