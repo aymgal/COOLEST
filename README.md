@@ -51,7 +51,7 @@ pip install -r requirements.txt
 pip install [-e] .
 ```
 
-For testing the installation try running `python -m import coolest` in the terminal, or run some of the example scripts and notebooks from the [examples](examples) directory.
+For testing the installation try running `python -c "import coolest"` in the terminal, or run some of the example scripts and notebooks from the [examples](examples) directory.
 
 _There will be soon the possibility to install_ `coolest` _directly from PyPi and Conda._
 
