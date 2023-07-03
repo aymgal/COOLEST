@@ -341,13 +341,13 @@ class ComposableLensModel(object):
             kernel = psf.pixels.get_pixels(directory=self.directory)
             kernel_sum = kernel.sum()
             if not math.isclose(kernel_sum, 1., abs_tol=1e-3):
-                logging.warning(f"PSF kernel is not normalized (sum={kernel_sum}), "
-                                "so it is normalized before convolution")
                 kernel /= kernel_sum
+                logging.warning(f"PSF kernel is not normalized (sum={kernel_sum}), "
+                                "so it has been normalized before convolution")
             if np.isnan(image).any():
-                logging.warning("Found NaN values in image prior to convolution; "
-                                "there are replaced by zeros before convolution")
                 np.nan_to_num(image, copy=False, nan=0., posinf=None, neginf=None)
+                logging.warning("Found NaN values in image prior to convolution; "
+                                "there have been replaced by zeros.")
             if supersampling_conv == supersampling:
                 # first convolve then dowsnscale 
                 image = signal.fftconvolve(image, kernel, mode='same')

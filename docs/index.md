@@ -6,6 +6,8 @@ bibliography: ../joss/paper.bib
 
 COOLEST stands for **COde-independent Organized LEns STandard** and its goal is to accelerate strong gravitational lensing research by providing a unifying standard to express lens models.
 
+![The Cosmic Horseshoe strong gravitational lens observed with HST](_static/cosmic_horeshoe_nasa_esa_hubble.jpg)
+
 <!--
 ```{warning}
 This documentation is currently in progress, so expect changes in the following weeks!
