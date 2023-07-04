@@ -34,7 +34,7 @@ maxdepth: 2
 ---
 General conventions <conventions>
 What is a "lensing entity"? <template_file/lensing_entities>
-Modes: mock vs best-fit model <template_file/modes>
+Template file modes <template_file/modes>
 Supported profiles <models/index>
 ```
 

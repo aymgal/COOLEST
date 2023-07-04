@@ -30,7 +30,7 @@ MOCK_EXCLUDE_KEYS = [
 
 MAP_EXCLUDE_KEYS = [
     'documentation',
-    'id',
+    # 'id',
     'latex_str',
     'units',
     'definition_range',
@@ -39,10 +39,8 @@ MAP_EXCLUDE_KEYS = [
 DOC_EXCLUDE_KEYS = [
     'posterior_stats',
     'prior',
-    'id',
-    'units',
     'fixed',
-    'definition_range',
+    'id',
 ]
 
 

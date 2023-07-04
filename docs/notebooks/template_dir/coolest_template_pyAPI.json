@@ -1151,7 +1151,6 @@
   "meta": {},
   "exclude_keys": [
     "documentation",
-    "id",
     "latex_str",
     "units",
     "definition_range",
