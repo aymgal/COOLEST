@@ -11,7 +11,7 @@ from coolest.template.json import JSONSerializer
 
 class TestJSONSerialization(object):
 
-    def setup(self):
+    def setup_method(self):
         self.template_name = 'test'
         self.check_files = True
 

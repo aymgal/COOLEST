@@ -47,7 +47,7 @@ pip install -r requirements.txt
 pip install [-e] .
 ```
 
-You can test the installation by running `python -c "import coolest"` in the terminal, or by running some of the example notebooks from the [documentation](docs/notebooks) directory.
+You can test the installation by running `python -c "import coolest"` in the terminal, or by running some of the example notebooks from the [documentation](docs/notebooks) directory. Moreover, you can run all unit tests (having `pytest` installed in your environment), with the command `pytest test`.
 
 _There will be soon the possibility to install_ `coolest` _directly from PyPi and Conda._
 
