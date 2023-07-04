@@ -85,7 +85,7 @@ def array2image(array, nx=0, ny=0):
     """
     if nx == 0 or ny == 0:
         # Avoid turning n into a JAX-traced object with jax.numpy.sqrt
-        n = int(math.sqrt(len(array)))
+        n = int(np.sqrt(len(array)))
         if n**2 != len(array):
             err_msg = f"Input array size {len(array)} is not a perfect square."
             raise ValueError(err_msg)

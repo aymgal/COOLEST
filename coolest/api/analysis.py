@@ -1,4 +1,4 @@
-__author__ = 'aymgal'
+__author__ = 'aymgal', 'mattgomer'
 
 import numpy as np
 from astropy.coordinates import SkyCoord
@@ -33,7 +33,8 @@ class Analysis(object):
             self.coordinates = base_coordinates
 
     def effective_einstein_radius(self, center=None, initial_guess=1, initial_delta_pix=10, 
-                                  n_iter=5, return_accuracy=False, **kwargs_selection):
+                                  n_iter=5, return_accuracy=False, max_loopcount=100, 
+                                  **kwargs_selection):
         """Calculates Einstein radius for a kappa grid starting from an initial guess with large step size and zeroing in from there.
         Uses the grid from the create_kappa_image which is built from the coolest file.
 
@@ -68,6 +69,10 @@ class Analysis(object):
         x, y = self.coordinates.pixel_coordinates
         kappa_image = mass_model.evaluate_convergence(x, y)
 
+        # import matplotlib.pyplot as plt
+        # plt.imshow(np.log10(kappa_image))
+        # plt.show()
+
         # select a center
         if center is None:
             center_x, center_y = mass_model.estimate_center()
@@ -82,7 +87,7 @@ class Analysis(object):
             if r_Ein==np.nan: #return nan if given nan (needed when I put this in a loop below)
                 return np.nan, np.nan, 0, runningtotal, total_pix
             while (runningtotal-total_pix)*direction>0:
-                if loopcount > 100:
+                if loopcount > max_loopcount:
                     raise Warning('Stuck in very long (possibly infinite) loop')
                     break
                 if direction > 0:
@@ -181,8 +186,7 @@ class Analysis(object):
         return kappa_profile, r_vec
 
     def effective_radial_slope(self, r_eval=None, center=None, r_vec=np.linspace(0, 10, 100),**kwargs_selection):
-        """Numerically calculates slope of the kappa profile. Because this is defined on a grid, it is not as accurate or robust as
-        an analytical calculation. 
+        """Numerically calculates slope of the kappa profile. Because this is defined on a grid, it is not as accurate or robust as an analytical calculation. 
 
         Parameters
         ----------
@@ -210,7 +214,7 @@ class Analysis(object):
             
     def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
                                initial_guess=1, initial_delta_pix=10, 
-                               n_iter=5, **kwargs_selection):
+                               n_iter=10, **kwargs_selection):
         """        
 
 
@@ -250,6 +254,10 @@ class Analysis(object):
             x, y = coordinates.pixel_coordinates
         light_image = light_model.evaluate_surface_brightness(x, y)
         light_image[np.isnan(light_image)] = 0.
+
+        # import matplotlib.pyplot as plt
+        # plt.imshow(np.log10(light_image))
+        # plt.show()
 
         # select a center
         if center is None:
