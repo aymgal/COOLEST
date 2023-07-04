@@ -1,5 +1,5 @@
-numpy>=1.20.0
-scipy>=1.9.0
+numpy>=1.20.3
+scipy>=1.6.3
 jsonpickle>=2.0.0
 astropy>=4.2.0
 
