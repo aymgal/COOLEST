@@ -29,7 +29,7 @@ class PSF(APIBaseObject):
     """
 
     def __init__(self,
-                 psf_type: str,
+                 psf_type: str = None,
                  description: str = None,
                  **kwargs) -> None:
         self.type = psf_type

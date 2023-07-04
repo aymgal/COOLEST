@@ -38,7 +38,7 @@ git clone https://github.com/aymgal/COOLEST.git
 # Move to the repo directly
 cd COOLEST
 
-# (Activate your virtual environment if need)
+# (Activate your virtual environment if needed)
 
 # Install
 pip install -r requirements.txt
@@ -47,7 +47,7 @@ pip install -r requirements.txt
 pip install [-e] .
 ```
 
-For testing the installation try running `python -c "import coolest"` in the terminal, or run some of the example notebooks from the [documentation](docs/notebooks) directory.
+You can test the installation by running `python -c "import coolest"` in the terminal, or by running some of the example notebooks from the [documentation](docs/notebooks) directory.
 
 _There will be soon the possibility to install_ `coolest` _directly from PyPi and Conda._
 
