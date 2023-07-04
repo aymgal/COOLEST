@@ -1,19 +1,23 @@
 # What is a "lensing entity" in COOLEST?
 
-## How to describe a lensing system
+## General description of a strong lensing system
 
-In the goal of describing lens models as intuitively as possible, the different components in the COOLEST template closely follow the physical objects that they describes. In particular, the template explcitely describes indivual galaxies (or quasars), as opposed to the more abstract "lensing planes". While the latter is usually a more practical description of the model within modeling codes, the former is more intuitive and closer to the end goal, which is understanding the mass and light distribution of galaxies. 
+In most lensing analyses, one refers to the notion of lensing planes to group physical objects -- such as galaxies, quasars or supernovae -- that belong to the same redshifts. Although from an implementation and mathematical point of view the notion of lensing plane is more convenient, grouping the physical objects into such planes is not necessarily unique (e.g., depending on redshift measurements available). Therefore, different analyses can have different arrangements of planes which prevent a straightforward comparison between them and hinders the goal of having a unified standard.
 
-However, not all components of a lens model straightforwardly refer to a physical object. The most common example is the "external shear", which is a profile accounting for the mass of several (unknown) physical objects surrounding the main lens. As it would be nearly impossible to decompose the external shear into its individual true sub-components, one needs to store as is.
+## From lensing planes to physical objects
 
-## The COOLEST choice
+After a lens model has been obtained, one can go back to the description of the mass and light distributions of the underlying physical components of the lensing system (e.g., the main lens galaxy, one of its satellites, the source object, etc.). This explicit description is more intuitive for both lensing and non-lensing experts, and makes it straightforward to cross-match properties of these objects with other measurements from non-lensing analyses. This will become primordial in the near future with the large increase of complementary datasets available.
 
-In COOLEST, we introduce the concept of **lensing entity**, which can broadly be split into two categories: physical objects such as galaxies, and other components that are more abstract approximations of physical objects. In a COOLEST template, the list of lensing entitities is stored under the `'lensing_entities'` key. Within the Python API, each lensing entity is an instance of the [`LensingEntity`](https://coolest.readthedocs.io/en/latest/autoapi/coolest/template/classes/lensing_entity/index.html#coolest.template.classes.lensing_entity.LensingEntity) object.
+Nevertheless, not all components of a lens model refer to a well-defined physical object. The most common example is the "external shear", which accounts for the mass of several (possibly unknown) physical objects surrounding the main lens. As it is unrealistic to decompose an external shear into its underlying components, one needs to store it as is. We describe below how both physical objects and abstract massive components are stored within a COOLEST template file.
 
-Currently, a lensing entity can be any of the following types:
+## Lensing entities in COOLEST
+
+COOLEST is based on the concept of **lensing entity**, which is split in two categories: physical objects such as galaxies, and approximations of several underlying massive objects. A lensing entity is named, has a redshift, and can be any of the following types:
 
 - [**`Galaxy`**](https://coolest.readthedocs.io/en/latest/autoapi/coolest/template/classes/galaxy/index.html#coolest.template.classes.galaxy.Galaxy): describes a galaxy with a mass model and light model, each of this model being composed of a list of profiles. If a galaxy is only lensed, it does not need a mass model; conversely if the light distribution of a galaxy is ignored, it can be empty.
 
 - [**`MassField`**](https://coolest.readthedocs.io/en/latest/autoapi/coolest/template/classes/mass_field/index.html#coolest.template.classes.mass_field.MassField): describes a generic field of massive objects, for instance an external shear field.
 
-In the template, the `'type'` key should thus be one of the above types.
+Within the Python API, each lensing entity is an instance of the [`LensingEntity`](https://coolest.readthedocs.io/en/latest/autoapi/coolest/template/classes/lensing_entity/index.html#coolest.template.classes.lensing_entity.LensingEntity) object (see the API documentation for the full list of attributes, which reflects the structure of the template file).
+
+Note that a lensing entity can still, if necessary, be composed of several physical objects; in this case, the `"name"` of the field may be used to specify it appropriately (e.g., "main lens and its satellite"). Moreover, unknown redshifts can be replaced by hypothetical values that only provides the ordering of the entities along the redshift axis.
