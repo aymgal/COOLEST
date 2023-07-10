@@ -211,7 +211,90 @@ class Analysis(object):
         else:
             closest_r = self.find_nearest(r_vec,r_eval) #just takes closest r. Could rebuild it to interpolate.
             return slope[r_vec==closest_r]
-            
+
+
+
+    def two_point_correlation(self,Nbins=100,rmax=None,coordinates=None,**kwargs_selection):
+        """
+        The two point correlation function can be obtained from the covariance matrix of an image and the distances between its pixels.
+        By binning the covariance matrix entries in distance (or radial) bins, one can obtain the 1D correlation function.
+        There are two ways to obtain the covariance matrix:
+        1) it is equivalent to the inverse Fourier transform of the power spectrum, and
+        2) by calculating explicitly the covariance between any two pixels
+        Here we use the first way.
+
+        Parameters
+        ----------
+        Nbins : int, optional
+            The number of radial bins to use for converting the 2D covariance matrix into a 1D correlation function.
+        rmax : float, optional
+            A value for the maximum extent of the radial bins. If none is given then it is equal to half the diagonal of the provided image.
+        coordinates : Coordinates, optional
+            Instance of a Coordinates object to be used for the computation.
+            If None, will use an instance based on the Instrument, by default None
+
+        Returns
+        -------
+        (array, array, array)
+            The location, value, and uncertainty of the 1D bins of the two-point correlation function.
+            The location (radius/distance) is in the same units as the coordinates.
+        """
+        if kwargs_selection is None:
+            kwargs_selection = {}
+        light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
+        if coordinates is None:
+            x, y = self.coordinates.pixel_coordinates
+        else:
+            x, y = coordinates.pixel_coordinates
+        if rmax is None:
+            rmax = math.hypot(x[0,0]-x[-1,-1],y[0,0]-y[-1,-1])/2.0
+        light_image = light_model.evaluate_surface_brightness(x, y)
+        light_image[np.isnan(light_image)] = 0.
+
+
+        # Fourier transform image
+        fouriertf = np.fft.fft2(light_image,norm="ortho")
+        # Power spectrum (the square of the signal)
+        absval2 = fouriertf.real**2 + fouriertf.imag**2
+        # Covariance matrix (the inverse fourier transform of the power spectrum)
+        complex_cov = np.fft.fftshift(np.fft.ifft2(absval2,norm="ortho"))
+        cov = complex_cov.real
+
+        ## Write the covariance matrix
+        #newhdu = fits.PrimaryHDU(corr)
+        #newhdu.writeto('matrix_strue.fits',overwrite=True)
+
+        
+        # Bin the 2D covariance matrix into radial bins
+        rmin = 0.0
+        dr = (rmax-rmin)/Nbins
+        bins = np.arange(rmin,rmax,dr)
+        vals = []
+        for i in range(0,len(bins)):
+            vals[i] = [] 
+
+        # Ni = Nj = the total number of pixels in the image
+        Ni = cov.shape[1]
+        Nj = cov.shape[0]
+        for i in range(0,Ni):
+            for j in range(0,Nj):
+                r = math.hypot((j-Nx/2.0)*dpix,(i-Ny/2.0)*dpix)
+                if r < rmax and i != j:
+                    index = int(math.floor(r/dr))
+                    vals[index].append(cov[i][j])
+                    
+        means = np.zeros(len(bins))                    
+        sdevs = np.zeros(len(bins))
+        for i in range(0,len(bins)):
+            if len(vals[i]) > 0:
+                means[i] = np.mean(vals[i])
+                sdevs[i] = np.std(vals[i])
+
+        return bins,means,sdevs
+
+
+        
+        
     def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
                                initial_guess=1, initial_delta_pix=10, 
                                n_iter=10, **kwargs_selection):
