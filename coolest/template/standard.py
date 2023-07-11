@@ -18,7 +18,6 @@ SUPPORTED_MODES = ['MOCK', 'MAP', 'DOC']
 
 MOCK_EXCLUDE_KEYS = [
     'documentation',
-    'id',
     'latex_str',
     'units',
     'fixed',
@@ -30,7 +29,6 @@ MOCK_EXCLUDE_KEYS = [
 
 MAP_EXCLUDE_KEYS = [
     'documentation',
-    # 'id',
     'latex_str',
     'units',
     'definition_range',

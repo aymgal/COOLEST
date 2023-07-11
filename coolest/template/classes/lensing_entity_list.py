@@ -12,6 +12,17 @@ class LensingEntityList(list, APIBaseObject):
     """The list of components that define the lensing system.
     In COOLEST, a 'lensing entity' is typically a galaxy or an external shear.
 
+    Note that unique identifiers (IDs) for each profile and parameters will be 
+    generated at instantiation time.
+
+    - A given profile has a unique IDs with the following pattern:
+
+    `{entity index}-{{massfield} or {galaxy}}-{{mass} or {light}}-{profile index}_{profile name}`
+
+    - A given parameter has the same ID as above, just with the parameter name at the end:
+
+    `{entity index}-{{massfield} or {galaxy}}-{{mass} or {light}}-{profile index}_{profile name}-{parameter name}`
+
     Parameters
     ----------
     *entities : LensingEntity instances
@@ -24,8 +35,6 @@ class LensingEntityList(list, APIBaseObject):
         self._create_all_ids()
 
     def _create_all_ids(self):
-        """Creates a unique identifier for each model profiles and profile parameters.
-        """
         for i, entity in enumerate(self):
             for model_type in ['light', 'mass']:
                 model = getattr(entity, f'{model_type}_model', None)
@@ -38,5 +47,5 @@ class LensingEntityList(list, APIBaseObject):
                         profile.id = profile_id
                         if isinstance(profile, AnalyticalProfile):
                             for param_name, parameter in profile.parameters.items():
-                                param_id = f'{profile.id}-{param_name}'
+                                param_id = util.parameter_to_id(param_name, profile.id)
                                 parameter.id = param_id

@@ -9,7 +9,7 @@
   },
   "lensing_entities": {
     "py/object": "coolest.template.classes.lensing_entity_list.LensingEntityList",
-    "documentation": "The list of components that define the lensing system.\n    In COOLEST, a 'lensing entity' is typically a galaxy or an external shear.\n\n    Parameters\n    ----------\n    *entities : LensingEntity instances\n        As many LensingEntity instances as required",
+    "documentation": "The list of components that define the lensing system.\n    In COOLEST, a 'lensing entity' is typically a galaxy or an external shear.\n\n    Note that unique identifiers (IDs) for each profile and parameters will be \n    generated at instantiation time.\n\n    - A given profile has a unique IDs with the following pattern:\n\n    `{entity index}-{{massfield} or {galaxy}}-{{mass} or {light}}-{profile index}_{profile name}`\n\n    - A given parameter has the same ID as above, just with the parameter name at the end:\n\n    `{entity index}-{{massfield} or {galaxy}}-{{mass} or {light}}-{profile index}_{profile name}-{parameter name}`\n\n    Parameters\n    ----------\n    *entities : LensingEntity instances\n        As many LensingEntity instances as required",
     "py/seq": [
       {
         "py/object": "coolest.template.classes.mass_field.MassField",
@@ -50,7 +50,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$\\gamma_{\\rm ext}$",
-                  "id": "massfield_model_0-ExternalShear_0-gamma_ext"
+                  "id": "0-massfield-mass-0_ExternalShear-gamma_ext"
                 },
                 "phi_ext": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -79,10 +79,10 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$\\phi_{\\rm ext}$",
-                  "id": "massfield_model_0-ExternalShear_0-phi_ext"
+                  "id": "0-massfield-mass-0_ExternalShear-phi_ext"
                 }
               },
-              "id": "massfield_model_0-ExternalShear_0",
+              "id": "0-massfield-mass-0_ExternalShear",
               "documentation": "External shear defined with a strength and orientation.\n    \n    This profile is described by the following parameters:\n\n    - 'gamma_ext': strength of the shear field\n    - 'phi_ext': orientation of the shear field"
             }
           ]
@@ -130,7 +130,7 @@
                     "documentation": "Gaussian prior.\n\n    Parameters\n    ----------\n    mean : float, optional\n        Mean value, by default None\n    width : float, optional\n        Width (standard deviation), by default None"
                   },
                   "latex_str": "$\\gamma$",
-                  "id": "galaxy_1-mass_model-PEMD_0-gamma"
+                  "id": "1-galaxy-mass-0_PEMD-gamma"
                 },
                 "theta_E": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -159,7 +159,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$\\theta_{\\rm E}$",
-                  "id": "galaxy_1-mass_model-PEMD_0-theta_E"
+                  "id": "1-galaxy-mass-0_PEMD-theta_E"
                 },
                 "q": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -188,7 +188,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$q$",
-                  "id": "galaxy_1-mass_model-PEMD_0-q"
+                  "id": "1-galaxy-mass-0_PEMD-q"
                 },
                 "phi": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -217,7 +217,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$\\phi$",
-                  "id": "galaxy_1-mass_model-PEMD_0-phi"
+                  "id": "1-galaxy-mass-0_PEMD-phi"
                 },
                 "center_x": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -246,7 +246,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$x_0$",
-                  "id": "galaxy_1-mass_model-PEMD_0-center_x"
+                  "id": "1-galaxy-mass-0_PEMD-center_x"
                 },
                 "center_y": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -275,10 +275,10 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$y_0$",
-                  "id": "galaxy_1-mass_model-PEMD_0-center_y"
+                  "id": "1-galaxy-mass-0_PEMD-center_y"
                 }
               },
-              "id": "galaxy_1-mass_model-PEMD_0",
+              "id": "1-galaxy-mass-0_PEMD",
               "documentation": "Power-law elliptical mass density profile, \n    also called the Elliptical Power-law profile (EPL).\n\n    This profile is described by the following parameters:\n\n    - 'gamma': logarithmic radial slope\n    - 'theta_E': Einstein radius\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate"
             },
             {
@@ -309,7 +309,7 @@
                   "num_pix_y": 0
                 }
               },
-              "id": "galaxy_1-mass_model-PixelatedRegularGridPotential_1",
+              "id": "1-galaxy-mass-1_PixelatedRegularGridPotential",
               "documentation": "Lens potential defined on a grid of regular pixels.\n\n    This profile is described by the following parameters:\n\n    - 'pixels': 2D array of pixel values"
             }
           ]
@@ -349,7 +349,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$I_{\\rm Sersic}$",
-                  "id": "galaxy_1-light_model-Sersic_0-I_eff"
+                  "id": "1-galaxy-light-0_Sersic-I_eff"
                 },
                 "theta_eff": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -378,7 +378,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$R_{\\rm Sersic}$",
-                  "id": "galaxy_1-light_model-Sersic_0-theta_eff"
+                  "id": "1-galaxy-light-0_Sersic-theta_eff"
                 },
                 "n": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -407,7 +407,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$n_{\\rm Sersic}$",
-                  "id": "galaxy_1-light_model-Sersic_0-n"
+                  "id": "1-galaxy-light-0_Sersic-n"
                 },
                 "q": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -436,7 +436,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$q$",
-                  "id": "galaxy_1-light_model-Sersic_0-q"
+                  "id": "1-galaxy-light-0_Sersic-q"
                 },
                 "phi": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -465,7 +465,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$\\phi$",
-                  "id": "galaxy_1-light_model-Sersic_0-phi"
+                  "id": "1-galaxy-light-0_Sersic-phi"
                 },
                 "center_x": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -494,7 +494,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$x_0$",
-                  "id": "galaxy_1-light_model-Sersic_0-center_x"
+                  "id": "1-galaxy-light-0_Sersic-center_x"
                 },
                 "center_y": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -523,10 +523,10 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$y_0$",
-                  "id": "galaxy_1-light_model-Sersic_0-center_y"
+                  "id": "1-galaxy-light-0_Sersic-center_y"
                 }
               },
-              "id": "galaxy_1-light_model-Sersic_0",
+              "id": "1-galaxy-light-0_Sersic",
               "documentation": "Surface brightness described by an elliptical S\u00e9rsic profile.\n\n    This profile is described by the following parameters:\n    \n    - 'I_eff': amplitude at the effective radius\n    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius\n    - 'n': Sersic index\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate"
             },
             {
@@ -560,7 +560,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$I_{\\rm Sersic}$",
-                  "id": "galaxy_1-light_model-Sersic_1-I_eff"
+                  "id": "1-galaxy-light-1_Sersic-I_eff"
                 },
                 "theta_eff": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -589,7 +589,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$R_{\\rm Sersic}$",
-                  "id": "galaxy_1-light_model-Sersic_1-theta_eff"
+                  "id": "1-galaxy-light-1_Sersic-theta_eff"
                 },
                 "n": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -618,7 +618,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$n_{\\rm Sersic}$",
-                  "id": "galaxy_1-light_model-Sersic_1-n"
+                  "id": "1-galaxy-light-1_Sersic-n"
                 },
                 "q": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -647,7 +647,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$q$",
-                  "id": "galaxy_1-light_model-Sersic_1-q"
+                  "id": "1-galaxy-light-1_Sersic-q"
                 },
                 "phi": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -676,7 +676,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$\\phi$",
-                  "id": "galaxy_1-light_model-Sersic_1-phi"
+                  "id": "1-galaxy-light-1_Sersic-phi"
                 },
                 "center_x": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -705,7 +705,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$x_0$",
-                  "id": "galaxy_1-light_model-Sersic_1-center_x"
+                  "id": "1-galaxy-light-1_Sersic-center_x"
                 },
                 "center_y": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -734,10 +734,10 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$y_0$",
-                  "id": "galaxy_1-light_model-Sersic_1-center_y"
+                  "id": "1-galaxy-light-1_Sersic-center_y"
                 }
               },
-              "id": "galaxy_1-light_model-Sersic_1",
+              "id": "1-galaxy-light-1_Sersic",
               "documentation": "Surface brightness described by an elliptical S\u00e9rsic profile.\n\n    This profile is described by the following parameters:\n    \n    - 'I_eff': amplitude at the effective radius\n    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius\n    - 'n': Sersic index\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate"
             }
           ]
@@ -787,7 +787,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$I_{\\rm Sersic}$",
-                  "id": "galaxy_2-light_model-Sersic_0-I_eff"
+                  "id": "2-galaxy-light-0_Sersic-I_eff"
                 },
                 "theta_eff": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -816,7 +816,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$R_{\\rm Sersic}$",
-                  "id": "galaxy_2-light_model-Sersic_0-theta_eff"
+                  "id": "2-galaxy-light-0_Sersic-theta_eff"
                 },
                 "n": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -845,7 +845,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$n_{\\rm Sersic}$",
-                  "id": "galaxy_2-light_model-Sersic_0-n"
+                  "id": "2-galaxy-light-0_Sersic-n"
                 },
                 "q": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -874,7 +874,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$q$",
-                  "id": "galaxy_2-light_model-Sersic_0-q"
+                  "id": "2-galaxy-light-0_Sersic-q"
                 },
                 "phi": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -903,7 +903,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$\\phi$",
-                  "id": "galaxy_2-light_model-Sersic_0-phi"
+                  "id": "2-galaxy-light-0_Sersic-phi"
                 },
                 "center_x": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -932,7 +932,7 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$x_0$",
-                  "id": "galaxy_2-light_model-Sersic_0-center_x"
+                  "id": "2-galaxy-light-0_Sersic-center_x"
                 },
                 "center_y": {
                   "py/object": "coolest.template.classes.parameter.NonLinearParameter",
@@ -961,10 +961,10 @@
                     "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
                   },
                   "latex_str": "$y_0$",
-                  "id": "galaxy_2-light_model-Sersic_0-center_y"
+                  "id": "2-galaxy-light-0_Sersic-center_y"
                 }
               },
-              "id": "galaxy_2-light_model-Sersic_0",
+              "id": "2-galaxy-light-0_Sersic",
               "documentation": "Surface brightness described by an elliptical S\u00e9rsic profile.\n\n    This profile is described by the following parameters:\n    \n    - 'I_eff': amplitude at the effective radius\n    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius\n    - 'n': Sersic index\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate"
             }
           ]
@@ -1011,7 +1011,7 @@
                   "num_pix_y": 0
                 }
               },
-              "id": "galaxy_3-light_model-PixelatedRegularGrid_0",
+              "id": "3-galaxy-light-0_PixelatedRegularGrid",
               "documentation": "Surface brightness described on a regular grid of pixels.\n\n    This profile is described by the following parameters:\n    \n    - 'pixels': 2D array of pixel values"
             }
           ]
@@ -1057,7 +1057,7 @@
                   "num_pix": 0
                 }
               },
-              "id": "galaxy_4-light_model-IrregularGrid_0",
+              "id": "4-galaxy-light-0_IrregularGrid",
               "documentation": "Surface brightness described on an irregular grid of pixels.\n\n    This profile is described by the following parameters:\n    \n    - 'pixels': set of 2D coordinates and associated pixel values (x, y, z)"
             }
           ]
