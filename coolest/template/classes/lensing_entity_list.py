@@ -10,7 +10,7 @@ from coolest.template.classes import util
 
 class LensingEntityList(list, APIBaseObject):
     """The list of components that define the lensing system.
-    In COOLEST, a 'lensing entity' is typically a galaxy or an external shear.
+    In COOLEST, a `LensingEntity` is an instance Galaxy or a MassField.
 
     Note that unique identifiers (IDs) for each profile and parameters will be 
     generated at instantiation time.
