@@ -1,0 +1,154 @@
+{
+    "coordinates_origin": {
+	"dec": "-08d45m51.48s",
+	"ra": "00h11m20.244s"
+    },
+    "cosmology": {
+	"H0": 73.0,
+	"Om0": 0.3,
+	"astropy_name": "FlatLambdaCDM"
+    },
+    "instrument": {
+	"band": "F160W",
+	"name": "some instrument",
+	"pixel_size": 0.08,
+	"psf": {
+	    "description": "This is a dummy PSF, not used.",
+	    "pixels": {
+		"field_of_view_x": [
+		    0,
+		    3
+		],
+		"field_of_view_y": [
+		    0,
+		    3
+		],
+		"fits_file": {
+		    "path": "psf.fits"
+		},
+		"num_pix_x": 74,
+		"num_pix_y": 74
+	    },
+	    "type": "PixelatedPSF"
+	},
+	"readout_noise": 4
+    },
+    "lensing_entities": [
+	{
+	    "light_model": [
+		{
+		    "id": "0-galaxy-light-0_PixelatedRegularGrid",
+		    "parameters": {
+			"pixels": {
+			    "field_of_view_x": [
+				0.0,
+				1.4
+			    ],
+			    "field_of_view_y": [
+				0.0,
+				1.4
+			    ],
+			    "fits_file": {
+				"path": "analytic_light.fits"
+			    },
+			    "num_pix_x": 500,
+			    "num_pix_y": 500
+			}
+		    },
+		    "type": "PixelatedRegularGrid"
+		}
+	    ],
+	    "mass_model": [],
+	    "name": "a dummy lens galaxy (analytic)",
+	    "redshift": 0.5,
+	    "type": "Galaxy"
+	},
+	{
+	    "light_model": [
+		{
+		    "id": "1-galaxy-light-0_PixelatedRegularGrid",
+		    "parameters": {
+			"pixels": {
+			    "field_of_view_x": [
+				0.0,
+				1.1
+			    ],
+			    "field_of_view_y": [
+				0.0,
+				1.1
+			    ],
+			    "fits_file": {
+				"path": "spiral_light.fits"
+			    },
+			    "num_pix_x": 442,
+			    "num_pix_y": 442
+			}
+		    },
+		    "type": "PixelatedRegularGrid"
+		}
+	    ],
+	    "mass_model": [],
+	    "name": "another dummy lens galaxy (spiral)",
+	    "redshift": 0.5,
+	    "type": "Galaxy"
+	},
+	{
+	    "light_model": [
+		{
+		    "id": "2-galaxy-light-0_PixelatedRegularGrid",
+		    "parameters": {
+			"pixels": {
+			    "field_of_view_x": [
+				0.0,
+				1.1
+			    ],
+			    "field_of_view_y": [
+				0.0,
+				1.1
+			    ],
+			    "fits_file": {
+				"path": "merger_light.fits"
+			    },
+			    "num_pix_x": 770,
+			    "num_pix_y": 770
+			}
+		    },
+		    "type": "PixelatedRegularGrid"
+		}
+	    ],
+	    "mass_model": [],
+	    "name": "a dummy source (merger)",
+	    "redshift": 1.5,
+	    "type": "Galaxy"
+	}
+    ],
+    "meta": {},
+    "mode": "MOCK",
+    "observation": {
+	"exposure_time": null,
+	"mag_sky_brightness": null,
+	"mag_zero_point": null,
+	"noise": {
+	    "type": "InstrumentalNoise",
+	    "with_readout_noise": true,
+	    "with_sky_shot_noise": true,
+	    "with_target_shot_noise": true
+	},
+	"pixels": {
+	    "field_of_view_x": [
+		0,
+		0
+	    ],
+	    "field_of_view_y": [
+		0,
+		0
+	    ],
+	    "fits_file": {
+		"path": "obs.fits"
+	    },
+	    "num_pix_x": 0,
+	    "num_pix_y": 0
+	}
+    },
+    "standard": "COOLEST"
+}
