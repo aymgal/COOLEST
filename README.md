@@ -1,5 +1,5 @@
 <img src="docs/_static/coolest_logo.png" width="200" alt="Herculens logo" />
-
+ 
 # COOLEST: COde-independent Organized LEns STandard
 
 ![License](https://img.shields.io/github/license/aymgal/COOLEST)
