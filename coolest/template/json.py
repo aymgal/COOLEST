@@ -100,14 +100,20 @@ class JSONSerializer(object):
             COOLEST object that corresponds to the JSON template
         """
         try:
-            content = self.load_jsonpickle()
+            instance = self.load_jsonpickle()
+            check_instance = True  # will then check that it is a COOLEST instance
         except Exception as e:
             if verbose:
                     print(f"Failed reading with jsonpickle, trying reading pure json"
                           f" (original error: {e})")
-            content = self.load_simple()
-        assert isinstance(content, COOLEST)
-        return content
+            instance = self.load_simple()
+            check_instance = False  # no check as it is a COOLEST *by construction*
+        if check_instance:
+            # we check that jsonpickle correctly built the COOLEST instance
+            if not isinstance(instance, COOLEST):
+                raise ValueError(f"jsonpickle could not construct a COOLEST instance based on the "
+                                 f"{self._api_suffix + '.json'} template file.")
+        return instance
 
     def load_simple(self, as_object=True):
         """Read the JSON template file and build up the corresponding COOLEST object. 
@@ -165,7 +171,7 @@ class JSONSerializer(object):
         # LENSING ENTITIES {GALAXY, MASSFIELDS}
         lensing_entities = self._setup_lensing_entities(c['lensing_entities'])
 
-        # CSOMOLOGY
+        # COSMOLOGY
         cosmology = self._setup_cosmology(c['cosmology'])
 
         # COORDINATES
@@ -198,6 +204,8 @@ class JSONSerializer(object):
         """Performs consistency checks regarding some key properties of the COOLEST object.
         For instance, it checks that the pixel size of both the observation and
         the instrument are consistent.
+        The checks performed here are those that cannot be handled by individual 
+        class constructors called during instantiation of the COOLEST object.
 
         Parameters
         ----------
