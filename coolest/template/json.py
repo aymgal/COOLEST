@@ -285,6 +285,9 @@ class JSONSerializer(object):
 
             for name, values in profile['parameters'].items():
 
+                # pop the id as this was already set at instantiation
+                _ = values.pop('id', None)
+
                 # pixelated profiles, for now only one value given (point estimate)
                 if 'Grid' in profile['type']:
                     self._update_grid_parameter(profile_out, name, values)
