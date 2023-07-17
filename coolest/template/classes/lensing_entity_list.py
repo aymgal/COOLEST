@@ -34,9 +34,24 @@ class LensingEntityList(list, APIBaseObject):
         APIBaseObject.__init__(self)
         self._create_all_ids()
 
+    def get_parameter_ids(self, with_name=None):
+        def _selected(param_name):
+            return ((with_name is None) or 
+                    (with_name is not None and param_name == with_name))
+        id_list = []
+        for entity in self:
+            for model_type in ('light', 'mass'):
+                model = getattr(entity, f'{model_type}_model', None)
+                if model is not None:
+                    for profile in model:
+                        for param_name, param in profile.parameters.items():
+                            if _selected(param_name):
+                                id_list.append(param.id)
+        return id_list
+
     def _create_all_ids(self):
         for i, entity in enumerate(self):
-            for model_type in ['light', 'mass']:
+            for model_type in ('light', 'mass'):
                 model = getattr(entity, f'{model_type}_model', None)
                 if model is not None:
                     for j, profile in enumerate(model):
@@ -45,7 +60,7 @@ class LensingEntityList(list, APIBaseObject):
                         elif entity.type == 'MassField':
                             profile_id = util.mass_field_profile_to_id(profile.type, j, i)
                         profile.id = profile_id
-                        if isinstance(profile, AnalyticalProfile):
-                            for param_name, parameter in profile.parameters.items():
-                                param_id = util.parameter_to_id(param_name, profile.id)
-                                parameter.id = param_id
+                        # if isinstance(profile, AnalyticalProfile):
+                        for param_name, parameter in profile.parameters.items():
+                            param_id = util.parameter_to_id(param_name, profile.id)
+                            parameter.id = param_id

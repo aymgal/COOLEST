@@ -175,7 +175,7 @@ def read_json_param(file_list, file_names, lens_light=False):
             max_red = np.max(red_list)
 
             for lensing_entity in lensing_entities_list:
-                if lensing_entity.type == "galaxy":
+                if lensing_entity.type == "Galaxy":
                     galac = lensing_entity
 
                     if galac.redshift > min_red:
@@ -209,7 +209,7 @@ def read_json_param(file_list, file_names, lens_light=False):
                     if (galac.redshift <= min_red) and (galac.redshift >= max_red):
                         print('REDSHIFT ', galac.redshift, ' is not in the range ]', min_red, ',', max_red, '[')
 
-                elif lensing_entity.type == "external_shear":
+                elif lensing_entity.type == "MassField":
                     shear_list = lensing_entity.mass_model
                     for shear_idx in shear_list:
 
