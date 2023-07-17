@@ -17,11 +17,11 @@
 	    "pixels": {
 		"field_of_view_x": [
 		    0,
-		    3
+		    5.92
 		],
 		"field_of_view_y": [
 		    0,
-		    3
+		    5.92
 		],
 		"fits_file": {
 		    "path": "psf.fits"
@@ -137,17 +137,17 @@
 	"pixels": {
 	    "field_of_view_x": [
 		0,
-		0
+		5.92
 	    ],
 	    "field_of_view_y": [
 		0,
-		0
+		5.92
 	    ],
 	    "fits_file": {
-		"path": "obs.fits"
+		"path": "dum.fits"
 	    },
-	    "num_pix_x": 0,
-	    "num_pix_y": 0
+	    "num_pix_x": 74,
+	    "num_pix_y": 74
 	}
     },
     "standard": "COOLEST"
