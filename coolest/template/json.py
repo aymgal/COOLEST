@@ -67,10 +67,9 @@ class JSONSerializer(object):
             List of class attributes that should not be included 
             in the JSON file, by default None
         """
-        if exclude_keys is None and hasattr(self.obj, 'exclude_keys'):
+        if exclude_keys is None:
             exclude_keys = self.obj.exclude_keys
         json_path = self.path + '.json'
-        result = jsonpickle.encode(self.obj, indent=self.indent)
         with open(json_path, 'w') as f:
             f.write(self.obj.to_JSON(indent=self.indent, exclude_keys=exclude_keys))
 
@@ -284,6 +283,9 @@ class JSONSerializer(object):
             profile_out = getattr(entity_out, model_type)[i]
 
             for name, values in profile['parameters'].items():
+
+                # pop the id as this was already set at instantiation
+                _ = values.pop('id', None)
 
                 # pixelated profiles, for now only one value given (point estimate)
                 if 'Grid' in profile['type']:
