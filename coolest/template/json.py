@@ -243,7 +243,7 @@ class JSONSerializer(object):
         entities_out = []
         for entity_in in entities_in:
             entities_out.append(self._setup_lensing_entity(entity_in))
-        return entities_out
+        return LensingEntityList(*entities_out)
     
     def _setup_lensing_entity(self, entity_in):
         if entity_in['type'] == 'Galaxy':
