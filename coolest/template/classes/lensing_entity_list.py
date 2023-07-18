@@ -35,6 +35,14 @@ class LensingEntityList(list, APIBaseObject):
         self._create_all_ids()
 
     def get_parameter_ids(self, with_name=None):
+        """Returns the list of either all parameter IDs in the model.
+        or a subset of them for parameters with a specific name.
+
+        Parameters
+        ----------
+        with_name : str, optional
+            Parameter for which we want to get all corresponding IDs, by default None
+        """
         def _selected(param_name):
             return ((with_name is None) or 
                     (with_name is not None and param_name == with_name))
@@ -48,6 +56,31 @@ class LensingEntityList(list, APIBaseObject):
                             if _selected(param_name):
                                 id_list.append(param.id)
         return id_list
+    
+    def get_parameter_from_id(self, param_id):
+        """Returns the Parameter instance that has the given parameter ID. 
+
+        Parameters
+        ----------
+        param_id : str
+            Parameter ID
+
+        Returns
+        -------
+        coolest.template.classes.parameters.Parameter
+            Instance of a Parameter with ID equal to `param_ID`
+        """
+        # NOTE: it can be very inefficient for a large number of lensing entities
+        for entity in self:
+            for model_type in ('light', 'mass'):
+                model = getattr(entity, f'{model_type}_model', None)
+                if model is not None:
+                    for profile in model:
+                        for param in profile.parameters.values():
+                            if param.id == param_id:
+                                return param
+        # if the following line is reached, then no ID has been found
+        raise ValueError("Parameter with ID '{param_id}' not found in any lensing entity.")
 
     def _create_all_ids(self):
         for i, entity in enumerate(self):
