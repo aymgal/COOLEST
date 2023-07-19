@@ -60,7 +60,7 @@ _There will be soon the possibility to install_ `coolest` _directly from PyPi an
 
 ## Contributing to the COOLEST standard
 
-All types of feedback, feature proposals and contributions are highly encouraged and valued! Please have a look at [CONTRIBUTING.md](CONTRIBUTING.md) for more information about contributing to the project.
+We encourage and highly value All types of feedback, feature proposals and contributions from the whole lensing community. Please have a look at [CONTRIBUTING.md](CONTRIBUTING.md) for more information about contributing to the project.
 
 
 ## Original contributors
