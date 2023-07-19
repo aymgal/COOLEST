@@ -1,4 +1,5 @@
-<img src="docs/_static/coolest_logo.png" width="200" alt="Herculens logo" />
+<img src="docs/_static/coolest_logo.png#gh-light-mode-only" width="200" alt="COOLEST logo" />
+<img src="docs/_static/coolest_logo_dark_bg.png#gh-dark-mode-only" width="200" alt="COOLEST logo" />
 
 # COOLEST: COde-independent Organized LEns STandard
 
