@@ -57,8 +57,14 @@ You can test the installation by running `python -c "import coolest"` in the ter
 
 _There will be soon the possibility to install_ `coolest` _directly from PyPi and Conda._
 
-## Contributors
 
-The full list of contributors is given in the [AUTHORS](AUTHORS.md) documents.
+## Contributing to the COOLEST standard
+
+All types of feedback, feature proposals and contributions are highly encouraged and valued! Please have a look at [CONTRIBUTING.md](CONTRIBUTING.md) for more information about contributing to the project.
+
+
+## Original contributors
+
+The full list of contributors is given in [AUTHORS.md](AUTHORS.md).
 
 As this is an open source project, we very much appreciate any feedback and new contributions from the community. The goal is really to improve the standard so that most of the research using strong lens modeling can benefit from it.
