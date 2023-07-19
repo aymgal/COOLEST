@@ -39,13 +39,18 @@ git clone https://github.com/aymgal/COOLEST.git
 # Move to the repo directly
 cd COOLEST
 
-# (Activate your virtual environment if needed)
+# Now is a good idea to activate your virtual environment if needed
+```
 
-# Install
-pip install -r requirements.txt
-
-# Install the package, optionally in development mode with the -e option
+Then you can install the `coolest` package. If you wish to modify or contribute to the source code, do not forget to use the `-e` option in the commands below to install it in development mode. For installing the package without optional dependencies, use the following command:
+```bash
+# install coolest and required dependencies
 pip install [-e] .
+```
+For installing the package with all optional dependencies, use the following command:
+```bash
+# also install optional dependencies
+pip install [-e] ".[opt]"
 ```
 
 You can test the installation by running `python -c "import coolest"` in the terminal, or by running some of the example notebooks from the [documentation](docs/notebooks) directory. Moreover, you can run all unit tests (having `pytest` installed in your environment), with the command `pytest test`.
