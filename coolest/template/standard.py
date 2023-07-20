@@ -18,7 +18,6 @@ SUPPORTED_MODES = ['MOCK', 'MAP', 'DOC']
 
 MOCK_EXCLUDE_KEYS = [
     'documentation',
-    'id',
     'latex_str',
     'units',
     'fixed',
@@ -30,7 +29,6 @@ MOCK_EXCLUDE_KEYS = [
 
 MAP_EXCLUDE_KEYS = [
     'documentation',
-    # 'id',
     'latex_str',
     'units',
     'definition_range',
@@ -114,12 +112,13 @@ class COOLEST(APIBaseObject):
             metadata = {}
         self.meta = metadata
 
+    @property
+    def exclude_keys(self):
         if self.mode == 'MOCK':
-            self.exclude_keys = MOCK_EXCLUDE_KEYS
+            return MOCK_EXCLUDE_KEYS
         elif self.mode == 'MAP':
-            self.exclude_keys = MAP_EXCLUDE_KEYS
+            return MAP_EXCLUDE_KEYS
         elif self.mode == 'DOC':
-            self.exclude_keys = DOC_EXCLUDE_KEYS
+            return DOC_EXCLUDE_KEYS
         else:
-            self.exclude_keys = []
-        self.exclude_keys += ['exclude_keys']
+            return []

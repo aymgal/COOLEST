@@ -16,14 +16,18 @@ class JSONSerializer(object):
     """Object that write a COOLEST object to a JSON template file,
     or loads the content of a JSON template file in the COOLEST format.
 
-    For reading, either a plain JSON format or the one generated via jsonpickle can be provided.
+    For reading, either a plain JSON format or the one generated via `jsonpickle` can be provided.
     For the latter, the JSON file should end with the suffix `'_pyAPI'` (before the .json extension).
+
+    NOTE: the support for reading the template with `jsonpickle` will probably 
+    be suppressed in the future. Hence we advise users to work with the 
+    pure JSON template files instead.
     
     Parameters
     ----------
     file_path_no_ext : str
         Path to the JSON template, or the one to be created.
-        It should NOT include the .json extension nor the optional _pyAPI
+        It should NOT include the .json extension nor the optional '_pyAPI' suffix
     obj : object, optional
         Instance of the COOLEST object (from the `standard` module) 
         to be encoded, by default None
@@ -41,6 +45,9 @@ class JSONSerializer(object):
         If the provided path contains the .json extension
     """
 
+    # suffix to filename to distinguish files that can be read using jsonpickle
+    _api_suffix = '_pyAPI'
+
     def __init__(self,
                  file_path_no_ext: str, 
                  obj: object = None, 
@@ -54,8 +61,6 @@ class JSONSerializer(object):
         self._json_dir = os.path.dirname(file_path_no_ext)
         self.obj = obj
         self.indent = indent
-        # to distinguish files that can be converted back to the python API
-        self._api_suffix = '_pyAPI'
         self._check_files = check_external_files
 
     def dump_simple(self, exclude_keys=None):
@@ -67,10 +72,9 @@ class JSONSerializer(object):
             List of class attributes that should not be included 
             in the JSON file, by default None
         """
-        if exclude_keys is None and hasattr(self.obj, 'exclude_keys'):
+        if exclude_keys is None:
             exclude_keys = self.obj.exclude_keys
         json_path = self.path + '.json'
-        result = jsonpickle.encode(self.obj, indent=self.indent)
         with open(json_path, 'w') as f:
             f.write(self.obj.to_JSON(indent=self.indent, exclude_keys=exclude_keys))
 
@@ -86,8 +90,8 @@ class JSONSerializer(object):
 
     def load(self, verbose=False):
         """Read the JSON template file and build up the corresponding COOLEST object.
-        It will first try to load it using `jsonpickle` (if the _pyAPI file exists), 
-        otherwise it will fall back to the manual method.
+        It will first try to load the '_pyAPI' template if it exists using `jsonpickle`, 
+        otherwise it will fall back to reading the pure json template.
 
         Parameters
         ----------
@@ -103,17 +107,12 @@ class JSONSerializer(object):
             instance = self.load_jsonpickle()
             check_instance = True  # will then check that it is a COOLEST instance
         except Exception as e:
-            if verbose:
-                    print(f"Failed reading with jsonpickle, trying reading pure json"
-                          f" (original error: {e})")
-            instance = self.load_simple()
-            check_instance = False  # no check as it is a COOLEST *by construction*
-        if check_instance:
-            # we check that jsonpickle correctly built the COOLEST instance
-            if not isinstance(instance, COOLEST):
-                raise ValueError(f"jsonpickle could not construct a COOLEST instance based on the "
-                                 f"{self._api_suffix + '.json'} template file.")
-        return instance
+            if verbose is True:
+                print(f"Failed reading '{self._api_suffix}' template with jsonpickle, "
+                    f"now trying with the pure json template (original error: {e})")
+            content = self.load_simple()
+        assert isinstance(content, COOLEST)
+        return content
 
     def load_simple(self, as_object=True):
         """Read the JSON template file and build up the corresponding COOLEST object. 
@@ -129,6 +128,8 @@ class JSONSerializer(object):
             COOLEST object that corresponds to the JSON template
         """
         json_path = self.path + '.json'
+        if not os.path.exists(json_path):
+            raise ValueError(f"Template file at '{json_path}' does not exist.")
         with open(json_path, 'r') as f:
             content = json.loads(f.read())
         if not as_object:
@@ -145,6 +146,8 @@ class JSONSerializer(object):
             COOLEST object that corresponds to the JSON template
         """
         json_path = self.path + self._api_suffix + '.json'
+        if not os.path.exists(json_path):
+            raise ValueError(f"Template file at '{json_path}' does not exist.")
         with open(json_path, 'r') as f:
             content = jsonpickle.decode(f.read())
         return content  # COOLEST object
@@ -252,7 +255,7 @@ class JSONSerializer(object):
         entities_out = []
         for entity_in in entities_in:
             entities_out.append(self._setup_lensing_entity(entity_in))
-        return entities_out
+        return LensingEntityList(*entities_out)
     
     def _setup_lensing_entity(self, entity_in):
         if entity_in['type'] == 'Galaxy':
@@ -292,6 +295,9 @@ class JSONSerializer(object):
             profile_out = getattr(entity_out, model_type)[i]
 
             for name, values in profile['parameters'].items():
+
+                # pop the id as this was already set at instantiation
+                _ = values.pop('id', None)
 
                 # pixelated profiles, for now only one value given (point estimate)
                 if 'Grid' in profile['type']:

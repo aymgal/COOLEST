@@ -12,16 +12,10 @@ __version__ = '.'.join(str(c) for c in version_info)
 # Set the package details
 __author__ = 'COOLEST developers'
 __email__ = 'aymeric.galan@gmail.com'
-__year__ = '2021'
+__year__ = '2021-2023'
 __credits__ = 'COOLEST developers'
 __url__ = 'https://github.com/aymgal/COOLEST'
 __description__ = 'Standard for Strong Gravitational Lens Modeling'
-__python__ = '>=3.7'
-__requires__ = [
-    'numpy>=1.20.0',
-    'jsonpickle>=2.0.0',
-    'astropy>=4.2.0',
-]  # Package dependencies
 
 # Default package properties
 __license__ = 'MIT'

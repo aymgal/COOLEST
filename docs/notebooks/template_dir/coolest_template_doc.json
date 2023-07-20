@@ -1,0 +1,563 @@
+{
+  "coordinates_origin": {
+    "dec": "-08d45m51.48s",
+    "documentation": "Defines the origin of the coordinate system, given in RA-Dec.\n    That origin is then assumed to lie at the center of a data pixel.\n\n    Parameters\n    ----------\n    ra : str, optional\n        Right ascension (hms format), by default '0h0m0.0s'\n    dec : str, optional\n        Declination (dms format), by default '0d0m0.0s'",
+    "ra": "00h11m20.244s"
+  },
+  "cosmology": {
+    "H0": 73.0,
+    "Om0": 0.3,
+    "astropy_name": "FlatLambdaCDM",
+    "documentation": "Defines the cosmological model. \n    Currently, only FlatLambdaCDM from astropy is supported, based on H0 and Omega_m.\n\n    Parameters\n    ----------\n    H0 : float\n        Hubble constant, in km/s/Mpc\n    Om0 : float\n        Matter density at present time\n    astropy_name : str, optional\n        `astropy` model name, by default 'FlatLambdaCDM'"
+  },
+  "instrument": {
+    "band": "F160W",
+    "documentation": "Defines the instrument used for the observation.\n    This includes the name of the telescope and detector, the filter, \n    the pixel size, the readout noise and the point spread function (PSF).\n\n    Parameters\n    ----------\n    pixel_size : float\n        Size in arcseconds of a single detector pixel.\n    name : str, optional\n        Name of the instrument, by default \"\"\n    band : str, optional\n        Name of the filter, by default \"\"\n    readout_noise : float, optional\n        Readout noise (in electrons), by default 0.\n    psf : PSF, optional\n        Instance of PSF object, by default None",
+    "name": "some instrument",
+    "pixel_size": 0.08,
+    "psf": {
+      "description": null,
+      "documentation": "PSF modeled as a 2D image.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Grid class that holds pixel values and the extent of \n        the PSF kernel, by default None\n    description : str, optional\n        Any details regarding the way the PSF has been estimated, by default None",
+      "pixels": {
+        "documentation": "Class that represents a grid of values defined on a regular, Cartesian grid.\n\n    Parameters\n    ----------\n    fits_path : str\n        Path to the FITS file in which the values (and perhaps the coordinates)\n        are stored. This should be relative to the final COOLEST template file.\n    field_of_view_x : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the x direction (i.e., left side of the leftmost pixel and \n        rightside of the rightmost pixel), by default (0, 0)\n    field_of_view_y : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the y direction (i.e., bottom side of the lower pixel and \n        top side of the upper pixel), by default (0, 0)\n    num_pix_x : int, optional\n        Number of pixels along the x direction, by default 0\n    num_pix_y : int, optional\n        Number of pixels along the y direction, by default 0\n    **kwargs_file : dic, optional\n        Any remaining keyword arguments for FitsFile",
+        "field_of_view_x": [
+          0,
+          0
+        ],
+        "field_of_view_y": [
+          0,
+          0
+        ],
+        "fits_file": {
+          "path": "psf_kernel.fits"
+        },
+        "num_pix_x": 0,
+        "num_pix_y": 0
+      },
+      "type": "PixelatedPSF"
+    },
+    "readout_noise": 4
+  },
+  "lensing_entities": [
+    {
+      "documentation": "Generic field of massive objects, for instance an external shear field.\n\n    Parameters\n    ----------\n    name : str\n        Name associated to that shear component.\n    redshift : float\n        Redshift associated to that shear component, if needed.\n    mass_model : MassModel, optional\n        Mass model of the field, by default None",
+      "mass_model": [
+        {
+          "documentation": "External shear defined with a strength and orientation.\n    \n    This profile is described by the following parameters:\n\n    - 'gamma_ext': strength of the shear field\n    - 'phi_ext': orientation of the shear field",
+          "parameters": {
+            "gamma_ext": {
+              "definition_range": {
+                "max_value": 1.0,
+                "min_value": 0.0
+              },
+              "documentation": "Strength of external shear",
+              "latex_str": "$\\gamma_{\\rm ext}$",
+              "point_estimate": {
+                "value": 0.07
+              },
+              "units": null
+            },
+            "phi_ext": {
+              "definition_range": {
+                "max_value": 90.0,
+                "min_value": -90.0
+              },
+              "documentation": "Orientation of external shear",
+              "latex_str": "$\\phi_{\\rm ext}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            }
+          },
+          "type": "ExternalShear"
+        }
+      ],
+      "name": "my lovely external shear",
+      "redshift": 0.5,
+      "type": "MassField"
+    },
+    {
+      "documentation": "Class that defines a Galaxy entity (lens galaxy and/or source galaxy).\n\n    Parameters\n    ----------\n    name : str\n        Name associated to the galaxy.\n    redshift : float\n        Redshift of the galaxy, if any.\n    light_model : LightModel, optional\n        Light model instance describing the surface brightness of the galaxy, by default None\n    mass_model : MassModel, optional\n        Mass model instance describing the mass distribution of the galaxy, by default None",
+      "light_model": [
+        {
+          "documentation": "Surface brightness described by an elliptical S\u00e9rsic profile.\n\n    This profile is described by the following parameters:\n    \n    - 'I_eff': amplitude at the effective radius\n    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius\n    - 'n': Sersic index\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate",
+          "parameters": {
+            "I_eff": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "documentation": "Amplitude at the Sersic radius",
+              "latex_str": "$I_{\\rm Sersic}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "center_x": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": null
+              },
+              "documentation": "Profile center along x coordinates",
+              "latex_str": "$x_0$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "center_y": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": null
+              },
+              "documentation": "Profile center along y coordinates",
+              "latex_str": "$y_0$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "n": {
+              "definition_range": {
+                "max_value": 10.0,
+                "min_value": 0.5
+              },
+              "documentation": "Sersic index",
+              "latex_str": "$n_{\\rm Sersic}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "phi": {
+              "definition_range": {
+                "max_value": 90.0,
+                "min_value": -90.0
+              },
+              "documentation": "Position angle",
+              "latex_str": "$\\phi$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "q": {
+              "definition_range": {
+                "max_value": 1.0,
+                "min_value": 0.0
+              },
+              "documentation": "Axis ratio, semi-minor axis / semi-major axis",
+              "latex_str": "$q$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "theta_eff": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "documentation": "Sersic (half-light) radius",
+              "latex_str": "$R_{\\rm Sersic}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            }
+          },
+          "type": "Sersic"
+        },
+        {
+          "documentation": "Surface brightness described by an elliptical S\u00e9rsic profile.\n\n    This profile is described by the following parameters:\n    \n    - 'I_eff': amplitude at the effective radius\n    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius\n    - 'n': Sersic index\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate",
+          "parameters": {
+            "I_eff": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "documentation": "Amplitude at the Sersic radius",
+              "latex_str": "$I_{\\rm Sersic}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "center_x": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": null
+              },
+              "documentation": "Profile center along x coordinates",
+              "latex_str": "$x_0$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "center_y": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": null
+              },
+              "documentation": "Profile center along y coordinates",
+              "latex_str": "$y_0$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "n": {
+              "definition_range": {
+                "max_value": 10.0,
+                "min_value": 0.5
+              },
+              "documentation": "Sersic index",
+              "latex_str": "$n_{\\rm Sersic}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "phi": {
+              "definition_range": {
+                "max_value": 90.0,
+                "min_value": -90.0
+              },
+              "documentation": "Position angle",
+              "latex_str": "$\\phi$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "q": {
+              "definition_range": {
+                "max_value": 1.0,
+                "min_value": 0.0
+              },
+              "documentation": "Axis ratio, semi-minor axis / semi-major axis",
+              "latex_str": "$q$",
+              "point_estimate": {
+                "value": 0.89
+              },
+              "units": null
+            },
+            "theta_eff": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "documentation": "Sersic (half-light) radius",
+              "latex_str": "$R_{\\rm Sersic}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            }
+          },
+          "type": "Sersic"
+        }
+      ],
+      "mass_model": [
+        {
+          "documentation": "Power-law elliptical mass density profile, \n    also called the Elliptical Power-law profile (EPL).\n\n    This profile is described by the following parameters:\n\n    - 'gamma': logarithmic radial slope\n    - 'theta_E': Einstein radius\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate",
+          "parameters": {
+            "center_x": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": null
+              },
+              "documentation": "Profile center along x coordinates",
+              "latex_str": "$x_0$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "center_y": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": null
+              },
+              "documentation": "Profile center along y coordinates",
+              "latex_str": "$y_0$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "gamma": {
+              "definition_range": {
+                "max_value": 3.0,
+                "min_value": 1.0
+              },
+              "documentation": "Mass density slope at Einstein radius",
+              "latex_str": "$\\gamma$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "phi": {
+              "definition_range": {
+                "max_value": 90.0,
+                "min_value": -90.0
+              },
+              "documentation": "Position angle",
+              "latex_str": "$\\phi$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "q": {
+              "definition_range": {
+                "max_value": 1.0,
+                "min_value": 0.0
+              },
+              "documentation": "Axis ratio, semi-minor axis / semi-major axis",
+              "latex_str": "$q$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "theta_E": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "documentation": "Einstein radius",
+              "latex_str": "$\\theta_{\\rm E}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            }
+          },
+          "type": "PEMD"
+        },
+        {
+          "documentation": "Lens potential defined on a grid of regular pixels.\n\n    This profile is described by the following parameters:\n\n    - 'pixels': 2D array of pixel values",
+          "parameters": {
+            "pixels": {
+              "documentation": "Pixel values",
+              "field_of_view_x": [
+                -3.0,
+                1.0
+              ],
+              "field_of_view_y": [
+                -2.0,
+                2.0
+              ],
+              "fits_file": {
+                "path": "regul_grid_image.fits"
+              },
+              "num_pix_x": 0,
+              "num_pix_y": 0
+            }
+          },
+          "type": "PixelatedRegularGridPotential"
+        }
+      ],
+      "name": "a lens galaxy",
+      "redshift": 0.5,
+      "type": "Galaxy"
+    },
+    {
+      "documentation": "Class that defines a Galaxy entity (lens galaxy and/or source galaxy).\n\n    Parameters\n    ----------\n    name : str\n        Name associated to the galaxy.\n    redshift : float\n        Redshift of the galaxy, if any.\n    light_model : LightModel, optional\n        Light model instance describing the surface brightness of the galaxy, by default None\n    mass_model : MassModel, optional\n        Mass model instance describing the mass distribution of the galaxy, by default None",
+      "light_model": [
+        {
+          "documentation": "Surface brightness described by an elliptical S\u00e9rsic profile.\n\n    This profile is described by the following parameters:\n    \n    - 'I_eff': amplitude at the effective radius\n    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius\n    - 'n': Sersic index\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate",
+          "parameters": {
+            "I_eff": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "documentation": "Amplitude at the Sersic radius",
+              "latex_str": "$I_{\\rm Sersic}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "center_x": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": null
+              },
+              "documentation": "Profile center along x coordinates",
+              "latex_str": "$x_0$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "center_y": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": null
+              },
+              "documentation": "Profile center along y coordinates",
+              "latex_str": "$y_0$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "n": {
+              "definition_range": {
+                "max_value": 10.0,
+                "min_value": 0.5
+              },
+              "documentation": "Sersic index",
+              "latex_str": "$n_{\\rm Sersic}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "phi": {
+              "definition_range": {
+                "max_value": 90.0,
+                "min_value": -90.0
+              },
+              "documentation": "Position angle",
+              "latex_str": "$\\phi$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "q": {
+              "definition_range": {
+                "max_value": 1.0,
+                "min_value": 0.0
+              },
+              "documentation": "Axis ratio, semi-minor axis / semi-major axis",
+              "latex_str": "$q$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            },
+            "theta_eff": {
+              "definition_range": {
+                "max_value": null,
+                "min_value": 0.0
+              },
+              "documentation": "Sersic (half-light) radius",
+              "latex_str": "$R_{\\rm Sersic}$",
+              "point_estimate": {
+                "value": null
+              },
+              "units": null
+            }
+          },
+          "type": "Sersic"
+        }
+      ],
+      "mass_model": [],
+      "name": "a source galaxy",
+      "redshift": 2.0,
+      "type": "Galaxy"
+    },
+    {
+      "documentation": "Class that defines a Galaxy entity (lens galaxy and/or source galaxy).\n\n    Parameters\n    ----------\n    name : str\n        Name associated to the galaxy.\n    redshift : float\n        Redshift of the galaxy, if any.\n    light_model : LightModel, optional\n        Light model instance describing the surface brightness of the galaxy, by default None\n    mass_model : MassModel, optional\n        Mass model instance describing the mass distribution of the galaxy, by default None",
+      "light_model": [
+        {
+          "documentation": "Surface brightness described on a regular grid of pixels.\n\n    This profile is described by the following parameters:\n    \n    - 'pixels': 2D array of pixel values",
+          "parameters": {
+            "pixels": {
+              "documentation": "Pixel values",
+              "field_of_view_x": [
+                -3.0,
+                1.0
+              ],
+              "field_of_view_y": [
+                -2.0,
+                2.0
+              ],
+              "fits_file": {
+                "path": "regul_grid_image.fits"
+              },
+              "num_pix_x": 0,
+              "num_pix_y": 0
+            }
+          },
+          "type": "PixelatedRegularGrid"
+        }
+      ],
+      "mass_model": [],
+      "name": "another source",
+      "redshift": 1.5,
+      "type": "Galaxy"
+    },
+    {
+      "documentation": "Class that defines a Galaxy entity (lens galaxy and/or source galaxy).\n\n    Parameters\n    ----------\n    name : str\n        Name associated to the galaxy.\n    redshift : float\n        Redshift of the galaxy, if any.\n    light_model : LightModel, optional\n        Light model instance describing the surface brightness of the galaxy, by default None\n    mass_model : MassModel, optional\n        Mass model instance describing the mass distribution of the galaxy, by default None",
+      "light_model": [
+        {
+          "documentation": "Surface brightness described on an irregular grid of pixels.\n\n    This profile is described by the following parameters:\n    \n    - 'pixels': set of 2D coordinates and associated pixel values (x, y, z)",
+          "parameters": {
+            "pixels": {
+              "documentation": "Pixel positions and values",
+              "field_of_view_x": [
+                0,
+                0
+              ],
+              "field_of_view_y": [
+                0,
+                0
+              ],
+              "fits_file": {
+                "path": "irreg_grid_pixels.fits"
+              },
+              "num_pix": 0
+            }
+          },
+          "type": "IrregularGrid"
+        }
+      ],
+      "mass_model": [],
+      "name": "a VKL source",
+      "redshift": 1.2,
+      "type": "Galaxy"
+    }
+  ],
+  "meta": {},
+  "mode": "DOC",
+  "observation": {
+    "documentation": "Defines the observation itself, that is the image pixels, \n    the exposure time, the noise model and/or properties, the magnitude \n    zero-point and sky brightness.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Regular 2D Grid instance for the observed / mock data pixels, by default None\n    noise : Noise, optional\n        Instance of a Noise object associated with the modeling \n        of the data pixels, by default None\n    mag_zero_point : float, optional\n        Zero-point magnitude, which corresponds to the 1 electron per second\n        hitting the detecor (given in mag), by default None\n    mag_sky_brightness : float, optional\n        Magnitude due to sky brightness (given in mag per arcsec^2), \n        by default None",
+    "exposure_time": null,
+    "mag_sky_brightness": null,
+    "mag_zero_point": null,
+    "noise": {
+      "documentation": "Noise properties are computed directly based on the observed \n    or modeled flux, and on the Instrument (e.g., readout noise) and \n    Observation (e.g., exposure time, sky brightness, etc.) properties.\n\n    Parameters\n    ----------\n    with_readout_noise : bool, optional\n        If True, the noise includes readout noise from the detector, by default True\n    with_sky_shot_noise : bool, optional\n        If True, the noise includes shot noise from sky background flux \n        (as the Gaussian approximation of the Poisson noise), by default True\n    with_target_shot_noise : bool, optional\n        If True, the noise includes shot noise from the target flux \n        (as the Gaussian approximation of the Poisson noise), by default True",
+      "type": "InstrumentalNoise",
+      "with_readout_noise": true,
+      "with_sky_shot_noise": true,
+      "with_target_shot_noise": true
+    },
+    "pixels": {
+      "documentation": "Class that represents a grid of values defined on a regular, Cartesian grid.\n\n    Parameters\n    ----------\n    fits_path : str\n        Path to the FITS file in which the values (and perhaps the coordinates)\n        are stored. This should be relative to the final COOLEST template file.\n    field_of_view_x : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the x direction (i.e., left side of the leftmost pixel and \n        rightside of the rightmost pixel), by default (0, 0)\n    field_of_view_y : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the y direction (i.e., bottom side of the lower pixel and \n        top side of the upper pixel), by default (0, 0)\n    num_pix_x : int, optional\n        Number of pixels along the x direction, by default 0\n    num_pix_y : int, optional\n        Number of pixels along the y direction, by default 0\n    **kwargs_file : dic, optional\n        Any remaining keyword arguments for FitsFile",
+      "field_of_view_x": [
+        0,
+        0
+      ],
+      "field_of_view_y": [
+        0,
+        0
+      ],
+      "fits_file": {
+        "path": "obs.fits"
+      },
+      "num_pix_x": 0,
+      "num_pix_y": 0
+    }
+  },
+  "standard": "COOLEST"
+}

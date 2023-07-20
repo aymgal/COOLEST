@@ -780,16 +780,5 @@
   },
   "likelihoods": null,
   "standard": "COOLEST",
-  "meta": {},
-  "exclude_keys": [
-    "exclude_keys",
-    "documentation",
-    "id",
-    "latex_str",
-    "units",
-    "fixed",
-    "definition_range",
-    "likelihoods",
-    "regularizations"
-  ]
+  "meta": {}
 }
