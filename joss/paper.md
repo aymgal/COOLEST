@@ -99,7 +99,7 @@ Examples of other lens modeling codes:
 - `GLaD` [@glad2020]
 - `GLASS ` [@glass2020]
 - `GLEE` [@glee2010]
-- `glafix` [@glafic201O]
+- `glafic` [@glafic201O]
 - `lenstool ` [@lenstool2007]
 
 # Acknowledgements

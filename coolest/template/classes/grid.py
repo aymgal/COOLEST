@@ -1,4 +1,4 @@
-__author__ = 'aymgal, Giorgos Vernardos'
+__author__ = 'aymgal', 'gvernard'
 
 from typing import Tuple
 import numpy as np

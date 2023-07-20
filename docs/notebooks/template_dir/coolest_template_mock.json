@@ -37,10 +37,10 @@
     {
       "mass_model": [
         {
-          "id": "0-massfield-mass-0_ExternalShear",
+          "id": "0-massfield-mass-0-ExternalShear",
           "parameters": {
             "gamma_ext": {
-              "id": "0-massfield-mass-0_ExternalShear-gamma_ext",
+              "id": "0-massfield-mass-0-ExternalShear-gamma_ext",
               "point_estimate": {
                 "value": 0.07
               },
@@ -49,7 +49,7 @@
               }
             },
             "phi_ext": {
-              "id": "0-massfield-mass-0_ExternalShear-phi_ext",
+              "id": "0-massfield-mass-0-ExternalShear-phi_ext",
               "point_estimate": {
                 "value": null
               },
@@ -68,10 +68,10 @@
     {
       "light_model": [
         {
-          "id": "1-galaxy-light-0_Sersic",
+          "id": "1-galaxy-light-0-Sersic",
           "parameters": {
             "I_eff": {
-              "id": "1-galaxy-light-0_Sersic-I_eff",
+              "id": "1-galaxy-light-0-Sersic-I_eff",
               "point_estimate": {
                 "value": null
               },
@@ -80,7 +80,7 @@
               }
             },
             "center_x": {
-              "id": "1-galaxy-light-0_Sersic-center_x",
+              "id": "1-galaxy-light-0-Sersic-center_x",
               "point_estimate": {
                 "value": null
               },
@@ -89,7 +89,7 @@
               }
             },
             "center_y": {
-              "id": "1-galaxy-light-0_Sersic-center_y",
+              "id": "1-galaxy-light-0-Sersic-center_y",
               "point_estimate": {
                 "value": null
               },
@@ -98,7 +98,7 @@
               }
             },
             "n": {
-              "id": "1-galaxy-light-0_Sersic-n",
+              "id": "1-galaxy-light-0-Sersic-n",
               "point_estimate": {
                 "value": null
               },
@@ -107,7 +107,7 @@
               }
             },
             "phi": {
-              "id": "1-galaxy-light-0_Sersic-phi",
+              "id": "1-galaxy-light-0-Sersic-phi",
               "point_estimate": {
                 "value": null
               },
@@ -116,7 +116,7 @@
               }
             },
             "q": {
-              "id": "1-galaxy-light-0_Sersic-q",
+              "id": "1-galaxy-light-0-Sersic-q",
               "point_estimate": {
                 "value": null
               },
@@ -125,7 +125,7 @@
               }
             },
             "theta_eff": {
-              "id": "1-galaxy-light-0_Sersic-theta_eff",
+              "id": "1-galaxy-light-0-Sersic-theta_eff",
               "point_estimate": {
                 "value": null
               },
@@ -137,10 +137,10 @@
           "type": "Sersic"
         },
         {
-          "id": "1-galaxy-light-1_Sersic",
+          "id": "1-galaxy-light-1-Sersic",
           "parameters": {
             "I_eff": {
-              "id": "1-galaxy-light-1_Sersic-I_eff",
+              "id": "1-galaxy-light-1-Sersic-I_eff",
               "point_estimate": {
                 "value": null
               },
@@ -149,7 +149,7 @@
               }
             },
             "center_x": {
-              "id": "1-galaxy-light-1_Sersic-center_x",
+              "id": "1-galaxy-light-1-Sersic-center_x",
               "point_estimate": {
                 "value": null
               },
@@ -158,7 +158,7 @@
               }
             },
             "center_y": {
-              "id": "1-galaxy-light-1_Sersic-center_y",
+              "id": "1-galaxy-light-1-Sersic-center_y",
               "point_estimate": {
                 "value": null
               },
@@ -167,7 +167,7 @@
               }
             },
             "n": {
-              "id": "1-galaxy-light-1_Sersic-n",
+              "id": "1-galaxy-light-1-Sersic-n",
               "point_estimate": {
                 "value": null
               },
@@ -176,7 +176,7 @@
               }
             },
             "phi": {
-              "id": "1-galaxy-light-1_Sersic-phi",
+              "id": "1-galaxy-light-1-Sersic-phi",
               "point_estimate": {
                 "value": null
               },
@@ -185,7 +185,7 @@
               }
             },
             "q": {
-              "id": "1-galaxy-light-1_Sersic-q",
+              "id": "1-galaxy-light-1-Sersic-q",
               "point_estimate": {
                 "value": 0.89
               },
@@ -194,7 +194,7 @@
               }
             },
             "theta_eff": {
-              "id": "1-galaxy-light-1_Sersic-theta_eff",
+              "id": "1-galaxy-light-1-Sersic-theta_eff",
               "point_estimate": {
                 "value": null
               },
@@ -208,10 +208,10 @@
       ],
       "mass_model": [
         {
-          "id": "1-galaxy-mass-0_PEMD",
+          "id": "1-galaxy-mass-0-PEMD",
           "parameters": {
             "center_x": {
-              "id": "1-galaxy-mass-0_PEMD-center_x",
+              "id": "1-galaxy-mass-0-PEMD-center_x",
               "point_estimate": {
                 "value": null
               },
@@ -220,7 +220,7 @@
               }
             },
             "center_y": {
-              "id": "1-galaxy-mass-0_PEMD-center_y",
+              "id": "1-galaxy-mass-0-PEMD-center_y",
               "point_estimate": {
                 "value": null
               },
@@ -229,7 +229,7 @@
               }
             },
             "gamma": {
-              "id": "1-galaxy-mass-0_PEMD-gamma",
+              "id": "1-galaxy-mass-0-PEMD-gamma",
               "point_estimate": {
                 "value": null
               },
@@ -240,7 +240,7 @@
               }
             },
             "phi": {
-              "id": "1-galaxy-mass-0_PEMD-phi",
+              "id": "1-galaxy-mass-0-PEMD-phi",
               "point_estimate": {
                 "value": null
               },
@@ -249,7 +249,7 @@
               }
             },
             "q": {
-              "id": "1-galaxy-mass-0_PEMD-q",
+              "id": "1-galaxy-mass-0-PEMD-q",
               "point_estimate": {
                 "value": null
               },
@@ -258,7 +258,7 @@
               }
             },
             "theta_E": {
-              "id": "1-galaxy-mass-0_PEMD-theta_E",
+              "id": "1-galaxy-mass-0-PEMD-theta_E",
               "point_estimate": {
                 "value": null
               },
@@ -270,7 +270,7 @@
           "type": "PEMD"
         },
         {
-          "id": "1-galaxy-mass-1_PixelatedRegularGridPotential",
+          "id": "1-galaxy-mass-1-PixelatedRegularGridPotential",
           "parameters": {
             "pixels": {
               "field_of_view_x": [
@@ -284,6 +284,7 @@
               "fits_file": {
                 "path": "regul_grid_image.fits"
               },
+              "id": "1-galaxy-mass-1-PixelatedRegularGridPotential-pixels",
               "num_pix_x": 0,
               "num_pix_y": 0
             }
@@ -298,10 +299,10 @@
     {
       "light_model": [
         {
-          "id": "2-galaxy-light-0_Sersic",
+          "id": "2-galaxy-light-0-Sersic",
           "parameters": {
             "I_eff": {
-              "id": "2-galaxy-light-0_Sersic-I_eff",
+              "id": "2-galaxy-light-0-Sersic-I_eff",
               "point_estimate": {
                 "value": null
               },
@@ -310,7 +311,7 @@
               }
             },
             "center_x": {
-              "id": "2-galaxy-light-0_Sersic-center_x",
+              "id": "2-galaxy-light-0-Sersic-center_x",
               "point_estimate": {
                 "value": null
               },
@@ -319,7 +320,7 @@
               }
             },
             "center_y": {
-              "id": "2-galaxy-light-0_Sersic-center_y",
+              "id": "2-galaxy-light-0-Sersic-center_y",
               "point_estimate": {
                 "value": null
               },
@@ -328,7 +329,7 @@
               }
             },
             "n": {
-              "id": "2-galaxy-light-0_Sersic-n",
+              "id": "2-galaxy-light-0-Sersic-n",
               "point_estimate": {
                 "value": null
               },
@@ -337,7 +338,7 @@
               }
             },
             "phi": {
-              "id": "2-galaxy-light-0_Sersic-phi",
+              "id": "2-galaxy-light-0-Sersic-phi",
               "point_estimate": {
                 "value": null
               },
@@ -346,7 +347,7 @@
               }
             },
             "q": {
-              "id": "2-galaxy-light-0_Sersic-q",
+              "id": "2-galaxy-light-0-Sersic-q",
               "point_estimate": {
                 "value": null
               },
@@ -355,7 +356,7 @@
               }
             },
             "theta_eff": {
-              "id": "2-galaxy-light-0_Sersic-theta_eff",
+              "id": "2-galaxy-light-0-Sersic-theta_eff",
               "point_estimate": {
                 "value": null
               },
@@ -375,7 +376,7 @@
     {
       "light_model": [
         {
-          "id": "3-galaxy-light-0_PixelatedRegularGrid",
+          "id": "3-galaxy-light-0-PixelatedRegularGrid",
           "parameters": {
             "pixels": {
               "field_of_view_x": [
@@ -389,6 +390,7 @@
               "fits_file": {
                 "path": "regul_grid_image.fits"
               },
+              "id": "3-galaxy-light-0-PixelatedRegularGrid-pixels",
               "num_pix_x": 0,
               "num_pix_y": 0
             }
@@ -404,7 +406,7 @@
     {
       "light_model": [
         {
-          "id": "4-galaxy-light-0_IrregularGrid",
+          "id": "4-galaxy-light-0-IrregularGrid",
           "parameters": {
             "pixels": {
               "field_of_view_x": [
@@ -418,6 +420,7 @@
               "fits_file": {
                 "path": "irreg_grid_pixels.fits"
               },
+              "id": "4-galaxy-light-0-IrregularGrid-pixels",
               "num_pix": 0
             }
           },
