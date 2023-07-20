@@ -1,6 +1,7 @@
 __author__ = 'aymgal', 'lynevdv', 'gvernard'
 
 
+import os
 import copy
 import logging
 import numpy as np
@@ -451,7 +452,7 @@ class Comparison_analytical(object):
 
 
 
-def plot_corner(parameter_id_list,coolest_chains,chain_names=None,coolest_point_estimates=None,point_estimate_names=None,labels=None):
+def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_estimate_objs=None,point_estimate_dirs=None,point_estimate_names=None,labels=None):
     """
     Adding this as just a function for the moment.
     Takes a list of COOLEST files as input, which must have a chain file associated to them, and returns a corner plot.
@@ -460,14 +461,18 @@ def plot_corner(parameter_id_list,coolest_chains,chain_names=None,coolest_point_
     ----------
     parameter_id_list : array
         A list of parameter unique ids obtained from lensing entities. Their order determines the order of the plot panels.
-    coolest_chains : array
+    chain_objs : array
         A list of coolest objects that have a chain file associated to them.
+    chain_dirs : array
+        A list of paths matching the coolest files in 'chain_objs'.
     chain_names : array, optional
-        A list of labels for the coolest models in the 'coolest_chains' list. Must have the same order as 'coolest_chains'.
-    coolest_point_estimates : array, optional
+        A list of labels for the coolest models in the 'chain_objs' list. Must have the same order as 'chain_objs'.
+    point_estimate_objs : array, optional
         A list of coolest objects that will be used as point estimates.
+    point_estimate_dirs : array
+        A list of paths matching the coolest files in 'point_estimate_objs'.
     point_estimate_names : array, optional
-        A list of labels for the models in the 'coolest_point_estimates' list. Must have the same order as 'coolest_point_estimates'.
+        A list of labels for the models in the 'point_estimate_objs' list. Must have the same order as 'point_estimate_objs'.
     labels : dict, optional
         A dictionary matching the parameter_id_list entries to some human-readable labels.
     
@@ -486,43 +491,60 @@ def plot_corner(parameter_id_list,coolest_chains,chain_names=None,coolest_point_
     """
 
     chains.print_load_details = False # Just to silence messages
+    parameter_id_set = set(parameter_id_list)
 
+    # Get the chain file headers from the first object in the list
+    chain_file = os.path.join(chain_dirs[0],chain_objs[0].meta["chain_file_name"])
+    
+
+    # Set the chain names
+    if chain_names is None:
+        chain_names = ["chain "+str(i) for i in range(0,len(chain_objs))]
+    
+    
+            
     mcsamples = []
-    for i in range(0,len(coolest_chains)):
-        chain_file_name = coolest_chains[i]["meta"]["chain_file_name"] # Here get the chain file path for each coolest object
+    for i in range(0,len(chain_objs)):
+        chain_file = os.path.join(chain_dirs[i],chain_objs[i].meta["chain_file_name"]) # Here get the chain file path for each coolest object
 
-        # Get the chain file headers
-        f = open(chain_file_name)
+        # Each chain file can have a different number of free parameters
+        f = open(chain_file)
         header = f.readline()
         f.close()
-        chain_file_headers = set(header.split(','))
+        chain_file_headers = header.split(',')
+        chain_file_headers.pop() # Remove the last column name that is the probability weights
+        chain_file_headers_set = set(chain_file_headers)
+        
+        # Check that the given parameters are a subset of those in the chain file
+        assert parameter_id_set.issubset(chain_file_headers_set), "Not all given parameters are free parameters for model %d (not in the chain file: %s)!" % (i,chain_file)
 
-        # Check that the given parameters are in the chain file
-        parameter_id_set = set(parameter_id_list)
-        assert parameter_id_set.issubset(chain_file_headers), "Not all given parameters are free parameters for model %d (not in the chain file: %s)!" % (i,chain_file_name)
-
+        # Set the labels for the parameters in the chain file
+        par_labels = []
+        if labels is None:
+            par_labels = chain_file_headers
+        else:
+            for par in chain_file_headers:
+                if par in parameter_id_list:
+                    par_labels.append(labels[par])
+                else:
+                    par_labels.append(par)
+                    
         # Read parameter values and probability weights
-        samples = np.loadtxt(chain_file_name,skiprows=1,delimiter=',')
+        samples = np.loadtxt(chain_file,skiprows=1,delimiter=',')
         sample_par_values = samples[:,:-1]
-        sample_prob_weight = samples[:,-1]
+        mypost = samples[:,-1]
+        min_non_zero = np.min(mypost[np.nonzero(mypost)])
+        sample_prob_weight = np.where(mypost<min_non_zero,min_non_zero,mypost)
+        #sample_prob_weight = mypost
 
         # Create MCSamples object
-        mysample = MCSamples(samples=sample_par_values,names=chain_file_headers,settings={"ignore_rows": 0.0,"smooth_scale_2D":0.3,"mult_bias_correction_order":1})
-        mysample.reweightAddingLogLikes(sample_prob_weight)
+        mysample = MCSamples(samples=sample_par_values,names=chain_file_headers,labels=par_labels,settings={"ignore_rows": 0.0,"fine_bins_2D":800,"smooth_scale_2D":0.5,"mult_bias_correction_order":5})
+        mysample.reweightAddingLogLikes(-np.log(sample_prob_weight))
         mcsamples.append(mysample)
-        
+
 
     # Make the plot
-    image = plots.getSubplotPlotter(subplot_size=2)
-
-    # Set the labels for the given parameters
-    par_labels = []
-    if labels is None:
-        par_labels = parameter_id_list
-    else:
-        for par_name in parameter_id_list:
-            par_labels.append(labels[par_name])
-    
-    image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=par_labels,filled=True)
+    image = plots.getSubplotPlotter(subplot_size=1)    
+    image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=chain_names,filled=True)
 
     return image

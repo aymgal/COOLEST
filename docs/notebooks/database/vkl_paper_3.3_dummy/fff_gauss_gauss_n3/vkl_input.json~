@@ -1,0 +1,221 @@
+{
+    "imgpath": "data/image.fits",
+    "noisepath": "data/noise.dat",
+    "maskpath": "data/mask.fits",
+    "psfpath": "data/psf.fits",
+    "output": "output/",
+    "iplane": {
+        "pix_x": 80,
+        "pix_y": 80,
+        "siz_x": 3.5,
+        "siz_y": 3.5
+    },
+    "noise_flag": "uniform",
+    "psf": {
+        "pix_x": 74,
+        "pix_y": 74,
+        "crop_x": 10,
+        "crop_y": 10
+    },
+    "splane": {
+        "type": "adaptive",
+        "mode": "image",
+        "spacing": 3
+    },
+    "interp": "bilinear",
+    "parameter_model": "both",
+    "nproc": 180,
+    "minimizer": {
+        "type": "multinest",
+        "nlive": 100,
+        "efr": 0.3,
+        "tol": 0.5,
+        "seed": 321,
+        "maxiter": 6000
+    },
+    "perturbations": {
+        "pix_x": 30,
+        "pix_y": 30,
+        "reg_s": {
+            "type": "covariance_kernel",
+	    "subtype": "gauss",
+            "nlpars": [
+		{
+                    "nam": "lambda",
+                    "fix": 0,
+                    "per": 0,
+                    "val": 88.068,
+                    "err": 0,
+                    "min": 0.0001,
+                    "max": 1000,
+                    "pri": {
+			"type": "log10"
+                    }
+		},
+		{
+                    "nam": "sdev",
+                    "fix": 0,
+                    "per": 0,
+                    "val": 0.128,
+                    "err": 0,
+                    "min": 0.04,
+                    "max": 1,
+                    "pri": {
+			"type": "log10"
+                    }
+		},
+		{
+                    "nam": "cmax",
+                    "fix": 1,
+                    "per": 0,
+                    "val": 0.001,
+                    "err": 0,
+                    "min": 0.001,
+                    "max": 1,
+                    "pri": {
+			"type": "uni"
+                    }
+		}
+            ]  
+        },
+        "reg_dpsi": {
+	    "type": "covariance_kernel",
+	    "subtype": "gauss",
+            "nlpars": [
+		{
+                    "nam": "lambda",
+                    "fix": 0,
+                    "per": 0,
+                    "val": 52773.67699,
+                    "err": 0,
+                    "min": 0.0001,
+                    "max": 1000000,
+                    "pri": {
+			"type": "log10"
+                    }
+		},
+		{
+                    "nam": "sdev",
+                    "fix": 0,
+                    "per": 0,
+                    "val": 0.09881,
+                    "err": 0,
+                    "min": 0.04,
+                    "max": 1,
+                    "pri": {
+			"type": "log10"
+                    }
+		},
+		{
+                    "nam": "cmax",
+                    "fix": 1,
+                    "per": 0,
+                    "val": 0.001,
+                    "err": 0,
+                    "min": 0.001,
+                    "max": 1,
+                    "pri": {
+			"type": "uni"
+                    }
+		}
+            ]
+	    
+        }
+    },
+    "physical": {
+        "nlpars": [
+            {
+                "nam": "g",
+                "fix": 0,
+                "per": 0,
+                "val": 0.03,
+                "err": 0,
+                "min": 0,
+                "max": 0.095,
+                "pri": {
+                    "type": "uni"
+                }
+            },
+            {
+                "nam": "phi",
+                "fix": 0,
+                "per": 1,
+                "val": 50,
+                "err": 0,
+                "min": 30,
+                "max": 55,
+                "pri": {
+                    "type": "uni"
+                }
+            }
+        ]
+    },
+    "lenses": {
+        "dum0": {
+            "type": "mass",
+            "subtype": "sie",
+            "nlpars": [
+                {
+                    "nam": "b",
+                    "fix": 0,
+                    "per": 0,
+                    "val": 0.9,
+                    "err": 0,
+                    "min": 0.8,
+                    "max": 1,
+                    "pri": {
+                        "type": "uni"
+                    }
+                },
+                {
+                    "nam": "q",
+                    "fix": 0,
+                    "per": 0,
+                    "val": 0.8,
+                    "err": 0,
+                    "min": 0.7,
+                    "max": 0.999,
+                    "pri": {
+                        "type": "uni"
+                    }
+                },
+                {
+                    "nam": "pa",
+                    "fix": 0,
+                    "per": 1,
+                    "val": -45,
+                    "err": 0,
+                    "min": -60,
+                    "max": -20,
+                    "pri": {
+                        "type": "uni"
+                    }
+                },
+                {
+                    "nam": "x0",
+                    "fix": 0,
+                    "per": 0,
+                    "val": 0.0,
+                    "err": 0,
+                    "min": -0.1,
+                    "max": 0.1,
+                    "pri": {
+                        "type": "uni"
+                    }
+                },
+                {
+                    "nam": "y0",
+                    "fix": 0,
+                    "per": 0,
+                    "val": 0.0,
+                    "err": 0,
+                    "min": -0.1,
+                    "max": 0.1,
+                    "pri": {
+                        "type": "uni"
+                    }
+                }
+            ]
+        }
+    }
+}
