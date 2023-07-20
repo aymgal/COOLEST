@@ -319,7 +319,9 @@ class Analysis(object):
         return array[idx]
     
 
-    def two_point_correlation(self, Nbins=100, rmax=None, normalize=False, coordinates=None, **kwargs_selection):
+    def two_point_correlation(self, Nbins=100, rmax=None, normalize=False, 
+                              use_profile_coordinates=True, coordinates=None, 
+                              **kwargs_selection):
         """
         The two point correlation function can be obtained from the covariance matrix of an image and the distances between its pixels.
         By binning the covariance matrix entries in distance (or radial) bins, one can obtain the 1D correlation function.
@@ -334,11 +336,13 @@ class Analysis(object):
             The number of radial bins to use for converting the 2D covariance matrix into a 1D correlation function.
         rmax : float, optional
             A value for the maximum extent of the radial bins. If none is given then it is equal to half the diagonal of the provided image.
-        noarmalize : bool, optional
+        normalize : bool, optional
             Normalize the given image by its maximum. Defualt is false.
         coordinates : Coordinates, optional
             Instance of a Coordinates object to be used for the computation.
             If None, will use an instance based on the Instrument, by default None
+        use_profile_coordinates : bool, optional
+            If True and `coordinates=None`, uses the coordinates attached to the light profile, if available. Default is True.
 
         Returns
         -------
@@ -352,9 +356,18 @@ class Analysis(object):
             coordinates = self.coordinates
 
         light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
- 
-        x, y = coordinates.pixel_coordinates
-        light_image = light_model.evaluate_surface_brightness(x, y)
+
+        if use_profile_coordinates is True and coordinates is None:
+            light_image, _, coordinates = light_model.surface_brightness(return_extra=True)
+            if coordinates is None:
+                # can be known if e.g. the underlying light profile is not pixelated
+                raise ValueError("Light profile does not have any coordinates grid attached to it.")
+        else:
+            if coordinates is None:
+                coordinates = self.coordinates
+            x, y = coordinates.pixel_coordinates
+            light_image = light_model.evaluate_surface_brightness(x, y)
+        
         light_image = np.nan_to_num(light_image, nan=0.)
         extent = coordinates.extent
         dpix = coordinates.pixel_size
