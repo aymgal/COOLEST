@@ -1,5 +1,6 @@
-<img src="docs/_static/coolest_logo.png" width="200" alt="Herculens logo" />
- 
+<img src="docs/_static/coolest_logo.png#gh-light-mode-only" width="200" alt="COOLEST logo" />
+<img src="docs/_static/coolest_logo_dark_bg.png#gh-dark-mode-only" width="200" alt="COOLEST logo" />
+
 # COOLEST: COde-independent Organized LEns STandard
 
 ![License](https://img.shields.io/github/license/aymgal/COOLEST)
@@ -38,21 +39,32 @@ git clone https://github.com/aymgal/COOLEST.git
 # Move to the repo directly
 cd COOLEST
 
-# (Activate your virtual environment if needed)
+# Now is a good idea to activate your virtual environment if needed
+```
 
-# Install
-pip install -r requirements.txt
-
-# Install the package, optionally in development mode with the -e option
+Then you can install the `coolest` package. If you wish to modify or contribute to the source code, do not forget to use the `-e` option in the commands below to install it in development mode. For installing the package without optional dependencies, use the following command:
+```bash
+# install coolest and required dependencies
 pip install [-e] .
+```
+For installing the package with all optional dependencies, use the following command:
+```bash
+# also install optional dependencies
+pip install [-e] ".[opt]"
 ```
 
 You can test the installation by running `python -c "import coolest"` in the terminal, or by running some of the example notebooks from the [documentation](docs/notebooks) directory. Moreover, you can run all unit tests (having `pytest` installed in your environment), with the command `pytest test`.
 
 _There will be soon the possibility to install_ `coolest` _directly from PyPi and Conda._
 
-## Contributors
 
-The full list of contributors is given in the [AUTHORS](AUTHORS.md) documents.
+## Contributing to the COOLEST standard
+
+We encourage and highly value All types of feedback, feature proposals and contributions from the whole lensing community. Please have a look at [CONTRIBUTING.md](CONTRIBUTING.md) for more information about contributing to the project.
+
+
+## Original contributors
+
+The full list of contributors is given in [AUTHORS.md](AUTHORS.md).
 
 As this is an open source project, we very much appreciate any feedback and new contributions from the community. The goal is really to improve the standard so that most of the research using strong lens modeling can benefit from it.

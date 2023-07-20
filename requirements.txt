@@ -4,5 +4,7 @@ jsonpickle>=2.0.0
 astropy>=4.2.0
 
 # Optional installs
-# matplotlib>=3.7.0  # for plotting
+# matplotlib>=3.7.0    # for plotting
 # lenstronomy>=1.11.0  # for shapelets light profiles
+# ipython              # for running example notebooks
+# ipykernel            # notebooks in custom environment
