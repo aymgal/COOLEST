@@ -1,0 +1,306 @@
+{
+	"coordinates_origin" : 
+	{
+		"dec" : "+00d00m00s",
+		"ra" : "00h00m00s"
+	},
+	"cosmology" : 
+	{
+		"H0" : 73.0,
+		"Om0" : 0.29999999999999999,
+		"astropy_name" : "FlatLambdaCDM"
+	},
+	"instrument" : 
+	{
+		"band" : "F814W",
+		"name" : "HST-WFPC2",
+		"pixel_size" : 0.10000000000000001,
+		"psf" : 
+		{
+			"description" : "Some PSF",
+			"pixels" : 
+			{
+				"field_of_view_x" : 
+				[
+					0,
+					6.1000000000000005
+				],
+				"field_of_view_y" : 
+				[
+					0,
+					6.1000000000000005
+				],
+				"fits_file" : 
+				{
+					"path" : "my_PSF.fits"
+				},
+				"num_pix_x" : 61,
+				"num_pix_y" : 61
+			},
+			"type" : "PixelatedPSF"
+		},
+		"readout_noise" : 6
+	},
+	"lensing_entities" : 
+	[
+		{
+			"mass_model" : 
+			[
+				{
+					"parameters" : 
+					{
+						"gamma_ext" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 0.037360431472072492
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"phi_ext" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 23.246476244803972
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						}
+					},
+					"type" : "ExternalShear"
+				}
+			],
+			"name" : "An external shear",
+			"redshift" : 0.5,
+			"type" : "external_shear"
+		},
+		{
+			"light_model" : [],
+			"mass_model" : 
+			[
+				{
+					"parameters" : 
+					{
+						"center_x" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : -0.056286353963070246
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"center_y" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 0.043054183547948821
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"gamma" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 1.8017964353082392
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"phi" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 15.249576842696783
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"q" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 0.76031455485748767
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"theta_E" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 1.5965030503284314
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						}
+					},
+					"type" : "PEMD"
+				}
+			],
+			"name" : "dum0",
+			"redshift" : 0.5,
+			"type" : "galaxy"
+		},
+		{
+			"light_model" : 
+			[
+				{
+					"parameters" : 
+					{
+						"pixels" : 
+						{
+							"field_of_view_x" : 
+							[
+								0,
+								0
+							],
+							"field_of_view_y" : 
+							[
+								0,
+								0
+							],
+							"fits_file" : 
+							{
+								"path" : "my_VKL_source.fits"
+							},
+							"num_pix" : 729
+						}
+					},
+					"type" : "IrregularGrid"
+				}
+			],
+			"mass_model" : [],
+			"name" : "src1",
+			"redshift" : 1.0,
+			"type" : "galaxy"
+		}
+	],
+    "meta" : {
+	"chain_file_name": "coolest_chain.csv"
+    },
+	"mode" : "MAP",
+	"observation" : 
+	{
+		"exposure_time" : 2400,
+		"mag_sky_brightness" : 22.800000000000001,
+		"mag_zero_point" : 22.190000000000001,
+		"noise" : 
+		{
+			"noise_map" : 
+			{
+				"field_of_view_x" : 
+				[
+					0,
+					5.4000000000000004
+				],
+				"field_of_view_y" : 
+				[
+					0,
+					5.4000000000000004
+				],
+				"fits_file" : 
+				{
+					"path" : "my_noise_map.fits"
+				},
+				"num_pix_x" : 54,
+				"num_pix_y" : 54
+			},
+			"type" : "NoiseMap"
+		},
+		"pixels" : 
+		{
+			"field_of_view_x" : 
+			[
+				0,
+				5.4000000000000004
+			],
+			"field_of_view_y" : 
+			[
+				0,
+				5.4000000000000004
+			],
+			"fits_file" : 
+			{
+				"path" : "my_data.fits"
+			},
+			"num_pix_x" : 54,
+			"num_pix_y" : 54
+		}
+	},
+	"standard" : "COOLEST"
+}
