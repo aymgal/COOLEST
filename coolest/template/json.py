@@ -105,14 +105,13 @@ class JSONSerializer(object):
         """
         try:
             instance = self.load_jsonpickle()
-            check_instance = True  # will then check that it is a COOLEST instance
+            assert isinstance(instance, COOLEST)
         except Exception as e:
             if verbose is True:
                 print(f"Failed reading '{self._api_suffix}' template with jsonpickle, "
                     f"now trying with the pure json template (original error: {e})")
-            content = self.load_simple()
-        assert isinstance(content, COOLEST)
-        return content
+            instance = self.load_simple()
+        return instance
 
     def load_simple(self, as_object=True):
         """Read the JSON template file and build up the corresponding COOLEST object. 
