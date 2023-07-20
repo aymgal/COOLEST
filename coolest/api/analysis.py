@@ -11,6 +11,11 @@ from coolest.api import util
 class Analysis(object):
     """Handles computation of model-independent quantities 
     and other analysis computations.
+    
+    NOTE: Except for methods that do have a `coordinates` keyword argument,
+    the grid used to performed the computations will always be the one corresponding
+    to the instrument / observation field-of-view, with resolution controlled by the
+    `supersampling` keyword argument below.
 
     Parameters
     ----------
@@ -20,7 +25,7 @@ class Analysis(object):
         Directory which contains the COOLEST template and other data files
     supersampling : int, optional
         Supersampling factor (relative to the instrument pixel size)
-        that defines the grid on which computations are performed, by default 1
+        that defines the grid on which computations are performed, by default 1.
     """
 
     def __init__(self, coolest_object, coolest_directory, supersampling=1):
@@ -216,8 +221,8 @@ class Analysis(object):
     def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
                                initial_guess=1, initial_delta_pix=10, 
                                n_iter=10, **kwargs_selection):
-        """        
-
+        """Computes the effective radius of the 2D surface brightness profile, 
+        based on a definition similar to the half-light radius.
 
         Parameters
         ----------
@@ -314,7 +319,7 @@ class Analysis(object):
         return array[idx]
     
 
-    def two_point_correlation(self,Nbins=100,rmax=None,normalize=False,coordinates=None,**kwargs_selection):
+    def two_point_correlation(self, Nbins=100, rmax=None, normalize=False, coordinates=None, **kwargs_selection):
         """
         The two point correlation function can be obtained from the covariance matrix of an image and the distances between its pixels.
         By binning the covariance matrix entries in distance (or radial) bins, one can obtain the 1D correlation function.
@@ -343,21 +348,17 @@ class Analysis(object):
         """
         if kwargs_selection is None:
             kwargs_selection = {}
+        if coordinates is None:
+            coordinates = self.coordinates
+
         light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
-
-        # if coordinates is None:
-        #     x, y = self.coordinates.pixel_coordinates
-        # else:
-        #     x, y = coordinates.pixel_coordinates
-        # light_image = light_model.evaluate_surface_brightness(x, y)
-        # light_image[np.isnan(light_image)] = 0.
-        
-        #size = self.coordinates.pixel_size
-        #print(size)
-        
-        light_image,extent,coordinates = light_model.surface_brightness(return_extra=True)
+ 
+        x, y = coordinates.pixel_coordinates
+        light_image = light_model.evaluate_surface_brightness(x, y)
+        light_image = np.nan_to_num(light_image, nan=0.)
+        extent = coordinates.extent
         dpix = coordinates.pixel_size
-
+        
         if rmax is None:
             rmax = math.hypot(extent[0]-extent[1],extent[2]-extent[3])/2.0
 
@@ -365,7 +366,6 @@ class Analysis(object):
             max_image = np.amax(light_image)
             light_image = np.divide(light_image,max_image)
 
-            
         # Fourier transform image
         fouriertf = np.fft.fft2(light_image,norm="ortho")
         # Power spectrum (the square of the signal)
