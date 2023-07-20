@@ -1,4 +1,4 @@
-__author__ = 'aymgal', 'lynevdv'
+__author__ = 'aymgal', 'lynevdv', 'gvernard'
 
 
 import copy
@@ -7,11 +7,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from matplotlib.colors import ListedColormap
+from getdist import plots,chains,MCSamples
 
 from coolest.api.analysis import Analysis
 from coolest.api.composable_models import *
 from coolest.api import util
 from coolest.api import plot_util as plut
+
 
 # matplotlib global settings
 plt.rc('image', interpolation='none', origin='lower') # imshow settings
@@ -444,3 +446,83 @@ class Comparison_analytical(object):
     def plot_lens(self,idx_file=0):
         f,ax = self.plotting_routine(self.param_lens,idx_file)
         return f,ax
+
+
+
+
+
+def plot_corner(parameter_id_list,coolest_chains,chain_names=None,coolest_point_estimates=None,point_estimate_names=None,labels=None):
+    """
+    Adding this as just a function for the moment.
+    Takes a list of COOLEST files as input, which must have a chain file associated to them, and returns a corner plot.
+
+    Parameters
+    ----------
+    parameter_id_list : array
+        A list of parameter unique ids obtained from lensing entities. Their order determines the order of the plot panels.
+    coolest_chains : array
+        A list of coolest objects that have a chain file associated to them.
+    chain_names : array, optional
+        A list of labels for the coolest models in the 'coolest_chains' list. Must have the same order as 'coolest_chains'.
+    coolest_point_estimates : array, optional
+        A list of coolest objects that will be used as point estimates.
+    point_estimate_names : array, optional
+        A list of labels for the models in the 'coolest_point_estimates' list. Must have the same order as 'coolest_point_estimates'.
+    labels : dict, optional
+        A dictionary matching the parameter_id_list entries to some human-readable labels.
+    
+
+    Returns
+    -------
+    An image
+
+    TODO
+    ----
+    - Take a list of vectors of fixed parameter values as input.
+    - Take flags as input that can plot the point estimates of "MAP", "mean", "median".
+    - Take an input option to indicate whether confidence intervals should be included from the COOLEST.json file, calculated, or excluded.
+    - Take GetDist options as input, especially the 'smooth_scale_2D' and the 'mult_bias_correction_order' ones.
+    - Take triangle_plot arguments as input, e.g. 'filled=True'
+    """
+
+    chains.print_load_details = False # Just to silence messages
+
+    mcsamples = []
+    for i in range(0,len(coolest_chains)):
+        chain_file_name = coolest_chains[i]["meta"]["chain_file_name"] # Here get the chain file path for each coolest object
+
+        # Get the chain file headers
+        f = open(chain_file_name)
+        header = f.readline()
+        f.close()
+        chain_file_headers = set(header.split(','))
+
+        # Check that the given parameters are in the chain file
+        parameter_id_set = set(parameter_id_list)
+        assert parameter_id_set.issubset(chain_file_headers), "Not all given parameters are free parameters for model %d (not in the chain file: %s)!" % (i,chain_file_name)
+
+        # Read parameter values and probability weights
+        samples = np.loadtxt(chain_file_name,skiprows=1,delimiter=',')
+        sample_par_values = samples[:,:-1]
+        sample_prob_weight = samples[:,-1]
+
+        # Create MCSamples object
+        mysample = MCSamples(samples=sample_par_values,names=chain_file_headers,settings={"ignore_rows": 0.0,"smooth_scale_2D":0.3,"mult_bias_correction_order":1})
+        mysample.reweightAddingLogLikes(sample_prob_weight)
+        mcsamples.append(mysample)
+        
+
+    # Make the plot
+    image = plots.getSubplotPlotter(subplot_size=2)
+
+    # Set the labels for the given parameters
+    par_labels = []
+    if labels is None:
+        par_labels = parameter_id_list
+    else:
+        for par_name in parameter_id_list:
+            par_labels.append(labels[par_name])
+    
+    image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=par_labels,filled=True)
+
+    return image
