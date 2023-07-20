@@ -2,11 +2,14 @@ __author__ = 'aymgal'
 
 # Utility functions to use throughout the API
 
-def galaxy_profile_to_id(model_type, profile_name, profile_idx, galaxy_idx):
-    return f'galaxy_{galaxy_idx}-{model_type}_model-{profile_name}_{profile_idx}'
+def galaxy_profile_to_id(model_type, profile_name, profile_idx, entity_idx):
+    return f'{entity_idx}-galaxy-{model_type}-{profile_idx}-{profile_name}'
 
-def mass_field_profile_to_id(profile_name, profile_idx, field_idx):
-    return f'massfield_model_{field_idx}-{profile_name}_{profile_idx}'
+def mass_field_profile_to_id(profile_name, profile_idx, entity_idx):
+    return f'{entity_idx}-massfield-mass-{profile_idx}-{profile_name}'
+
+def parameter_to_id(param_name, parent_profile_id):
+    return f'{parent_profile_id}-{param_name}'
 
 def galaxy_id_to_profile(id_str):
     galaxy_str, model_str, profile_str = id_str.split('-')

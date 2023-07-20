@@ -13,3 +13,5 @@ from coolest.template.classes.galaxy import Galaxy
 from coolest.template.classes.mass_field import MassField
 from coolest.template.classes.lensing_entity_list import LensingEntityList
 from coolest.template.classes.mass_light_model import MassModel, LightModel
+from coolest.template.classes.probabilities import Prior, PosteriorStatistics
+

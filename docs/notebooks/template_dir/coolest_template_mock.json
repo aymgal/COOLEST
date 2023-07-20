@@ -40,32 +40,18 @@
           "id": "0-massfield-mass-0_ExternalShear",
           "parameters": {
             "gamma_ext": {
-              "fixed": false,
               "id": "0-massfield-mass-0_ExternalShear-gamma_ext",
               "point_estimate": {
                 "value": 0.07
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "phi_ext": {
-              "fixed": false,
               "id": "0-massfield-mass-0_ExternalShear-phi_ext",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
@@ -85,112 +71,63 @@
           "id": "1-galaxy-light-0_Sersic",
           "parameters": {
             "I_eff": {
-              "fixed": false,
               "id": "1-galaxy-light-0_Sersic-I_eff",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_x": {
-              "fixed": false,
               "id": "1-galaxy-light-0_Sersic-center_x",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_y": {
-              "fixed": false,
               "id": "1-galaxy-light-0_Sersic-center_y",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "n": {
-              "fixed": false,
               "id": "1-galaxy-light-0_Sersic-n",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "phi": {
-              "fixed": false,
               "id": "1-galaxy-light-0_Sersic-phi",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "q": {
-              "fixed": false,
               "id": "1-galaxy-light-0_Sersic-q",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "theta_eff": {
-              "fixed": false,
               "id": "1-galaxy-light-0_Sersic-theta_eff",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
@@ -203,112 +140,63 @@
           "id": "1-galaxy-light-1_Sersic",
           "parameters": {
             "I_eff": {
-              "fixed": false,
               "id": "1-galaxy-light-1_Sersic-I_eff",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_x": {
-              "fixed": false,
               "id": "1-galaxy-light-1_Sersic-center_x",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_y": {
-              "fixed": false,
               "id": "1-galaxy-light-1_Sersic-center_y",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "n": {
-              "fixed": false,
               "id": "1-galaxy-light-1_Sersic-n",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "phi": {
-              "fixed": false,
               "id": "1-galaxy-light-1_Sersic-phi",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "q": {
-              "fixed": false,
               "id": "1-galaxy-light-1_Sersic-q",
               "point_estimate": {
                 "value": 0.89
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "theta_eff": {
-              "fixed": false,
               "id": "1-galaxy-light-1_Sersic-theta_eff",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
@@ -323,48 +211,27 @@
           "id": "1-galaxy-mass-0_PEMD",
           "parameters": {
             "center_x": {
-              "fixed": false,
               "id": "1-galaxy-mass-0_PEMD-center_x",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_y": {
-              "fixed": false,
               "id": "1-galaxy-mass-0_PEMD-center_y",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "gamma": {
-              "fixed": false,
               "id": "1-galaxy-mass-0_PEMD-gamma",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "mean": 2.0,
@@ -373,48 +240,27 @@
               }
             },
             "phi": {
-              "fixed": false,
               "id": "1-galaxy-mass-0_PEMD-phi",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "q": {
-              "fixed": false,
               "id": "1-galaxy-mass-0_PEMD-q",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "theta_E": {
-              "fixed": false,
               "id": "1-galaxy-mass-0_PEMD-theta_E",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
@@ -455,112 +301,63 @@
           "id": "2-galaxy-light-0_Sersic",
           "parameters": {
             "I_eff": {
-              "fixed": false,
               "id": "2-galaxy-light-0_Sersic-I_eff",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_x": {
-              "fixed": false,
               "id": "2-galaxy-light-0_Sersic-center_x",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_y": {
-              "fixed": false,
               "id": "2-galaxy-light-0_Sersic-center_y",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "n": {
-              "fixed": false,
               "id": "2-galaxy-light-0_Sersic-n",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "phi": {
-              "fixed": false,
               "id": "2-galaxy-light-0_Sersic-phi",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "q": {
-              "fixed": false,
               "id": "2-galaxy-light-0_Sersic-q",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": null,
-                "median": null,
-                "percentile_16th": null,
-                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "theta_eff": {
-              "fixed": false,
               "id": "2-galaxy-light-0_Sersic-theta_eff",
               "point_estimate": {
                 "value": null
-              },
-              "posterior_stats": {
-                "mean": 0.11,
-                "median": 0.15,
-                "percentile_16th": 0.03,
-                "percentile_84th": 0.05
               },
               "prior": {
                 "type": null
@@ -634,7 +431,7 @@
     }
   ],
   "meta": {},
-  "mode": "MAP",
+  "mode": "MOCK",
   "observation": {
     "exposure_time": null,
     "mag_sky_brightness": null,
