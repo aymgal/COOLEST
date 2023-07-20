@@ -85,10 +85,11 @@ All details regarding the conventions and Python interfaces are given on the COO
 
 # Related software
 
-Lens modeling codes that already have an interface with COOLEST:
+Lens modeling and simulation codes that already have an interface with COOLEST:
 
 - `Herculens` [@herculens2022]
 - `VKL` [@vkl2022]
+- `MOLET` [@molet2022]
 - `Lenstronomy` [@lenstronomy2021]
 
 Examples of other lens modeling codes:
@@ -98,6 +99,7 @@ Examples of other lens modeling codes:
 - `GLaD` [@glad2020]
 - `GLASS ` [@glass2020]
 - `GLEE` [@glee2010]
+- `glafic` [@glafic201O]
 - `lenstool ` [@lenstool2007]
 
 # Acknowledgements

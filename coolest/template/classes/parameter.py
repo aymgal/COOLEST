@@ -258,6 +258,7 @@ class NonLinearParameterSet(ParameterSet):
 
 class PixelatedRegularGridParameter(PixelatedRegularGrid):
     """Typically for pixelated profiles"""
+    # TODO: implement .fixed attribute following the analytical Parameter interface
 
     def __init__(self, documentation, **kwargs_grid) -> None:
         self.documentation = documentation
@@ -266,6 +267,7 @@ class PixelatedRegularGridParameter(PixelatedRegularGrid):
 
 class IrregularGridParameter(IrregularGrid):
     """Typically for pixelated profiles"""
+    # TODO: implement .fixed attribute following the analytical Parameter interface
 
     def __init__(self, documentation, **kwargs_grid) -> None:
         self.documentation = documentation
