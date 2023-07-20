@@ -45,7 +45,7 @@ caption: Examples
 maxdepth: 2
 ---
 Codes compliant with COOLEST <examples/existing_interfaces>
-Python notebooks <notebooks/index>
+Tutorial notebooks <notebooks/index>
 ```
 
 ```{toctree}
