@@ -483,8 +483,8 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
 
     TODO
     ----
-    - Take a list of vectors of fixed parameter values as input.
-    - Take flags as input that can plot the point estimates of "MAP", "mean", "median".
+    - Reordering of the columns in the chain file according to the order of parameter_id_list.
+    - Take a list of vectors of COOLEST files from which to extract the point estimates and overplot them on the corner plot.
     - Take an input option to indicate whether confidence intervals should be included from the COOLEST.json file, calculated, or excluded.
     - Take GetDist options as input, especially the 'smooth_scale_2D' and the 'mult_bias_correction_order' ones.
     - Take triangle_plot arguments as input, e.g. 'filled=True'
