@@ -19,8 +19,11 @@ For more information and the full list of COOLEST features, refer to the [online
 ## Components of the standard
 
 COOLEST is composed of three distinct building blocks:
-- __A set of [conventions](docs/conventions.md)__: coordinate systems, units and profile definitions implicitly assumed when manipulating lens models stored in the template file;
+
+- __A set of [conventions](docs/conventions.md)__: reference point for all modelling assumptions and codes, which includes coordinate systems, units and profile definitions used when manipulating the lens models stored in the template file;
+
 - __Template file system__ ([`coolest.template`](coolest/template/)): a Python interface to create, store and manipulate COOLEST template files (JSON format) and linked external files (such as FITS files for data products);
+
 - __Analysis & plotting__ ([`coolest.api`](coolest/template/)): a Python interface to compute key lensing quantities and generate publication-ready lens model plots.
 
 ## Examples
