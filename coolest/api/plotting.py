@@ -452,7 +452,7 @@ class Comparison_analytical(object):
 
 
 
-def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_estimate_objs=None,point_estimate_dirs=None,point_estimate_names=None,labels=None):
+def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_estimate_objs=None,point_estimate_dirs=None,point_estimate_names=None,colors=None,labels=None,mc_samples_kwargs=None):
     """
     Adding this as just a function for the moment.
     Takes a list of COOLEST files as input, which must have a chain file associated to them, and returns a corner plot.
@@ -480,11 +480,6 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
     Returns
     -------
     An image
-
-    TODO
-    ----
-    - Take GetDist options as input, especially the 'smooth_scale_2D' and the 'mult_bias_correction_order' ones.
-    - Take triangle_plot arguments as input, e.g. 'filled=True'
     """
 
     chains.print_load_details = False # Just to silence messages
@@ -552,7 +547,7 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         #sample_prob_weight = mypost
 
         # Create MCSamples object
-        mysample = MCSamples(samples=sample_par_values,names=chain_file_headers,labels=par_labels,settings={"ignore_rows": 0.0,"fine_bins_2D":800,"smooth_scale_2D":0.5,"mult_bias_correction_order":5})
+        mysample = MCSamples(samples=sample_par_values,names=chain_file_headers,labels=par_labels,settings=mc_samples_kwargs)
         mysample.reweightAddingLogLikes(-np.log(sample_prob_weight))
         mcsamples.append(mysample)
 
@@ -560,7 +555,7 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         
     # Make the plot
     image = plots.getSubplotPlotter(subplot_size=1)    
-    image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=chain_names,filled=True)
+    image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=chain_names,filled=True,colors=colors)
 
     my_linestyles = ['solid','dotted','dashed','dashdot']
     my_markers    = ['s','^','o','star']
