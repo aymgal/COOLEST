@@ -483,16 +483,14 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
 
     TODO
     ----
-    - Reordering of the columns in the chain file according to the order of parameter_id_list.
-    - Take a list of vectors of COOLEST files from which to extract the point estimates and overplot them on the corner plot.
-    - Take an input option to indicate whether confidence intervals should be included from the COOLEST.json file, calculated, or excluded.
     - Take GetDist options as input, especially the 'smooth_scale_2D' and the 'mult_bias_correction_order' ones.
     - Take triangle_plot arguments as input, e.g. 'filled=True'
     """
 
     chains.print_load_details = False # Just to silence messages
     parameter_id_set = set(parameter_id_list)
-
+    Npars = len(parameter_id_list)
+    
     # Get the chain file headers from the first object in the list
     chain_file = os.path.join(chain_dirs[0],chain_objs[0].meta["chain_file_name"])
     
@@ -501,7 +499,21 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
     if chain_names is None:
         chain_names = ["chain "+str(i) for i in range(0,len(chain_objs))]
     
-    
+
+    # Get the values of the point_estimates
+    point_estimates = []
+    if point_estimate_objs is not None:
+        for coolest_obj in point_estimate_objs:
+            values = []
+            for par in parameter_id_list:
+                param = coolest_obj.lensing_entities.get_parameter_from_id(par)
+                val = param.point_estimate.value
+                if val is None:
+                    values.append(None)
+                else:
+                    values.append(val)
+            point_estimates.append(values)
+
             
     mcsamples = []
     for i in range(0,len(chain_objs)):
@@ -532,6 +544,8 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         # Read parameter values and probability weights
         samples = np.loadtxt(chain_file,skiprows=1,delimiter=',')
         sample_par_values = samples[:,:-1]
+        
+        # Clean-up the probability weights
         mypost = samples[:,-1]
         min_non_zero = np.min(mypost[np.nonzero(mypost)])
         sample_prob_weight = np.where(mypost<min_non_zero,min_non_zero,mypost)
@@ -543,8 +557,33 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         mcsamples.append(mysample)
 
 
+        
     # Make the plot
     image = plots.getSubplotPlotter(subplot_size=1)    
     image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=chain_names,filled=True)
 
+    my_linestyles = ['solid','dotted','dashed','dashdot']
+    my_markers    = ['s','^','o','star']
+
+    for k in range(0,len(point_estimates)):
+        # Add vertical and horizontal lines
+        for i in range(0,Npars):
+            val = point_estimates[k][i]
+            if val is not None:
+                for ax in image.subplots[i:,i]:
+                    ax.axvline(val,color='black',ls=my_linestyles[k],alpha=1.0,lw=1)
+                for ax in image.subplots[i,:i]:
+                    ax.axhline(val,color='black',ls=my_linestyles[k],alpha=1.0,lw=1)
+
+        # Add points
+        for i in range(0,Npars):
+            val_x = point_estimates[k][i]
+            for j in range(i+1,Npars):
+                val_y = point_estimates[k][j]
+                if val_x is not None and val_y is not None:
+                    image.subplots[j,i].scatter(val_x,val_y,s=10,facecolors='black',color='black',marker=my_markers[k])
+                else:
+                    pass    
+
+                
     return image
