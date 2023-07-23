@@ -51,13 +51,11 @@ class LensingEntityList(list, APIBaseObject):
             List of parameter instances
         """
         def _selected(param_name, param):
-            # below we check that is is a Parameter instance because Grid-like parameters
+            # below we check that `param` is a Parameter instance because Grid-like parameters
             # do not have (yet) the possibility to be fixed (no fixed attribute).
             is_fixed = False if not isinstance(param, Parameter) else param.fixed
             ignored_if_fixed = not with_fixed and is_fixed
-            if with_name is None:
-                return False if ignored_if_fixed else True
-            elif param_name == with_name:
+            if (with_name is None) or (param_name == with_name):
                 return False if ignored_if_fixed else True
             else:
                 return False
