@@ -91,7 +91,7 @@ class LensingEntityList(list, APIBaseObject):
         return [p.id for p in self.get_parameters(with_name=with_name, with_fixed=with_fixed)]
     
     def get_parameter_from_id(self, param_id):
-        """Returns the Parameter instance that has the given parameter ID. 
+        """Returns the Parameter instance that has the given parameter ID, or None.
 
         Parameters
         ----------
@@ -100,7 +100,7 @@ class LensingEntityList(list, APIBaseObject):
 
         Returns
         -------
-        coolest.template.classes.parameters.Parameter
+        coolest.template.classes.parameters.Parameter or None
             Instance of a Parameter with ID equal to `param_ID`
         """
         # NOTE: it can be very inefficient for a large number of lensing entities
@@ -113,7 +113,8 @@ class LensingEntityList(list, APIBaseObject):
                             if param.id == param_id:
                                 return param
         # if the following line is reached, then no ID has been found
-        raise ValueError("Parameter with ID '{param_id}' not found in any lensing entity.")
+        return None
+        #raise ValueError("Parameter with ID '{param_id}' not found in any lensing entity.")
 
     def _create_all_ids(self):
         for i, entity in enumerate(self):

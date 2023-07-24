@@ -528,13 +528,23 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         # Set the labels for the parameters in the chain file
         par_labels = []
         if labels is None:
-            par_labels = chain_file_headers
-        else:
-            for par in chain_file_headers:
-                if par in parameter_id_list:
-                    par_labels.append(labels[par])
+            for par_id in chain_file_headers:
+                if par_id in parameter_id_list:
+                    param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
+                    par_labels.append(param.latex_str.strip('$'))
                 else:
-                    par_labels.append(par)
+                    par_labels.append(par_id)
+        else:
+            label_keys = list(labels.keys())
+            for par_id in chain_file_headers:
+                if par_id in label_keys:
+                    par_labels.append(labels[par_id])
+                else:
+                    param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
+                    if param:
+                        par_labels.append(param.latex_str.strip('$'))
+                    else:
+                        par_labels.append(par_id)
                     
         # Read parameter values and probability weights
         samples = np.loadtxt(chain_file,skiprows=1,delimiter=',')
