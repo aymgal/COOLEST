@@ -1,17 +1,20 @@
-__author__ = 'aymgal', 'lynevdv'
+__author__ = 'aymgal', 'lynevdv', 'gvernard'
 
 
+import os
 import copy
 import logging
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from matplotlib.colors import ListedColormap
+from getdist import plots,chains,MCSamples
 
 from coolest.api.analysis import Analysis
 from coolest.api.composable_models import *
 from coolest.api import util
 from coolest.api import plot_util as plut
+
 
 # matplotlib global settings
 plt.rc('image', interpolation='none', origin='lower') # imshow settings
@@ -444,3 +447,148 @@ class Comparison_analytical(object):
     def plot_lens(self,idx_file=0):
         f,ax = self.plotting_routine(self.param_lens,idx_file)
         return f,ax
+
+
+
+
+
+def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_estimate_objs=None,point_estimate_dirs=None,point_estimate_names=None,colors=None,labels=None,mc_samples_kwargs=None):
+    """
+    Adding this as just a function for the moment.
+    Takes a list of COOLEST files as input, which must have a chain file associated to them, and returns a corner plot.
+
+    Parameters
+    ----------
+    parameter_id_list : array
+        A list of parameter unique ids obtained from lensing entities. Their order determines the order of the plot panels.
+    chain_objs : array
+        A list of coolest objects that have a chain file associated to them.
+    chain_dirs : array
+        A list of paths matching the coolest files in 'chain_objs'.
+    chain_names : array, optional
+        A list of labels for the coolest models in the 'chain_objs' list. Must have the same order as 'chain_objs'.
+    point_estimate_objs : array, optional
+        A list of coolest objects that will be used as point estimates.
+    point_estimate_dirs : array
+        A list of paths matching the coolest files in 'point_estimate_objs'.
+    point_estimate_names : array, optional
+        A list of labels for the models in the 'point_estimate_objs' list. Must have the same order as 'point_estimate_objs'.
+    labels : dict, optional
+        A dictionary matching the parameter_id_list entries to some human-readable labels.
+    
+
+    Returns
+    -------
+    An image
+    """
+
+    chains.print_load_details = False # Just to silence messages
+    parameter_id_set = set(parameter_id_list)
+    Npars = len(parameter_id_list)
+    
+    # Get the chain file headers from the first object in the list
+    chain_file = os.path.join(chain_dirs[0],chain_objs[0].meta["chain_file_name"])
+    
+
+    # Set the chain names
+    if chain_names is None:
+        chain_names = ["chain "+str(i) for i in range(0,len(chain_objs))]
+    
+
+    # Get the values of the point_estimates
+    point_estimates = []
+    if point_estimate_objs is not None:
+        for coolest_obj in point_estimate_objs:
+            values = []
+            for par in parameter_id_list:
+                param = coolest_obj.lensing_entities.get_parameter_from_id(par)
+                val = param.point_estimate.value
+                if val is None:
+                    values.append(None)
+                else:
+                    values.append(val)
+            point_estimates.append(values)
+
+            
+    mcsamples = []
+    for i in range(0,len(chain_objs)):
+        chain_file = os.path.join(chain_dirs[i],chain_objs[i].meta["chain_file_name"]) # Here get the chain file path for each coolest object
+
+        # Each chain file can have a different number of free parameters
+        f = open(chain_file)
+        header = f.readline()
+        f.close()
+        chain_file_headers = header.split(',')
+        chain_file_headers.pop() # Remove the last column name that is the probability weights
+        chain_file_headers_set = set(chain_file_headers)
+        
+        # Check that the given parameters are a subset of those in the chain file
+        assert parameter_id_set.issubset(chain_file_headers_set), "Not all given parameters are free parameters for model %d (not in the chain file: %s)!" % (i,chain_file)
+
+        # Set the labels for the parameters in the chain file
+        par_labels = []
+        if labels is None:
+            for par_id in chain_file_headers:
+                if par_id in parameter_id_list:
+                    param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
+                    par_labels.append(param.latex_str.strip('$'))
+                else:
+                    par_labels.append(par_id)
+        else:
+            label_keys = list(labels.keys())
+            for par_id in chain_file_headers:
+                if par_id in label_keys:
+                    par_labels.append(labels[par_id])
+                else:
+                    param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
+                    if param:
+                        par_labels.append(param.latex_str.strip('$'))
+                    else:
+                        par_labels.append(par_id)
+                    
+        # Read parameter values and probability weights
+        samples = np.loadtxt(chain_file,skiprows=1,delimiter=',')
+        sample_par_values = samples[:,:-1]
+        
+        # Clean-up the probability weights
+        mypost = samples[:,-1]
+        min_non_zero = np.min(mypost[np.nonzero(mypost)])
+        sample_prob_weight = np.where(mypost<min_non_zero,min_non_zero,mypost)
+        #sample_prob_weight = mypost
+
+        # Create MCSamples object
+        mysample = MCSamples(samples=sample_par_values,names=chain_file_headers,labels=par_labels,settings=mc_samples_kwargs)
+        mysample.reweightAddingLogLikes(-np.log(sample_prob_weight))
+        mcsamples.append(mysample)
+
+
+        
+    # Make the plot
+    image = plots.getSubplotPlotter(subplot_size=1)    
+    image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=chain_names,filled=True,colors=colors)
+
+    my_linestyles = ['solid','dotted','dashed','dashdot']
+    my_markers    = ['s','^','o','star']
+
+    for k in range(0,len(point_estimates)):
+        # Add vertical and horizontal lines
+        for i in range(0,Npars):
+            val = point_estimates[k][i]
+            if val is not None:
+                for ax in image.subplots[i:,i]:
+                    ax.axvline(val,color='black',ls=my_linestyles[k],alpha=1.0,lw=1)
+                for ax in image.subplots[i,:i]:
+                    ax.axhline(val,color='black',ls=my_linestyles[k],alpha=1.0,lw=1)
+
+        # Add points
+        for i in range(0,Npars):
+            val_x = point_estimates[k][i]
+            for j in range(i+1,Npars):
+                val_y = point_estimates[k][j]
+                if val_x is not None and val_y is not None:
+                    image.subplots[j,i].scatter(val_x,val_y,s=10,facecolors='black',color='black',marker=my_markers[k])
+                else:
+                    pass    
+
+                
+    return image
