@@ -1,0 +1,14 @@
+{
+	"Ndata" : 6400,
+	"Nmask" : 3423,
+	"Npert" : 900,
+	"Npert_mask" : 524,
+	"Nsource" : 729,
+	"Nsource_mask" : 381,
+	"Ppert_size" : 0.11666666666666667,
+	"Psize" : 0.043749999999999997,
+	"reg_dpsi" : "covariance_kernel",
+	"reg_source" : "covariance_kernel",
+	"sample_reg_dpsi" : true,
+	"sample_reg_source" : true
+}

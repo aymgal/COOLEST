@@ -30,6 +30,7 @@ install_optional = [
     'lenstronomy>=1.11.0',  # for shapelets light profiles
     'ipython',              # for running example notebooks
     'ipykernel',            # notebooks in custom environment
+    'getdist>=1.3.2',       # for making corner plots
 ]
 
 setuptools.setup(
