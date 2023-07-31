@@ -576,7 +576,7 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         
     # Make the plot
     image = plots.getSubplotPlotter(subplot_size=1)    
-    image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=chain_names,filled=True,colors=colors)
+    image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=chain_names,filled=True,colors=colors,diag1d_kwargs={'colors':colors})
 
     my_linestyles = ['solid','dotted','dashed','dashdot']
     my_markers    = ['s','^','o','star']
