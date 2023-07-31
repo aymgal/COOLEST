@@ -279,28 +279,28 @@ class MultiModelPlotter(object):
             self.plotter_list.append(ModelPlotter(coolest, coolest_directory=c_dir,
                                                   **kwargs_plotter))
 
-    def plot_surface_brightness(self, axes, titles=None, **kwargs):
-        return self._plot_light_multi('plot_surface_brightness', "surf. brightness", axes, titles=titles, **kwargs)
+    def plot_surface_brightness(self, axes, global_title="surf. brightness", titles=None, **kwargs):
+        return self._plot_light_multi('plot_surface_brightness', global_title, axes, titles=titles, **kwargs)
 
-    def plot_data_image(self, axes, titles=None, **kwargs):
-        return self._plot_data_multi("data", axes, titles=titles, **kwargs)
+    def plot_data_image(self, axes, global_title="data", titles=None, **kwargs):
+        return self._plot_data_multi(global_title, axes, titles=titles, **kwargs)
 
-    def plot_model_image(self, axes, titles=None, **kwargs):
-        return self._plot_lens_model_multi('plot_model_image', "model", axes, titles=titles, **kwargs)
+    def plot_model_image(self, axes, global_title="model", titles=None, **kwargs):
+        return self._plot_lens_model_multi('plot_model_image', global_title, axes, titles=titles, **kwargs)
 
-    def plot_model_residuals(self, axes, titles=None, **kwargs):
-        return self._plot_lens_model_multi('plot_model_residuals', "residuals", axes, titles=titles, **kwargs)
+    def plot_model_residuals(self, axes, global_title="residuals", titles=None, **kwargs):
+        return self._plot_lens_model_multi('plot_model_residuals', global_title, axes, titles=titles, **kwargs)
 
-    def plot_convergence(self, axes, titles=None, **kwargs):
-        return self._plot_lens_model_multi('plot_convergence', "convergence", axes, titles=titles, **kwargs)
+    def plot_convergence(self, axes, global_title="convergence", titles=None, **kwargs):
+        return self._plot_lens_model_multi('plot_convergence', global_title, axes, titles=titles, **kwargs)
 
     def plot_magnification(self, axes, titles=None, **kwargs):
         return self._plot_lens_model_multi('plot_magnification', "magnification", axes, titles=titles, **kwargs)
 
-    def _plot_light_multi(self, method_name, default_title, axes, titles=None, **kwargs):
+    def _plot_light_multi(self, method_name, global_title, axes, titles=None, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         if titles is None:
-            titles = self.num_models * [default_title]
+            titles = self.num_models * [global_title]
         kwargs_ = copy.deepcopy(kwargs)
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
@@ -312,10 +312,10 @@ class MultiModelPlotter(object):
             image_list.append(image)
         return image_list
 
-    def _plot_mass_multi(self, method_name, default_title, axes, titles=None, **kwargs):
+    def _plot_mass_multi(self, method_name, global_title, axes, titles=None, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         if titles is None:
-            titles = self.num_models * [default_title]
+            titles = self.num_models * [global_title]
         kwargs_ = copy.deepcopy(kwargs)
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
@@ -327,10 +327,10 @@ class MultiModelPlotter(object):
             image_list.append(image)
         return image_list
 
-    def _plot_lens_model_multi(self, method_name, default_title, axes, titles=None, kwargs_select=None, **kwargs):
+    def _plot_lens_model_multi(self, method_name, global_title, axes, titles=None, kwargs_select=None, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         if titles is None:
-            titles = self.num_models * [default_title]
+            titles = self.num_models * [global_title]
         kwargs_ = copy.deepcopy(kwargs)
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
@@ -344,10 +344,10 @@ class MultiModelPlotter(object):
             image_list.append(image)
         return image_list
 
-    def _plot_data_multi(self, default_title, axes, titles=None, **kwargs):
+    def _plot_data_multi(self, global_title, axes, titles=None, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         if titles is None:
-            titles = self.num_models * [default_title]
+            titles = self.num_models * [global_title]
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
             if ax is None:
