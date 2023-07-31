@@ -53,25 +53,28 @@ class ModelPlotter(object):
         #cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
         #self.cmap_flux_mod = ListedColormap(cmap_colors)
 
-    def plot_data_image(self, ax, title=None, norm=None, cmap=None, neg_values_as_bad=False):
+    def plot_data_image(self, ax, title=None, norm=None, cmap=None, 
+                        neg_values_as_bad=False, add_colorbar=True):
         """plt.imshow panel with the data image"""
         if cmap is None:
             cmap = self.cmap_flux
         coordinates = util.get_coordinates(self.coolest)
         extent = coordinates.plt_extent
         image = self.coolest.observation.pixels.get_pixels(directory=self._directory)
-        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
+        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm)
-        cb.set_label("flux")
+        if add_colorbar:
+            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb.set_label("flux")
         if title is not None:
             ax.set_title(title)
         return image
 
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
                                 extent=None, norm=None, cmap=None, neg_values_as_bad=True,
-                                plot_points_irreg=False, kwargs_light=None):
+                                plot_points_irreg=False, add_colorbar=True, kwargs_light=None):
         """plt.imshow panel showing the surface brightness of the (unlensed)
         lensing entity selected via kwargs_light (see ComposableLightModel docstring)"""
         if kwargs_light is None:
@@ -83,7 +86,7 @@ class ModelPlotter(object):
             x, y = coordinates.pixel_coordinates
             image = light_model.evaluate_surface_brightness(x, y)
             extent = coordinates.plt_extent
-            ax, cb = self._plot_regular_grid(ax, image, extent=extent, cmap=cmap,
+            ax, im = self._plot_regular_grid(ax, image, extent=extent, cmap=cmap,
                                              neg_values_as_bad=neg_values_as_bad, 
                                              norm=norm)
         else:
@@ -92,24 +95,26 @@ class ModelPlotter(object):
                 extent = extent_model
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
-                ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
+                ax, im = self._plot_regular_grid(ax, image, extent=extent, 
                                         cmap=cmap, 
                                         neg_values_as_bad=neg_values_as_bad,
                                         norm=norm)
             else:
                 points = values
-                ax, cb = self._plot_irregular_grid(ax, points, extent, norm=norm, cmap=cmap, 
+                ax, im = self._plot_irregular_grid(ax, points, extent, norm=norm, cmap=cmap, 
                                                    neg_values_as_bad=neg_values_as_bad,
                                                    plot_points=plot_points_irreg)
                 image = None
-        cb.set_label("flux")
+        if add_colorbar:
+            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb.set_label("flux")
         if title is not None:
             ax.set_title(title)
         return image, coordinates
 
     def plot_model_image(self, ax, supersampling=5, convolved=False, title=None,
                          norm=None, cmap=None, neg_values_as_bad=False,
-                         kwargs_source=None, kwargs_lens_mass=None):
+                         kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None):
         """plt.imshow panel showing the surface brightness of the (lensed)
         selected lensing entities (see ComposableLensModel docstring)
         """
@@ -121,18 +126,20 @@ class ModelPlotter(object):
         image, coordinates = lens_model.model_image(supersampling=supersampling, 
                                                     convolved=convolved)
         extent = coordinates.plt_extent
-        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
+        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm)
-        cb.set_label("flux")
+        if add_colorbar:
+            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb.set_label("flux")
         if title is not None:
             ax.set_title(title)
         return image
 
     def plot_model_residuals(self, ax, supersampling=5, mask=None, title=None,
                              norm=None, cmap=None, add_chi2_label=False, chi2_fontsize=12,
-                             kwargs_source=None, kwargs_lens_mass=None):
+                             kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None):
         """plt.imshow panel showing the normalized model residuals image"""
         if cmap is None:
             cmap = self.cmap_res
@@ -144,11 +151,13 @@ class ModelPlotter(object):
         image, coordinates = lens_model.model_residuals(supersampling=supersampling, 
                                                         mask=mask)
         extent = coordinates.plt_extent
-        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
+        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=False, 
                                 norm=norm)
-        cb.set_label("(data $-$ model) / noise")
+        if add_colorbar:
+            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb.set_label("(data $-$ model) / noise")
         if add_chi2_label is True:
             num_constraints = np.size(image) if mask is None else np.sum(mask)
             red_chi2 = np.sum(image**2) / num_constraints
@@ -161,7 +170,7 @@ class ModelPlotter(object):
 
     def plot_convergence(self, ax, title=None,
                          norm=None, cmap=None, neg_values_as_bad=False,
-                         kwargs_lens_mass=None):
+                         add_colorbar=True, kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D convergence map associated to the
         selected lensing entities (see ComposableMassModel docstring)
         """
@@ -175,18 +184,20 @@ class ModelPlotter(object):
         extent = coordinates.plt_extent
         x, y = coordinates.pixel_coordinates
         image = mass_model.evaluate_convergence(x, y)
-        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
+        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm)
-        cb.set_label(r"$\kappa$")
+        if add_colorbar:
+            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb.set_label(r"$\kappa$")
         if title is not None:
             ax.set_title(title)
         return image
 
     def plot_magnification(self, ax, title=None,
                           norm=None, cmap=None, neg_values_as_bad=False,
-                          kwargs_lens_mass=None):
+                          add_colorbar=True, kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D magnification map associated to the
         selected lensing entities (see ComposableMassModel docstring)
         """
@@ -202,11 +213,13 @@ class ModelPlotter(object):
         extent = coordinates.plt_extent
         x, y = coordinates.pixel_coordinates
         image = mass_model.evaluate_magnification(x, y)
-        ax, cb = self._plot_regular_grid(ax, image, extent=extent, 
+        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm)
-        cb.set_label(r"$\mu$")
+        if add_colorbar:
+            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb.set_label(r"$\mu$")
         if title is not None:
             ax.set_title(title)
         return image
@@ -222,26 +235,24 @@ class ModelPlotter(object):
             image[image < 0] = np.nan
         im = ax.imshow(image, **imshow_kwargs)
         im.set_rasterized(True)
-        cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
         ax.xaxis.set_major_locator(plt.MaxNLocator(3))
         ax.yaxis.set_major_locator(plt.MaxNLocator(3))
-        return ax, cb
+        return ax, im
 
     @staticmethod
     def _plot_irregular_grid(ax, points, extent, neg_values_as_bad=True,
                              norm=None, cmap=None, plot_points=False):
         x, y, z = points
-        m = plut.plot_voronoi(ax, x, y, z, neg_values_as_bad=neg_values_as_bad, 
+        im = plut.plot_voronoi(ax, x, y, z, neg_values_as_bad=neg_values_as_bad, 
                               norm=norm, cmap=cmap, zorder=1)
         ax.set_xlim(extent[0], extent[1])
         ax.set_ylim(extent[2], extent[3])
         ax.set_aspect('equal', 'box')
         ax.xaxis.set_major_locator(plt.MaxNLocator(3))
         ax.yaxis.set_major_locator(plt.MaxNLocator(3))
-        cb = plut.nice_colorbar(m, ax=ax, max_nbins=4)
         if plot_points:
             ax.scatter(x, y, s=5, c='white', marker='.', alpha=0.4, zorder=2)
-        return ax, cb
+        return ax, im
 
 
 class MultiModelPlotter(object):
