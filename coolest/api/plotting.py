@@ -73,7 +73,7 @@ class ModelPlotter(object):
         return image
 
     def plot_surface_brightness(self, ax, title=None, coordinates=None, 
-                                extent=None, norm=None, cmap=None, neg_values_as_bad=True,
+                                extent_irreg=None, norm=None, cmap=None, neg_values_as_bad=True,
                                 plot_points_irreg=False, add_colorbar=True, kwargs_light=None):
         """plt.imshow panel showing the surface brightness of the (unlensed)
         lensing entity selected via kwargs_light (see ComposableLightModel docstring)"""
@@ -91,17 +91,17 @@ class ModelPlotter(object):
                                              norm=norm)
         else:
             values, extent_model, coordinates = light_model.surface_brightness(return_extra=True)
-            if extent is None:
-                extent = extent_model
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
-                ax, im = self._plot_regular_grid(ax, image, extent=extent, 
+                ax, im = self._plot_regular_grid(ax, image, extent=extent_model, 
                                         cmap=cmap, 
                                         neg_values_as_bad=neg_values_as_bad,
                                         norm=norm)
             else:
                 points = values
-                ax, im = self._plot_irregular_grid(ax, points, extent, norm=norm, cmap=cmap, 
+                if extent_irreg is None:
+                    extent_irreg = extent_model
+                ax, im = self._plot_irregular_grid(ax, points, extent_irreg, norm=norm, cmap=cmap, 
                                                    neg_values_as_bad=neg_values_as_bad,
                                                    plot_points=plot_points_irreg)
                 image = None
@@ -463,7 +463,7 @@ class Comparison_analytical(object):
 
 
 
-def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_estimate_objs=None,point_estimate_dirs=None,point_estimate_names=None,colors=None,labels=None,mc_samples_kwargs=None):
+def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_estimate_objs=None,point_estimate_dirs=None,point_estimate_names=None,colors=None,labels=None,subplot_size=1,mc_samples_kwargs=None):
     """
     Adding this as just a function for the moment.
     Takes a list of COOLEST files as input, which must have a chain file associated to them, and returns a corner plot.
@@ -575,8 +575,14 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
 
         
     # Make the plot
-    image = plots.getSubplotPlotter(subplot_size=1)    
-    image.triangle_plot(mcsamples,params=parameter_id_list,legend_labels=chain_names,filled=True,colors=colors)
+    image = plots.getSubplotPlotter(subplot_size=subplot_size)    
+    image.triangle_plot(mcsamples,
+                        params=parameter_id_list,
+                        legend_labels=chain_names,
+                        filled=True,
+                        colors=colors,
+                        line_args=[{'ls':'-', 'lw': 2, 'color': c} for c in colors], 
+                        contour_colors=colors)
 
     my_linestyles = ['solid','dotted','dashed','dashdot']
     my_markers    = ['s','^','o','star']
