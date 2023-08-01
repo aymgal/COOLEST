@@ -88,7 +88,7 @@ class JSONSerializer(object):
         with open(json_path, 'w') as f:
             f.write(result)
 
-    def load(self, verbose=False):
+    def load(self, verbose=True):
         """Read the JSON template file and build up the corresponding COOLEST object.
         It will first try to load the '_pyAPI' template if it exists using `jsonpickle`, 
         otherwise it will fall back to reading the pure json template.
@@ -105,12 +105,12 @@ class JSONSerializer(object):
         """
         try:
             instance = self.load_jsonpickle()
-            assert isinstance(instance, COOLEST)
-        except Exception as e:
-            if verbose is True:
-                print(f"Failed reading '{self._api_suffix}' template with jsonpickle, "
-                    f"now trying with the pure json template (original error: {e})")
+        except ValueError as e:
             instance = self.load_simple()
+        else:
+            if verbose:
+                print("Template file with '{self._api_suffix}' suffix has been read with jsonpickle.")
+        assert isinstance(instance, COOLEST)
         return instance
 
     def load_simple(self, as_object=True):
