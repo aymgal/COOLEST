@@ -538,30 +538,23 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         # Set the labels for the parameters in the chain file
         par_labels = []
         if labels is None:
-            for par_id in chain_file_headers:
-                if par_id in parameter_id_list:
-                    param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
-                    par_labels.append(param.latex_str.strip('$'))
-                else:
-                    par_labels.append(par_id)
-        else:
-            label_keys = list(labels.keys())
-            for par_id in chain_file_headers:
-                if par_id in label_keys:
-                    par_labels.append(labels[par_id])
-                else:
-                    param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
-                    if param:
-                        par_labels.append(param.latex_str.strip('$'))
-                    else:
-                        par_labels.append(par_id)
+            labels = {}
+        for par_id in parameter_id_list:
+            if labels.pop(par_id, None) is None:
+                param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
+                par_labels.append(param.latex_str.strip('$'))
+            else:
+                par_labels.append(labels[par_id])
                     
         # Read parameter values and probability weights
         # TODO: handle samples that are given as a list / array (e.g. using `converters`)
-        cols_to_read = [chain_file_headers.index(par_id) for par_id in parameter_id_list]
-        cols_to_read.append(num_cols-1)  # since we also read the very last column
-        samples = np.loadtxt(chain_file, usecols=cols_to_read, skiprows=1, delimiter=',', comments=None)
+        column_indices = [chain_file_headers.index(par_id) for par_id in parameter_id_list]
+        columns_to_read = sorted(column_indices) + [num_cols-1]  # add last one for probability weights
+        samples = np.loadtxt(chain_file, usecols=columns_to_read, skiprows=1, delimiter=',', comments=None)
         sample_par_values = samples[:, :-1]
+
+        # Re-order columnds to match parameter_id_list and par_labels
+        sample_par_values = sample_par_values[:, column_indices]
 
         # Clean-up the probability weights
         mypost = samples[:,-1]
