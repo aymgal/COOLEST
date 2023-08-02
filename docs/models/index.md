@@ -8,8 +8,8 @@ In the current python interface of the standard, mass and light profiles are imp
 
 The different profiles are split into two broad categories:
 
-- [mass profiles](https://coolest.readthedocs.io/en/latest/conventions/model_profiles/mass.html) to describe lens potentials, surface mass densities and other lensing-related quantities;
-- [light profiles](https://coolest.readthedocs.io/en/latest/conventions/model_profiles/mass.html) to describe surface brightness distributions, including extended (galaxies) or point-like (stars, quasars) objects.
+- [mass profiles](https://coolest.readthedocs.io/en/latest/models/mass.html) to describe lens potentials, surface mass densities and other lensing-related quantities;
+- [light profiles](https://coolest.readthedocs.io/en/latest/models/mass.html) to describe surface brightness distributions, including extended (galaxies) or point-like (stars, quasars) objects.
 
 ```{toctree}
 ---
