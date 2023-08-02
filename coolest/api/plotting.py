@@ -497,15 +497,10 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
     parameter_id_set = set(parameter_id_list)
     Npars = len(parameter_id_list)
     
-    # Get the chain file headers from the first object in the list
-    chain_file = os.path.join(chain_dirs[0],chain_objs[0].meta["chain_file_name"])
-    
-
     # Set the chain names
     if chain_names is None:
         chain_names = ["chain "+str(i) for i in range(0,len(chain_objs))]
     
-
     # Get the values of the point_estimates
     point_estimates = []
     if point_estimate_objs is not None:
@@ -520,7 +515,6 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
                     values.append(val)
             point_estimates.append(values)
 
-            
     mcsamples = []
     for i in range(0,len(chain_objs)):
         chain_file = os.path.join(chain_dirs[i],chain_objs[i].meta["chain_file_name"]) # Here get the chain file path for each coolest object
@@ -529,7 +523,12 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         f = open(chain_file)
         header = f.readline()
         f.close()
+
+        if ';' in header:
+            raise ValueError("Columns must be coma-separated (no semi-colon) in chain file.")
+
         chain_file_headers = header.split(',')
+        num_cols = len(chain_file_headers)
         chain_file_headers.pop() # Remove the last column name that is the probability weights
         chain_file_headers_set = set(chain_file_headers)
         
@@ -558,9 +557,12 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
                         par_labels.append(par_id)
                     
         # Read parameter values and probability weights
-        samples = np.loadtxt(chain_file,skiprows=1,delimiter=',')
-        sample_par_values = samples[:,:-1]
-        
+        # TODO: handle samples that are given as a list / array (e.g. using `converters`)
+        cols_to_read = [chain_file_headers.index(par_id) for par_id in parameter_id_list]
+        cols_to_read.append(num_cols-1)  # since we also read the very last column
+        samples = np.loadtxt(chain_file, usecols=cols_to_read, skiprows=1, delimiter=',', comments=None)
+        sample_par_values = samples[:, :-1]
+
         # Clean-up the probability weights
         mypost = samples[:,-1]
         min_non_zero = np.min(mypost[np.nonzero(mypost)])
@@ -568,7 +570,7 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         #sample_prob_weight = mypost
 
         # Create MCSamples object
-        mysample = MCSamples(samples=sample_par_values,names=chain_file_headers,labels=par_labels,settings=mc_samples_kwargs)
+        mysample = MCSamples(samples=sample_par_values,names=parameter_id_list,labels=par_labels,settings=mc_samples_kwargs)
         mysample.reweightAddingLogLikes(-np.log(sample_prob_weight))
         mcsamples.append(mysample)
 

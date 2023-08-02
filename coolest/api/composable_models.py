@@ -347,7 +347,7 @@ class ComposableLensModel(object):
             if np.isnan(image).any():
                 np.nan_to_num(image, copy=False, nan=0., posinf=None, neginf=None)
                 logging.warning("Found NaN values in image prior to convolution; "
-                                "there have been replaced by zeros.")
+                                "they have been replaced by zeros.")
             if supersampling_conv == supersampling:
                 # first convolve then dowsnscale 
                 image = signal.fftconvolve(image, kernel, mode='same')
