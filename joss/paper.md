@@ -91,6 +91,7 @@ Lens modeling and simulation codes that already have an interface with COOLEST:
 - `VKL` [@vkl2022]
 - `MOLET` [@molet2022]
 - `Lenstronomy` [@lenstronomy2021]
+- `QLens` (Minor et al., in prep.)
 
 Examples of other lens modeling codes:
 
