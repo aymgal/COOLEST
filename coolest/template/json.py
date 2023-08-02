@@ -103,21 +103,24 @@ class JSONSerializer(object):
         COOLEST object
             COOLEST object that corresponds to the JSON template
         """
-        try:
-            instance = self.load_jsonpickle()
-        except ValueError as e:
-            instance = self.load_simple()
+        json_path = self.path + '.json'
+        jsonpickle_path = self.path + self._api_suffix + '.json'
+        if os.path.exists(jsonpickle_path):
+            instance = self.load_jsonpickle(jsonpickle_path)
         else:
             if verbose:
-                print("Template file with '{self._api_suffix}' suffix has been read with jsonpickle.")
+                print(f"Template file '{jsonpickle_path}' not found, now trying to read '{json_path}'.")
+            instance = self.load_simple(json_path, as_object=True)
         assert isinstance(instance, COOLEST)
         return instance
 
-    def load_simple(self, as_object=True):
+    def load_simple(self, json_path, as_object=True):
         """Read the JSON template file and build up the corresponding COOLEST object. 
 
         Parameters
         ----------
+        json_path: str
+            Path to the json file to be read.
         as_object : bool, optional
             _description_, by default True
 
@@ -126,28 +129,27 @@ class JSONSerializer(object):
         COOLEST object
             COOLEST object that corresponds to the JSON template
         """
-        json_path = self.path + '.json'
-        if not os.path.exists(json_path):
-            raise ValueError(f"Template file at '{json_path}' does not exist.")
         with open(json_path, 'r') as f:
             content = json.loads(f.read())
         if not as_object:
             return content  # dictionary
         return self._json_to_coolest(content)  # COOLEST object
 
-    def load_jsonpickle(self):
+    def load_jsonpickle(self, jsonpickle_path):
         """Read the JSON template file and build up the corresponding COOLEST object
         using the `jsonpickle`.
+
+        Parameters
+        ----------
+        jsonpickle_path: str
+            Path to the json file to be read with `jsonpickle`.
 
         Returns
         -------
         COOLEST object
             COOLEST object that corresponds to the JSON template
         """
-        json_path = self.path + self._api_suffix + '.json'
-        if not os.path.exists(json_path):
-            raise ValueError(f"Template file at '{json_path}' does not exist.")
-        with open(json_path, 'r') as f:
+        with open(jsonpickle_path, 'r') as f:
             content = jsonpickle.decode(f.read())
         return content  # COOLEST object
 
