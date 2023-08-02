@@ -1151,12 +1151,5 @@
     "documentation": "Defines the cosmological model. \n    Currently, only FlatLambdaCDM from astropy is supported, based on H0 and Omega_m.\n\n    Parameters\n    ----------\n    H0 : float\n        Hubble constant, in km/s/Mpc\n    Om0 : float\n        Matter density at present time\n    astropy_name : str, optional\n        `astropy` model name, by default 'FlatLambdaCDM'"
   },
   "standard": "COOLEST",
-  "meta": {},
-  "exclude_keys": [
-    "documentation",
-    "latex_str",
-    "units",
-    "definition_range",
-    "exclude_keys"
-  ]
+  "meta": {}
 }

@@ -540,7 +540,7 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         if labels is None:
             labels = {}
         for par_id in parameter_id_list:
-            if labels.pop(par_id, None) is None:
+            if labels.get(par_id, None) is None:
                 param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
                 par_labels.append(param.latex_str.strip('$'))
             else:

@@ -14,4 +14,4 @@ The three supported modes are as follows:
 Only the modes `"MAP"` and `"MOCK"` find obvious applications in a strong lensing analysis. `"DOC"` is mostly meant for development purposes.
 ```
 
-This [example notebook](https://github.com/aymgal/COOLEST/blob/joss/docs/notebooks/02-generate_template.ipynb) shows how to generate templates files. The resulting files can be retrieved in the different modes: [`"MAP"`](../notebooks/template_dir/coolest_template.json), [`"MOCK"`](../notebooks/template_dir/coolest_template_mock.json), [`"DOC"`](../notebooks/template_dir/coolest_template_doc.json).
+This [example notebook](https://github.com/aymgal/COOLEST/blob/main/docs/notebooks/02-generate_template.ipynb) shows how to generate templates files. The resulting files can be retrieved in the different modes: [`"MAP"`](../notebooks/template_dir/coolest_template.json), [`"MOCK"`](../notebooks/template_dir/coolest_template_mock.json), [`"DOC"`](../notebooks/template_dir/coolest_template_doc.json).
