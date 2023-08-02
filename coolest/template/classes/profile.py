@@ -13,26 +13,50 @@ __all__ = ['Profile' ,'AnalyticalProfile']
 
 
 class Profile(APIBaseObject):
-    """Base class for all mass and light profiles"""
+    """Abstract class for any light or mass profile.
 
-    def __init__(self,
-                 documentation: str, 
-                 parameters: Dict[(str, Parameter)]) -> None:
+    Parameters
+    ----------
+    parameters : Dict[(str, Parameter)]
+        Dictionary of Parameters objects keyed by parameter name.
+    """
+
+    def __init__(self, parameters: Dict[(str, Parameter)]) -> None:
         self.type = self.__class__.__name__  # name of children class
-        self.documentation = documentation
         self.parameters = parameters
         self.id = None
         super().__init__()
 
 
 class AnalyticalProfile(Profile):
+    """Abstract class for an light or mass profile described 
+    by one or several analytical functions.
 
-    def __init__(self,
-                 documentation: str, 
-                 parameters: Dict[(str, Parameter)]) -> None:
-        super().__init__(documentation, parameters=parameters)
+    Parameters
+    ----------
+    parameters : Dict[(str, Parameter)]
+        Dictionary of Parameters objects keyed by parameter name.
+    """
+
+    def __init__(self, parameters: Dict[(str, Parameter)]) -> None:
+        """"""
+        super().__init__(parameters)
         
     def total_num_params(self, include_fixed=False, include_hyper=True):
+        """Compute the number of parameter of the profile.
+
+        Parameters
+        ----------
+        include_fixed : bool, optional
+            Include fixed parameters in the count, by default False
+        include_hyper : bool, optional
+            Include the hyper-parameters in the count, by default True
+
+        Returns
+        -------
+        int
+            Number of parameters
+        """
         count = 0
         for name, parameter in self.parameters.items():
             if isinstance(parameter, (NonLinearParameter, LinearParameter)):

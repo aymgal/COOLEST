@@ -1,4 +1,4 @@
-__author__ = 'aymgal, Giorgos Vernardos'
+__author__ = 'aymgal', 'gvernard'
 
 from typing import Tuple
 import numpy as np
@@ -21,6 +21,20 @@ SUPPORTED_CHOICES = [
 
 
 class Grid(APIBaseObject):
+    """Generic class that represents a grid of coordinates and values.
+
+    Parameters
+    ----------
+    fits_path : str
+        Path to the FITS file in which the values (and perhaps the coordinates)
+        are stored. If meant to be stored within a COOLEST template file, 
+        this should just be the name of the FITS file, placed 
+        in the same directory as the template.
+    check_fits_file : bool, optional
+        If True, creating the object will check that the FITS file exists, by default False
+    fits_file_dir : str, optional
+        Absolute path of the directory containing the FITS file, by default None
+    """
 
     def __init__(self,
                  fits_path: str,
@@ -32,17 +46,51 @@ class Grid(APIBaseObject):
         super().__init__()
 
     def set_grid(self, fits_path, check_fits_file):
+        """Set / replace the FitsFile object associated with the Grid.
+        This is useful to set associate the FITS file after the Grid instance
+        has been created.
+
+        Parameters
+        ----------
+        fits_path : str
+            Path to the FITS file
+        check_fits_file : _type_
+            If True, check the existence of the FITS file at fits_path.
+        """
         if fits_path is not None:
             self.fits_file = FitsFile(fits_path, check_exist=check_fits_file)
 
 
 class PixelatedRegularGrid(Grid):
+    """Class that represents a grid of values defined on a regular, Cartesian grid.
+
+    Parameters
+    ----------
+    fits_path : str
+        Path to the FITS file in which the values (and perhaps the coordinates)
+        are stored. This should be relative to the final COOLEST template file.
+    field_of_view_x : Tuple[float], optional
+        2-tuple holding the extremal coordinates of the coordinates grid 
+        along the x direction (i.e., left side of the leftmost pixel and 
+        rightside of the rightmost pixel), by default (0, 0)
+    field_of_view_y : Tuple[float], optional
+        2-tuple holding the extremal coordinates of the coordinates grid 
+        along the y direction (i.e., bottom side of the lower pixel and 
+        top side of the upper pixel), by default (0, 0)
+    num_pix_x : int, optional
+        Number of pixels along the x direction, by default 0
+    num_pix_y : int, optional
+        Number of pixels along the y direction, by default 0
+    **kwargs_file : dic, optional
+        Any remaining keyword arguments for FitsFile
+    """
     
     def __init__(self, 
                  fits_path: str = None,
                  field_of_view_x: Tuple[float] = (0, 0),
                  field_of_view_y: Tuple[float] = (0, 0),
-                 num_pix_x: int = 0, num_pix_y: int = 0,
+                 num_pix_x: int = 0, 
+                 num_pix_y: int = 0,
                  **kwargs_file) -> None:
         super().__init__(fits_path, **kwargs_file)
         self.set_grid(None, field_of_view_x, field_of_view_y, 
@@ -65,6 +113,12 @@ class PixelatedRegularGrid(Grid):
                  field_of_view_x, field_of_view_y,
                  num_pix_x=0, num_pix_y=0,
                  check_fits_file=True):
+        """Set / replace the FitsFile object associated with the Grid.
+        This is useful to set associate the FITS file after the Grid instance
+        has been created.
+
+        See class constructor for parameter descriptions.
+        """
         super().set_grid(fits_path, check_fits_file)
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
@@ -81,6 +135,13 @@ class PixelatedRegularGrid(Grid):
             self.num_pix_x, self.num_pix_y = num_pix_x, num_pix_y
 
     def read_fits(self):
+        """Read the content of the FITS file and extract the necessary Grid attributes.
+
+        Returns
+        -------
+        field_of_view_x, field_of_view_y, num_pix
+            Field of view and number of pxiels.
+        """
         array, header = self.fits_file.read()
         array_shape = array.shape
         if array_shape != (header['NAXIS1'], header['NAXIS2']):
@@ -88,11 +149,44 @@ class PixelatedRegularGrid(Grid):
         return array_shape
 
     def get_pixels(self, directory=None):
+        """Get the pixel (z) values of the regular grid from the FITS file.
+        If the attribute FITS path is a relative one, it needs the absolute
+        directory to read the FITS file.
+
+        Parameters
+        ----------
+        directory : str, optional
+            Absolute directory of the FITS file, by default None
+
+        Returns
+        -------
+        ndarray
+            2D array of pixel values associated to the regular grid.
+        """
         array, _ = self.fits_file.read(directory=directory)
         return array
 
 
 class IrregularGrid(Grid):
+    """Class that represents an irregular set of values and their coordinates.
+
+    Parameters
+    ----------
+    fits_path : str
+        Path to the FITS file in which the values (and perhaps the coordinates)
+        are stored. This should be relative to the final COOLEST template file.
+    field_of_view_x : Tuple[float], optional
+        2-tuple holding the minimum and maximum values of the x coordinates vector, 
+        by default (0, 0)
+    field_of_view_y : Tuple[float], optional
+         2-tuple holding the minimum and maximum values of the y coordinates vector, 
+        by default (0, 0)
+    num_pix : int, optional
+        Number of coordinates points, by default 0
+    **kwargs_file : dic, optional
+        Any remaining keyword arguments for FitsFile
+    """
+
     def __init__(self, 
                  fits_path: str = None,
                  field_of_view_x: Tuple[float] = (0, 0),
@@ -108,6 +202,12 @@ class IrregularGrid(Grid):
     def set_grid(self, fits_path, 
                  field_of_view_x=(0, 0), field_of_view_y=(0, 0),
                  num_pix=0, check_fits_file=True):
+        """Set / replace the FitsFile object associated with the Grid.
+        This is useful to set associate the FITS file after the Grid instance
+        has been created.
+
+        See class constructor for parameter descriptions.
+        """
         super().set_grid(fits_path, check_fits_file)
         if self.fits_file.exists():
             self.field_of_view_x, self.field_of_view_y, self.num_pix = self.read_fits()
@@ -123,6 +223,13 @@ class IrregularGrid(Grid):
             self.num_pix = num_pix
 
     def read_fits(self):
+        """Read the content of the FITS file and extract the necessary Grid attributes.
+
+        Returns
+        -------
+        field_of_view_x, field_of_view_y, num_pix
+            Field of view and number of pxiels.
+        """
         x, y, z = self.get_xyz()
         num_pix = len(z)
         #assert self.num_pix == len(z), "Given number of grid points does not match the number of .fits table rows!"
@@ -132,6 +239,20 @@ class IrregularGrid(Grid):
         return field_of_view_x, field_of_view_y, num_pix
 
     def get_xyz(self, directory=None):
+        """Get the x, y, z values of the irregular grid from the FITS file.
+        If the attribute FITS path is a relative one, it needs the absolute
+        directory to read the FITS file.
+
+        Parameters
+        ----------
+        directory : str, optional
+            Absolute directory of the FITS file, by default None
+
+        Returns
+        -------
+        ndarray, ndarray, ndarray
+            x, y and z arrays
+        """
         data, _ = self.fits_file.read(directory=directory)
         x = data.field(0)
         y = data.field(1)

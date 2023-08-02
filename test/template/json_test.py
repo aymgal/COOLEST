@@ -11,7 +11,7 @@ from coolest.template.json import JSONSerializer
 
 class TestJSONSerialization(object):
 
-    def setup(self):
+    def setup_method(self):
         self.template_name = 'test'
         self.check_files = True
 
@@ -47,8 +47,8 @@ class TestJSONSerialization(object):
                                                               check_fits_file=self.check_files)
 
         # Defines the external shear
-        ext_shear = ExternalShear('my lovely external shear', lens_1.redshift,
-                                  mass_model=MassModel('ExternalShear'))
+        ext_shear = MassField('my lovely external shear', lens_1.redshift,
+                              mass_model=MassModel('ExternalShear'))
 
         # Put them in a list, which will also create unique IDs for each profile
         entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3)
@@ -95,7 +95,7 @@ class TestJSONSerialization(object):
                                 psf=psf)
 
         # Master object for the standard
-        coolest = COOLEST('MOCK',
+        coolest = COOLEST('MAP',
                           origin,
                           entity_list,
                           observation, 
@@ -115,11 +115,12 @@ class TestJSONSerialization(object):
         # and btw we also instantiate another JSONSerializer as a test
         serializer_2 = JSONSerializer(template_path, obj=None,
                                       check_external_files=self.check_files)
-        coolest_3 = serializer_2.load_simple()
+        coolest_3 = serializer_2.load(skip_jsonpickle=True)
         assert isinstance(coolest_3, COOLEST)
 
         # test that the content of the new json file is *exactly* the same as the original one
-        json_orig = serializer.load_simple(as_object=False)
-        json_new  = serializer_2.load_simple(as_object=False)
+        json_path = serializer.path + '.json'
+        json_orig = serializer.load_simple(json_path, as_object=False)
+        json_new  = serializer_2.load_simple(json_path, as_object=False)
 
         assert json_orig == json_new

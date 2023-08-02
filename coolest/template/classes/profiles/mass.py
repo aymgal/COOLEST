@@ -21,9 +21,19 @@ SUPPORTED_CHOICES = __all__
 
 
 class SIE(AnalyticalProfile):
+    """Singular isothermal ellipsoidal profile.
+
+    This profile is described by the following parameters:
+
+    - 'theta_E': Einstein radius
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+
+    """
     
     def __init__(self):
-        documentation = "Singular isothermal sphere"
         parameters = {
             'theta_E': NonLinearParameter("Einstein radius",
                                           DefinitionRange(min_value=0.0),
@@ -41,13 +51,24 @@ class SIE(AnalyticalProfile):
                                            DefinitionRange(),
                                            latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class NIE(AnalyticalProfile):
+    """Non-singular isothermal ellipsoidal profile.
+
+    This profile is described by the following parameters:
+
+    - 'theta_E': Einstein radius
+    - 'r_core: core radius
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+
+    """
     
     def __init__(self):
-        documentation = "Non-singular isothermal sphere"
         parameters = {
             'theta_E': NonLinearParameter("Einstein radius",
                                DefinitionRange(min_value=0.0),
@@ -68,13 +89,24 @@ class NIE(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class PEMD(AnalyticalProfile):
+    """Power-law elliptical mass density profile, 
+    also called the Elliptical Power-law profile (EPL).
+
+    This profile is described by the following parameters:
+
+    - 'gamma': logarithmic radial slope
+    - 'theta_E': Einstein radius
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+    """
     
     def __init__(self):
-        documentation = "Powerlaw elliptical mass distribution"
         parameters = {
             'gamma': NonLinearParameter("Mass density slope at Einstein radius",
                                DefinitionRange(min_value=1.0, max_value=3.0),
@@ -95,13 +127,24 @@ class PEMD(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class SPEMD(AnalyticalProfile):
+    """Softened power-law elliptical mass density profile.
+
+    This profile is described by the following parameters:
+
+    - 'gamma': negative logarithmic radial slope
+    - 'theta_E': Einstein radius
+    - 'r_core': core radius
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+    """
     
     def __init__(self):
-        documentation = "Softened powerlaw elliptical mass distribution"
         parameters = {
             'gamma': NonLinearParameter("Mass density slope at Einstein radius",
                                DefinitionRange(min_value=1.0, max_value=3.0),
@@ -125,20 +168,30 @@ class SPEMD(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class NFW(AnalyticalProfile):
+    """Navarro-Frenk-White mass profile.
+
+    This profile is described by the following parameters:
+
+    - 'r_s': transition radis from logarithmic radial slope -1 to -3 
+    - 'rho_c': characteristic mass density
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+    """
     
     def __init__(self):
-        documentation = "NFW with ellipticity introduced in the mass"
         parameters = {
             'r_s': NonLinearParameter("Radius at which the mass density profile slope transitions from -1 to -3",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$r_{\rm s}$"),
-            'rho_0': NonLinearParameter("Characteristic mass density",
+            'rho_c': NonLinearParameter("Characteristic mass density",
                                DefinitionRange(min_value=0.0),
-                               latex_str=r"$\rho_0$"),
+                               latex_str=r"$\rho_c$"),
             'q': NonLinearParameter("Axis ratio, semi-minor axis / semi-major axis",
                                      DefinitionRange(min_value=0.0, max_value=1.0),
                                      latex_str=r"$q$"),
@@ -152,14 +205,25 @@ class NFW(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class Chameleon(AnalyticalProfile):
+    """'Chameleon' mass profile defined as the difference between 
+    two concentric NIE profiles.
+
+    This profile is described by the following parameters:
+    
+    - 'b': normalization of the profile
+    - 's_c': core radius of the innver NIE
+    - 's_t': core radius of the outer NIE
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+    """
     
     def __init__(self):
-        documentation = ("Chameleon profile defined as the difference between two NIE profiles"
-                       " (elliptical truncated double isothermal profile)")
         parameters = {
             'b': NonLinearParameter("Normalization of the profile",
                                DefinitionRange(min_value=0.0),
@@ -183,13 +247,19 @@ class Chameleon(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class ExternalShear(AnalyticalProfile):
+    """External shear defined with a strength and orientation.
+    
+    This profile is described by the following parameters:
+
+    - 'gamma_ext': strength of the shear field
+    - 'phi_ext': orientation of the shear field
+    """
     
     def __init__(self):
-        documentation = "External shear defined with a strength and orientation"
         parameters = {
             'gamma_ext': NonLinearParameter("Strength of external shear",
                                DefinitionRange(min_value=0., max_value=1.0),
@@ -198,14 +268,19 @@ class ExternalShear(AnalyticalProfile):
                                DefinitionRange(min_value=-90., max_value=90.),
                                latex_str=r"$\phi_{\rm ext}$"),
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class PixelatedRegularGridPotential(Profile):
+    """Lens potential defined on a grid of regular pixels.
+
+    This profile is described by the following parameters:
+
+    - 'pixels': 2D array of pixel values
+    """
 
     def __init__(self):
-        documentation = "A pixelated profile defined on a regular Cartesian grid"
         parameters = {
             'pixels': PixelatedRegularGridParameter("Pixel values")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)

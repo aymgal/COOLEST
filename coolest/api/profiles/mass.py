@@ -11,6 +11,13 @@ from coolest.api.profiles import util
 
 
 class BaseMassProfile(object):
+    """Base class to define a mass profile to compute lensing quantities.
+    Each specific class must be consistent with the equivalent class from the
+    coolest.template submodule.
+
+    NOTE: in the future, a new coolest.profiles submodule will merge
+    profile definitions that are currently split between coolest.template and coolest.api. 
+    """
 
     _template_class = None
 
@@ -49,7 +56,7 @@ class PEMD(BaseMassProfile):
 
     """
     Power-law Elliptical Mass Distribution (a.k.a. Elliptical Power-law)
-    Implementations from lenstronomy (Birrer et al.) and Tessore et al. 2015 were used.
+    This follows implementations in lenstronomy (:cite:t:`lenstronomy2018`:, :cite:t:`lenstronomy2021`:) based on the formulae :cite:p:`Tessore2015`:.
     """
 
     # TODO: use parameter values (point estimates, prior, etc...) contained in the template?

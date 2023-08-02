@@ -7,9 +7,15 @@ from coolest.template.classes.base import APIBaseObject
 
 
 class CoordinatesOrigin(APIBaseObject):
-    """
-    Defines the origin of the coordinate system, given in RA-Dec.
+    """Defines the origin of the coordinate system, given in RA-Dec.
     That origin is then assumed to lie at the center of a data pixel.
+
+    Parameters
+    ----------
+    ra : str, optional
+        Right ascension (hms format), by default '0h0m0.0s'
+    dec : str, optional
+        Declination (dms format), by default '0d0m0.0s'
     """
 
     def __init__(self, 

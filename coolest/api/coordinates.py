@@ -8,12 +8,31 @@ from coolest.api import util
 
 
 class Coordinates(object):
+    """Object that holds the grid of pixel coordinates and provides
+    conversions between coordinates in pixel units ('i', 'j') 
+    and physical ('x', 'y', in arcseconds) units.
 
-    def __init__(self, nx, ny, matrix_pixel_to_radec, ra_at_xy_0, dec_at_xy_0):
-        self._matrix_pix2ang = matrix_pixel_to_radec
+    Parameters
+    ----------
+    nx : int
+        Number of pixels along the x axis
+    ny : int
+        Number of pixels along the y axis
+    matrix_ij_to_xy : 2x2 ndarray
+        Matrix such that when multiplied to vector of coordinates in pixel
+        units, it returns the vector in physical units.
+        Note that it should be diagonal according to COOLEST conventions.
+    x_at_ij_0 : physical
+        x-coordinate of the pixel with index (0, 0)
+    y_at_ij_0 : _type_
+        y-coordinate of the pixel with index (0, 0)
+    """
+
+    def __init__(self, nx, ny, matrix_ij_to_xy, x_at_ij_0, y_at_ij_0):
+        self._matrix_pix2ang = matrix_ij_to_xy
         self._matrix_ang2pix = np.linalg.inv(self._matrix_pix2ang)
-        self._ra_at_xy_0 = ra_at_xy_0
-        self._dec_at_xy_0 = dec_at_xy_0
+        self._ra_at_xy_0 = x_at_ij_0
+        self._dec_at_xy_0 = y_at_ij_0
         self._x_at_radec_0, self._y_at_radec_0 \
             = self.map_coord(-self._ra_at_xy_0, -self._dec_at_xy_0, 
                              0, 0, self._matrix_ang2pix)
@@ -97,14 +116,14 @@ class Coordinates(object):
         return self.map_coord(x, y, self._ra_at_xy_0, self._dec_at_xy_0, self._matrix_pix2ang)
 
     @staticmethod
-    def grid_from_coordinate_transform(nx, ny, Mpix2coord, ra_at_xy_0, dec_at_xy_0):
+    def grid_from_coordinate_transform(nx, ny, Mpix2coord, x_at_ij_0, y_at_ij_0):
         a = np.arange(nx)
         b = np.arange(ny)
         matrix = np.dstack(np.meshgrid(a, b)).reshape(-1, 2)
         x_grid = matrix[:, 0]
         y_grid = matrix[:, 1]
-        ra_grid = x_grid * Mpix2coord[0, 0] + y_grid * Mpix2coord[0, 1] + ra_at_xy_0
-        dec_grid = x_grid * Mpix2coord[1, 0] + y_grid * Mpix2coord[1, 1] + dec_at_xy_0
+        ra_grid = x_grid * Mpix2coord[0, 0] + y_grid * Mpix2coord[0, 1] + x_at_ij_0
+        dec_grid = x_grid * Mpix2coord[1, 0] + y_grid * Mpix2coord[1, 1] + y_at_ij_0
         return ra_grid, dec_grid
 
     def coordinate_grid_1d(self, nx, ny):
@@ -119,6 +138,23 @@ class Coordinates(object):
 
     def create_new_coordinates(self, pixel_scale_factor=None, 
                                grid_center=None, grid_shape=None):
+        """Based on the current coordinates, creates a sub-coordinates system
+        potentially shifted, with a different pixel size and field-of-view.
+
+        Parameters
+        ----------
+        pixel_scale_factor : float, optional
+            Ratio between the new pixel size and the original pixel size, by default None
+        grid_center : (float, float), optional
+            x and y center coordinates of the new coordinates grid, by default None
+        grid_shape : (float, float), optional
+            Width and height (in arcsec) of the new coordinates grid, by default None
+
+        Returns
+        -------
+        Coordinates
+            New instance of a Coordinates object
+        """
         unchanged_count = 0
         if grid_center is None or grid_center == self.center:
             grid_center_ = self.center
@@ -150,6 +186,6 @@ class Coordinates(object):
 
         cx, cy = int(nx / 2), int(ny / 2)
         cra, cdec = matrix_pix2ang.dot(np.array([cx, cy]))
-        ra_at_xy_0, dec_at_xy_0 = - cra + center_x, - cdec + center_y
+        x_at_ij_0, y_at_ij_0 = - cra + center_x, - cdec + center_y
 
-        return Coordinates(nx, ny, matrix_pix2ang, ra_at_xy_0, dec_at_xy_0)
+        return Coordinates(nx, ny, matrix_pix2ang, x_at_ij_0, y_at_ij_0)

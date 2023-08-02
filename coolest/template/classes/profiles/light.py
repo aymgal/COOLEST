@@ -23,9 +23,20 @@ SUPPORTED_CHOICES = __all__
 
 
 class Sersic(AnalyticalProfile):
+    """Surface brightness described by an elliptical Sérsic profile.
+
+    This profile is described by the following parameters:
+    
+    - 'I_eff': amplitude at the effective radius
+    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius
+    - 'n': Sersic index
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+    """
     
     def __init__(self):
-        documentation = "Elliptical Sersic"
         parameters = {
             'I_eff': LinearParameter("Amplitude at the Sersic radius",
                             DefinitionRange(min_value=0.0),
@@ -49,14 +60,25 @@ class Sersic(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class Chameleon(AnalyticalProfile):
+    """Surface brightness described by an elliptical Chameleon profile,
+    defined as the difference between two NIE profiles.
+
+    This profile is described by the following parameters:
+    
+    - 'A': normalization of the profile
+    - 's_c': core radius of the innver NIE
+    - 's_t': core radius of the outer NIE
+    - 'q': axis ratio (semi-major axis / semi-minor axis)
+    - 'phi': position angle
+    - 'center_x': position along the x coordinate
+    - 'center_y': position along the y coordinate
+    """
     
     def __init__(self):
-        documentation = ("Chameleon profile defined as the difference between two NIE profiles"
-                       " (elliptical truncated double isothermal profile)")
         parameters = {
             'A': LinearParameter("Normalization of the profile",
                             DefinitionRange(min_value=0.0),
@@ -80,10 +102,12 @@ class Chameleon(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class Shapelets(AnalyticalProfile):
+    """Surface brightness described by a shapelet basis set.
+    """
     
     def __init__(self):
         documentation = "Set of shapelet functions"
@@ -104,10 +128,18 @@ class Shapelets(AnalyticalProfile):
                                DefinitionRange(),
                                latex_str=r"$A$"),
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
         
 class LensedPS(AnalyticalProfile):
+    """Surface brightness of a set of point sources after being lensed. 
+
+    This profile is described by the following parameters:
+    
+    - 'ra_list': list of coordinates along the x axis
+    - 'dec_list': list of coordinates along the y axis
+    - 'amps': list of amplitudes
+    """
 
     def __init__(self):
         documentation = "Set of lensed point sources"
@@ -122,10 +154,16 @@ class LensedPS(AnalyticalProfile):
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$A$"),
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class Uniform(AnalyticalProfile):
+    """Uniform surface brightness profile.
+
+    This profile is described by the following parameters:
+    
+    - 'A': amplitude
+    """
     
     def __init__(self):
         documentation = "Uniform sheet of light"
@@ -134,24 +172,34 @@ class Uniform(AnalyticalProfile):
                             DefinitionRange(min_value=0.0),
                             latex_str=r"$A$"),
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class PixelatedRegularGrid(Profile):
+    """Surface brightness described on a regular grid of pixels.
+
+    This profile is described by the following parameters:
+    
+    - 'pixels': 2D array of pixel values
+    """
 
     def __init__(self):
-        documentation = "A pixelated profile defined on a regular Cartesian grid"
         parameters = {
             'pixels': PixelatedRegularGridParameter("Pixel values")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)
 
 
 class IrregularGrid(Profile):
+    """Surface brightness described on an irregular grid of pixels.
+
+    This profile is described by the following parameters:
+    
+    - 'pixels': set of 2D coordinates and associated pixel values (x, y, z)
+    """
 
     def __init__(self):
-        documentation = "A pixelated profile defined on a irregular grid of points"
         parameters = {
             'pixels': IrregularGridParameter("Pixel positions and values")
         }
-        super().__init__(documentation, parameters)
+        super().__init__(parameters)

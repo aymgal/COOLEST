@@ -137,3 +137,5 @@ dmypy.json
 *.sublime-workspace
 
 mytests
+docs_deposit
+docs/notebooks/database/vkl_paper_*/data

@@ -1,0 +1,11 @@
+g 0 0.095
+phi 30 55
+dum0_b 0.8 1
+dum0_q 0.7 0.999
+dum0_pa -60 -20
+dum0_x0 -0.1 0.1
+dum0_y0 -0.1 0.1
+lambda_s 0.0001 1000
+sdev_s 0.04 1
+lambda_dpsi 0.0001 1e+06
+sdev_dpsi 0.04 1

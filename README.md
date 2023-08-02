@@ -1,42 +1,73 @@
+<img src="docs/_static/coolest_logo.png#gh-light-mode-only" width="200" alt="COOLEST logo" />
+<img src="docs/_static/coolest_logo_dark_bg.png#gh-dark-mode-only" width="200" alt="COOLEST logo" />
+
 # COOLEST: COde-independent Organized LEns STandard
 
 ![License](https://img.shields.io/github/license/aymgal/COOLEST)
 ![PyPi python support](https://img.shields.io/badge/Python-3.7-blue)
+[![Documentation Status](https://readthedocs.org/projects/coolest/badge/?version=latest)](https://coolest.readthedocs.io/en/latest/?badge=latest)
 [![Tests](https://github.com/aymgal/COOLEST/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/aymgal/COOLEST/actions/workflows/python-package.yml)
 [![Coverage Status](https://coveralls.io/repos/github/aymgal/COOLEST/badge.svg)](https://coveralls.io/github/aymgal/COOLEST)
 
 
-## A standard for gravitational lens modeling
+## What is COOLEST?
 
-After a lens modeling analysis is published and available as a manuscript, it is often challenging to **(1) reproduce the results** with the same or another similar modeling software, or **(2) start a new analysis** directly based on published results, **(3) reliably and quantitatively compare results** from different analyses. Moreover, there is currently no practical way to share and store lens models within the community.
+COOLEST is a standard that proposes to define a set of conventions to be shared across the strong lensing community, in order to consistently store, share and improve lens modeling analyses. In short, this project provides tools to manipulate lens models as a single, human-readable JSON template file alongside Python routines for visualizing and comparing lens models possibly obtained from different modeling codes.
 
-The **COde-independent Organized LEns STandard (COOLEST)** proposes a solution to the above problems. COOLEST is a standard for **describing, storing and sharing lens models** more easily, independently of the specific modeling techniques and software packages. The main element of COOLEST is a unique JSON hierarchical template file, that stores in a human-readable way the necessary lens model data. Another key element is a suit of visualization tools that automatically produces a series of images, plots and other analysis products from a COOLEST file.
+For more information and the full list of COOLEST features, refer to the [online documentation](https://coolest.readthedocs.io/en/latest/).
 
-Currently, this repository hosts a Python API to __generate__, __manipulate__ and __update__ COOLEST files. The API structure exactly mirrors the hierarchy of the template file. Visualization and analysis classes will soon be added.
+## Components of the standard
 
-Ultimately, the goal is that modeling software packages each have an interface (a simple function) that converts code-specific model choices and parameter values to COOLEST conventions. This way, all lens modeling results---best-fit parameter values, posterior distributions---can be saved effortlessly to this standard, ready to be shared and used for further analyses.
+COOLEST is composed of three distinct building blocks:
+
+- __A set of [conventions](docs/conventions.md)__: reference point for all modelling assumptions and codes, which includes coordinate systems, units and profile definitions used when manipulating the lens models stored in the template file;
+
+- __Template file system__ ([`coolest.template`](coolest/template/)): a Python interface to create, store and manipulate COOLEST template files (JSON format) and linked external files (such as FITS files for data products);
+
+- __Analysis & plotting__ ([`coolest.api`](coolest/template/)): a Python interface to compute key lensing quantities and generate publication-ready lens model plots.
+
+## Examples
+
+See the [`example notebooks`](docs/notebooks) directory to generate and manipulate typical JSON template files describing lens models. Below is an example of plot generated using the `coolest.api` submodule.
+
+![Example lens model comparison using the COOLEST plotting and analysis capabilities](joss/coolest_plot_example.png)
+
+## Installation of the Python package
+
+The easiest way to install the `coolest` Python package is via the `pip` installer:
+```bash
+# clone the latest version
+git clone https://github.com/aymgal/COOLEST.git
+
+# Move to the repo directly
+cd COOLEST
+
+# Now is a good idea to activate your virtual environment if needed
+```
+
+Then you can install the `coolest` package. If you wish to modify or contribute to the source code, do not forget to use the `-e` option in the commands below to install it in development mode. For installing the package without optional dependencies, use the following command:
+```bash
+# install coolest and required dependencies
+pip install [-e] .
+```
+For installing the package with all optional dependencies, use the following command:
+```bash
+# also install optional dependencies
+pip install [-e] ".[opt]"
+```
+
+You can test the installation by running `python -c "import coolest"` in the terminal, or by running some of the example notebooks from the [documentation](docs/notebooks) directory. Moreover, you can run all unit tests (having `pytest` installed in your environment), with the command `pytest test`.
+
+_There will be soon the possibility to install_ `coolest` _directly from PyPi and Conda._
 
 
+## Contributing to the COOLEST standard
 
-## Adopted conventions
-
-COOLEST defines a set of fixed conventions to define coordinate systems, model parameters such as ellipticities, and how data files are stored/linked to the template. Here is a subset of those conventions:
-
-- **Units**:
-    - Lengths, radii, angular positions, widths, heights are expressed in arcseconds
-    - Position angles and orientations of elliptical profiles are defined in the interval (-90, +90] degrees
-
-- **Coordinate system**:
-    - Standard cartesian coordinate system: RA decreasing along *x*, Dec increasing along *y*
-    - The origin is a unique (absolute) sky coordinate (RA, Dec)
-    - Position angles defined counter-clockwise from positive *y* axis (i.e. East-of-North). For elliptical profiles, the angle is measured based on the major-axis of the ellipse.
-
-- **Standard quantities**:
-    - effective radii (e.g. Einstein radius, half-light radius) are expressed along the intermediate axis, as the product average of semi-major and semi-minor axis, i.e. _r_ = sqrt(_ab_)
-
-_**The full list of conventions will soon be uploaded on this repository.**_
+We encourage and highly value All types of feedback, feature proposals and contributions from the whole lensing community. Please have a look at [CONTRIBUTING.md](CONTRIBUTING.md) for more information about contributing to the project.
 
 
-## Overview of the JSON template hierarchy
+## Original contributors
 
-![API Hierarchy](images/api_stacked_hierarchy.png "API Hierarchy")
+The full list of contributors is given in [AUTHORS.md](AUTHORS.md).
+
+As this is an open source project, we very much appreciate any feedback and new contributions from the community. The goal is really to improve the standard so that most of the research using strong lens modeling can benefit from it.

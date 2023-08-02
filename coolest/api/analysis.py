@@ -1,4 +1,4 @@
-__author__ = 'aymgal'
+__author__ = 'aymgal', 'mattgomer', 'gvernard'
 
 import numpy as np
 from astropy.coordinates import SkyCoord
@@ -9,8 +9,23 @@ from coolest.api import util
 
 
 class Analysis(object):
-    """
-    Handles computation of model-independent quantities and other analysis computations
+    """Handles computation of model-independent quantities 
+    and other analysis computations.
+    
+    NOTE: Except for methods that do have a `coordinates` keyword argument,
+    the grid used to performed the computations will always be the one corresponding
+    to the instrument / observation field-of-view, with resolution controlled by the
+    `supersampling` keyword argument below.
+
+    Parameters
+    ----------
+    coolest_object : COOLEST
+        COOLEST instance
+    coolest_directory : str
+        Directory which contains the COOLEST template and other data files
+    supersampling : int, optional
+        Supersampling factor (relative to the instrument pixel size)
+        that defines the grid on which computations are performed, by default 1.
     """
 
     def __init__(self, coolest_object, coolest_directory, supersampling=1):
@@ -23,16 +38,33 @@ class Analysis(object):
             self.coordinates = base_coordinates
 
     def effective_einstein_radius(self, center=None, initial_guess=1, initial_delta_pix=10, 
-                                  n_iter=5, return_accuracy=False, **kwargs_selection):
-        """
-        Calculates Einstein radius for a kappa grid starting from an initial guess with large step size and zeroing in from there.
+                                  n_iter=5, return_accuracy=False, max_loopcount=100, 
+                                  **kwargs_selection):
+        """Calculates Einstein radius for a kappa grid starting from an initial guess with large step size and zeroing in from there.
         Uses the grid from the create_kappa_image which is built from the coolest file.
 
-        :param center: (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image
-        :param initial_guess: initial guess for Einstein radius, default = 1
-        :param initial_delta_pix: initial step size before shrinking in future iterations, default = 10 pixels
-        :param n_iter: int; number of iterations, default = 5
-        :param return_accuracy: bool; if True, return estimate of accuracy as well as R_Ein value
+        Parameters
+        ----------
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image, by default None
+        initial_guess : int, optional
+            initial guess for Einstein radius, by default 1
+        initial_delta_pix : int, optional
+            initial step size before shrinking in future iterations, by default 10
+        n_iter : int, optional
+            number of iterations, by default 5
+        return_accuracy : bool, optional
+            if True, return estimate of accuracy as well as R_Ein value, by default False
+
+        Returns
+        -------
+        float, or (float, float) if return_accuracy is True
+            Effective Einstein radius
+
+        Raises
+        ------
+        Warning
+            If the algorithm is running for more than 100 loops.
         """
         if kwargs_selection is None:
             kwargs_selection = {}
@@ -41,6 +73,10 @@ class Analysis(object):
         # get an image of the convergence
         x, y = self.coordinates.pixel_coordinates
         kappa_image = mass_model.evaluate_convergence(x, y)
+
+        # import matplotlib.pyplot as plt
+        # plt.imshow(np.log10(kappa_image))
+        # plt.show()
 
         # select a center
         if center is None:
@@ -56,7 +92,7 @@ class Analysis(object):
             if r_Ein==np.nan: #return nan if given nan (needed when I put this in a loop below)
                 return np.nan, np.nan, 0, runningtotal, total_pix
             while (runningtotal-total_pix)*direction>0:
-                if loopcount > 100:
+                if loopcount > max_loopcount:
                     raise Warning('Stuck in very long (possibly infinite) loop')
                     break
                 if direction > 0:
@@ -119,12 +155,20 @@ class Analysis(object):
         else:
             return r_Ein
 
-    def kappa_1d_profile(self, center=None, r_vec=np.linspace(0,10,100),**kwargs_selection):
-        """
-        Calculates 1D profile using the kappa grid.
+    def kappa_1d_profile(self, center=None, r_vec=np.linspace(0, 10, 100),**kwargs_selection):
+        """Calculates 1D profile using the kappa grid.
 
-        :param center: (x, y)-coordinates of the center from which to calculate; if None, use the value from create_kappa_image
-        :param r_vec: range of radii over which to calculate the 1D profile
+        Parameters
+        ----------
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate; if None, use the value from , by default None
+        r_vec : _type_, optional
+            range of radii over which to calculate the 1D profile, by default np.linspace(0, 10, 100)
+
+        Returns
+        -------
+        (array, array)
+            kappa values and associated radius values
         """
         if kwargs_selection is None:
             kwargs_selection = {}
@@ -146,18 +190,23 @@ class Analysis(object):
             kappa_profile[r_i]=np.mean(kappa_image[in_radial_bin])
         return kappa_profile, r_vec
 
-    def effective_radial_slope(self, r_eval=None, center=None, r_vec=np.linspace(0,10,100),**kwargs_selection):
-        """
-        Numerically calculates slope of the kappa profile. Because this is defined on a grid, it is not as accurate or robust as
-        an analytical calculation. 
+    def effective_radial_slope(self, r_eval=None, center=None, r_vec=np.linspace(0, 10, 100),**kwargs_selection):
+        """Numerically calculates slope of the kappa profile. Because this is defined on a grid, it is not as accurate or robust as an analytical calculation. 
 
-        :param r_eval: float, radius at which to return a single value of the slope (e.g. Einstein radius). 
-                        If None (default), returns slope for all values in r_vec
-        :param center: (x, y)-coordinates of the center from which to calculate; if None, use the value from create_kappa_image
-        :param r_vec: range of radii over which to calculate the 1D profile
-        
+        Parameters
+        ----------
+        r_eval : float, optional
+            radius at which to return a single value of the slope (e.g. Einstein radius). If None (default), returns slope for all values in r_vec, by default None
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate; if None, use the value from create_kappa_image, by default None
+        r_vec : array-like, optional
+            range of radii over which to calculate the 1D profile, by default np.linspace(0, 10, 100)
+
+        Returns
+        -------
+        float
+            Effective slope
         """
-        
         kappa_profile, r_vec =self.kappa_1d_profile(center=center, r_vec=r_vec, **kwargs_selection)
         rise=np.log10(kappa_profile[:-1])-np.log10(kappa_profile[1:])
         run=np.log10(r_vec[:-1])-np.log10(r_vec[1:])
@@ -167,26 +216,54 @@ class Analysis(object):
         else:
             closest_r = self.find_nearest(r_vec,r_eval) #just takes closest r. Could rebuild it to interpolate.
             return slope[r_vec==closest_r]
-            
-    def half_light_radius(self, outer_radius=10, center=None, initial_guess=1, initial_delta_pix=10, 
-                                  n_iter=5,**kwargs_selection):
-        """
-        Numerically calculates effective radius from pixelated surface brightness, using outer_radius as the limit of integration.
-        Not strictly equivalent to effective radius unless outer radius is infinite, which would require an infinite grid and cannot be done with pixelated profiles
+
         
-        :param outer_radius: outer limit of integration within which half the light is calculated to estimate the effective radius
-        :param center: (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image
-        :param initial_guess: initial guess for effective radius, default = 1
-        :param initial_delta_pix: initial step size before shrinking in future iterations, default = 10 pixels
-        :param n_iter: int; number of iterations, default = 5
+    def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
+                               initial_guess=1, initial_delta_pix=10, 
+                               n_iter=10, **kwargs_selection):
+        """Computes the effective radius of the 2D surface brightness profile, 
+        based on a definition similar to the half-light radius.
+
+        Parameters
+        ----------
+        outer_radius : int, optional
+            outer limit of integration within which half the light is calculated to estimate the effective radius, by default 10
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image, by default None
+        coordinates : Coordinates, optional
+            Instance of a Coordinates object to be used for the computation.
+            If None, will use an instance based on the Instrument, by default None
+        initial_guess : int, optional
+            initial guess for effective radius, by default 1
+        initial_delta_pix : int, optional
+            initial step size before shrinking in future iterations, by default 10
+        n_iter : int, optional
+            number of iterations, by default 5
+
+        Returns
+        -------
+        float
+            Effective radius
+
+        Raises
+        ------
+        Warning
+            If integration loop exceeds outer bound before convergence.
         """
-        
         if kwargs_selection is None:
             kwargs_selection = {}
         light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
         # get an image of the convergence
-        x, y = self.coordinates.pixel_coordinates
+        if coordinates is None:
+            x, y = self.coordinates.pixel_coordinates
+        else:
+            x, y = coordinates.pixel_coordinates
         light_image = light_model.evaluate_surface_brightness(x, y)
+        light_image[np.isnan(light_image)] = 0.
+
+        # import matplotlib.pyplot as plt
+        # plt.imshow(np.log10(light_image))
+        # plt.show()
 
         # select a center
         if center is None:
@@ -240,3 +317,106 @@ class Analysis(object):
         array = np.asarray(array)
         idx = (np.abs(array - value)).argmin()
         return array[idx]
+    
+
+    def two_point_correlation(self, Nbins=100, rmax=None, normalize=False, 
+                              use_profile_coordinates=True, coordinates=None, 
+                              **kwargs_selection):
+        """
+        The two point correlation function can be obtained from the covariance matrix of an image and the distances between its pixels.
+        By binning the covariance matrix entries in distance (or radial) bins, one can obtain the 1D correlation function.
+        There are two ways to obtain the covariance matrix:
+        1) it is equivalent to the inverse Fourier transform of the power spectrum, and
+        2) by calculating explicitly the covariance between any two pixels
+        Here we use the first way.
+
+        Parameters
+        ----------
+        Nbins : int, optional
+            The number of radial bins to use for converting the 2D covariance matrix into a 1D correlation function.
+        rmax : float, optional
+            A value for the maximum extent of the radial bins. If none is given then it is equal to half the diagonal of the provided image.
+        normalize : bool, optional
+            Normalize the given image by its maximum. Defualt is false.
+        coordinates : Coordinates, optional
+            Instance of a Coordinates object to be used for the computation.
+            If None, will use an instance based on the Instrument, by default None
+        use_profile_coordinates : bool, optional
+            If True and `coordinates=None`, uses the coordinates attached to the light profile, if available. Default is True.
+
+        Returns
+        -------
+        (array, array, array)
+            The location, value, and uncertainty of the 1D bins of the two-point correlation function.
+            The location (radius/distance) is in the same units as the coordinates.
+        """
+        if kwargs_selection is None:
+            kwargs_selection = {}
+        if coordinates is None:
+            coordinates = self.coordinates
+
+        light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
+
+        if use_profile_coordinates is True and coordinates is None:
+            light_image, _, coordinates = light_model.surface_brightness(return_extra=True)
+            if coordinates is None:
+                # can be known if e.g. the underlying light profile is not pixelated
+                raise ValueError("Light profile does not have any coordinates grid attached to it.")
+        else:
+            if coordinates is None:
+                coordinates = self.coordinates
+            x, y = coordinates.pixel_coordinates
+            light_image = light_model.evaluate_surface_brightness(x, y)
+        
+        light_image = np.nan_to_num(light_image, nan=0.)
+        extent = coordinates.extent
+        dpix = coordinates.pixel_size
+        
+        if rmax is None:
+            rmax = math.hypot(extent[0]-extent[1],extent[2]-extent[3])/2.0
+
+        if normalize:
+            max_image = np.amax(light_image)
+            light_image = np.divide(light_image,max_image)
+
+        # Fourier transform image
+        fouriertf = np.fft.fft2(light_image,norm="ortho")
+        # Power spectrum (the square of the signal)
+        absval2 = fouriertf.real**2 + fouriertf.imag**2
+        # Covariance matrix (the inverse fourier transform of the power spectrum)
+        complex_cov = np.fft.fftshift(np.fft.ifft2(absval2,norm="ortho"))
+        cov = complex_cov.real
+
+        ## Write the covariance matrix
+        #newhdu = fits.PrimaryHDU(corr)
+        #newhdu.writeto('matrix_strue.fits',overwrite=True)
+
+        
+        # Bin the 2D covariance matrix into radial bins
+        rmin = 0.0
+        dr = (rmax-rmin)/Nbins
+        bins = np.arange(rmin,rmax,dr)
+        vals = []
+        for i in range(0,len(bins)):
+            vals.append( [] )
+
+        # Ni = Nj = the total number of pixels in the image
+        Ni = cov.shape[1]
+        Nj = cov.shape[0]
+        for i in range(0,Ni):
+            for j in range(0,Nj):
+                r = math.hypot((j-Nj/2.0)*dpix,(i-Ni/2.0)*dpix)
+                if r < rmax and i != j:
+                    index = int(math.floor(r/dr))
+                    vals[index].append(cov[i][j])
+                    
+        means = np.zeros(len(bins))                    
+        sdevs = np.zeros(len(bins))
+        for i in range(0,len(bins)):
+            if len(vals[i]) > 0:
+                means[i] = np.mean(vals[i])
+                sdevs[i] = np.std(vals[i])
+
+        return bins,means,sdevs
+
+    

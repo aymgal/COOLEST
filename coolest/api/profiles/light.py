@@ -73,7 +73,10 @@ class Sersic(BaseLightProfile):
 
 class Shapelets(BaseLightProfile):
 
-    """Elliptical Sersic"""
+    """Elliptical Sersic
+    
+    The implementation uses functions from `lenstronomy` (:cite:t:`lenstronomy2018`, :cite:t:`lenstronomy2021`), based on the developments of :cite:t:`Refregier2003`.
+    """
 
     _units = 'flux_per_ang'
     _template_class = TemplateShapelets()

@@ -10,8 +10,8 @@ from coolest.template.classes.observation import Observation
 from coolest.template.classes.coordinates import CoordinatesOrigin
 from coolest.template.classes.cosmology import Cosmology
 from coolest.template.classes.galaxy import Galaxy
-from coolest.template.classes.external_shear import ExternalShear
+from coolest.template.classes.mass_field import MassField
 from coolest.template.classes.lensing_entity_list import LensingEntityList
 from coolest.template.classes.mass_light_model import MassModel, LightModel
-from coolest.template.classes.regularization_list import RegularizationList
-from coolest.template.classes.likelihood_list import LikelihoodList
+from coolest.template.classes.probabilities import Prior, PosteriorStatistics
+

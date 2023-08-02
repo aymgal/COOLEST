@@ -1,0 +1,28 @@
+{
+    "standard": "COOLEST",
+    "meta": {},
+    "mode": "MAP",
+    "coordinates_origin": {
+	"dec": "+00d00m00s",
+	"ra": "00h00m00s"
+    },
+    "cosmology": {
+	"H0": 73.0,
+	"Om0": 0.3,
+	"astropy_name": "FlatLambdaCDM"
+    },
+    "instrument": {
+	"band": "F814W",
+	"name": "HST-WFPC2",
+	"readout_noise": 6,
+	"psf":{
+	    "description": "Some PSF",
+	    "type": "PixelatedPSF"
+	}
+    },
+    "observation": {
+	"exposure_time": 2400,
+	"mag_sky_brightness": 22.8,
+	"mag_zero_point": 22.19,
+    }
+}

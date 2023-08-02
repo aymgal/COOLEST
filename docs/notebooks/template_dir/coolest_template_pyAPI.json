@@ -1,0 +1,1162 @@
+{
+  "py/object": "coolest.template.standard.COOLEST",
+  "mode": "MAP",
+  "coordinates_origin": {
+    "py/object": "coolest.template.classes.coordinates.CoordinatesOrigin",
+    "ra": "00h11m20.244s",
+    "dec": "-08d45m51.48s",
+    "documentation": "Defines the origin of the coordinate system, given in RA-Dec.\n    That origin is then assumed to lie at the center of a data pixel.\n\n    Parameters\n    ----------\n    ra : str, optional\n        Right ascension (hms format), by default '0h0m0.0s'\n    dec : str, optional\n        Declination (dms format), by default '0d0m0.0s'"
+  },
+  "lensing_entities": {
+    "py/object": "coolest.template.classes.lensing_entity_list.LensingEntityList",
+    "documentation": "The list of components that define the lensing system.\n    In COOLEST, a `LensingEntity` is an instance Galaxy or a MassField.\n\n    Note that unique identifiers (IDs) for each profile and parameters will be \n    generated at instantiation time.\n\n    - A given profile has a unique IDs with the following pattern:\n\n    `{entity index}-{{massfield} or {galaxy}}-{{mass} or {light}}-{profile index}_{profile name}`\n\n    - A given parameter has the same ID as above, just with the parameter name at the end:\n\n    `{entity index}-{{massfield} or {galaxy}}-{{mass} or {light}}-{profile index}_{profile name}-{parameter name}`\n\n    Parameters\n    ----------\n    *entities : LensingEntity instances\n        As many LensingEntity instances as required",
+    "py/seq": [
+      {
+        "py/object": "coolest.template.classes.mass_field.MassField",
+        "type": "MassField",
+        "name": "my lovely external shear",
+        "redshift": 0.5,
+        "mass_model": {
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
+          "py/seq": [
+            {
+              "py/object": "coolest.template.classes.profiles.mass.ExternalShear",
+              "type": "ExternalShear",
+              "parameters": {
+                "gamma_ext": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Strength of external shear",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": 1.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": 0.07
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$\\gamma_{\\rm ext}$",
+                  "id": "0-massfield-mass-0-ExternalShear-gamma_ext"
+                },
+                "phi_ext": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Orientation of external shear",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": -90.0,
+                    "max_value": 90.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$\\phi_{\\rm ext}$",
+                  "id": "0-massfield-mass-0-ExternalShear-phi_ext"
+                }
+              },
+              "id": "0-massfield-mass-0-ExternalShear",
+              "documentation": "External shear defined with a strength and orientation.\n    \n    This profile is described by the following parameters:\n\n    - 'gamma_ext': strength of the shear field\n    - 'phi_ext': orientation of the shear field"
+            }
+          ]
+        },
+        "documentation": "Generic field of massive objects, for instance an external shear field.\n\n    Parameters\n    ----------\n    name : str\n        Name associated to that shear component.\n    redshift : float\n        Redshift associated to that shear component, if needed.\n    mass_model : MassModel, optional\n        Mass model of the field, by default None"
+      },
+      {
+        "py/object": "coolest.template.classes.galaxy.Galaxy",
+        "type": "Galaxy",
+        "name": "a lens galaxy",
+        "redshift": 0.5,
+        "mass_model": {
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
+          "py/seq": [
+            {
+              "py/object": "coolest.template.classes.profiles.mass.PEMD",
+              "type": "PEMD",
+              "parameters": {
+                "gamma": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Mass density slope at Einstein radius",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 1.0,
+                    "max_value": 3.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.GaussianPrior",
+                    "type": "GaussianPrior",
+                    "mean": 2.0,
+                    "width": 0.2,
+                    "documentation": "Gaussian prior.\n\n    Parameters\n    ----------\n    mean : float, optional\n        Mean value, by default None\n    width : float, optional\n        Width (standard deviation), by default None"
+                  },
+                  "latex_str": "$\\gamma$",
+                  "id": "1-galaxy-mass-0-PEMD-gamma"
+                },
+                "theta_E": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Einstein radius",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$\\theta_{\\rm E}$",
+                  "id": "1-galaxy-mass-0-PEMD-theta_E"
+                },
+                "q": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Axis ratio, semi-minor axis / semi-major axis",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": 1.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$q$",
+                  "id": "1-galaxy-mass-0-PEMD-q"
+                },
+                "phi": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Position angle",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": -90.0,
+                    "max_value": 90.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$\\phi$",
+                  "id": "1-galaxy-mass-0-PEMD-phi"
+                },
+                "center_x": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Profile center along x coordinates",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": null,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$x_0$",
+                  "id": "1-galaxy-mass-0-PEMD-center_x"
+                },
+                "center_y": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Profile center along y coordinates",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": null,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$y_0$",
+                  "id": "1-galaxy-mass-0-PEMD-center_y"
+                }
+              },
+              "id": "1-galaxy-mass-0-PEMD",
+              "documentation": "Power-law elliptical mass density profile, \n    also called the Elliptical Power-law profile (EPL).\n\n    This profile is described by the following parameters:\n\n    - 'gamma': logarithmic radial slope\n    - 'theta_E': Einstein radius\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate"
+            },
+            {
+              "py/object": "coolest.template.classes.profiles.mass.PixelatedRegularGridPotential",
+              "type": "PixelatedRegularGridPotential",
+              "parameters": {
+                "pixels": {
+                  "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
+                  "documentation": "Pixel values",
+                  "fits_file": {
+                    "py/object": "coolest.template.classes.fits_file.FitsFile",
+                    "path": "regul_grid_image.fits",
+                    "_directory": null
+                  },
+                  "field_of_view_x": {
+                    "py/tuple": [
+                      -3.0,
+                      1.0
+                    ]
+                  },
+                  "field_of_view_y": {
+                    "py/tuple": [
+                      -2.0,
+                      2.0
+                    ]
+                  },
+                  "num_pix_x": 0,
+                  "num_pix_y": 0,
+                  "id": "1-galaxy-mass-1-PixelatedRegularGridPotential-pixels"
+                }
+              },
+              "id": "1-galaxy-mass-1-PixelatedRegularGridPotential",
+              "documentation": "Lens potential defined on a grid of regular pixels.\n\n    This profile is described by the following parameters:\n\n    - 'pixels': 2D array of pixel values"
+            }
+          ]
+        },
+        "documentation": "Class that defines a Galaxy entity (lens galaxy and/or source galaxy).\n\n    Parameters\n    ----------\n    name : str\n        Name associated to the galaxy.\n    redshift : float\n        Redshift of the galaxy, if any.\n    light_model : LightModel, optional\n        Light model instance describing the surface brightness of the galaxy, by default None\n    mass_model : MassModel, optional\n        Mass model instance describing the mass distribution of the galaxy, by default None",
+        "light_model": {
+          "py/object": "coolest.template.classes.mass_light_model.LightModel",
+          "py/seq": [
+            {
+              "py/object": "coolest.template.classes.profiles.light.Sersic",
+              "type": "Sersic",
+              "parameters": {
+                "I_eff": {
+                  "py/object": "coolest.template.classes.parameter.LinearParameter",
+                  "documentation": "Amplitude at the Sersic radius",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$I_{\\rm Sersic}$",
+                  "id": "1-galaxy-light-0-Sersic-I_eff"
+                },
+                "theta_eff": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Sersic (half-light) radius",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$R_{\\rm Sersic}$",
+                  "id": "1-galaxy-light-0-Sersic-theta_eff"
+                },
+                "n": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Sersic index",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.5,
+                    "max_value": 10.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$n_{\\rm Sersic}$",
+                  "id": "1-galaxy-light-0-Sersic-n"
+                },
+                "q": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Axis ratio, semi-minor axis / semi-major axis",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": 1.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$q$",
+                  "id": "1-galaxy-light-0-Sersic-q"
+                },
+                "phi": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Position angle",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": -90.0,
+                    "max_value": 90.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$\\phi$",
+                  "id": "1-galaxy-light-0-Sersic-phi"
+                },
+                "center_x": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Profile center along x coordinates",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": null,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$x_0$",
+                  "id": "1-galaxy-light-0-Sersic-center_x"
+                },
+                "center_y": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Profile center along y coordinates",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": null,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$y_0$",
+                  "id": "1-galaxy-light-0-Sersic-center_y"
+                }
+              },
+              "id": "1-galaxy-light-0-Sersic",
+              "documentation": "Surface brightness described by an elliptical S\u00e9rsic profile.\n\n    This profile is described by the following parameters:\n    \n    - 'I_eff': amplitude at the effective radius\n    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius\n    - 'n': Sersic index\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate"
+            },
+            {
+              "py/object": "coolest.template.classes.profiles.light.Sersic",
+              "type": "Sersic",
+              "parameters": {
+                "I_eff": {
+                  "py/object": "coolest.template.classes.parameter.LinearParameter",
+                  "documentation": "Amplitude at the Sersic radius",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$I_{\\rm Sersic}$",
+                  "id": "1-galaxy-light-1-Sersic-I_eff"
+                },
+                "theta_eff": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Sersic (half-light) radius",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$R_{\\rm Sersic}$",
+                  "id": "1-galaxy-light-1-Sersic-theta_eff"
+                },
+                "n": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Sersic index",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.5,
+                    "max_value": 10.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$n_{\\rm Sersic}$",
+                  "id": "1-galaxy-light-1-Sersic-n"
+                },
+                "q": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Axis ratio, semi-minor axis / semi-major axis",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": 1.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": 0.89
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$q$",
+                  "id": "1-galaxy-light-1-Sersic-q"
+                },
+                "phi": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Position angle",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": -90.0,
+                    "max_value": 90.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$\\phi$",
+                  "id": "1-galaxy-light-1-Sersic-phi"
+                },
+                "center_x": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Profile center along x coordinates",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": null,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$x_0$",
+                  "id": "1-galaxy-light-1-Sersic-center_x"
+                },
+                "center_y": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Profile center along y coordinates",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": null,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$y_0$",
+                  "id": "1-galaxy-light-1-Sersic-center_y"
+                }
+              },
+              "id": "1-galaxy-light-1-Sersic",
+              "documentation": "Surface brightness described by an elliptical S\u00e9rsic profile.\n\n    This profile is described by the following parameters:\n    \n    - 'I_eff': amplitude at the effective radius\n    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius\n    - 'n': Sersic index\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate"
+            }
+          ]
+        }
+      },
+      {
+        "py/object": "coolest.template.classes.galaxy.Galaxy",
+        "type": "Galaxy",
+        "name": "a source galaxy",
+        "redshift": 2.0,
+        "mass_model": {
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
+          "py/seq": []
+        },
+        "documentation": "Class that defines a Galaxy entity (lens galaxy and/or source galaxy).\n\n    Parameters\n    ----------\n    name : str\n        Name associated to the galaxy.\n    redshift : float\n        Redshift of the galaxy, if any.\n    light_model : LightModel, optional\n        Light model instance describing the surface brightness of the galaxy, by default None\n    mass_model : MassModel, optional\n        Mass model instance describing the mass distribution of the galaxy, by default None",
+        "light_model": {
+          "py/object": "coolest.template.classes.mass_light_model.LightModel",
+          "py/seq": [
+            {
+              "py/object": "coolest.template.classes.profiles.light.Sersic",
+              "type": "Sersic",
+              "parameters": {
+                "I_eff": {
+                  "py/object": "coolest.template.classes.parameter.LinearParameter",
+                  "documentation": "Amplitude at the Sersic radius",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$I_{\\rm Sersic}$",
+                  "id": "2-galaxy-light-0-Sersic-I_eff"
+                },
+                "theta_eff": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Sersic (half-light) radius",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": 0.11,
+                    "median": 0.15,
+                    "percentile_16th": 0.03,
+                    "percentile_84th": 0.05
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$R_{\\rm Sersic}$",
+                  "id": "2-galaxy-light-0-Sersic-theta_eff"
+                },
+                "n": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Sersic index",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.5,
+                    "max_value": 10.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$n_{\\rm Sersic}$",
+                  "id": "2-galaxy-light-0-Sersic-n"
+                },
+                "q": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Axis ratio, semi-minor axis / semi-major axis",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": 0.0,
+                    "max_value": 1.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$q$",
+                  "id": "2-galaxy-light-0-Sersic-q"
+                },
+                "phi": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Position angle",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": -90.0,
+                    "max_value": 90.0
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$\\phi$",
+                  "id": "2-galaxy-light-0-Sersic-phi"
+                },
+                "center_x": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Profile center along x coordinates",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": null,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$x_0$",
+                  "id": "2-galaxy-light-0-Sersic-center_x"
+                },
+                "center_y": {
+                  "py/object": "coolest.template.classes.parameter.NonLinearParameter",
+                  "documentation": "Profile center along y coordinates",
+                  "units": null,
+                  "definition_range": {
+                    "py/object": "coolest.template.classes.parameter.DefinitionRange",
+                    "min_value": null,
+                    "max_value": null
+                  },
+                  "fixed": false,
+                  "point_estimate": {
+                    "py/object": "coolest.template.classes.parameter.PointEstimate",
+                    "value": null
+                  },
+                  "posterior_stats": {
+                    "py/object": "coolest.template.classes.probabilities.PosteriorStatistics",
+                    "mean": null,
+                    "median": null,
+                    "percentile_16th": null,
+                    "percentile_84th": null
+                  },
+                  "prior": {
+                    "py/object": "coolest.template.classes.probabilities.Prior",
+                    "type": null,
+                    "documentation": "Generic class for a prior distribution that can be assigned\n    to a parameter.\n\n    Parameters\n    ----------\n    ptype : str, optional\n        Type of prior, typically class name of one of the Prior class defined\n        in this module, by default None"
+                  },
+                  "latex_str": "$y_0$",
+                  "id": "2-galaxy-light-0-Sersic-center_y"
+                }
+              },
+              "id": "2-galaxy-light-0-Sersic",
+              "documentation": "Surface brightness described by an elliptical S\u00e9rsic profile.\n\n    This profile is described by the following parameters:\n    \n    - 'I_eff': amplitude at the effective radius\n    - 'theta_eff': effective radius, a.k.a. Sersic radius, equal to the half-light radius\n    - 'n': Sersic index\n    - 'q': axis ratio (semi-major axis / semi-minor axis)\n    - 'phi': position angle\n    - 'center_x': position along the x coordinate\n    - 'center_y': position along the y coordinate"
+            }
+          ]
+        }
+      },
+      {
+        "py/object": "coolest.template.classes.galaxy.Galaxy",
+        "type": "Galaxy",
+        "name": "another source",
+        "redshift": 1.5,
+        "mass_model": {
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
+          "py/seq": []
+        },
+        "documentation": "Class that defines a Galaxy entity (lens galaxy and/or source galaxy).\n\n    Parameters\n    ----------\n    name : str\n        Name associated to the galaxy.\n    redshift : float\n        Redshift of the galaxy, if any.\n    light_model : LightModel, optional\n        Light model instance describing the surface brightness of the galaxy, by default None\n    mass_model : MassModel, optional\n        Mass model instance describing the mass distribution of the galaxy, by default None",
+        "light_model": {
+          "py/object": "coolest.template.classes.mass_light_model.LightModel",
+          "py/seq": [
+            {
+              "py/object": "coolest.template.classes.profiles.light.PixelatedRegularGrid",
+              "type": "PixelatedRegularGrid",
+              "parameters": {
+                "pixels": {
+                  "py/object": "coolest.template.classes.parameter.PixelatedRegularGridParameter",
+                  "documentation": "Pixel values",
+                  "fits_file": {
+                    "py/object": "coolest.template.classes.fits_file.FitsFile",
+                    "path": "regul_grid_image.fits",
+                    "_directory": null
+                  },
+                  "field_of_view_x": {
+                    "py/tuple": [
+                      -3.0,
+                      1.0
+                    ]
+                  },
+                  "field_of_view_y": {
+                    "py/tuple": [
+                      -2.0,
+                      2.0
+                    ]
+                  },
+                  "num_pix_x": 0,
+                  "num_pix_y": 0,
+                  "id": "3-galaxy-light-0-PixelatedRegularGrid-pixels"
+                }
+              },
+              "id": "3-galaxy-light-0-PixelatedRegularGrid",
+              "documentation": "Surface brightness described on a regular grid of pixels.\n\n    This profile is described by the following parameters:\n    \n    - 'pixels': 2D array of pixel values"
+            }
+          ]
+        }
+      },
+      {
+        "py/object": "coolest.template.classes.galaxy.Galaxy",
+        "type": "Galaxy",
+        "name": "a VKL source",
+        "redshift": 1.2,
+        "mass_model": {
+          "py/object": "coolest.template.classes.mass_light_model.MassModel",
+          "py/seq": []
+        },
+        "documentation": "Class that defines a Galaxy entity (lens galaxy and/or source galaxy).\n\n    Parameters\n    ----------\n    name : str\n        Name associated to the galaxy.\n    redshift : float\n        Redshift of the galaxy, if any.\n    light_model : LightModel, optional\n        Light model instance describing the surface brightness of the galaxy, by default None\n    mass_model : MassModel, optional\n        Mass model instance describing the mass distribution of the galaxy, by default None",
+        "light_model": {
+          "py/object": "coolest.template.classes.mass_light_model.LightModel",
+          "py/seq": [
+            {
+              "py/object": "coolest.template.classes.profiles.light.IrregularGrid",
+              "type": "IrregularGrid",
+              "parameters": {
+                "pixels": {
+                  "py/object": "coolest.template.classes.parameter.IrregularGridParameter",
+                  "documentation": "Pixel positions and values",
+                  "fits_file": {
+                    "py/object": "coolest.template.classes.fits_file.FitsFile",
+                    "path": "irreg_grid_pixels.fits",
+                    "_directory": null
+                  },
+                  "field_of_view_x": {
+                    "py/tuple": [
+                      0,
+                      0
+                    ]
+                  },
+                  "field_of_view_y": {
+                    "py/tuple": [
+                      0,
+                      0
+                    ]
+                  },
+                  "num_pix": 0,
+                  "id": "4-galaxy-light-0-IrregularGrid-pixels"
+                }
+              },
+              "id": "4-galaxy-light-0-IrregularGrid",
+              "documentation": "Surface brightness described on an irregular grid of pixels.\n\n    This profile is described by the following parameters:\n    \n    - 'pixels': set of 2D coordinates and associated pixel values (x, y, z)"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "observation": {
+    "py/object": "coolest.template.classes.observation.Observation",
+    "pixels": {
+      "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
+      "fits_file": {
+        "py/object": "coolest.template.classes.fits_file.FitsFile",
+        "path": "obs.fits",
+        "_directory": null
+      },
+      "documentation": "Class that represents a grid of values defined on a regular, Cartesian grid.\n\n    Parameters\n    ----------\n    fits_path : str\n        Path to the FITS file in which the values (and perhaps the coordinates)\n        are stored. This should be relative to the final COOLEST template file.\n    field_of_view_x : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the x direction (i.e., left side of the leftmost pixel and \n        rightside of the rightmost pixel), by default (0, 0)\n    field_of_view_y : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the y direction (i.e., bottom side of the lower pixel and \n        top side of the upper pixel), by default (0, 0)\n    num_pix_x : int, optional\n        Number of pixels along the x direction, by default 0\n    num_pix_y : int, optional\n        Number of pixels along the y direction, by default 0\n    **kwargs_file : dic, optional\n        Any remaining keyword arguments for FitsFile",
+      "field_of_view_x": {
+        "py/tuple": [
+          0,
+          0
+        ]
+      },
+      "field_of_view_y": {
+        "py/tuple": [
+          0,
+          0
+        ]
+      },
+      "num_pix_x": 0,
+      "num_pix_y": 0
+    },
+    "exposure_time": null,
+    "mag_zero_point": null,
+    "mag_sky_brightness": null,
+    "noise": {
+      "py/object": "coolest.template.classes.noise.InstrumentalNoise",
+      "type": "InstrumentalNoise",
+      "with_readout_noise": true,
+      "with_sky_shot_noise": true,
+      "with_target_shot_noise": true,
+      "documentation": "Noise properties are computed directly based on the observed \n    or modeled flux, and on the Instrument (e.g., readout noise) and \n    Observation (e.g., exposure time, sky brightness, etc.) properties.\n\n    Parameters\n    ----------\n    with_readout_noise : bool, optional\n        If True, the noise includes readout noise from the detector, by default True\n    with_sky_shot_noise : bool, optional\n        If True, the noise includes shot noise from sky background flux \n        (as the Gaussian approximation of the Poisson noise), by default True\n    with_target_shot_noise : bool, optional\n        If True, the noise includes shot noise from the target flux \n        (as the Gaussian approximation of the Poisson noise), by default True"
+    },
+    "documentation": "Defines the observation itself, that is the image pixels, \n    the exposure time, the noise model and/or properties, the magnitude \n    zero-point and sky brightness.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Regular 2D Grid instance for the observed / mock data pixels, by default None\n    noise : Noise, optional\n        Instance of a Noise object associated with the modeling \n        of the data pixels, by default None\n    mag_zero_point : float, optional\n        Zero-point magnitude, which corresponds to the 1 electron per second\n        hitting the detecor (given in mag), by default None\n    mag_sky_brightness : float, optional\n        Magnitude due to sky brightness (given in mag per arcsec^2), \n        by default None"
+  },
+  "instrument": {
+    "py/object": "coolest.template.classes.instrument.Instrument",
+    "name": "some instrument",
+    "band": "F160W",
+    "pixel_size": 0.08,
+    "readout_noise": 4,
+    "psf": {
+      "py/object": "coolest.template.classes.psf.PixelatedPSF",
+      "type": "PixelatedPSF",
+      "description": null,
+      "pixels": {
+        "py/object": "coolest.template.classes.grid.PixelatedRegularGrid",
+        "fits_file": {
+          "py/object": "coolest.template.classes.fits_file.FitsFile",
+          "path": "psf_kernel.fits",
+          "_directory": null
+        },
+        "documentation": "Class that represents a grid of values defined on a regular, Cartesian grid.\n\n    Parameters\n    ----------\n    fits_path : str\n        Path to the FITS file in which the values (and perhaps the coordinates)\n        are stored. This should be relative to the final COOLEST template file.\n    field_of_view_x : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the x direction (i.e., left side of the leftmost pixel and \n        rightside of the rightmost pixel), by default (0, 0)\n    field_of_view_y : Tuple[float], optional\n        2-tuple holding the extremal coordinates of the coordinates grid \n        along the y direction (i.e., bottom side of the lower pixel and \n        top side of the upper pixel), by default (0, 0)\n    num_pix_x : int, optional\n        Number of pixels along the x direction, by default 0\n    num_pix_y : int, optional\n        Number of pixels along the y direction, by default 0\n    **kwargs_file : dic, optional\n        Any remaining keyword arguments for FitsFile",
+        "field_of_view_x": {
+          "py/tuple": [
+            0,
+            0
+          ]
+        },
+        "field_of_view_y": {
+          "py/tuple": [
+            0,
+            0
+          ]
+        },
+        "num_pix_x": 0,
+        "num_pix_y": 0
+      },
+      "documentation": "PSF modeled as a 2D image.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Grid class that holds pixel values and the extent of \n        the PSF kernel, by default None\n    description : str, optional\n        Any details regarding the way the PSF has been estimated, by default None"
+    },
+    "documentation": "Defines the instrument used for the observation.\n    This includes the name of the telescope and detector, the filter, \n    the pixel size, the readout noise and the point spread function (PSF).\n\n    Parameters\n    ----------\n    pixel_size : float\n        Size in arcseconds of a single detector pixel.\n    name : str, optional\n        Name of the instrument, by default \"\"\n    band : str, optional\n        Name of the filter, by default \"\"\n    readout_noise : float, optional\n        Readout noise (in electrons), by default 0.\n    psf : PSF, optional\n        Instance of PSF object, by default None"
+  },
+  "cosmology": {
+    "py/object": "coolest.template.classes.cosmology.Cosmology",
+    "H0": 73.0,
+    "Om0": 0.3,
+    "astropy_name": "FlatLambdaCDM",
+    "documentation": "Defines the cosmological model. \n    Currently, only FlatLambdaCDM from astropy is supported, based on H0 and Omega_m.\n\n    Parameters\n    ----------\n    H0 : float\n        Hubble constant, in km/s/Mpc\n    Om0 : float\n        Matter density at present time\n    astropy_name : str, optional\n        `astropy` model name, by default 'FlatLambdaCDM'"
+  },
+  "standard": "COOLEST",
+  "meta": {},
+  "exclude_keys": [
+    "documentation",
+    "latex_str",
+    "units",
+    "definition_range",
+    "exclude_keys"
+  ]
+}
