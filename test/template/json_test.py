@@ -115,11 +115,12 @@ class TestJSONSerialization(object):
         # and btw we also instantiate another JSONSerializer as a test
         serializer_2 = JSONSerializer(template_path, obj=None,
                                       check_external_files=self.check_files)
-        coolest_3 = serializer_2.load_simple()
+        coolest_3 = serializer_2.load(skip_jsonpickle=True)
         assert isinstance(coolest_3, COOLEST)
 
         # test that the content of the new json file is *exactly* the same as the original one
-        json_orig = serializer.load_simple(as_object=False)
-        json_new  = serializer_2.load_simple(as_object=False)
+        json_path = serializer.path + '.json'
+        json_orig = serializer.load_simple(json_path, as_object=False)
+        json_new  = serializer_2.load_simple(json_path, as_object=False)
 
         assert json_orig == json_new
