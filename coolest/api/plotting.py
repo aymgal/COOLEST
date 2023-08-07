@@ -463,7 +463,7 @@ class Comparison_analytical(object):
 
 
 
-def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_estimate_objs=None,point_estimate_dirs=None,point_estimate_names=None,colors=None,labels=None,subplot_size=1,mc_samples_kwargs=None):
+def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_estimate_objs=None,point_estimate_dirs=None,point_estimate_names=None,colors=None,labels=None,subplot_size=1,mc_samples_kwargs=None,filled_contours=True):
     """
     Adding this as just a function for the moment.
     Takes a list of COOLEST files as input, which must have a chain file associated to them, and returns a corner plot.
@@ -574,7 +574,7 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
     image.triangle_plot(mcsamples,
                         params=parameter_id_list,
                         legend_labels=chain_names,
-                        filled=True,
+                        filled=filled_contours,
                         colors=colors,
                         line_args=[{'ls':'-', 'lw': 2, 'color': c} for c in colors], 
                         contour_colors=colors)
