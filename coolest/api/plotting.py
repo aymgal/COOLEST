@@ -611,18 +611,18 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         dum = parameter_id_list[i].split('-')
         name = dum[-1]
         if name in ['phi','phi_ext']:
-            xlim = image.subplots[index,index].get_xlim()
+            xlim = image.subplots[i,i].get_xlim()
             #print(xlim)
         
             if xlim[0] < -90:
-                for ax in image.subplots[index:,index]:
+                for ax in image.subplots[i:,i]:
                     ax.set_xlim(left=-90)
-                for ax in image.subplots[index,:index]:
+                for ax in image.subplots[i,:i]:
                     ax.set_ylim(bottom=-90)
             if xlim[1] > 90:
-                for ax in image.subplots[index:,index]:
+                for ax in image.subplots[i:,i]:
                     ax.set_xlim(right=90)
-                for ax in image.subplots[index,:index]:
+                for ax in image.subplots[i,:i]:
                     ax.set_ylim(top=90)
 
             
