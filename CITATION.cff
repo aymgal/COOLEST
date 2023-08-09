@@ -1,0 +1,56 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Galan
+  given-names: Aymeric
+  orcid: "https://orcid.org/0000-0003-2547-9815"
+- family-names: Vyvere
+  given-names: Lyne Van
+  name-particle: de
+  orcid: "https://orcid.org/0000-0002-0585-4203"
+- family-names: Gomer
+  given-names: Matthew R.
+  orcid: "https://orcid.org/0000-0001-5562-3879"
+- family-names: Vernardos
+  given-names: Georgios
+  orcid: "https://orcid.org/0000-0001-8554-7248"
+- family-names: Sluse
+  given-names: Dominique
+  orcid: "https://orcid.org/0000-0001-6116-2095"
+contact:
+- family-names: Galan
+  given-names: Aymeric
+  orcid: "https://orcid.org/0000-0003-2547-9815"
+doi: 10.5281/zenodo.8207512
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Galan
+    given-names: Aymeric
+    orcid: "https://orcid.org/0000-0003-2547-9815"
+  - family-names: Vyvere
+    given-names: Lyne Van
+    name-particle: de
+    orcid: "https://orcid.org/0000-0002-0585-4203"
+  - family-names: Gomer
+    given-names: Matthew R.
+    orcid: "https://orcid.org/0000-0001-5562-3879"
+  - family-names: Vernardos
+    given-names: Georgios
+    orcid: "https://orcid.org/0000-0001-8554-7248"
+  - family-names: Sluse
+    given-names: Dominique
+    orcid: "https://orcid.org/0000-0001-6116-2095"
+  date-published: 2023-08-09
+  doi: 10.21105/joss.05567
+  issn: 2475-9066
+  issue: 88
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 5567
+  title: "COOLEST: COde-independent Organized LEns STandard"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.05567"
+  volume: 8
+title: "COOLEST: COde-independent Organized LEns STandard"
