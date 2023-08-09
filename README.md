@@ -1,7 +1,7 @@
 <img src="docs/_static/coolest_logo.png#gh-light-mode-only" width="200" alt="COOLEST logo" />
 <img src="docs/_static/coolest_logo_dark_bg.png#gh-dark-mode-only" width="200" alt="COOLEST logo" />
 
-# COOLEST: COde-independent Organized LEns STandard
+# COOLEST: a standard for strong gravitational lensing studies
 
 ![PyPi python support](https://img.shields.io/badge/Python-3.7-blue)
 [![Tests](https://github.com/aymgal/COOLEST/actions/workflows/ci-tests.yml/badge.svg?branch=main)](https://github.com/aymgal/COOLEST/actions/workflows/ci-tests.yml)
@@ -12,7 +12,7 @@
 
 ## What is COOLEST?
 
-COOLEST is a standard that proposes to define a set of conventions to be shared across the strong lensing community, in order to consistently store, share and improve lens modeling analyses. In short, this project provides tools to manipulate lens models as a single, human-readable JSON template file alongside Python routines for visualizing and comparing lens models possibly obtained from different modeling codes.
+The COde-independent Organized LEns STandard (COOLEST) defines a set of conventions to be shared across the strong lensing community, in order to consistently store, share and improve lens modeling analyses. In short, this project provides tools to manipulate lens models as a single, human-readable JSON template file alongside Python routines for visualizing and comparing lens models possibly obtained from different modeling codes.
 
 For more information and the full list of COOLEST features, refer to the [online documentation](https://coolest.readthedocs.io/en/latest/).
 
