@@ -65,6 +65,24 @@ _There will be soon the possibility to install_ `coolest` _directly from PyPi an
 
 We encourage and highly value All types of feedback, feature proposals and contributions from the whole lensing community. Please have a look at [CONTRIBUTING.md](CONTRIBUTING.md) for more information about contributing to the project.
 
+## Citing the COOLEST standard
+
+If you make use of COOLEST for your research, please cite our [JOSS publication](https://joss.theoj.org/papers/10.21105/joss.05567). Here is the corresponding BibTeX entry:
+
+```
+@article{Galan2023,
+    author = {Galan, Aymeric and de Vyvere, Lyne Van and Gomer, Matthew R. and Vernardos, Georgios and Sluse, Dominique},
+    doi = {10.21105/joss.05567},
+    journal = {Journal of Open Source Software},
+    month = aug,
+    number = {88},
+    pages = {5567},
+    title = {{COOLEST: COde-independent Organized LEns STandard}},
+    url = {https://joss.theoj.org/papers/10.21105/joss.05567},
+    volume = {8},
+    year = {2023}
+}
+```
 
 ## Original contributors
 
