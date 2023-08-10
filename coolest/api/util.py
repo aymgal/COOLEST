@@ -10,8 +10,9 @@ from coolest.template.json import JSONSerializer
 
 def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
     """
-    Rescale an image in units 1/arcsec^2 so that it has units of electrons per second (e/s),
-    which is the default data units in COOLEST.
+    Rescale an image in units 1/arcsec^2, or unitless if `pixel_size=1`,
+    so that it has units of electrons per second (e/s), which is the default data units 
+    in COOLEST for pixelated profiles.
     :param pixel_size: pixel size (in arcsec) of the image
     :param image: input image, in units of 1/arcsec^2
     :param mag_tot: target total magnitude, integrated over the whole image
