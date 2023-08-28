@@ -209,7 +209,7 @@ class ComposableLightModel(BaseComposableModel):
         image = np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
             flux_k = profile.evaluate_surface_brightness(x, y, **params)
-            if profile.units == 'flux_per_ang':
+            if profile.units == 'per_ang':
                 flux_k *= self.pixel_area
             image += flux_k
         return image

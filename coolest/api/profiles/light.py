@@ -34,7 +34,7 @@ class BaseLightProfile(object):
     def units(self):
         if not hasattr(self, '_units'):
             raise ValueError(f"Units for profile {self.__class__.__name__} must be specified")
-        if self._units not in ('flux_per_pix', 'flux_per_ang'):
+        if self._units not in ('per_pix', 'per_ang'):
             raise ValueError(f"Unsupported units type {self._units}")
         return self._units
 
@@ -57,7 +57,7 @@ class Sersic(BaseLightProfile):
 
     """Elliptical Sersic"""
 
-    _units = 'flux_per_ang'
+    _units = 'per_ang'
     _template_class = TemplateSersic()
 
     def surface_brightness(self, I_eff=1., theta_eff=2., n=4., phi=0., q=1., center_x=0., center_y=0.):
@@ -78,7 +78,7 @@ class Shapelets(BaseLightProfile):
     The implementation uses functions from `lenstronomy` (:cite:t:`lenstronomy2018`, :cite:t:`lenstronomy2021`), based on the developments of :cite:t:`Refregier2003`.
     """
 
-    _units = 'flux_per_ang'
+    _units = 'per_ang'
     _template_class = TemplateShapelets()
 
     def __init__(self):
@@ -99,7 +99,7 @@ class PixelatedRegularGrid(BaseLightProfile):
 
     """Pixelated profile on a regular grid"""
 
-    _units = 'flux_per_pix'
+    _units = 'per_pix'
     _template_class = TemplatePixelatedRegularGrid()
 
     def __init__(self, field_of_view_x, field_of_view_y, num_pix_x, num_pix_y,
@@ -142,7 +142,7 @@ class IrregularGrid(BaseLightProfile):
 
     """Pixelated profile on an irregular grid of points {x, y, z}"""
 
-    _units = 'flux_per_pix'
+    _units = 'per_pix'
     _template_class = TemplateIrregularGrid()
 
     def __init__(self, field_of_view_x, field_of_view_y, num_pix,
