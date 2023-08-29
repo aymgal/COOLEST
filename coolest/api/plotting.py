@@ -112,9 +112,10 @@ class ModelPlotter(object):
             ax.set_title(title)
         return image, coordinates
 
-    def plot_model_image(self, ax, supersampling=5, convolved=False, title=None,
+    def plot_model_image(self, ax, title=None,
                          norm=None, cmap=None, neg_values_as_bad=False,
-                         kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None):
+                         kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None,
+                         **model_image_kwargs):
         """plt.imshow panel showing the surface brightness of the (lensed)
         selected lensing entities (see ComposableLensModel docstring)
         """
@@ -123,8 +124,7 @@ class ModelPlotter(object):
         lens_model = ComposableLensModel(self.coolest, self._directory,
                                          kwargs_selection_source=kwargs_source,
                                          kwargs_selection_lens_mass=kwargs_lens_mass)
-        image, coordinates = lens_model.model_image(supersampling=supersampling, 
-                                                    convolved=convolved)
+        image, coordinates = lens_model.model_image(**model_image_kwargs)
         extent = coordinates.plt_extent
         ax, im = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
@@ -137,9 +137,10 @@ class ModelPlotter(object):
             ax.set_title(title)
         return image
 
-    def plot_model_residuals(self, ax, supersampling=5, mask=None, title=None,
+    def plot_model_residuals(self, ax, title=None, mask=None,
                              norm=None, cmap=None, add_chi2_label=False, chi2_fontsize=12,
-                             kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None):
+                             kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None,
+                             **model_image_kwargs):
         """plt.imshow panel showing the normalized model residuals image"""
         if cmap is None:
             cmap = self.cmap_res
@@ -148,8 +149,7 @@ class ModelPlotter(object):
         lens_model = ComposableLensModel(self.coolest, self._directory,
                                          kwargs_selection_source=kwargs_source,
                                          kwargs_selection_lens_mass=kwargs_lens_mass)
-        image, coordinates = lens_model.model_residuals(supersampling=supersampling, 
-                                                        mask=mask)
+        image, coordinates = lens_model.model_residuals(mask=mask, **model_image_kwargs)
         extent = coordinates.plt_extent
         ax, im = self._plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,

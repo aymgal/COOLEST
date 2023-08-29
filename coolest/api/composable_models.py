@@ -316,7 +316,7 @@ class ComposableLensModel(object):
                                           coolest_directory,
                                           **kwargs_selection_source)
 
-    def model_image(self, supersampling=5, convolved=True):
+    def model_image(self, supersampling=5, convolved=True, super_convolution=True):
         """generates an image of the lens based on the selected model components"""
         obs = self.coolest.observation
         psf = self.coolest.instrument.psf
@@ -343,27 +343,26 @@ class ComposableLensModel(object):
             if not math.isclose(kernel_sum, 1., abs_tol=1e-3):
                 kernel /= kernel_sum
                 logging.warning(f"PSF kernel is not normalized (sum={kernel_sum}), "
-                                "so it has been normalized before convolution")
+                                f"so it has been normalized before convolution")
             if np.isnan(image).any():
                 np.nan_to_num(image, copy=False, nan=0., posinf=None, neginf=None)
                 logging.warning("Found NaN values in image prior to convolution; "
                                 "they have been replaced by zeros.")
-            if supersampling_conv == supersampling:
-                # first convolve then dowsnscale 
+            if super_convolution and supersampling_conv == supersampling:
+                # first convolve then downscale
                 image = signal.fftconvolve(image, kernel, mode='same')
                 image = util.downsampling(image, factor=supersampling)
-            elif supersampling_conv == 1:
-                # first dowsnscale then convolve
+            else:
+                # first downscale then convolve
                 image = util.downsampling(image, factor=supersampling)
                 image = signal.fftconvolve(image, kernel, mode='same')
         elif supersampling > 1:
             image = util.downsampling(image, factor=supersampling)
         return image, self.coord_obs
 
-    def model_residuals(self, supersampling=5, mask=None):
+    def model_residuals(self, mask=None, **model_image_kwargs):
         """computes the normalized residuals map as (data - model) / sigma"""
-        model, _ = self.model_image(supersampling=supersampling, 
-                                    convolved=True)
+        model, _ = self.model_image(**model_image_kwargs)
         data = self.coolest.observation.pixels.get_pixels(directory=self.directory)
         noise = self.coolest.observation.noise
         if noise.type != 'NoiseMap':
