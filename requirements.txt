@@ -2,7 +2,7 @@ numpy>=1.20.3
 scipy>=1.6.3
 jsonpickle>=2.0.0
 astropy>=4.2.0
-pandas
+pandas>=1.5.2
 
 # Optional installs
 # matplotlib>=3.7.0    # for plotting
