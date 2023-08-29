@@ -15,6 +15,8 @@ from coolest.api.composable_models import *
 from coolest.api import util
 from coolest.api import plot_util as plut
 
+import pandas as pd
+
 
 # matplotlib global settings
 plt.rc('image', interpolation='none', origin='lower') # imshow settings
@@ -552,14 +554,16 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         # TODO: handle samples that are given as a list / array (e.g. using `converters`)
         column_indices = [chain_file_headers.index(par_id) for par_id in parameter_id_list]
         columns_to_read = sorted(column_indices) + [num_cols-1]  # add last one for probability weights
-        samples = np.loadtxt(chain_file, usecols=columns_to_read, skiprows=1, delimiter=',', comments=None)
-        sample_par_values = samples[:, :-1]
+        # samples = np.loadtxt(chain_file, usecols=columns_to_read, skiprows=1, delimiter=',', comments=None)
+        samples = pd.read_csv(chain_file, usecols=columns_to_read, delimiter=',')
+        
+        #sample_par_values = samples[:, :-1]
 
         # Re-order columnds to match parameter_id_list and par_labels
-        sample_par_values = sample_par_values[:, column_indices]
+        sample_par_values = np.array(samples[parameter_id_list])
 
         # Clean-up the probability weights
-        mypost = samples[:,-1]
+        mypost = np.array(samples['probability_weights'])
         min_non_zero = np.min(mypost[np.nonzero(mypost)])
         sample_prob_weight = np.where(mypost<min_non_zero,min_non_zero,mypost)
         #sample_prob_weight = mypost
