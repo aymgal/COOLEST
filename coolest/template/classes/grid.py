@@ -114,7 +114,7 @@ class PixelatedRegularGrid(Grid):
                  num_pix_x=0, num_pix_y=0,
                  check_fits_file=True):
         """Set / replace the FitsFile object associated with the Grid.
-        This is useful to set associate the FITS file after the Grid instance
+        This is useful to set the FITS file after the Grid instance
         has been created.
 
         See class constructor for parameter descriptions.
@@ -139,8 +139,8 @@ class PixelatedRegularGrid(Grid):
 
         Returns
         -------
-        field_of_view_x, field_of_view_y, num_pix
-            Field of view and number of pxiels.
+        (num_pix_x, num_pix_y)
+            Number of pixels along each axis.
         """
         array, header = self.fits_file.read()
         array_shape = array.shape
