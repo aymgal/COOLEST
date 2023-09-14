@@ -184,8 +184,8 @@ class Coordinates(object):
 
         matrix_pix2ang = self._matrix_pix2ang / self.pixel_size * pixel_size
 
-        cx, cy = int(nx / 2), int(ny / 2)
+        cx, cy = nx / 2., ny / 2.
         cra, cdec = matrix_pix2ang.dot(np.array([cx, cy]))
-        x_at_ij_0, y_at_ij_0 = - cra + center_x, - cdec + center_y
+        x_at_ij_0, y_at_ij_0 = - cra + center_x + pixel_size/2., - cdec + center_y + pixel_size/2.
 
         return Coordinates(nx, ny, matrix_pix2ang, x_at_ij_0, y_at_ij_0)

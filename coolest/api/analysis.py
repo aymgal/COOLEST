@@ -357,7 +357,7 @@ class Analysis(object):
 
         light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
 
-        if use_profile_coordinates is True and coordinates is None:
+        if use_profile_coordinates is True:
             light_image, _, coordinates = light_model.surface_brightness(return_extra=True)
             if coordinates is None:
                 # can be known if e.g. the underlying light profile is not pixelated
