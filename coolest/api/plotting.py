@@ -465,7 +465,11 @@ class Comparison_analytical(object):
 
 
 
-def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_estimate_objs=None,point_estimate_dirs=None,point_estimate_names=None,colors=None,labels=None,subplot_size=1,mc_samples_kwargs=None,filled_contours=True):
+def plot_corner(parameter_id_list, 
+                chain_objs, chain_dirs, chain_names=None, 
+                point_estimate_objs=None, point_estimate_dirs=None, point_estimate_names=None, 
+                colors=None, labels=None, subplot_size=1, mc_samples_kwargs=None, 
+                filled_contours=True, angles_range=None, shift_sample_list=None):
     """
     Adding this as just a function for the moment.
     Takes a list of COOLEST files as input, which must have a chain file associated to them, and returns a corner plot.
@@ -488,7 +492,6 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         A list of labels for the models in the 'point_estimate_objs' list. Must have the same order as 'point_estimate_objs'.
     labels : dict, optional
         A dictionary matching the parameter_id_list entries to some human-readable labels.
-    
 
     Returns
     -------
@@ -498,10 +501,14 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
     chains.print_load_details = False # Just to silence messages
     parameter_id_set = set(parameter_id_list)
     Npars = len(parameter_id_list)
+    Nobjs = len(chain_objs)
     
     # Set the chain names
     if chain_names is None:
-        chain_names = ["chain "+str(i) for i in range(0,len(chain_objs))]
+        chain_names = ["chain "+str(i) for i in range(Nobjs)]
+    
+    if shift_sample_list is None:
+        shift_sample_list = [None]*Nobjs
     
     # Get the values of the point_estimates
     point_estimates = []
@@ -520,7 +527,7 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
 
             
     mcsamples = []
-    for i in range(0,len(chain_objs)):
+    for i in range(Nobjs):
         chain_file = os.path.join(chain_dirs[i],chain_objs[i].meta["chain_file_name"]) # Here get the chain file path for each coolest object
 
         # Each chain file can have a different number of free parameters
@@ -551,16 +558,19 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
                 par_labels.append(labels[par_id])
                     
         # Read parameter values and probability weights
-        # TODO: handle samples that are given as a list / array (e.g. using `converters`)
         column_indices = [chain_file_headers.index(par_id) for par_id in parameter_id_list]
         columns_to_read = sorted(column_indices) + [num_cols-1]  # add last one for probability weights
-        # samples = np.loadtxt(chain_file, usecols=columns_to_read, skiprows=1, delimiter=',', comments=None)
         samples = pd.read_csv(chain_file, usecols=columns_to_read, delimiter=',')
-        
-        #sample_par_values = samples[:, :-1]
-
+    
         # Re-order columnds to match parameter_id_list and par_labels
         sample_par_values = np.array(samples[parameter_id_list])
+
+        # If needed, shift samples by a constant
+        if shift_sample_list[i] is not None:
+            for param_id, value in shift_sample_list[i].items():
+                sample_par_values[:, parameter_id_list.index(param_id)] += value
+                print(f"INFO: posterior for parameter '{param_id}' from model '{chain_names[i]}' "
+                      f"has been shifted by {value}.")
 
         # Clean-up the probability weights
         mypost = np.array(samples['probability_weights'])
@@ -611,6 +621,8 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
 
 
     # Set default ranges for angles
+    if angles_range is None:
+        angles_range = (-90, 90)
     for i in range(0,len(parameter_id_list)):
         dum = parameter_id_list[i].split('-')
         name = dum[-1]
@@ -620,14 +632,14 @@ def plot_corner(parameter_id_list,chain_objs,chain_dirs,chain_names=None,point_e
         
             if xlim[0] < -90:
                 for ax in image.subplots[i:,i]:
-                    ax.set_xlim(left=-90)
+                    ax.set_xlim(left=angles_range[0])
                 for ax in image.subplots[i,:i]:
-                    ax.set_ylim(bottom=-90)
+                    ax.set_ylim(bottom=angles_range[0])
             if xlim[1] > 90:
                 for ax in image.subplots[i:,i]:
-                    ax.set_xlim(right=90)
+                    ax.set_xlim(right=angles_range[1])
                 for ax in image.subplots[i,:i]:
-                    ax.set_ylim(top=90)
+                    ax.set_ylim(top=angles_range[1])
 
             
     return image
