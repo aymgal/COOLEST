@@ -220,7 +220,7 @@ class Analysis(object):
         
     def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
                                initial_guess=1, initial_delta_pix=10, 
-                               n_iter=10, **kwargs_selection):
+                               n_iter=10, return_model=False, **kwargs_selection):
         """Computes the effective radius of the 2D surface brightness profile, 
         based on a definition similar to the half-light radius.
 
@@ -234,11 +234,13 @@ class Analysis(object):
             Instance of a Coordinates object to be used for the computation.
             If None, will use an instance based on the Instrument, by default None
         initial_guess : int, optional
-            initial guess for effective radius, by default 1
+            Initial guess for effective radius, by default 1
         initial_delta_pix : int, optional
-            initial step size before shrinking in future iterations, by default 10
+            Initial step size before shrinking in future iterations, by default 10
         n_iter : int, optional
-            number of iterations, by default 5
+            Number of iterations, by default 5
+        return_model : bool, optional
+            If True, also returns the surface brightness map used to comouted the radius. By default False.
 
         Returns
         -------
@@ -309,7 +311,7 @@ class Analysis(object):
             direction=direction*-1
             delta=delta/2
             
-        return r_eff
+        return r_eff if not return_model else r_eff, light_image
 
     
     def find_nearest(self, array, value):
