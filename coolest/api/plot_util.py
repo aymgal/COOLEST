@@ -190,3 +190,44 @@ def nice_colorbar_residuals(mappable, res_map, vmin, vmax, ax=None, position='ri
     return nice_colorbar(mappable, ax=ax, position=position, pad=pad, size=size, label=label, fontsize=fontsize,
                   invisible=invisible, colorbar_kwargs=colorbar_kwargs, label_kwargs=label_kwargs,
                   divider_kwargs=divider_kwargs)
+
+def plot_regular_grid(ax, image_, neg_values_as_bad=True, xylim=None, **imshow_kwargs):
+    if neg_values_as_bad:
+        image = np.copy(image_)
+        image[image < 0] = np.nan
+    else:
+        image = image_
+    if neg_values_as_bad:
+        image[image < 0] = np.nan
+    im = ax.imshow(image, **imshow_kwargs)
+    im.set_rasterized(True)
+    set_xy_limits(ax, xylim)
+    ax.xaxis.set_major_locator(plt.MaxNLocator(3))
+    ax.yaxis.set_major_locator(plt.MaxNLocator(3))
+    return ax, im
+
+def plot_irregular_grid(ax, points, xylim, neg_values_as_bad=True,
+                            norm=None, cmap=None, plot_points=False):
+    x, y, z = points
+    im = plot_voronoi(ax, x, y, z, neg_values_as_bad=neg_values_as_bad, 
+                      norm=norm, cmap=cmap, zorder=1)
+    ax.set_aspect('equal', 'box')
+    set_xy_limits(ax, xylim)
+    ax.xaxis.set_major_locator(plt.MaxNLocator(3))
+    ax.yaxis.set_major_locator(plt.MaxNLocator(3))
+    if plot_points:
+        ax.scatter(x, y, s=5, c='white', marker='.', alpha=0.4, zorder=2)
+    return ax, im
+
+def set_xy_limits(ax, xylim):
+    if xylim is None: return  # do nothing
+    if isinstance(xylim, (int, float)):
+        xylim_ = [-xylim, xylim, -xylim, xylim]
+    elif isinstance(xylim, (list, tuple)) and len(xylim) == 2:
+        xylim_ = [xylim[0], xylim[1], xylim[0], xylim[1]]
+    elif not isinstance(xylim, (list, tuple)) and len(xylim) != 4:
+        raise ValueError("`xylim` argument should be a single number, a 2-tuple or a 4-tuple.")
+    else:
+        xylim_ = xylim
+    ax.set_xlim(xylim_[0], xylim_[1])
+    ax.set_ylim(xylim_[2], xylim_[3])

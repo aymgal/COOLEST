@@ -47,7 +47,7 @@ class ModelPlotter(object):
         self.cmap_flux = copy.copy(plt.get_cmap('magma'))
         self.cmap_flux.set_bad(color_bad_values)
 
-        self.cmap_mag = plt.get_cmap('twilight_shifted')
+        self.cmap_mag = plt.get_cmap('viridis')
         self.cmap_conv = plt.get_cmap('cividis')
         self.cmap_res = plt.get_cmap('RdBu_r')
 
@@ -55,7 +55,7 @@ class ModelPlotter(object):
         #cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
         #self.cmap_flux_mod = ListedColormap(cmap_colors)
 
-    def plot_data_image(self, ax, title=None, norm=None, cmap=None, 
+    def plot_data_image(self, ax, title=None, norm=None, cmap=None, xylim=None,
                         neg_values_as_bad=False, add_colorbar=True):
         """plt.imshow panel with the data image"""
         if cmap is None:
@@ -63,10 +63,10 @@ class ModelPlotter(object):
         coordinates = util.get_coordinates(self.coolest)
         extent = coordinates.plt_extent
         image = self.coolest.observation.pixels.get_pixels(directory=self._directory)
-        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
-                                cmap=cmap,
+        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
+                                cmap=cmap, norm=norm,
                                 neg_values_as_bad=neg_values_as_bad, 
-                                norm=norm)
+                                xylim=xylim)
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label("flux")
@@ -74,11 +74,14 @@ class ModelPlotter(object):
             ax.set_title(title)
         return image
 
-    def plot_surface_brightness(self, ax, title=None, coordinates=None, 
-                                extent_irreg=None, norm=None, cmap=None, neg_values_as_bad=True,
+    def plot_surface_brightness(self, ax, title=None, coordinates=None,
+                                extent_irreg=None, norm=None, cmap=None, 
+                                xylim=None, neg_values_as_bad=True,
                                 plot_points_irreg=False, add_colorbar=True, kwargs_light=None):
         """plt.imshow panel showing the surface brightness of the (unlensed)
         lensing entity selected via kwargs_light (see ComposableLightModel docstring)"""
+        if extent_irreg is not None:
+            raise ValueError("`extent_irreg` is deprecated; use `xylim` instead.")
         if kwargs_light is None:
             kwargs_light = {}
         light_model = ComposableLightModel(self.coolest, self._directory, **kwargs_light)
@@ -88,22 +91,22 @@ class ModelPlotter(object):
             x, y = coordinates.pixel_coordinates
             image = light_model.evaluate_surface_brightness(x, y)
             extent = coordinates.plt_extent
-            ax, im = self._plot_regular_grid(ax, image, extent=extent, cmap=cmap,
+            ax, im = plut.plot_regular_grid(ax, image, extent=extent, cmap=cmap,
                                              neg_values_as_bad=neg_values_as_bad, 
-                                             norm=norm)
+                                             norm=norm, xylim=xylim)
         else:
             values, extent_model, coordinates = light_model.surface_brightness(return_extra=True)
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
-                ax, im = self._plot_regular_grid(ax, image, extent=extent_model, 
+                ax, im = plut.plot_regular_grid(ax, image, extent=extent_model, 
                                         cmap=cmap, 
                                         neg_values_as_bad=neg_values_as_bad,
-                                        norm=norm)
+                                        norm=norm, xylim=xylim)
             else:
                 points = values
-                if extent_irreg is None:
-                    extent_irreg = extent_model
-                ax, im = self._plot_irregular_grid(ax, points, extent_irreg, norm=norm, cmap=cmap, 
+                if xylim is None:
+                    xylim = extent_model
+                ax, im = plut.plot_irregular_grid(ax, points, xylim, norm=norm, cmap=cmap, 
                                                    neg_values_as_bad=neg_values_as_bad,
                                                    plot_points=plot_points_irreg)
                 image = None
@@ -115,7 +118,7 @@ class ModelPlotter(object):
         return image, coordinates
 
     def plot_model_image(self, ax, title=None,
-                         norm=None, cmap=None, neg_values_as_bad=False,
+                         norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
                          kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None,
                          **model_image_kwargs):
         """plt.imshow panel showing the surface brightness of the (lensed)
@@ -128,10 +131,10 @@ class ModelPlotter(object):
                                          kwargs_selection_lens_mass=kwargs_lens_mass)
         image, coordinates = lens_model.model_image(**model_image_kwargs)
         extent = coordinates.plt_extent
-        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
-                                norm=norm)
+                                norm=norm, xylim=xylim)
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label("flux")
@@ -140,7 +143,7 @@ class ModelPlotter(object):
         return image
 
     def plot_model_residuals(self, ax, title=None, mask=None,
-                             norm=None, cmap=None, add_chi2_label=False, chi2_fontsize=12,
+                             norm=None, cmap=None, xylim=None, add_chi2_label=False, chi2_fontsize=12,
                              kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None,
                              **model_image_kwargs):
         """plt.imshow panel showing the normalized model residuals image"""
@@ -153,10 +156,10 @@ class ModelPlotter(object):
                                          kwargs_selection_lens_mass=kwargs_lens_mass)
         image, coordinates = lens_model.model_residuals(mask=mask, **model_image_kwargs)
         extent = coordinates.plt_extent
-        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=False, 
-                                norm=norm)
+                                norm=norm, xylim=xylim)
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label("(data $-$ model) / noise")
@@ -171,7 +174,7 @@ class ModelPlotter(object):
         return image
 
     def plot_convergence(self, ax, title=None,
-                         norm=None, cmap=None, neg_values_as_bad=False,
+                         norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
                          add_colorbar=True, kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D convergence map associated to the
         selected lensing entities (see ComposableMassModel docstring)
@@ -186,10 +189,10 @@ class ModelPlotter(object):
         extent = coordinates.plt_extent
         x, y = coordinates.pixel_coordinates
         image = mass_model.evaluate_convergence(x, y)
-        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
-                                norm=norm)
+                                norm=norm, xylim=xylim)
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label(r"$\kappa$")
@@ -198,8 +201,8 @@ class ModelPlotter(object):
         return image
 
     def plot_magnification(self, ax, title=None,
-                          norm=None, cmap=None, neg_values_as_bad=False,
-                          add_colorbar=True, kwargs_lens_mass=None):
+                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
+                          add_colorbar=True, coordinates=None, kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D magnification map associated to the
         selected lensing entities (see ComposableMassModel docstring)
         """
@@ -211,50 +214,21 @@ class ModelPlotter(object):
             cmap = self.cmap_mag
         if norm is None:
             norm = Normalize(-10, 10)
-        coordinates = util.get_coordinates(self.coolest)
-        extent = coordinates.plt_extent
+        if coordinates is None:
+            coordinates = util.get_coordinates(self.coolest)
         x, y = coordinates.pixel_coordinates
+        extent = coordinates.plt_extent
         image = mass_model.evaluate_magnification(x, y)
-        ax, im = self._plot_regular_grid(ax, image, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
-                                norm=norm)
+                                norm=norm, xylim=xylim)
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label(r"$\mu$")
         if title is not None:
             ax.set_title(title)
         return image
-        
-    @staticmethod
-    def _plot_regular_grid(ax, image_, neg_values_as_bad=True, **imshow_kwargs):
-        if neg_values_as_bad:
-            image = np.copy(image_)
-            image[image < 0] = np.nan
-        else:
-            image = image_
-        if neg_values_as_bad:
-            image[image < 0] = np.nan
-        im = ax.imshow(image, **imshow_kwargs)
-        im.set_rasterized(True)
-        ax.xaxis.set_major_locator(plt.MaxNLocator(3))
-        ax.yaxis.set_major_locator(plt.MaxNLocator(3))
-        return ax, im
-
-    @staticmethod
-    def _plot_irregular_grid(ax, points, extent, neg_values_as_bad=True,
-                             norm=None, cmap=None, plot_points=False):
-        x, y, z = points
-        im = plut.plot_voronoi(ax, x, y, z, neg_values_as_bad=neg_values_as_bad, 
-                              norm=norm, cmap=cmap, zorder=1)
-        ax.set_xlim(extent[0], extent[1])
-        ax.set_ylim(extent[2], extent[3])
-        ax.set_aspect('equal', 'box')
-        ax.xaxis.set_major_locator(plt.MaxNLocator(3))
-        ax.yaxis.set_major_locator(plt.MaxNLocator(3))
-        if plot_points:
-            ax.scatter(x, y, s=5, c='white', marker='.', alpha=0.4, zorder=2)
-        return ax, im
 
 
 class MultiModelPlotter(object):
@@ -281,23 +255,23 @@ class MultiModelPlotter(object):
             self.plotter_list.append(ModelPlotter(coolest, coolest_directory=c_dir,
                                                   **kwargs_plotter))
 
-    def plot_surface_brightness(self, axes, global_title="surf. brightness", titles=None, **kwargs):
+    def plot_surface_brightness(self, axes, global_title=None, titles=None, **kwargs):
         return self._plot_light_multi('plot_surface_brightness', global_title, axes, titles=titles, **kwargs)
 
-    def plot_data_image(self, axes, global_title="data", titles=None, **kwargs):
+    def plot_data_image(self, axes, global_title=None, titles=None, **kwargs):
         return self._plot_data_multi(global_title, axes, titles=titles, **kwargs)
 
-    def plot_model_image(self, axes, global_title="model", titles=None, **kwargs):
+    def plot_model_image(self, axes, global_title=None, titles=None, **kwargs):
         return self._plot_lens_model_multi('plot_model_image', global_title, axes, titles=titles, **kwargs)
 
-    def plot_model_residuals(self, axes, global_title="residuals", titles=None, **kwargs):
+    def plot_model_residuals(self, axes, global_title=None, titles=None, **kwargs):
         return self._plot_lens_model_multi('plot_model_residuals', global_title, axes, titles=titles, **kwargs)
 
-    def plot_convergence(self, axes, global_title="convergence", titles=None, **kwargs):
+    def plot_convergence(self, axes, global_title=None, titles=None, **kwargs):
         return self._plot_lens_model_multi('plot_convergence', global_title, axes, titles=titles, **kwargs)
 
-    def plot_magnification(self, axes, titles=None, **kwargs):
-        return self._plot_lens_model_multi('plot_magnification', "magnification", axes, titles=titles, **kwargs)
+    def plot_magnification(self, axes, global_title=None, **kwargs):
+        return self._plot_lens_model_multi('plot_magnification', global_title, axes, titles=titles, **kwargs)
 
     def _plot_light_multi(self, method_name, global_title, axes, titles=None, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
