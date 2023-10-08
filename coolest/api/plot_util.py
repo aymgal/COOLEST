@@ -9,6 +9,7 @@ from matplotlib import ticker
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from scipy.spatial import Voronoi, voronoi_plot_2d
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
+from matplotlib.cm import ScalarMappable
 
 
 def plot_voronoi(ax, x, y, z, neg_values_as_bad=False, 
@@ -191,14 +192,19 @@ def nice_colorbar_residuals(mappable, res_map, vmin, vmax, ax=None, position='ri
                   invisible=invisible, colorbar_kwargs=colorbar_kwargs, label_kwargs=label_kwargs,
                   divider_kwargs=divider_kwargs)
 
+def cax_colorbar(fig, cax, norm=None, cmap=None, mappable=None, label=None, fontsize=12, orientation='horizontal', label_kwargs={}):
+    if mappable is None:
+        mappable = ScalarMappable(norm=norm, cmap=cmap)
+    cb = fig.colorbar(mappable=mappable, orientation=orientation, cax=cax)
+    if label is not None:
+        cb.set_label(label, fontsize=fontsize, **label_kwargs)
+
 def plot_regular_grid(ax, image_, neg_values_as_bad=True, xylim=None, **imshow_kwargs):
     if neg_values_as_bad:
         image = np.copy(image_)
         image[image < 0] = np.nan
     else:
         image = image_
-    if neg_values_as_bad:
-        image[image < 0] = np.nan
     im = ax.imshow(image, **imshow_kwargs)
     im.set_rasterized(True)
     set_xy_limits(ax, xylim)
@@ -231,3 +237,15 @@ def set_xy_limits(ax, xylim):
         xylim_ = xylim
     ax.set_xlim(xylim_[0], xylim_[1])
     ax.set_ylim(xylim_[2], xylim_[3])
+
+def panel_label(ax, text, color, fontsize, alpha=0.8, loc='upper left'):
+    if loc == 'upper left':
+        x, y, ha, va = 0.03, 0.97, 'left', 'top'
+    elif loc == 'lower left':
+        x, y, ha, va = 0.03, 0.03, 'left', 'bottom'
+    elif loc == 'upper right':
+        x, y, ha, va = 0.97, 0.97, 'right', 'top'
+    elif loc == 'lower right':
+        x, y, ha, va = 0.97, 0.03, 'right', 'bottom'
+    ax.text(x, y, text, color=color, fontsize=fontsize, alpha=alpha, 
+            ha=ha, va=va, transform=ax.transAxes)

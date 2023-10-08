@@ -323,6 +323,7 @@ class Analysis(object):
 
     def two_point_correlation(self, Nbins=100, rmax=None, normalize=False, 
                               use_profile_coordinates=True, coordinates=None, 
+                              min_flux=None, min_flux_frac=None, return_cov=False,
                               **kwargs_selection):
         """
         The two point correlation function can be obtained from the covariance matrix of an image and the distances between its pixels.
@@ -339,12 +340,21 @@ class Analysis(object):
         rmax : float, optional
             A value for the maximum extent of the radial bins. If none is given then it is equal to half the diagonal of the provided image.
         normalize : bool, optional
-            Normalize the given image by its maximum. Defualt is false.
+            Normalize the given image by its maximum. Default is False.
         coordinates : Coordinates, optional
             Instance of a Coordinates object to be used for the computation.
             If None, will use an instance based on the Instrument, by default None
         use_profile_coordinates : bool, optional
             If True and `coordinates=None`, uses the coordinates attached to the light profile, if available. Default is True.
+        min_flux : float, optional
+            Minimum flux value considered in the computation of the correlation function. 
+            Default is None (i.e., no thresholding).
+        min_flux_frac : float, optional
+            Same as min_flux, but given as a fraction of the maximum flux value.
+            If `min_flux` is not None, `min_flux_frac` is ignored.
+            Default is None (i.e., no thresholding).
+        return_cov : bool, optional
+            If True, also returns the full covariance matrix. Default is False. 
 
         Returns
         -------
@@ -371,6 +381,11 @@ class Analysis(object):
             light_image = light_model.evaluate_surface_brightness(x, y)
         
         light_image = np.nan_to_num(light_image, nan=0.)
+        if min_flux is not None:
+            light_image[light_image < min_flux] = 0.
+        elif min_flux_frac is not None:
+            light_image[light_image < min_flux_frac*light_image.max()] = 0.
+            
         extent = coordinates.extent
         dpix = coordinates.pixel_size
         
@@ -398,10 +413,7 @@ class Analysis(object):
         rmin = 0.0
         dr = (rmax-rmin)/Nbins
         bins = np.arange(rmin,rmax,dr)
-        vals = []
-        for i in range(0,len(bins)):
-            vals.append( [] )
-
+        vals = [[] for _ in range(len(bins))]
         # Ni = Nj = the total number of pixels in the image
         Ni = cov.shape[1]
         Nj = cov.shape[0]
@@ -419,6 +431,8 @@ class Analysis(object):
                 means[i] = np.mean(vals[i])
                 sdevs[i] = np.std(vals[i])
 
-        return bins,means,sdevs
+        if return_cov:
+            return bins, means, sdevs, cov
+        return bins, means, sdevs
 
     
