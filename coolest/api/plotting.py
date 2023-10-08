@@ -40,7 +40,7 @@ class ModelPlotter(object):
     """
 
     def __init__(self, coolest_object, coolest_directory=None, 
-                 color_bad_values='#111111'):
+                 color_bad_values='#222222'):
         self.coolest = coolest_object
         self._directory = coolest_directory
 
@@ -55,7 +55,7 @@ class ModelPlotter(object):
         #cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
         #self.cmap_flux_mod = ListedColormap(cmap_colors)
 
-    def plot_data_image(self, ax, title=None, norm=None, cmap=None, xylim=None,
+    def plot_data_image(self, ax, norm=None, cmap=None, xylim=None,
                         neg_values_as_bad=False, add_colorbar=True):
         """plt.imshow panel with the data image"""
         if cmap is None:
@@ -70,14 +70,13 @@ class ModelPlotter(object):
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label("flux")
-        if title is not None:
-            ax.set_title(title)
         return image
 
-    def plot_surface_brightness(self, ax, title=None, coordinates=None,
+    def plot_surface_brightness(self, ax, coordinates=None,
                                 extent_irreg=None, norm=None, cmap=None, 
                                 xylim=None, neg_values_as_bad=True,
-                                plot_points_irreg=False, add_colorbar=True, kwargs_light=None):
+                                plot_points_irreg=False, add_colorbar=True,
+                                kwargs_light=None):
         """plt.imshow panel showing the surface brightness of the (unlensed)
         lensing entity selected via kwargs_light (see ComposableLightModel docstring)"""
         if extent_irreg is not None:
@@ -113,11 +112,9 @@ class ModelPlotter(object):
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label("flux")
-        if title is not None:
-            ax.set_title(title)
         return image, coordinates
 
-    def plot_model_image(self, ax, title=None,
+    def plot_model_image(self, ax,
                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
                          kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None,
                          **model_image_kwargs):
@@ -138,11 +135,9 @@ class ModelPlotter(object):
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label("flux")
-        if title is not None:
-            ax.set_title(title)
         return image
 
-    def plot_model_residuals(self, ax, title=None, mask=None,
+    def plot_model_residuals(self, ax, mask=None,
                              norm=None, cmap=None, xylim=None, add_chi2_label=False, chi2_fontsize=12,
                              kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None,
                              **model_image_kwargs):
@@ -169,11 +164,9 @@ class ModelPlotter(object):
             ax.text(0.05, 0.05, r'$\chi^2_\nu$='+f'{red_chi2:.2f}', color='black', alpha=1, 
                     fontsize=chi2_fontsize, va='bottom', ha='left', transform=ax.transAxes,
                     bbox={'color': 'white', 'alpha': 0.6})
-        if title is not None:
-            ax.set_title(title)
         return image
 
-    def plot_convergence(self, ax, title=None,
+    def plot_convergence(self, ax, 
                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
                          add_colorbar=True, kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D convergence map associated to the
@@ -196,11 +189,9 @@ class ModelPlotter(object):
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label(r"$\kappa$")
-        if title is not None:
-            ax.set_title(title)
         return image
 
-    def plot_magnification(self, ax, title=None,
+    def plot_magnification(self, ax, 
                           norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
                           add_colorbar=True, coordinates=None, kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D magnification map associated to the
@@ -226,8 +217,6 @@ class ModelPlotter(object):
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label(r"$\mu$")
-        if title is not None:
-            ax.set_title(title)
         return image
 
 
@@ -255,28 +244,26 @@ class MultiModelPlotter(object):
             self.plotter_list.append(ModelPlotter(coolest, coolest_directory=c_dir,
                                                   **kwargs_plotter))
 
-    def plot_surface_brightness(self, axes, global_title=None, titles=None, **kwargs):
-        return self._plot_light_multi('plot_surface_brightness', global_title, axes, titles=titles, **kwargs)
+    def plot_surface_brightness(self, axes, **kwargs):
+        return self._plot_light_multi('plot_surface_brightness',axes, **kwargs)
 
-    def plot_data_image(self, axes, global_title=None, titles=None, **kwargs):
-        return self._plot_data_multi(global_title, axes, titles=titles, **kwargs)
+    def plot_data_image(self, axes, **kwargs):
+        return self._plot_data_multi(axes, **kwargs)
 
-    def plot_model_image(self, axes, global_title=None, titles=None, **kwargs):
-        return self._plot_lens_model_multi('plot_model_image', global_title, axes, titles=titles, **kwargs)
+    def plot_model_image(self, axes, **kwargs):
+        return self._plot_lens_model_multi('plot_model_image', axes, **kwargs)
 
-    def plot_model_residuals(self, axes, global_title=None, titles=None, **kwargs):
-        return self._plot_lens_model_multi('plot_model_residuals', global_title, axes, titles=titles, **kwargs)
+    def plot_model_residuals(self, axes, **kwargs):
+        return self._plot_lens_model_multi('plot_model_residuals', axes, **kwargs)
 
-    def plot_convergence(self, axes, global_title=None, titles=None, **kwargs):
-        return self._plot_lens_model_multi('plot_convergence', global_title, axes, titles=titles, **kwargs)
+    def plot_convergence(self, axes, **kwargs):
+        return self._plot_lens_model_multi('plot_convergence', axes, **kwargs)
 
-    def plot_magnification(self, axes, global_title=None, **kwargs):
-        return self._plot_lens_model_multi('plot_magnification', global_title, axes, titles=titles, **kwargs)
+    def plot_magnification(self, axes, **kwargs):
+        return self._plot_lens_model_multi('plot_magnification', axes, **kwargs)
 
-    def _plot_light_multi(self, method_name, global_title, axes, titles=None, **kwargs):
+    def _plot_light_multi(self, method_name, axes, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
-        if titles is None:
-            titles = self.num_models * [global_title]
         kwargs_ = copy.deepcopy(kwargs)
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
@@ -284,14 +271,12 @@ class MultiModelPlotter(object):
                 continue
             if 'kwargs_light' in kwargs:
                 kwargs_['kwargs_light'] = {k: v[i] for k, v in kwargs['kwargs_light'].items()}
-            image = getattr(plotter, method_name)(ax, title=titles[i], **kwargs_)
+            image = getattr(plotter, method_name)(ax, **kwargs_)
             image_list.append(image)
         return image_list
 
-    def _plot_mass_multi(self, method_name, global_title, axes, titles=None, **kwargs):
+    def _plot_mass_multi(self, method_name, axes, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
-        if titles is None:
-            titles = self.num_models * [global_title]
         kwargs_ = copy.deepcopy(kwargs)
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
@@ -299,14 +284,12 @@ class MultiModelPlotter(object):
                 continue
             if 'kwargs_lens_mass' in kwargs:
                 kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
-            image = getattr(plotter, method_name)(ax, title=titles[i], **kwargs_)
+            image = getattr(plotter, method_name)(ax, **kwargs_)
             image_list.append(image)
         return image_list
 
-    def _plot_lens_model_multi(self, method_name, global_title, axes, titles=None, kwargs_select=None, **kwargs):
+    def _plot_lens_model_multi(self, method_name, axes, kwargs_select=None, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
-        if titles is None:
-            titles = self.num_models * [global_title]
         kwargs_ = copy.deepcopy(kwargs)
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
@@ -316,19 +299,17 @@ class MultiModelPlotter(object):
                 kwargs_['kwargs_source'] = {k: v[i] for k, v in kwargs['kwargs_source'].items()}
             if 'kwargs_lens_mass' in kwargs:
                 kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
-            image = getattr(plotter, method_name)(ax, title=titles[i], **kwargs_)
+            image = getattr(plotter, method_name)(ax, **kwargs_)
             image_list.append(image)
         return image_list
 
-    def _plot_data_multi(self, global_title, axes, titles=None, **kwargs):
+    def _plot_data_multi(self, axes, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
-        if titles is None:
-            titles = self.num_models * [global_title]
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
             if ax is None:
                 continue
-            image = getattr(plotter, 'plot_data_image')(ax, title=titles[i], **kwargs)
+            image = getattr(plotter, 'plot_data_image')(ax, **kwargs)
             image_list.append(image)
         return image_list
 
