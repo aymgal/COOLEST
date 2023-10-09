@@ -4,6 +4,7 @@ __author__ = 'aymgal'
 import os
 import numpy as np
 # from astropy.coordinates import SkyCoord
+from skimage import measure
 
 from coolest.template.json import JSONSerializer
 
@@ -405,3 +406,30 @@ def read_sersic(light, param={}, prefix='Sersic_0_'):
     print('\t Sersic correctly added')
 
     return param
+
+
+def find_critical_lines(coordinates, mag_map):
+    from skimage import measure
+    # invert and find contours corresponding to infinite magnification (i.e., changing sign)
+    inv_mag = 1. / np.array(mag_map)
+    contours = measure.find_contours(inv_mag, 0.)
+    # convert to model coordinates
+    lines = []
+    for contour in contours:
+        curve_x, curve_y = coordinates.pixel_to_radec(contour[:, 1], contour[:, 0])
+        lines.append((np.array(curve_x), np.array(curve_y)))
+    return lines
+
+def find_caustics(crit_lines, composable_lens):
+    lines = []
+    for cline in crit_lines:
+        cl_src_x, cl_src_y = composable_lens.ray_shooting(cline[0], cline[1])
+        lines.append((np.array(cl_src_x), np.array(cl_src_y)))
+    return lines
+
+def find_all_lens_lines(coordinates, composable_lens):
+    mag_map = composable_lens.lens_mass.evaluate_magnification(*coordinates.pixel_coordinates)
+    crit_lines = find_critical_lines(coordinates, mag_map)
+    caustics = find_caustics(crit_lines, composable_lens)
+    return crit_lines, caustics
+    

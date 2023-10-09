@@ -76,7 +76,9 @@ class ModelPlotter(object):
                                 extent_irreg=None, norm=None, cmap=None, 
                                 xylim=None, neg_values_as_bad=True,
                                 plot_points_irreg=False, add_colorbar=True,
-                                kwargs_light=None):
+                                kwargs_light=None,
+                                plot_caustics=None, caustics_color='white', caustics_alpha=0.5,
+                                coordinates_lens=None, kwargs_lens_mass=None):
         """plt.imshow panel showing the surface brightness of the (unlensed)
         lensing entity selected via kwargs_light (see ComposableLightModel docstring)"""
         if extent_irreg is not None:
@@ -84,6 +86,16 @@ class ModelPlotter(object):
         if kwargs_light is None:
             kwargs_light = {}
         light_model = ComposableLightModel(self.coolest, self._directory, **kwargs_light)
+        if plot_caustics:
+            if kwargs_lens_mass is None:
+                raise ValueError("`kwargs_lens_mass` must be provided to compute caustics")
+            if coordinates_lens is None:
+                coordinates_lens = util.get_coordinates(self.coolest).create_new_coordinates(pixel_scale_factor=0.1)
+            # NOTE: here we assume that `kwargs_light` is for the source!
+            lens_model = ComposableLensModel(self.coolest, self._directory, 
+                                             kwargs_selection_source=kwargs_light,
+                                             kwargs_selection_lens_mass=kwargs_lens_mass)
+            _, caustics = util.find_all_lens_lines(coordinates_lens, lens_model)
         if cmap is None:
             cmap = self.cmap_flux
         if coordinates is not None:
@@ -109,6 +121,9 @@ class ModelPlotter(object):
                                                    neg_values_as_bad=neg_values_as_bad,
                                                    plot_points=plot_points_irreg)
                 image = None
+        if plot_caustics:
+            for caustic in caustics:
+                ax.plot(caustic[0], caustic[1], lw=1, color=caustics_color, alpha=caustics_alpha)
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label("flux")
@@ -219,6 +234,39 @@ class ModelPlotter(object):
             cb.set_label(r"$\mu$")
         return image
 
+    def plot_magnification_diff(
+            self, ax, reference_map, relative_error=True,
+            norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
+            add_colorbar=True, coordinates=None, kwargs_lens_mass=None):
+        """plt.imshow panel showing the (absolute or relative) 
+        difference between 2D magnification maps
+        """
+        if kwargs_lens_mass is None:
+            kwargs_lens_mass = {}
+        mass_model = ComposableMassModel(self.coolest, self._directory,
+                                        **kwargs_lens_mass)
+        if cmap is None:
+            cmap = self.cmap_res
+        if norm is None:
+            norm = Normalize(-1, 1)
+        if coordinates is None:
+            coordinates = util.get_coordinates(self.coolest)
+        x, y = coordinates.pixel_coordinates
+        extent = coordinates.plt_extent
+        image = mass_model.evaluate_magnification(x, y)
+        if relative_error is True:
+            diff = (reference_map - image) / reference_map
+        else:
+            diff = reference_map - image
+        ax, im = plut.plot_regular_grid(ax, diff, extent=extent, 
+                                cmap=cmap,
+                                neg_values_as_bad=neg_values_as_bad, 
+                                norm=norm, xylim=xylim)
+        if add_colorbar:
+            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb.set_label(r"$\mu$")
+        return image
+
 
 class MultiModelPlotter(object):
     """Wrapper around a set of ModelPlotter instances to produce panels that
@@ -262,6 +310,9 @@ class MultiModelPlotter(object):
     def plot_magnification(self, axes, **kwargs):
         return self._plot_lens_model_multi('plot_magnification', axes, **kwargs)
 
+    def plot_magnification_diff(self, axes, *args, **kwargs):
+        return self._plot_lens_model_multi('plot_magnification_diff', axes, *args, **kwargs)
+
     def _plot_light_multi(self, method_name, axes, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         kwargs_ = copy.deepcopy(kwargs)
@@ -271,6 +322,8 @@ class MultiModelPlotter(object):
                 continue
             if 'kwargs_light' in kwargs:
                 kwargs_['kwargs_light'] = {k: v[i] for k, v in kwargs['kwargs_light'].items()}
+            if 'kwargs_lens_mass' in kwargs:  # used for over-plotting caustics
+                kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
             image = getattr(plotter, method_name)(ax, **kwargs_)
             image_list.append(image)
         return image_list
@@ -288,7 +341,7 @@ class MultiModelPlotter(object):
             image_list.append(image)
         return image_list
 
-    def _plot_lens_model_multi(self, method_name, axes, kwargs_select=None, **kwargs):
+    def _plot_lens_model_multi(self, method_name, axes, *args, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         kwargs_ = copy.deepcopy(kwargs)
         image_list = []
@@ -299,7 +352,7 @@ class MultiModelPlotter(object):
                 kwargs_['kwargs_source'] = {k: v[i] for k, v in kwargs['kwargs_source'].items()}
             if 'kwargs_lens_mass' in kwargs:
                 kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
-            image = getattr(plotter, method_name)(ax, **kwargs_)
+            image = getattr(plotter, method_name)(ax, *args, **kwargs_)
             image_list.append(image)
         return image_list
 
