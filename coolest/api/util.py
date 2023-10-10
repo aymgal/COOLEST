@@ -407,9 +407,7 @@ def read_sersic(light, param={}, prefix='Sersic_0_'):
 
     return param
 
-
 def find_critical_lines(coordinates, mag_map):
-    from skimage import measure
     # invert and find contours corresponding to infinite magnification (i.e., changing sign)
     inv_mag = 1. / np.array(mag_map)
     contours = measure.find_contours(inv_mag, 0.)
@@ -421,6 +419,7 @@ def find_critical_lines(coordinates, mag_map):
     return lines
 
 def find_caustics(crit_lines, composable_lens):
+    """`composable_lens` can be an instance of `ComposableLens` or `ComposableMass`"""
     lines = []
     for cline in crit_lines:
         cl_src_x, cl_src_y = composable_lens.ray_shooting(cline[0], cline[1])
@@ -428,7 +427,15 @@ def find_caustics(crit_lines, composable_lens):
     return lines
 
 def find_all_lens_lines(coordinates, composable_lens):
-    mag_map = composable_lens.lens_mass.evaluate_magnification(*coordinates.pixel_coordinates)
+    """`composable_lens` can be an instance of `ComposableLens` or `ComposableMass`"""
+    from coolest.api.composable_models import ComposableLensModel, ComposableMassModel  # avoiding circular imports 
+    if isinstance(composable_lens, ComposableLensModel):
+        mag_fn = composable_lens.lens_mass.evaluate_magnification
+    elif isinstance(composable_lens, ComposableMassModel):
+        mag_fn = composable_lens.evaluate_magnification
+    else:
+        raise ValueError("`composable_lens` must be a ComposableLensModel or a ComposableMassModel.")
+    mag_map = mag_fn(*coordinates.pixel_coordinates)
     crit_lines = find_critical_lines(coordinates, mag_map)
     caustics = find_caustics(crit_lines, composable_lens)
     return crit_lines, caustics

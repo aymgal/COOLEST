@@ -199,7 +199,7 @@ def cax_colorbar(fig, cax, norm=None, cmap=None, mappable=None, label=None, font
     if label is not None:
         cb.set_label(label, fontsize=fontsize, **label_kwargs)
 
-def plot_regular_grid(ax, image_, neg_values_as_bad=True, xylim=None, **imshow_kwargs):
+def plot_regular_grid(ax, image_, neg_values_as_bad=False, xylim=None, **imshow_kwargs):
     if neg_values_as_bad:
         image = np.copy(image_)
         image[image < 0] = np.nan
@@ -212,7 +212,7 @@ def plot_regular_grid(ax, image_, neg_values_as_bad=True, xylim=None, **imshow_k
     ax.yaxis.set_major_locator(plt.MaxNLocator(3))
     return ax, im
 
-def plot_irregular_grid(ax, points, xylim, neg_values_as_bad=True,
+def plot_irregular_grid(ax, points, xylim, neg_values_as_bad=False,
                             norm=None, cmap=None, plot_points=False):
     x, y, z = points
     im = plot_voronoi(ax, x, y, z, neg_values_as_bad=neg_values_as_bad, 

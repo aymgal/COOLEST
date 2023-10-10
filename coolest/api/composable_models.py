@@ -275,6 +275,12 @@ class ComposableMassModel(BaseComposableModel):
         mu = 1. / det_A
         return mu
 
+    def ray_shooting(self, x, y):
+        """evaluates the lens equation beta = theta - alpha(theta)"""
+        alpha_x, alpha_y = self.evaluate_deflection(x, y)
+        x_rs, y_rs = x - alpha_x, y - alpha_y
+        return x_rs, y_rs
+
 
 class ComposableLensModel(object):
     """Given a COOLEST object, evaluates a selection of entity and 
@@ -382,6 +388,4 @@ class ComposableLensModel(object):
 
     def ray_shooting(self, x, y):
         """evaluates the lens equation beta = theta - alpha(theta)"""
-        alpha_x, alpha_y = self.lens_mass.evaluate_deflection(x, y)
-        x_rs, y_rs = x - alpha_x, y - alpha_y
-        return x_rs, y_rs
+        return self.lens_mass.ray_shooting(x, y)

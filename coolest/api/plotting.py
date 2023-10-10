@@ -92,10 +92,8 @@ class ModelPlotter(object):
             if coordinates_lens is None:
                 coordinates_lens = util.get_coordinates(self.coolest).create_new_coordinates(pixel_scale_factor=0.1)
             # NOTE: here we assume that `kwargs_light` is for the source!
-            lens_model = ComposableLensModel(self.coolest, self._directory, 
-                                             kwargs_selection_source=kwargs_light,
-                                             kwargs_selection_lens_mass=kwargs_lens_mass)
-            _, caustics = util.find_all_lens_lines(coordinates_lens, lens_model)
+            mass_model = ComposableMassModel(self.coolest, self._directory, **kwargs_lens_mass)
+            _, caustics = util.find_all_lens_lines(coordinates_lens, mass_model)
         if cmap is None:
             cmap = self.cmap_flux
         if coordinates is not None:
@@ -181,7 +179,7 @@ class ModelPlotter(object):
                     bbox={'color': 'white', 'alpha': 0.6})
         return image
 
-    def plot_convergence(self, ax, 
+    def plot_convergence(self, ax, coordinates=None,
                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
                          add_colorbar=True, kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D convergence map associated to the
@@ -193,7 +191,8 @@ class ModelPlotter(object):
                                          **kwargs_lens_mass)
         if cmap is None:
             cmap = self.cmap_conv
-        coordinates = util.get_coordinates(self.coolest)
+        if coordinates is None:
+            coordinates = util.get_coordinates(self.coolest)
         extent = coordinates.plt_extent
         x, y = coordinates.pixel_coordinates
         image = mass_model.evaluate_convergence(x, y)
@@ -205,9 +204,47 @@ class ModelPlotter(object):
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
             cb.set_label(r"$\kappa$")
         return image
+    
+    def plot_convergence_diff(
+            self, ax, reference_map, relative_error=True,    
+            norm=None, cmap=None, xylim=None, coordinates=None,
+            add_colorbar=True, kwargs_lens_mass=None,
+            plot_crit_lines=False, crit_lines_color='black', crit_lines_alpha=0.5):
+        """plt.imshow panel showing the 2D convergence map associated to the
+        selected lensing entities (see ComposableMassModel docstring)
+        """
+        if kwargs_lens_mass is None:
+            kwargs_lens_mass = {}
+        mass_model = ComposableMassModel(self.coolest, self._directory,
+                                         **kwargs_lens_mass)
+        if cmap is None:
+            cmap = self.cmap_res
+        if norm is None:
+            norm = Normalize(-1, 1)
+        if coordinates is None:
+            coordinates = util.get_coordinates(self.coolest)
+        if plot_crit_lines:
+            critical_lines, _ = util.find_all_lens_lines(coordinates, mass_model)
+        extent = coordinates.plt_extent
+        x, y = coordinates.pixel_coordinates
+        image = mass_model.evaluate_convergence(x, y)
+        if relative_error is True:
+            diff = (reference_map - image) / reference_map
+        else:
+            diff = reference_map - image
+        ax, im = plut.plot_regular_grid(ax, diff, extent=extent, 
+                                cmap=cmap, 
+                                norm=norm, xylim=xylim)
+        if plot_crit_lines:
+            for cline in critical_lines:
+                ax.plot(cline[0], cline[1], lw=1, color=crit_lines_color, alpha=crit_lines_alpha)
+        if add_colorbar:
+            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb.set_label(r"$\kappa$")
+        return image
 
     def plot_magnification(self, ax, 
-                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
+                          norm=None, cmap=None, xylim=None,
                           add_colorbar=True, coordinates=None, kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D magnification map associated to the
         selected lensing entities (see ComposableMassModel docstring)
@@ -226,8 +263,7 @@ class ModelPlotter(object):
         extent = coordinates.plt_extent
         image = mass_model.evaluate_magnification(x, y)
         ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
-                                cmap=cmap,
-                                neg_values_as_bad=neg_values_as_bad, 
+                                cmap=cmap, 
                                 norm=norm, xylim=xylim)
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
@@ -236,7 +272,7 @@ class ModelPlotter(object):
 
     def plot_magnification_diff(
             self, ax, reference_map, relative_error=True,
-            norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
+            norm=None, cmap=None, xylim=None,
             add_colorbar=True, coordinates=None, kwargs_lens_mass=None):
         """plt.imshow panel showing the (absolute or relative) 
         difference between 2D magnification maps
@@ -260,7 +296,6 @@ class ModelPlotter(object):
             diff = reference_map - image
         ax, im = plut.plot_regular_grid(ax, diff, extent=extent, 
                                 cmap=cmap,
-                                neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm, xylim=xylim)
         if add_colorbar:
             cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
@@ -309,6 +344,9 @@ class MultiModelPlotter(object):
 
     def plot_magnification(self, axes, **kwargs):
         return self._plot_lens_model_multi('plot_magnification', axes, **kwargs)
+
+    def plot_convergence_diff(self, axes, *args, **kwargs):
+        return self._plot_lens_model_multi('plot_convergence_diff', axes, *args, **kwargs)
 
     def plot_magnification_diff(self, axes, *args, **kwargs):
         return self._plot_lens_model_multi('plot_magnification_diff', axes, *args, **kwargs)
