@@ -323,7 +323,8 @@ class Analysis(object):
 
     def two_point_correlation(self, Nbins=100, rmax=None, normalize=False, 
                               use_profile_coordinates=True, coordinates=None, 
-                              min_flux=None, min_flux_frac=None, return_cov=False,
+                              min_flux=None, min_flux_frac=None, 
+                              return_cov=False, return_map=False,
                               **kwargs_selection):
         """
         The two point correlation function can be obtained from the covariance matrix of an image and the distances between its pixels.
@@ -354,6 +355,8 @@ class Analysis(object):
             If `min_flux` is not None, `min_flux_frac` is ignored.
             Default is None (i.e., no thresholding).
         return_cov : bool, optional
+            If True, also returns the full covariance matrix. Default is False.
+        return_cov : bool, optional
             If True, also returns the full covariance matrix. Default is False. 
 
         Returns
@@ -381,11 +384,18 @@ class Analysis(object):
             light_image = light_model.evaluate_surface_brightness(x, y)
         
         light_image = np.nan_to_num(light_image, nan=0.)
+        cov_mask = np.ones_like(light_image)
         if min_flux is not None:
+            print(f"Setting to zero any flux below {min_flux}.")
             light_image[light_image < min_flux] = 0.
+            cov_mask[light_image < min_flux] = 0.
         elif min_flux_frac is not None:
-            light_image[light_image < min_flux_frac*light_image.max()] = 0.
-            
+            min_flux = min_flux_frac*light_image.max()
+            print(f"Setting to zero any flux below {min_flux}.")
+            light_image[light_image < min_flux] = 0.
+            cov_mask[light_image < min_flux] = 0.
+        cov_mask = cov_mask.astype(bool)
+
         extent = coordinates.extent
         dpix = coordinates.pixel_size
         
@@ -397,17 +407,12 @@ class Analysis(object):
             light_image = np.divide(light_image,max_image)
 
         # Fourier transform image
-        fouriertf = np.fft.fft2(light_image,norm="ortho")
+        fouriertf = np.fft.fft2(light_image, norm='ortho')
         # Power spectrum (the square of the signal)
         absval2 = fouriertf.real**2 + fouriertf.imag**2
         # Covariance matrix (the inverse fourier transform of the power spectrum)
-        complex_cov = np.fft.fftshift(np.fft.ifft2(absval2,norm="ortho"))
+        complex_cov = np.fft.fftshift(np.fft.ifft2(absval2, norm='ortho'))
         cov = complex_cov.real
-
-        ## Write the covariance matrix
-        #newhdu = fits.PrimaryHDU(corr)
-        #newhdu.writeto('matrix_strue.fits',overwrite=True)
-
         
         # Bin the 2D covariance matrix into radial bins
         rmin = 0.0
@@ -431,8 +436,12 @@ class Analysis(object):
                 means[i] = np.mean(vals[i])
                 sdevs[i] = np.std(vals[i])
 
-        if return_cov:
+        if return_cov and return_map:
+            return bins, means, sdevs, cov, light_image
+        elif return_cov:
             return bins, means, sdevs, cov
+        elif return_map:
+            return bins, means, sdevs, light_image
         return bins, means, sdevs
 
     
