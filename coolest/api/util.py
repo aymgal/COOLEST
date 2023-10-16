@@ -124,14 +124,14 @@ def downsampling(image, factor=1):
         raise ValueError(f"Downscaling factor {factor} is not possible with shape ({nx}, {ny})")
 
 
-def read_json_param(file_list, file_names, lens_light=False):
+def split_lens_source_params(coolest_list, name_list, lens_light=False):
     """
     Read several json files already containing a model with the results of this model fitting
 
     INPUT
     -----
     file_list: list, list of path or names of the file to read
-    file_names: list, list of shorter names to distinguish the files
+    name_list: list, list of shorter names to distinguish the files
     lens_light: bool, if True, computes the lens light kwargs as well (not yet implemented)
 
     OUTPUT
@@ -141,18 +141,17 @@ def read_json_param(file_list, file_names, lens_light=False):
 
     param_all_lens = {}
     param_all_source = {}
-    for idx_file, file_name in enumerate(file_list):
+    for idx_file, file_name in enumerate(name_list):
 
-        print(file_names[idx_file])
-        decoder = JSONSerializer(file_name, indent=2)
-        lens_coolest = decoder.load()
+        print(file_name)
+        coolest_obj = coolest_list[idx_file]
 
-        if lens_coolest.mode == 'MAP':
-            print('LENS COOLEST : ', lens_coolest.mode)
+        if coolest_obj.mode == 'MAP':
+            print('LENS COOLEST : ', coolest_obj.mode)
         else:
-            print('LENS COOLEST IS NOT MAP, BUT IS ', lens_coolest.mode)
+            print('LENS COOLEST IS NOT MAP, BUT IS ', coolest_obj.mode)
 
-        lensing_entities_list = lens_coolest.lensing_entities
+        lensing_entities_list = coolest_obj.lensing_entities
 
         param_lens = {}
         param_source = {}
@@ -223,8 +222,8 @@ def read_json_param(file_list, file_names, lens_light=False):
                 else:
                     print("Lensing entity of type ", lensing_enity.type, " is unknown.")
 
-        param_all_lens[file_names[idx_file]] = param_lens
-        param_all_source[file_names[idx_file]] = param_source
+        param_all_lens[name_list[idx_file]] = param_lens
+        param_all_source[name_list[idx_file]] = param_source
 
     return param_all_lens, param_all_source
 

@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from matplotlib.colors import ListedColormap
-from getdist import plots,chains,MCSamples
+from getdist import plots, chains, MCSamples
 
 from coolest.api.analysis import Analysis
 from coolest.api.composable_models import *
@@ -405,27 +405,315 @@ class MultiModelPlotter(object):
         return image_list
 
 
-class Comparison_analytical(object):
+class ParametersPlotter(object):
     """Handles plot of analytical models in a comparative way
 
     Parameters
     ----------
-    coolest_file_list : list
-        List of paths to COOLEST templates
-    nickname_file_list : list
-        List of shorter names related to each COOLEST model
+    parameter_id_list : array
+        A list of parameter unique ids obtained from lensing entities. Their order determines the order of the plot panels.
+    coolest_objects : array
+        A list of coolest objects that have a chain file associated to them.
+    coolest_directories : array
+        A list of paths matching the coolest files in 'chain_objs'.
+    coolest_names : array, optional
+        A list of labels for the coolest models in the 'chain_objs' list. Must have the same order as 'chain_objs'.
+    ref_coolest_objects : array, optional
+        A list of coolest objects that will be used as point estimates.
+    ref_coolest_directories : array
+        A list of paths matching the coolest files in 'point_estimate_objs'.
+    ref_coolest_names : array, optional
+        A list of labels for the models in the 'point_estimate_objs' list. Must have the same order as 'point_estimate_objs'.
     posterior_bool_list : list
         List of bool to toggle errorbars on point-estimate values
+    colors : list
+        List of pyplot color names to associate to each coolest model.
     """
+    def __init__(self, parameter_id_list, coolest_objects, coolest_directories=None, coolest_names=None,
+                 ref_coolest_objects=None, ref_coolest_directories=None, ref_coolest_names=None,
+                 posterior_bool_list=None, colors=None):
+        self.parameter_id_list = parameter_id_list
+        self.coolest_objects = coolest_objects
+        self.coolest_directories = coolest_directories
+        if coolest_names is None:
+            coolest_names = ["Model "+str(i) for i in range(len(coolest_objects))]
+        self.coolest_names = coolest_names
+        self.ref_coolest_objects = ref_coolest_objects
+        self.ref_coolest_directories = ref_coolest_directories
+        self.ref_coolest_names = ref_coolest_names
+        self.ref_file_names = ref_coolest_names
 
-    def __init__(self,coolest_file_list, nickname_file_list, posterior_bool_list):
-        self.file_names = nickname_file_list
-        self.posterior_bool_list = posterior_bool_list
-        self.param_lens, self.param_source = util.read_json_param(coolest_file_list,
-                                                                  self.file_names, 
-                                                                  lens_light=False)
+        self.num_models = len(self.coolest_objects)
+        self.num_params = len(self.parameter_id_list)
+        if colors is None:
+            colors = plt.cm.turbo(np.linspace(0.1, 0.9, self.num_params))
+        self.colors = colors
+        self.linestyles = ['--', ':', '-.', '-']
+        self.markers    = ['s', '^', 'o', '*']
 
-    def plotting_routine(self,param_dict,idx_file=0):
+        # self.posterior_bool_list = posterior_bool_list
+        # self.param_lens, self.param_source = util.split_lens_source_params(
+        #     self.coolest_objects, self.coolest_names, lens_light=False)
+
+    def init_getdist(self, shift_sample_list, settings_mcsamples=None):
+        """Initializes the getdist plotter.
+
+        Parameters
+        ----------
+        shift_sample_list : dict
+            Dictionary keyed by parameter ID to apply a uniform additive shift to
+            all samples of that parameters posterior distribution.
+        settings_mcsamples : dict, optional
+            Keyword arguments passed as the `settings` argument of getdist.MCSamples, by default None
+
+        Raises
+        ------
+        ValueError
+            If the csv file containing samples is is not coma (,) separated.
+        """
+        chains.print_load_details = False # Just to silence messages
+        parameter_id_set = set(self.parameter_id_list)
+
+        if shift_sample_list is None:
+            shift_sample_list = [None]*self.num_models
+        
+        # Get the values of the point_estimates
+        point_estimates = []
+        if self.ref_coolest_objects is not None:
+            for coolest_obj in self.ref_coolest_objects:
+                values = []
+                for par in self.parameter_id_list:
+                    param = coolest_obj.lensing_entities.get_parameter_from_id(par)
+                    val = param.point_estimate.value
+                    if val is None:
+                        values.append(None)
+                    else:
+                        values.append(val)
+                point_estimates.append(values)
+
+        mcsamples = []
+        for i in range(self.num_models):
+            chain_file = os.path.join(self.coolest_directories[i],self.coolest_objects[i].meta["chain_file_name"]) # Here get the chain file path for each coolest object
+
+            # Each chain file can have a different number of free parameters
+            f = open(chain_file)
+            header = f.readline()
+            f.close()
+
+            if ';' in header:
+                raise ValueError("Columns must be coma-separated (no semi-colon) in chain file.")
+
+            chain_file_headers = header.split(',')
+            num_cols = len(chain_file_headers)
+            chain_file_headers.pop() # Remove the last column name that is the probability weights
+            chain_file_headers_set = set(chain_file_headers)
+            
+            # Check that the given parameters are a subset of those in the chain file
+            assert parameter_id_set.issubset(chain_file_headers_set), "Not all given parameters are free parameters for model %d (not in the chain file: %s)!" % (i,chain_file)
+
+            # Set the labels for the parameters in the chain file
+            labels = []
+            for par_id in self.parameter_id_list:
+                param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
+                labels.append(param.latex_str.strip('$'))
+
+            # Read parameter values and probability weights
+            column_indices = [chain_file_headers.index(par_id) for par_id in self.parameter_id_list]
+            columns_to_read = sorted(column_indices) + [num_cols-1]  # add last one for probability weights
+            samples = pd.read_csv(chain_file, usecols=columns_to_read, delimiter=',')
+        
+            # Re-order columnds to match self.parameter_id_list and labels
+            sample_par_values = np.array(samples[self.parameter_id_list])
+
+            # If needed, shift samples by a constant
+            if shift_sample_list[i] is not None:
+                for param_id, value in shift_sample_list[i].items():
+                    sample_par_values[:, self.parameter_id_list.index(param_id)] += value
+                    print(f"INFO: posterior for parameter '{param_id}' from model '{self.coolest_names[i]}' "
+                        f"has been shifted by {value}.")
+
+            # Clean-up the probability weights
+            mypost = np.array(samples['probability_weights'])
+            min_non_zero = np.min(mypost[np.nonzero(mypost)])
+            sample_prob_weight = np.where(mypost<min_non_zero,min_non_zero,mypost)
+            #sample_prob_weight = mypost
+
+            # Create MCSamples object
+            mysample = MCSamples(samples=sample_par_values,names=self.parameter_id_list,labels=labels,settings=settings_mcsamples)
+            mysample.reweightAddingLogLikes(-np.log(sample_prob_weight))
+            mcsamples.append(mysample)
+
+        self.mcsamples = mcsamples
+        self.ref_values = point_estimates
+        self.ref_markers = [dict(zip(self.parameter_id_list, values)) for values in self.ref_values]
+                    
+    def plot_triangle_getdist(self, subplot_size=1, filled_contours=True, angles_range=None, 
+                              linewidth_hist=2, linewidth_cont=1, marker_size=15):
+        """Corner array of subplots using getdist.triangle_plot method.
+
+        Parameters
+        ----------
+        subplot_size : int, optional
+            Size of the getdist plot, by default 1
+        filled_contours : bool, optional
+            Wether or not to fill the 2D contours, by default True
+        angles_range : _type_, optional
+            Restrict the range of angle (containing 'phi' in their name) parameters, by default None
+        linewidth_hist : int, optional
+            Line width for 1D histograms, by default 2
+        linewidth_cont : int, optional
+            Line width for 2D contours, by default 1
+        marker_size : int, optional
+            Size of the reference (scatter) markers on 2D contours plots, by default 15
+
+        Returns
+        -------
+        GetDistPlotter
+            Instance of GetDistPlotter corresponding to the figure
+        """
+        # Make the plot
+        g = plots.get_subplot_plotter(subplot_size=subplot_size)    
+        g.triangle_plot(self.mcsamples,
+                            params=self.parameter_id_list,
+                            legend_labels=self.coolest_names,
+                            filled=filled_contours,
+                            colors=self.colors,
+                            line_args=[{'ls':'-', 'lw': linewidth_hist, 'color': c} for c in self.colors], 
+                            contour_colors=self.colors,
+                            contours_lws=linewidth_cont)
+        
+        # Add marker lines and points
+        for k in range(0, len(self.ref_values)):
+            g.add_param_markers(self.ref_markers[k], color='black', ls=self.linestyles[k], 
+                                lw=(linewidth_cont+linewidth_hist)/2)
+            for i in range(0,self.num_params):
+                val_x = self.ref_values[k][i]
+                for j in range(i+1,self.num_params):
+                    val_y = self.ref_values[k][j]
+                    if val_x is not None and val_y is not None:
+                        g.subplots[j,i].scatter(val_x,val_y,s=marker_size,facecolors='black',color='black',marker=self.markers[k])
+
+
+        # Set default ranges for angles
+        if angles_range is None:
+            angles_range = (-90, 90)
+        for i in range(0, len(self.parameter_id_list)):
+            dum = self.parameter_id_list[i].split('-')
+            name = dum[-1]
+            if name in ['phi','phi_ext']:
+                xlim = g.subplots[i,i].get_xlim()
+                #print(xlim)
+            
+                if xlim[0] < -90:
+                    for ax in g.subplots[i:,i]:
+                        ax.set_xlim(left=angles_range[0])
+                    for ax in g.subplots[i,:i]:
+                        ax.set_ylim(bottom=angles_range[0])
+                if xlim[1] > 90:
+                    for ax in g.subplots[i:,i]:
+                        ax.set_xlim(right=angles_range[1])
+                    for ax in g.subplots[i,:i]:
+                        ax.set_ylim(top=angles_range[1])
+        return g
+    
+    def plot_rectangle_getdist(self, x_param_ids, y_param_ids, subplot_size=1, 
+                               legend_ncol=None, filled_contours=True, linewidth=1,
+                               marker_size=15):
+        """Array of (2D contours) subplots using getdist.rectangle_plot method.
+
+        Parameters
+        ----------
+        subplot_size : int, optional
+            Size of the getdist plot, by default 1
+        filled_contours : bool, optional
+            Wether or not to fill the 2D contours, by default True
+        linewidth : int, optional
+            Line width for 2D contours, by default 1
+        marker_size : int, optional
+            Size of the reference (scatter) markers on 2D contours plots, by default 15
+        legend_ncol : number of columns in the legend
+
+        Returns
+        -------
+        GetDistPlotter
+            Instance of GetDistPlotter corresponding to the figure
+        """
+        if legend_ncol is None:
+            legend_ncol = 3
+        # Make the plot
+        g = plots.get_subplot_plotter(subplot_size=subplot_size)    
+        g.rectangle_plot(x_param_ids, y_param_ids, roots=self.mcsamples,
+                            legend_labels=self.coolest_names,
+                            filled=filled_contours,
+                            colors=self.colors,
+                            legend_ncol=legend_ncol,
+                            line_args=[{'ls':'-', 'lw': linewidth, 'color': c} for c in self.colors], 
+                            contour_colors=self.colors)
+        for k in range(len(self.ref_markers)):
+            g.add_param_markers(self.ref_markers[k], color='black', ls=self.linestyles[k], lw=linewidth)
+            for j, key_x in enumerate(x_param_ids):
+                val_x = self.ref_markers[k][key_x]
+                for i, key_y in enumerate(y_param_ids):
+                    val_y = self.ref_markers[k][key_y]
+                    if val_x is not None and val_y is not None:
+                        g.subplots[i, j].scatter(val_x,val_y,s=marker_size,facecolors='black',color='black',marker=self.markers[k])
+        return g
+    
+    def plot_1d_getdist(self, subplot_size=1, num_columns=None, legend_ncol=None, linewidth=1):
+        """Array of 1D histogram subplots using getdist.plots_1d method.
+
+        Parameters
+        ----------
+        subplot_size : int, optional
+            Size of the getdist plot, by default 1
+        linewidth : int, optional
+            Line width for 2D contours, by default 1
+        marker_size : int, optional
+            Size of the reference (scatter) markers on 2D contours plots, by default 15
+        legend_ncol : int, optional
+            number of columns in the legend
+        num_columns : int, optional
+            number of columns of the subplot array
+
+        Returns
+        -------
+        GetDistPlotter
+            Instance of GetDistPlotter corresponding to the figure
+        """
+        if num_columns is None:
+            num_columns = self.num_models//2+1
+        if legend_ncol is None:
+            legend_ncol = 3
+        # Make the plot
+        g = plots.get_subplot_plotter(subplot_size=subplot_size)    
+        g.plots_1d(self.mcsamples,
+                   params=self.parameter_id_list,
+                   legend_labels=self.coolest_names,
+                   colors=self.colors,
+                   share_y=True,
+                   line_args=[{'ls':'-', 'lw': linewidth, 'color': c} for c in self.colors],
+                   nx=num_columns, legend_ncol=legend_ncol,
+        )
+        for k in range(len(self.ref_values)):
+            g.add_param_markers(self.ref_markers[k], color='black', ls=self.linestyles[k], lw=linewidth)
+        # for k in range(0, len(self.ref_values)):
+        #     # Add vertical and horizontal lines
+        #     for i in range(0, self.num_params):
+        #         val = self.ref_values[k][i]
+        #         ax = g.subplots.flatten()[i]
+        #         if val is not None:
+        #             ax.axvline(val, color='black', ls=self.linestyles[k], alpha=1.0, lw=1)
+        return g
+
+    def plot_source(self, idx_file=0):
+        f,ax = self.plotting_routine(self.param_source,idx_file)
+        return f,ax
+    
+    def plot_lens(self, idx_file=0):
+        f,ax = self.plotting_routine(self.param_lens,idx_file)
+        return f,ax
+
+    def plotting_routine(self, param_dict, idx_file=0):
         """
         plot the parameters
 
@@ -497,195 +785,183 @@ class Comparison_analytical(object):
             ax[-1, idx].axis('off')
         plt.tight_layout()
         plt.show()
-        return f,ax
+        return f, ax
+
+# def plot_corner(parameter_id_list, 
+#                 chain_objs, chain_dirs, chain_names=None, 
+#                 point_estimate_objs=None, point_estimate_dirs=None, point_estimate_names=None, 
+#                 colors=None, labels=None, subplot_size=1, mc_samples_kwargs=None, 
+#                 filled_contours=True, angles_range=None, shift_sample_list=None):
+#     """
+#     Adding this as just a function for the moment.
+#     Takes a list of COOLEST files as input, which must have a chain file associated to them, and returns a corner plot.
+
+#     Parameters
+#     ----------
+#     parameter_id_list : array
+#         A list of parameter unique ids obtained from lensing entities. Their order determines the order of the plot panels.
+#     chain_objs : array
+#         A list of coolest objects that have a chain file associated to them.
+#     chain_dirs : array
+#         A list of paths matching the coolest files in 'chain_objs'.
+#     chain_names : array, optional
+#         A list of labels for the coolest models in the 'chain_objs' list. Must have the same order as 'chain_objs'.
+#     point_estimate_objs : array, optional
+#         A list of coolest objects that will be used as point estimates.
+#     point_estimate_dirs : array
+#         A list of paths matching the coolest files in 'point_estimate_objs'.
+#     point_estimate_names : array, optional
+#         A list of labels for the models in the 'point_estimate_objs' list. Must have the same order as 'point_estimate_objs'.
+#     labels : dict, optional
+#         A dictionary matching the parameter_id_list entries to some human-readable labels.
+
+#     Returns
+#     -------
+#     An image
+#     """
+
+#     chains.print_load_details = False # Just to silence messages
+#     parameter_id_set = set(parameter_id_list)
+#     Npars = len(parameter_id_list)
+#     Nobjs = len(chain_objs)
     
-    def plot_source(self,idx_file=0):
-        f,ax = self.plotting_routine(self.param_source,idx_file)
-        return f,ax
+#     # Set the chain names
+#     if chain_names is None:
+#         chain_names = ["chain "+str(i) for i in range(Nobjs)]
     
-    def plot_lens(self,idx_file=0):
-        f,ax = self.plotting_routine(self.param_lens,idx_file)
-        return f,ax
-
-
-
-
-
-def plot_corner(parameter_id_list, 
-                chain_objs, chain_dirs, chain_names=None, 
-                point_estimate_objs=None, point_estimate_dirs=None, point_estimate_names=None, 
-                colors=None, labels=None, subplot_size=1, mc_samples_kwargs=None, 
-                filled_contours=True, angles_range=None, shift_sample_list=None):
-    """
-    Adding this as just a function for the moment.
-    Takes a list of COOLEST files as input, which must have a chain file associated to them, and returns a corner plot.
-
-    Parameters
-    ----------
-    parameter_id_list : array
-        A list of parameter unique ids obtained from lensing entities. Their order determines the order of the plot panels.
-    chain_objs : array
-        A list of coolest objects that have a chain file associated to them.
-    chain_dirs : array
-        A list of paths matching the coolest files in 'chain_objs'.
-    chain_names : array, optional
-        A list of labels for the coolest models in the 'chain_objs' list. Must have the same order as 'chain_objs'.
-    point_estimate_objs : array, optional
-        A list of coolest objects that will be used as point estimates.
-    point_estimate_dirs : array
-        A list of paths matching the coolest files in 'point_estimate_objs'.
-    point_estimate_names : array, optional
-        A list of labels for the models in the 'point_estimate_objs' list. Must have the same order as 'point_estimate_objs'.
-    labels : dict, optional
-        A dictionary matching the parameter_id_list entries to some human-readable labels.
-
-    Returns
-    -------
-    An image
-    """
-
-    chains.print_load_details = False # Just to silence messages
-    parameter_id_set = set(parameter_id_list)
-    Npars = len(parameter_id_list)
-    Nobjs = len(chain_objs)
+#     if shift_sample_list is None:
+#         shift_sample_list = [None]*Nobjs
     
-    # Set the chain names
-    if chain_names is None:
-        chain_names = ["chain "+str(i) for i in range(Nobjs)]
-    
-    if shift_sample_list is None:
-        shift_sample_list = [None]*Nobjs
-    
-    # Get the values of the point_estimates
-    point_estimates = []
-    if point_estimate_objs is not None:
-        for coolest_obj in point_estimate_objs:
-            values = []
-            for par in parameter_id_list:
-                param = coolest_obj.lensing_entities.get_parameter_from_id(par)
-                val = param.point_estimate.value
-                if val is None:
-                    values.append(None)
-                else:
-                    values.append(val)
-            point_estimates.append(values)
+#     # Get the values of the point_estimates
+#     point_estimates = []
+#     if point_estimate_objs is not None:
+#         for coolest_obj in point_estimate_objs:
+#             values = []
+#             for par in parameter_id_list:
+#                 param = coolest_obj.lensing_entities.get_parameter_from_id(par)
+#                 val = param.point_estimate.value
+#                 if val is None:
+#                     values.append(None)
+#                 else:
+#                     values.append(val)
+#             point_estimates.append(values)
 
 
             
-    mcsamples = []
-    for i in range(Nobjs):
-        chain_file = os.path.join(chain_dirs[i],chain_objs[i].meta["chain_file_name"]) # Here get the chain file path for each coolest object
+#     mcsamples = []
+#     for i in range(Nobjs):
+#         chain_file = os.path.join(chain_dirs[i],chain_objs[i].meta["chain_file_name"]) # Here get the chain file path for each coolest object
 
-        # Each chain file can have a different number of free parameters
-        f = open(chain_file)
-        header = f.readline()
-        f.close()
+#         # Each chain file can have a different number of free parameters
+#         f = open(chain_file)
+#         header = f.readline()
+#         f.close()
 
-        if ';' in header:
-            raise ValueError("Columns must be coma-separated (no semi-colon) in chain file.")
+#         if ';' in header:
+#             raise ValueError("Columns must be coma-separated (no semi-colon) in chain file.")
 
-        chain_file_headers = header.split(',')
-        num_cols = len(chain_file_headers)
-        chain_file_headers.pop() # Remove the last column name that is the probability weights
-        chain_file_headers_set = set(chain_file_headers)
+#         chain_file_headers = header.split(',')
+#         num_cols = len(chain_file_headers)
+#         chain_file_headers.pop() # Remove the last column name that is the probability weights
+#         chain_file_headers_set = set(chain_file_headers)
         
-        # Check that the given parameters are a subset of those in the chain file
-        assert parameter_id_set.issubset(chain_file_headers_set), "Not all given parameters are free parameters for model %d (not in the chain file: %s)!" % (i,chain_file)
+#         # Check that the given parameters are a subset of those in the chain file
+#         assert parameter_id_set.issubset(chain_file_headers_set), "Not all given parameters are free parameters for model %d (not in the chain file: %s)!" % (i,chain_file)
 
-        # Set the labels for the parameters in the chain file
-        par_labels = []
-        if labels is None:
-            labels = {}
-        for par_id in parameter_id_list:
-            if labels.get(par_id, None) is None:
-                param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
-                par_labels.append(param.latex_str.strip('$'))
-            else:
-                par_labels.append(labels[par_id])
+#         # Set the labels for the parameters in the chain file
+#         par_labels = []
+#         if labels is None:
+#             labels = {}
+#         for par_id in parameter_id_list:
+#             if labels.get(par_id, None) is None:
+#                 param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
+#                 par_labels.append(param.latex_str.strip('$'))
+#             else:
+#                 par_labels.append(labels[par_id])
                     
-        # Read parameter values and probability weights
-        column_indices = [chain_file_headers.index(par_id) for par_id in parameter_id_list]
-        columns_to_read = sorted(column_indices) + [num_cols-1]  # add last one for probability weights
-        samples = pd.read_csv(chain_file, usecols=columns_to_read, delimiter=',')
+#         # Read parameter values and probability weights
+#         column_indices = [chain_file_headers.index(par_id) for par_id in parameter_id_list]
+#         columns_to_read = sorted(column_indices) + [num_cols-1]  # add last one for probability weights
+#         samples = pd.read_csv(chain_file, usecols=columns_to_read, delimiter=',')
     
-        # Re-order columnds to match parameter_id_list and par_labels
-        sample_par_values = np.array(samples[parameter_id_list])
+#         # Re-order columnds to match parameter_id_list and par_labels
+#         sample_par_values = np.array(samples[parameter_id_list])
 
-        # If needed, shift samples by a constant
-        if shift_sample_list[i] is not None:
-            for param_id, value in shift_sample_list[i].items():
-                sample_par_values[:, parameter_id_list.index(param_id)] += value
-                print(f"INFO: posterior for parameter '{param_id}' from model '{chain_names[i]}' "
-                      f"has been shifted by {value}.")
+#         # If needed, shift samples by a constant
+#         if shift_sample_list[i] is not None:
+#             for param_id, value in shift_sample_list[i].items():
+#                 sample_par_values[:, parameter_id_list.index(param_id)] += value
+#                 print(f"INFO: posterior for parameter '{param_id}' from model '{chain_names[i]}' "
+#                       f"has been shifted by {value}.")
 
-        # Clean-up the probability weights
-        mypost = np.array(samples['probability_weights'])
-        min_non_zero = np.min(mypost[np.nonzero(mypost)])
-        sample_prob_weight = np.where(mypost<min_non_zero,min_non_zero,mypost)
-        #sample_prob_weight = mypost
+#         # Clean-up the probability weights
+#         mypost = np.array(samples['probability_weights'])
+#         min_non_zero = np.min(mypost[np.nonzero(mypost)])
+#         sample_prob_weight = np.where(mypost<min_non_zero,min_non_zero,mypost)
+#         #sample_prob_weight = mypost
 
-        # Create MCSamples object
-        mysample = MCSamples(samples=sample_par_values,names=parameter_id_list,labels=par_labels,settings=mc_samples_kwargs)
-        mysample.reweightAddingLogLikes(-np.log(sample_prob_weight))
-        mcsamples.append(mysample)
+#         # Create MCSamples object
+#         mysample = MCSamples(samples=sample_par_values,names=parameter_id_list,labels=par_labels,settings=mc_samples_kwargs)
+#         mysample.reweightAddingLogLikes(-np.log(sample_prob_weight))
+#         mcsamples.append(mysample)
 
 
         
-    # Make the plot
-    image = plots.getSubplotPlotter(subplot_size=subplot_size)    
-    image.triangle_plot(mcsamples,
-                        params=parameter_id_list,
-                        legend_labels=chain_names,
-                        filled=filled_contours,
-                        colors=colors,
-                        line_args=[{'ls':'-', 'lw': 2, 'color': c} for c in colors], 
-                        contour_colors=colors)
+#     # Make the plot
+#     image = plots.getSubplotPlotter(subplot_size=subplot_size)    
+#     image.triangle_plot(mcsamples,
+#                         params=parameter_id_list,
+#                         legend_labels=chain_names,
+#                         filled=filled_contours,
+#                         colors=colors,
+#                         line_args=[{'ls':'-', 'lw': 2, 'color': c} for c in colors], 
+#                         contour_colors=colors)
 
 
-    my_linestyles = ['solid','dotted','dashed','dashdot']
-    my_markers    = ['s','^','o','star']
+#     my_linestyles = ['solid','dotted','dashed','dashdot']
+#     my_markers    = ['s','^','o','star']
 
-    for k in range(0,len(point_estimates)):
-        # Add vertical and horizontal lines
-        for i in range(0,Npars):
-            val = point_estimates[k][i]
-            if val is not None:
-                for ax in image.subplots[i:,i]:
-                    ax.axvline(val,color='black',ls=my_linestyles[k],alpha=1.0,lw=1)
-                for ax in image.subplots[i,:i]:
-                    ax.axhline(val,color='black',ls=my_linestyles[k],alpha=1.0,lw=1)
+#     for k in range(0,len(point_estimates)):
+#         # Add vertical and horizontal lines
+#         for i in range(0,Npars):
+#             val = point_estimates[k][i]
+#             if val is not None:
+#                 for ax in image.subplots[i:,i]:
+#                     ax.axvline(val,color='black',ls=my_linestyles[k],alpha=1.0,lw=1)
+#                 for ax in image.subplots[i,:i]:
+#                     ax.axhline(val,color='black',ls=my_linestyles[k],alpha=1.0,lw=1)
 
-        # Add points
-        for i in range(0,Npars):
-            val_x = point_estimates[k][i]
-            for j in range(i+1,Npars):
-                val_y = point_estimates[k][j]
-                if val_x is not None and val_y is not None:
-                    image.subplots[j,i].scatter(val_x,val_y,s=10,facecolors='black',color='black',marker=my_markers[k])
-                else:
-                    pass    
+#         # Add points
+#         for i in range(0,Npars):
+#             val_x = point_estimates[k][i]
+#             for j in range(i+1,Npars):
+#                 val_y = point_estimates[k][j]
+#                 if val_x is not None and val_y is not None:
+#                     image.subplots[j,i].scatter(val_x,val_y,s=10,facecolors='black',color='black',marker=my_markers[k])
+#                 else:
+#                     pass    
 
 
-    # Set default ranges for angles
-    if angles_range is None:
-        angles_range = (-90, 90)
-    for i in range(0,len(parameter_id_list)):
-        dum = parameter_id_list[i].split('-')
-        name = dum[-1]
-        if name in ['phi','phi_ext']:
-            xlim = image.subplots[i,i].get_xlim()
-            #print(xlim)
+#     # Set default ranges for angles
+#     if angles_range is None:
+#         angles_range = (-90, 90)
+#     for i in range(0,len(parameter_id_list)):
+#         dum = parameter_id_list[i].split('-')
+#         name = dum[-1]
+#         if name in ['phi','phi_ext']:
+#             xlim = image.subplots[i,i].get_xlim()
+#             #print(xlim)
         
-            if xlim[0] < -90:
-                for ax in image.subplots[i:,i]:
-                    ax.set_xlim(left=angles_range[0])
-                for ax in image.subplots[i,:i]:
-                    ax.set_ylim(bottom=angles_range[0])
-            if xlim[1] > 90:
-                for ax in image.subplots[i:,i]:
-                    ax.set_xlim(right=angles_range[1])
-                for ax in image.subplots[i,:i]:
-                    ax.set_ylim(top=angles_range[1])
+#             if xlim[0] < -90:
+#                 for ax in image.subplots[i:,i]:
+#                     ax.set_xlim(left=angles_range[0])
+#                 for ax in image.subplots[i,:i]:
+#                     ax.set_ylim(bottom=angles_range[0])
+#             if xlim[1] > 90:
+#                 for ax in image.subplots[i:,i]:
+#                     ax.set_xlim(right=angles_range[1])
+#                 for ax in image.subplots[i,:i]:
+#                     ax.set_ylim(top=angles_range[1])
 
             
-    return image
+#     return image
