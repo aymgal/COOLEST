@@ -135,22 +135,35 @@ class LensedPS(AnalyticalProfile):
     """Surface brightness of a set of point sources after being lensed. 
 
     This profile is described by the following parameters:
-    
-    - 'ra_list': list of coordinates along the x axis
-    - 'dec_list': list of coordinates along the y axis
-    - 'amps': list of amplitudes
+    - 'x_true': the value of the true, unlensed x-axis position of the source
+    - 'y_true': the value of the true, unlensed y-axis position of the source
+    - 'm_true': the value of the true, unlensed magnitude of the source
+    - 'x_lensed': list of coordinates along the x axis of the multiple images
+    - 'y_lensed': list of coordinates along the y axis of the multiple images
+    - 'm_lensed': list of magnitudes of the multiple images
+    - 'flag_contains' ('true','lensed','both'): whether the profile contains only the lensed properties, only the true ones, or both
+    - 'flag_coupled': a boolean indicating whether the true positions of the source are coupled to the lensed ones ('flag_contains' must be set to 'both')
     """
 
     def __init__(self):
-        documentation = "Set of lensed point sources"
+        documentation = "Set of point source and lensed multiple images"
         parameters = {
-            'ra_list': NonLinearParameterSet("RA positions of the lensed point sources",
+            'ra_true': NonLinearParameter("X-axis position of the true, unlensed point source",
                                DefinitionRange(),
                                latex_str=r"$ra$"),
-            'dec_list': NonLinearParameterSet("DEC positions of the lensed point sources",
+            'dec_lensed': NonLinearParameter("Y-axis position of the true, unlensed point source",
                                DefinitionRange(),
                                latex_str=r"$dec$"),
-            'amps': LinearParameterSet("Set of amplitude values for the lensed point sources",
+            'mag_lensed': LinearParameter("Magnitude of the true, unlensed point sources",
+                               DefinitionRange(min_value=0.0),
+                               latex_str=r"$A$"),
+            'ra_lensed': NonLinearParameterSet("X-axis positions of the multiple images",
+                               DefinitionRange(),
+                               latex_str=r"$ra$"),
+            'dec_lensed': NonLinearParameterSet("Y-axis positions of the multiple images",
+                               DefinitionRange(),
+                               latex_str=r"$dec$"),
+            'mag_lensed': LinearParameterSet("Set of magnitude values of the multiple images",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$A$"),
         }
