@@ -138,6 +138,26 @@ class Parameter(APIBaseObject):
             if max_val is not None and np.any(np.asarray(val) > np.asarray(max_val)):
                 raise ValueError(f"Value cannot be larger than {self.definition_range.max_value}.")
 
+    def set_flag(self, flag):
+        """Set the parameter as a flag.
+
+        Parameters
+        ----------
+        flag : bool, string
+            Flag value
+
+        Raises
+        ------
+        ValueError
+            If the provided flag has not a supported type.
+        """
+        if isinstance(flag, (bool, str)):
+            self.point_estimate = flag
+        else:
+            raise ValueError("Flag value must be either a boolean or a string (bool or str).")
+
+        
+            
     def remove_point_estimate(self):
         """Remove the current point estimate of the parameter.
         """
