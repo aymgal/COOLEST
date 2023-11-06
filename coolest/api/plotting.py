@@ -455,7 +455,7 @@ class ParametersPlotter(object):
         # self.param_lens, self.param_source = util.split_lens_source_params(
         #     self.coolest_objects, self.coolest_names, lens_light=False)
 
-    def init_getdist(self, shift_sample_list, settings_mcsamples=None):
+    def init_getdist(self, shift_sample_list=None, settings_mcsamples=None):
         """Initializes the getdist plotter.
 
         Parameters
