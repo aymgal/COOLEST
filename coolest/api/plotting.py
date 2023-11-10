@@ -514,7 +514,7 @@ class ParametersPlotter(object):
             # Set the labels for the parameters in the chain file
             labels = []
             for par_id in self.parameter_id_list:
-                param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
+                param = self.coolest_objects[i].lensing_entities.get_parameter_from_id(par_id)
                 labels.append(param.latex_str.strip('$'))
 
             # Read parameter values and probability weights
