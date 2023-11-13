@@ -15,7 +15,7 @@ __all__ = [
     'Chameleon',
     'Uniform',
     'Shapelets',
-    'LensedPS',
+    'PointSource',
     'PixelatedRegularGrid',
     'IrregularGrid',
 ]
@@ -131,47 +131,43 @@ class Shapelets(AnalyticalProfile):
         super().__init__(parameters)
 
         
-class LensedPS(AnalyticalProfile):
-    """Surface brightness of a set of point sources after being lensed. 
+class PointSource(AnalyticalProfile):
+    """Surface brightness of a point source before and/or after being lensed. 
 
     This profile is described by the following parameters:
-    - 'x_true': the value of the true, unlensed x-axis position of the source
-    - 'y_true': the value of the true, unlensed y-axis position of the source
-    - 'm_true': the value of the true, unlensed magnitude of the source
+    - 'x_intrinsic': the value of the intrinsic, unlensed x-axis position of the source
+    - 'y_intrinsic': the value of the intrinsic, unlensed y-axis position of the source
+    - 'f_intrinsic': the value of the intrinsic, unlensed flux (in data units) of the source
     - 'x_lensed': list of coordinates along the x axis of the multiple images
     - 'y_lensed': list of coordinates along the y axis of the multiple images
-    - 'm_lensed': list of magnitudes of the multiple images
-    - 'flag_contains' ('true','lensed','both'): whether the profile contains only the lensed properties, only the true ones, or both
-    - 'flag_coupled': a boolean indicating whether the true positions of the source are coupled to the lensed ones ('flag_contains' must be set to 'both')
+    - 'f_lensed': list of fluxes (in data units) of the multiple images
+    - 'flag_contains' ('intrinsic','lensed','both'): whether the profile contains only the lensed properties, only the intrinsic ones, or both
     """
 
     def __init__(self):
         documentation = "Set of point source and lensed multiple images"
         parameters = {
-            'x_true': NonLinearParameter("X-axis position of the true, unlensed point source",
-                                         DefinitionRange(),
-                                         latex_str=r"$ra$"),
-            'y_true': NonLinearParameter("Y-axis position of the true, unlensed point source",
-                                           DefinitionRange(),
-                                           latex_str=r"$dec$"),
-            'm_true': LinearParameter("Magnitude of the true, unlensed point sources",
-                                        DefinitionRange(min_value=0.0),
-                                        latex_str=r"$A$"),
+            'x_intrinsic': NonLinearParameter("X-axis position of the intrinsic, unlensed point source",
+                                              DefinitionRange(),
+                                              latex_str=r"$ra$"),
+            'y_intrinsic': NonLinearParameter("Y-axis position of the intrinsic, unlensed point source",
+                                              DefinitionRange(),
+                                              latex_str=r"$dec$"),
+            'f_intrinsic': LinearParameter("Flux (in data units) of the intrinsic, unlensed point source",
+                                           DefinitionRange(min_value=0.0),
+                                           latex_str=r"$A$"),
             'x_lensed': NonLinearParameterSet("X-axis positions of the multiple images",
                                               DefinitionRange(),
                                               latex_str=r"$ra$"),
             'y_lensed': NonLinearParameterSet("Y-axis positions of the multiple images",
                                               DefinitionRange(),
                                               latex_str=r"$dec$"),
-            'm_lensed': LinearParameterSet("Set of magnitude values of the multiple images",
+            'f_lensed': LinearParameterSet("Set of flux values (in data units) of the multiple images",
                                            DefinitionRange(min_value=0.0),
                                            latex_str=r"$A$"),
             'flag_contains': LinearParameter("Flag contains",
                                              DefinitionRange(),
                                              latex_str=r"Contains"),
-            'flag_coupled': LinearParameter("Flag coupled",
-                                            DefinitionRange(),
-                                            latex_str=r"Coupled")
         }
         super().__init__(parameters)
 
