@@ -1,8 +1,6 @@
 __author__ = 'aymgal'
 
-from astropy.io import fits
-import numpy as np
-from typing import Tuple
+from typing import Union
 
 from coolest.template.classes.grid import PixelatedRegularGrid
 from coolest.template.classes.noise import Noise
@@ -31,7 +29,7 @@ class Observation(APIBaseObject):
     
     def __init__(self, 
                  pixels: PixelatedRegularGrid = None,  # can be None for mock generation
-                 exposure_time: float = None,
+                 exposure_time: Union[float, PixelatedRegularGrid] = None,
                  noise: Noise = None,
                  mag_zero_point: float = None,
                  mag_sky_brightness: float = None,
