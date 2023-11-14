@@ -220,7 +220,8 @@ class Analysis(object):
         
     def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
                                initial_guess=1, initial_delta_pix=10, 
-                               n_iter=10, return_model=False, **kwargs_selection):
+                               n_iter=10, return_model=False, return_accuracy=False,
+                               **kwargs_selection):
         """Computes the effective radius of the 2D surface brightness profile, 
         based on a definition similar to the half-light radius.
 
@@ -234,13 +235,15 @@ class Analysis(object):
             Instance of a Coordinates object to be used for the computation.
             If None, will use an instance based on the Instrument, by default None
         initial_guess : int, optional
-            Initial guess for effective radius, by default 1
+            Initial guess for effective radius in arcsecond, by default 1
         initial_delta_pix : int, optional
-            Initial step size before shrinking in future iterations, by default 10
+            Initial step size in pixels before shrinking in future iterations, by default 10
         n_iter : int, optional
             Number of iterations, by default 5
         return_model : bool, optional
             If True, also returns the surface brightness map used to comouted the radius. By default False.
+        return_accuracy : bool, optional
+            if True, return a rough estimate of accuracy as well, by default False
 
         Returns
         -------
@@ -254,64 +257,53 @@ class Analysis(object):
         """
         if kwargs_selection is None:
             kwargs_selection = {}
-        light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
-        # get an image of the convergence
-        if coordinates is None:
-            x, y = self.coordinates.pixel_coordinates
-        else:
-            x, y = coordinates.pixel_coordinates
-        light_image = light_model.evaluate_surface_brightness(x, y)
-        light_image[np.isnan(light_image)] = 0.
 
-        # import matplotlib.pyplot as plt
-        # plt.imshow(np.log10(light_image))
-        # plt.show()
+        light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
 
         # select a center
         if center is None:
             center_x, center_y = light_model.estimate_center()
         else:
             center_x, center_y = center
+
+        # get an image of the convergence
+        if coordinates is None:
+            x, y = self.coordinates.pixel_coordinates
+        else:
+            x, y = coordinates.pixel_coordinates
+        # make sure to evaluate the profile such that it is centered on the image
+        x_ = x + center_x
+        y_ = y + center_y
+        light_image = light_model.evaluate_surface_brightness(x_, y_)
+        light_image[np.isnan(light_image)] = 0.
         
         #if limit of integration exceeds FoV, raise warning
-        x_FoV=self.coolest.observation.pixels.field_of_view_x
-        y_FoV=self.coolest.observation.pixels.field_of_view_y
+        if coordinates is None:
+            x_FoV = self.coolest.observation.pixels.field_of_view_x
+            y_FoV = self.coolest.observation.pixels.field_of_view_y
+        else:
+            x_FoV = (coordinates.extent[0], coordinates.extent[1])
+            y_FoV = (coordinates.extent[2], coordinates.extent[3])
         out_of_FoV=False
-        if center_x - outer_radius < x_FoV[0] or center_x + outer_radius > x_FoV[1]:
+        if outer_radius - center_x < x_FoV[0] or outer_radius + center_x > x_FoV[1]:
             out_of_FoV=True
-        if center_y - outer_radius < y_FoV[0] or center_y + outer_radius > y_FoV[1]:
+        if outer_radius - center_y < y_FoV[0] or outer_radius + center_y > y_FoV[1]:
             out_of_FoV=True
         if out_of_FoV is True:
             warnings.warn("Warning: Outer limit of integration exceeds FoV; effective radius may not be accurate.")
-            
-        #initialize
-        grid_res=np.abs(x[0,0]-x[0,1])
-        initial_delta=grid_res*initial_delta_pix #default inital step size is 10 pixels
-        r_grid=np.sqrt((x-center_x)**2+(y-center_y)**2)
-        total_light=np.sum(light_image[r_grid<outer_radius])
-        cumulative_light=np.sum(light_image[r_grid<initial_guess])
-        if cumulative_light < total_light/2: #move outward
-            direction=1
-        elif cumulative_light > total_light/2: #move inward
-            direction=-1
-        else:
-            return initial_guess
-        r_eff=initial_guess
-        delta=initial_delta
-        loopcount=0
-        
-        for n in range(n_iter): #overshoots, turn around and backtrack at higher precision
-            while (total_light/2-cumulative_light)*direction>0: 
-                if loopcount > 100:
-                    raise Warning('Stuck in very long (possibly infinite) loop')
-                    break
-                r_eff=r_eff+delta*direction
-                cumulative_light=np.sum(light_image[r_grid<r_eff])
-                loopcount+=1
-            direction=direction*-1
-            delta=delta/2
-            
-        return r_eff if not return_model else r_eff, light_image
+
+        r_eff, accuracy = self.effective_radius(
+            light_image, x, y, outer_radius=outer_radius, initial_guess=initial_guess, 
+            initial_delta_pix=initial_delta_pix, n_iter=n_iter
+        )
+
+        if return_model and return_accuracy:
+            return r_eff, accuracy, light_image
+        elif return_model:
+            return r_eff, light_image
+        elif return_accuracy:
+            return r_eff, accuracy
+        return r_eff
 
     
     def find_nearest(self, array, value):
@@ -444,4 +436,66 @@ class Analysis(object):
             return bins, means, sdevs, light_image
         return bins, means, sdevs
 
+
+    @staticmethod
+    def effective_radius(light_map, x, y, outer_radius=10, initial_guess=1, initial_delta_pix=10, n_iter=10):
+        """Computes the effective radius of the 2D surface brightness profile, 
+        based on a definition similar to the half-light radius.
+        NOTE: This functions assumes that the profile is centered on the grid.
+
+        Parameters
+        ----------
+        light_map : ndarray
+            2D array of the light model
+        x : ndarray
+            x-coordinates associated to the light model
+        y : ndarray
+            y-coordinates associated to the light model
+        outer_radius : int, optional
+            outer limit of integration within which half the light is calculated to estimate the effective radius, by default 10
+        initial_guess : int, optional
+            Initial guess for effective radius in arcsecond, by default 1
+        initial_delta_pix : int, optional
+            Initial step size in pixels before shrinking in future iterations, by default 10
+        n_iter : int, optional
+            Number of iterations, by default 5
+
+        Returns
+        -------
+        (float, float)
+            Effective radius and spacing of the coordinates grid (approximate accuracy)
+
+        Raises
+        ------
+        Warning
+            If integration loop exceeds outer bound before convergence.
+        """
+        #initialize
+        grid_res=np.abs(x[0,0]-x[0,1])
+        initial_delta=grid_res*initial_delta_pix #default inital step size is 10 pixels
+        r_grid=np.hypot(x, y)
+        total_light=np.sum(light_map[r_grid<outer_radius])
+        cumulative_light=np.sum(light_map[r_grid<initial_guess])
+        if cumulative_light < total_light/2: #move outward
+            direction=1
+        elif cumulative_light > total_light/2: #move inward
+            direction=-1
+        else:
+            return initial_guess
+        r_eff=initial_guess
+        delta=initial_delta
+        loopcount=0
+        
+        for n in range(n_iter): #overshoots, turn around and backtrack at higher precision
+            while (total_light/2.-cumulative_light)*direction>0: 
+                if loopcount > 100:
+                    raise Warning('Stuck in very long (possibly infinite) loop')
+                    break
+                r_eff=r_eff+delta*direction
+                cumulative_light=np.sum(light_map[r_grid<r_eff])
+                loopcount+=1
+            direction=direction*-1
+            delta=delta/2.
+
+        return r_eff, grid_res
     
