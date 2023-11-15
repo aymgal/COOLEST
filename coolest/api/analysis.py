@@ -2,11 +2,13 @@ __author__ = 'aymgal', 'mattgomer', 'gvernard'
 
 import numpy as np
 from astropy.coordinates import SkyCoord
-import warnings
+import logging
 
 from coolest.api.composable_models import *
 from coolest.api import util
 
+# logging settings
+logging.getLogger().setLevel(logging.INFO)
 
 class Analysis(object):
     """Handles computation of model-independent quantities 
@@ -63,7 +65,7 @@ class Analysis(object):
 
         Raises
         ------
-        Warning
+        RuntimeError
             If the algorithm is running for more than 100 loops.
         """
         if kwargs_selection is None:
@@ -93,8 +95,7 @@ class Analysis(object):
                 return np.nan, np.nan, 0, runningtotal, total_pix
             while (runningtotal-total_pix)*direction>0:
                 if loopcount > max_loopcount:
-                    raise Warning('Stuck in very long (possibly infinite) loop')
-                    break
+                    raise RuntimeError('Stuck in very long (possibly infinite) loop')
                 if direction > 0:
                     mask=only_between_r1r2(r_Ein, r_Ein+delta,r_grid)
                 else:
@@ -112,7 +113,7 @@ class Analysis(object):
                     runningtotal=np.sum(kappa_image[mask])
                     total_pix=np.sum(mask)
                     if runningtotal-total_pix < 0:
-                        print('WARNING: kappa is sub-critical, Einstein radius undefined.')
+                        logging.warning('kappa is sub-critical, Einstein radius undefined.')
                         return np.nan, np.nan, 0, runningtotal, total_pix
                 loopcount+=1
             return r_Ein, delta, direction, runningtotal, total_pix
@@ -290,7 +291,7 @@ class Analysis(object):
         if outer_radius - center_y < y_FoV[0] or outer_radius + center_y > y_FoV[1]:
             out_of_FoV=True
         if out_of_FoV is True:
-            warnings.warn("Warning: Outer limit of integration exceeds FoV; effective radius may not be accurate.")
+            logging.warning("Outer limit of integration exceeds FoV; effective radius may not be accurate.")
 
         r_eff, accuracy = self.effective_radius(
             light_image, x, y, outer_radius=outer_radius, initial_guess=initial_guess, 
@@ -378,12 +379,12 @@ class Analysis(object):
         light_image = np.nan_to_num(light_image, nan=0.)
         cov_mask = np.ones_like(light_image)
         if min_flux is not None:
-            print(f"Setting to zero any flux below {min_flux}.")
+            logging.info(f"Setting to zero any flux below {min_flux}.")
             light_image[light_image < min_flux] = 0.
             cov_mask[light_image < min_flux] = 0.
         elif min_flux_frac is not None:
             min_flux = min_flux_frac*light_image.max()
-            print(f"Setting to zero any flux below {min_flux}.")
+            logging.info(f"Setting to zero any flux below {min_flux}.")
             light_image[light_image < min_flux] = 0.
             cov_mask[light_image < min_flux] = 0.
         cov_mask = cov_mask.astype(bool)
@@ -435,6 +436,77 @@ class Analysis(object):
         elif return_map:
             return bins, means, sdevs, light_image
         return bins, means, sdevs
+    
+
+    def total_magnitude(self, outer_radius=10, center=None, coordinates=None,
+                        no_re_eval=False, flux_factor=None, mag_zero_point=None, **kwargs_selection):
+        """Computes the effective radius of the 2D surface brightness profile, 
+        based on a definition similar to the half-light radius.
+
+        Parameters
+        ----------
+        outer_radius : int, optional
+            outer limit of integration within which half the light is calculated to estimate the effective radius, by default 10
+        no_re_eval : bool, option
+            If True, do re-evaluate the light profile (only relevant for pixelated profiles). Default is False.
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image, by default None
+        coordinates : Coordinates, optional
+            Instance of a Coordinates object to be used for the computation.
+            If None, will use an instance based on the Instrument, by default None
+        mag_zero_point : float, optional
+            Magnitude zero-point corresponding to 1 electron per second. 
+            Must be given when no mag_zero_point has been found in the self.coolest object.
+        
+        TODO: flux_factor is temporary, this will be removed in the future.
+
+        Returns
+        -------
+        float
+            Total magnitude from the flux integrated over the field of view.
+        """
+        if kwargs_selection is None:
+            kwargs_selection = {}
+
+        light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
+
+        # get an image of the convergence
+        if no_re_eval:
+            light_image = light_model.surface_brightness()
+            light_image[np.isnan(light_image)] = 0.
+        else:
+            # select a center
+            if center is None:
+                center_x, center_y = light_model.estimate_center()
+            else:
+                center_x, center_y = center
+            if coordinates is None:
+                x, y = self.coordinates.pixel_coordinates
+            else:
+                x, y = coordinates.pixel_coordinates
+            # make sure to evaluate the profile such that it is centered on the image
+            x_ = x + center_x
+            y_ = y + center_y
+            light_image = light_model.evaluate_surface_brightness(x_, y_)
+            light_image[np.isnan(light_image)] = 0.
+
+        # retrieve the zero-point from the
+        if self.coolest.observation.mag_zero_point is not None:
+            logging.info(f"Using magnitude zero-point from self.coolest object ({mag_zero_point}).")
+            mag_zero_point = self.coolest.observation.mag_zero_point
+        elif mag_zero_point is None:
+            raise ValueError("No `mag_zero_point` has been found in the COOLEST object, "
+                             "hence `mag_zero_point` must be provided.")
+        else:
+            logging.info(f"Using the magnitude zero-point ({mag_zero_point}.)")
+
+        # compute the magnitude
+        flux_tot = light_image.sum()
+        if flux_factor is not None:
+            flux_tot *= flux_factor  # temporary feature
+        mag_tot = -2.5*np.log10(flux_tot) + mag_zero_point
+    
+        return mag_tot
 
 
     @staticmethod
@@ -467,7 +539,7 @@ class Analysis(object):
 
         Raises
         ------
-        Warning
+        RuntimeError
             If integration loop exceeds outer bound before convergence.
         """
         #initialize
@@ -489,8 +561,7 @@ class Analysis(object):
         for n in range(n_iter): #overshoots, turn around and backtrack at higher precision
             while (total_light/2.-cumulative_light)*direction>0: 
                 if loopcount > 100:
-                    raise Warning('Stuck in very long (possibly infinite) loop')
-                    break
+                    raise RuntimeError('Stuck in very long (possibly infinite) loop')
                 r_eff=r_eff+delta*direction
                 cumulative_light=np.sum(light_map[r_grid<r_eff])
                 loopcount+=1

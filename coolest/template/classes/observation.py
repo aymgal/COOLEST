@@ -21,7 +21,7 @@ class Observation(APIBaseObject):
         of the data pixels, by default None
     mag_zero_point : float, optional
         Zero-point magnitude, which corresponds to the 1 electron per second
-        hitting the detecor (given in mag), by default None
+        hitting the detector (given in mag), by default None
     mag_sky_brightness : float, optional
         Magnitude due to sky brightness (given in mag per arcsec^2), 
         by default None
@@ -40,7 +40,7 @@ class Observation(APIBaseObject):
             pixels = PixelatedRegularGrid()
         self.pixels = pixels
         self.exposure_time = exposure_time
-        self.mag_zero_point = mag_zero_point          # magnitude zero-point (corresponds to 1 count per second on the detector)
+        self.mag_zero_point = mag_zero_point          # magnitude zero-point (corresponds to 1 electron per second on the detector)
         self.mag_sky_brightness = mag_sky_brightness  # sky brightness (magnitude per arcsec^2)
         if noise is None:
             noise = Noise()
