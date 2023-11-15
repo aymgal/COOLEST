@@ -3,6 +3,7 @@ __author__ = 'aymgal', 'mattgomer', 'gvernard'
 import numpy as np
 from astropy.coordinates import SkyCoord
 import logging
+from skimage import measure
 
 from coolest.api.composable_models import *
 from coolest.api import util
@@ -507,6 +508,68 @@ class Analysis(object):
         mag_tot = -2.5*np.log10(flux_tot) + mag_zero_point
     
         return mag_tot
+    
+
+    def ellipticity_from_moments(self, center=None, coordinates=None, **kwargs_selection):
+        """Estimates the axis ratio and position angle of the model map 
+        based on central moments of the image.
+
+        Parameters
+        ----------
+        center : (float, float), optional
+            (x, y)-coordinates of the center from which to calculate Einstein radius; if None, use the value from create_kappa_image, by default None
+        coordinates : Coordinates, optional
+            Instance of a Coordinates object to be used for the computation.
+            If None, will use an instance based on the Instrument, by default None
+        
+        Returns
+        -------
+        float
+            Ellipticity measurement (axis)
+
+        Raises
+        ------
+        Warning
+            If integration loop exceeds outer bound before convergence.
+        """
+        if kwargs_selection is None:
+            kwargs_selection = {}
+
+        light_model = ComposableLightModel(self.coolest, self.coolest_dir, **kwargs_selection)
+
+        # select a center
+        if center is None:
+            center_x, center_y = light_model.estimate_center()
+        else:
+            center_x, center_y = center
+
+        # get an image of the convergence
+        if coordinates is None:
+            x, y = self.coordinates.pixel_coordinates
+            spacing = self.coordinates.pixel_size
+        else:
+            x, y = coordinates.pixel_coordinates
+            spacing = coordinates.pixel_size
+        # make sure to evaluate the profile such that it is centered on the image
+        x_ = x + center_x
+        y_ = y + center_y
+        light_image = light_model.evaluate_surface_brightness(x_, y_)
+        light_image[np.isnan(light_image)] = 0.
+
+        # compute central momoments
+        mu = measure.moments_central(light_image, order=2, spacing=spacing)
+
+        # use the moments to estimate orientation and ellipticity (https://en.wikipedia.org/wiki/Image_moment)
+        mu_20_ = mu[2, 0] / mu[0, 0]
+        mu_02_ = mu[0, 2] / mu[0, 0]
+        mu_11_ = mu[1, 1] / mu[0, 0]
+        lambda_1 = (mu_20_ + mu_02_) / 2. + np.sqrt(4*mu_11_**2 + (mu_20_ - mu_02_)**2) / 2.
+        lambda_2 = (mu_20_ + mu_02_) / 2. - np.sqrt(4*mu_11_**2 + (mu_20_ - mu_02_)**2) / 2.
+        q = np.sqrt(lambda_2 / lambda_1)  # b/a, axis ratio
+        phi_rad = np.arctan(2. * mu_11_ / (mu_20_ - mu_02_)) / 2.  # position angle
+        phi = phi_rad * 180./np.pi + 90. # conversion to COOLEST conventions
+
+        return q, phi
 
 
     @staticmethod
