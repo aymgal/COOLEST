@@ -145,6 +145,10 @@ class BaseComposableModel(object):
             fov_y = profile_in.parameters['pixels'].field_of_view_y
             npix = profile_in.parameters['pixels'].num_pix
             fixed_parameters = (fov_x, fov_y, npix)
+
+        else:
+            raise ValueError(f"Unsupported grid profile type '{profile_in}'.")
+
         return parameters, fixed_parameters
 
     @staticmethod
