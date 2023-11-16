@@ -439,3 +439,12 @@ def find_all_lens_lines(coordinates, composable_lens):
     caustics = find_caustics(crit_lines, composable_lens)
     return crit_lines, caustics
     
+
+def resample_multivariate_normal(samples, num_samples=5_000, **kwargs_cov):
+    """Resample following multi-variate normal distribution"""
+    mean = np.mean(samples, axis=0)
+    cov = np.cov(samples.T, **kwargs_cov)
+    num_params = samples.shape[1]
+    resampled = np.random.multivariate_normal(
+        mean=mean, cov=cov, size=(int(num_samples/num_params), num_params)).reshape((-1, num_params))
+    return resampled
