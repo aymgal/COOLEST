@@ -455,7 +455,7 @@ class ParametersPlotter(object):
         # self.param_lens, self.param_source = util.split_lens_source_params(
         #     self.coolest_objects, self.coolest_names, lens_light=False)
 
-    def init_getdist(self, shift_sample_list, settings_mcsamples=None):
+    def init_getdist(self, shift_sample_list=None, settings_mcsamples=None):
         """Initializes the getdist plotter.
 
         Parameters
@@ -514,7 +514,7 @@ class ParametersPlotter(object):
             # Set the labels for the parameters in the chain file
             labels = []
             for par_id in self.parameter_id_list:
-                param = coolest_obj.lensing_entities.get_parameter_from_id(par_id)
+                param = self.coolest_objects[i].lensing_entities.get_parameter_from_id(par_id)
                 labels.append(param.latex_str.strip('$'))
 
             # Read parameter values and probability weights
