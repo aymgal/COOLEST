@@ -25,12 +25,12 @@ def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
     return image_unit_flux * flux_unit_mag
 
 
-def get_coolest_object(file_path, verbose=False, **kwargs_serializer):
+def get_coolest_object(file_path, verbose=False, kwargs_validator={}, **kwargs_serializer):
     from coolest.template.json import JSONSerializer  # prevents circular imports
     if not os.path.isabs(file_path):
         file_path = os.path.abspath(file_path)
     serializer = JSONSerializer(file_path, **kwargs_serializer)
-    return serializer.load(verbose=verbose)
+    return serializer.load(verbose=verbose, **kwargs_validator)
 
 
 def get_coordinates(coolest_object, offset_x=0., offset_y=0.):
