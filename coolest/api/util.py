@@ -15,7 +15,7 @@ def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
     so that it has units of electrons per second (e/s), which is the default data units 
     in COOLEST for pixelated profiles.
     :param pixel_size: pixel size (in arcsec) of the image
-    :param image: input image, in units of 1/arcsec^2
+    :param image: input image, assumed to have units of 1/arcsec^2 if pixel_size != 1, else unitless.
     :param mag_tot: target total magnitude, integrated over the whole image
     :param mag_zero_point: magnitude zero point of the observation (magnitude that corresponds to 1 e/s)
     """
