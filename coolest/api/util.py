@@ -9,7 +9,7 @@ from skimage import measure
 from coolest.template.json import JSONSerializer
 
 
-def convert_image_to_data_units(image, mag_tot, mag_zero_point):
+def convert_image_to_data_units(image, mag_tot, mag_zero_point=None, coolest_object=None):
     """
     Rescale an image such that it has units of electrons per second (e/s),
     given a total magnitude and a magnitude zero-point.
@@ -21,11 +21,18 @@ def convert_image_to_data_units(image, mag_tot, mag_zero_point):
     where `mag_zero_point` corresponds to the magnitude of 1 e/s.
     :param image: input image, as a 2D array.
     :param mag_tot: target total magnitude, integrated over the whole image
-    :param mag_zero_point: magnitude zero point of the observation (that corresponds to 1 e/s)
+    :param mag_zero_point: magnitude zero point of the observation (that corresponds to 1 e/s). If coolest_object is not None, mag_zero_point is ignored.
+    :param coolest_object: if given, will be used to retrieve the zero-point magnitude of the observation.
     """
+    if coolest_object is None and mag_zero_point is None:
+        raise ValueError("Either a COOLEST object or a zero-point magnitude should be provided.")
     flux_tot = np.sum(image)
     image_unit_flux = image / flux_tot
-    delta_mag = mag_tot - mag_zero_point
+    if coolest_object is not None:
+        mag_zp = coolest.observation.mag_zero_point
+    else:
+        mag_zp = mag_zero_point
+    delta_mag = mag_tot - mag_zp
     flux_unit_mag = 10 ** ( - delta_mag / 2.5 )
     image_rescaled = image_unit_flux * flux_unit_mag
     return image_rescaled
