@@ -244,7 +244,7 @@ class ComposableMassModel(BaseComposableModel):
                          **kwargs_selection)
 
     def evaluate_deflection(self, x, y):
-        """Evaluates the surface brightness at given coordinates"""
+        """Evaluates the lensing deflection field at given coordinates"""
         alpha_x, alpha_y = np.zeros_like(x), np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
             a_x, a_y = profile.deflection(x, y, **params)
@@ -253,14 +253,14 @@ class ComposableMassModel(BaseComposableModel):
         return alpha_x, alpha_y
 
     def evaluate_convergence(self, x, y):
-        """Evaluates the surface brightness at given coordinates"""
+        """Evaluates the lensing convergence (i.e., 2D mass density) at given coordinates"""
         kappa = np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
             kappa += profile.convergence(x, y, **params)
         return kappa
 
     def evaluate_magnification(self, x, y):
-        """Evaluates the surface brightness at given coordinates"""
+        """Evaluates the lensing magnification at given coordinates"""
         H_xx_sum = np.zeros_like(x)
         H_xy_sum = np.zeros_like(x)
         H_yx_sum = np.zeros_like(x)

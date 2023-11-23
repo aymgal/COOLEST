@@ -41,7 +41,7 @@ class BaseLightProfile(object):
     @property
     def template_class(self):
         if self._template_class is None:
-            raise RuntimeError("No template class has been set by mass profile class")
+            raise RuntimeError("No template class has been set by light profile class")
         return self._template_class
 
     @property

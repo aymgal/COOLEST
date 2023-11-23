@@ -73,6 +73,9 @@ class Parameter(APIBaseObject):
         Prior assigned the parameter, if any, by default None
     latex_str : str, optional
         LaTeX representation of the parameter, by default None
+    
+    #TODO: for parameters like orientation / axis ratio, add a class method to compute
+                 related quantities like ellipticity parameters.
     """
     def __init__(self, 
                  documentation: str, 
