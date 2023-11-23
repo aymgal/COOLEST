@@ -9,22 +9,26 @@ from skimage import measure
 from coolest.template.json import JSONSerializer
 
 
-def convert_image_to_data_units(image, pixel_size, mag_tot, mag_zero_point):
+def convert_image_to_data_units(image, mag_tot, mag_zero_point):
     """
-    Rescale an image in units 1/arcsec^2, or unitless if `pixel_size=1`,
-    so that it has units of electrons per second (e/s), which is the default data units 
-    in COOLEST for pixelated profiles.
-    :param pixel_size: pixel size (in arcsec) of the image
-    :param image: input image, assumed to have units of 1/arcsec^2 if pixel_size != 1, else unitless.
+    Rescale an image such that it has units of electrons per second (e/s),
+    given a total magnitude and a magnitude zero-point.
+
+    After rescaling, the total magnitude of the image_rescaled should corresponds to
+
+    `-2.5 * np.log10(image_rescaled.sum()) + mag_zero_point = mag_tot`
+
+    where `mag_zero_point` corresponds to the magnitude of 1 e/s.
+    :param image: input image, as a 2D array.
     :param mag_tot: target total magnitude, integrated over the whole image
-    :param mag_zero_point: magnitude zero point of the observation (magnitude that corresponds to 1 e/s)
+    :param mag_zero_point: magnitude zero point of the observation (that corresponds to 1 e/s)
     """
-    pixel_area = pixel_size**2
-    flux_tot = np.sum(image) * pixel_area
+    flux_tot = np.sum(image)
     image_unit_flux = image / flux_tot
     delta_mag = mag_tot - mag_zero_point
     flux_unit_mag = 10 ** ( - delta_mag / 2.5 )
-    return image_unit_flux * flux_unit_mag
+    image_rescaled = image_unit_flux * flux_unit_mag
+    return image_rescaled
 
 
 def get_coolest_object(file_path, verbose=False, **kwargs_serializer):
