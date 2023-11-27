@@ -180,7 +180,7 @@ class PointSource(AnalyticalProfile):
         elif flag_int:
             return 'intrinsic'
         elif flag_len:
-            return 'intrinsic'
+            return 'lensed'
         return None
 
 
