@@ -135,6 +135,66 @@ def downsampling(image, factor=1):
         raise ValueError(f"Downscaling factor {factor} is not possible with shape ({nx}, {ny})")
 
 
+def lensing_information(data_lens_sub, x, y, theta_E, noise_map, center_x_lens=0, center_y_lens=0,
+                        a=16, b=0, arc_mask=None):
+    """
+    Computes the 'lensing information' defined in Yi Tan et al. 2023, Equations (8) and (9).
+    https://ui.adsabs.harvard.edu/abs/2023arXiv231109307T/abstract
+
+    Parameters
+    ----------
+    data_lens_sub : np.ndarray
+        Imaging data as a 2D array. It is assumed to contain no lens light.
+    x : np.ndarray
+        2D array of x coordinates, in arcsec.
+    y : np.ndarray
+        2D array of y coordinates, in arcsec.
+    theta_E : float
+        Einstein radius in arcsec, by default None
+    noise_map : np.ndarray
+        2D array with 1-sigma noise level per pixel (same units as `data_lens_sub`), by default None
+    center_x_lens : int, optional
+        x coordinates of the center of the lens, by default 0
+    center_y_lens : int, optional
+        y coordinates of the center of the lens, by default 0
+    a : int, optional
+        Exponent in Eq. (9) from Yi Tan et al. 2023, by default 16
+    b : int, optional
+        Exponent in Eq. (9) from Yi Tan et al. 2023, by default 0
+    arc_mask : np.ndarray, optional
+        Binary 2D array with 1s where there is are lensed arcs, by default None
+
+    Returns
+    -------
+    4-tuple
+        Lensing information I, Einstein radius, reference azimuthal angle, total mask used for computing I
+    """
+    if arc_mask is None:
+        arc_mask = np.ones_like(data_lens_sub)
+    # estimate background noise from one corner of the noise map
+    sigma_bkg = np.mean(noise_map[:10, :10])
+    # build a mask to only consider pixels at least 3 times the background noise level
+    snr_mask = np.where(data_lens_sub > 3.*sigma_bkg, 1., 0.)
+    # combine user mask and SNR mask
+    arc_mask_tot = snr_mask * arc_mask
+    # shift coordinates so that lens is at (0, 0)
+    theta_x, theta_y = x - center_x_lens, y - center_y_lens
+    # compute polar coordinates centered on the lens
+    theta_r = np.hypot(theta_x, theta_y)
+    phi = np.arctan2(theta_y, theta_x)
+    # find index of the brightest pixel (within the arc mask)
+    max_idx = np.where(data_lens_sub == (data_lens_sub*arc_mask_tot).max())
+    # get azimuthal angle corresponding to the brightest pixel
+    phi_ref = float(np.arctan2(theta_y[max_idx], theta_x[max_idx]))
+    # compute the weights following Eq. (9) from Yi Tan et al. 2023
+    weights = ( 1. + np.abs(theta_r - theta_E) / theta_E * (1 + np.abs(phi - phi_ref) / phi_ref)**b )**a
+    # compute the weighted sum
+    numerator = np.sum(arc_mask_tot*weights*data_lens_sub)
+    denominator = np.sqrt(np.sum(arc_mask_tot*noise_map**2))
+    lens_I = numerator / denominator
+    return lens_I, theta_E, phi_ref, arc_mask_tot
+
+
 def split_lens_source_params(coolest_list, name_list, lens_light=False):
     """
     Read several json files already containing a model with the results of this model fitting
@@ -147,7 +207,7 @@ def split_lens_source_params(coolest_list, name_list, lens_light=False):
 
     OUTPUT
     ------
-     param_all_lens, param_all_source: organized dictionnaries readable by plotting function
+     param_all_lens, param_all_source: organized dictionaries readable by plotting function
     """
 
     param_all_lens = {}
@@ -417,6 +477,7 @@ def read_sersic(light, param={}, prefix='Sersic_0_'):
 
     return param
 
+
 def find_critical_lines(coordinates, mag_map):
     # invert and find contours corresponding to infinite magnification (i.e., changing sign)
     inv_mag = 1. / np.array(mag_map)
@@ -428,6 +489,7 @@ def find_critical_lines(coordinates, mag_map):
         lines.append((np.array(curve_x), np.array(curve_y)))
     return lines
 
+
 def find_caustics(crit_lines, composable_lens):
     """`composable_lens` can be an instance of `ComposableLens` or `ComposableMass`"""
     lines = []
@@ -435,6 +497,7 @@ def find_caustics(crit_lines, composable_lens):
         cl_src_x, cl_src_y = composable_lens.ray_shooting(cline[0], cline[1])
         lines.append((np.array(cl_src_x), np.array(cl_src_y)))
     return lines
+
 
 def find_all_lens_lines(coordinates, composable_lens):
     """`composable_lens` can be an instance of `ComposableLens` or `ComposableMass`"""

@@ -87,7 +87,7 @@ class Analysis(object):
         else:
             center_x, center_y = center
 
-        def loop_until_overshoot(r_Ein, delta, direction, runningtotal, total_pix):
+        def _loop_until_overshoot(r_Ein, delta, direction, runningtotal, total_pix):
             """
             this subfunction iteratively adjusts the mask radius by delta either inward or outward until the sign flips on mean_kappa-area
             """
@@ -145,7 +145,7 @@ class Analysis(object):
 
         for n in range(n_iter):
             #overshoots, turn around and backtrack at higher precision
-            r_Ein, delta, direction, runningtotal, total_pix = loop_until_overshoot(r_Ein, delta, direction, runningtotal, total_pix)
+            r_Ein, delta, direction, runningtotal, total_pix = _loop_until_overshoot(r_Ein, delta, direction, runningtotal, total_pix)
             direction=direction*-1
             delta=delta/2
         accuracy=grid_res/2 #after testing, accuracy is about grid_res/2
@@ -216,10 +216,9 @@ class Analysis(object):
         if r_eval==None:
             return slope 
         else:
-            closest_r = self.find_nearest(r_vec,r_eval) #just takes closest r. Could rebuild it to interpolate.
+            closest_r = self._find_nearest(r_vec,r_eval) #just takes closest r. Could rebuild it to interpolate.
             return slope[r_vec==closest_r]
 
-        
     def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
                                initial_guess=1, initial_delta_pix=10, 
                                n_iter=10, return_model=False, return_accuracy=False,
@@ -306,14 +305,6 @@ class Analysis(object):
         elif return_accuracy:
             return r_eff, accuracy
         return r_eff
-
-    
-    def find_nearest(self, array, value):
-        """subfunction to find nearest closest element in array to value"""
-        array = np.asarray(array)
-        idx = (np.abs(array - value)).argmin()
-        return array[idx]
-    
 
     def two_point_correlation(self, Nbins=100, rmax=None, normalize=False, 
                               use_profile_coordinates=True, coordinates=None, 
@@ -508,7 +499,6 @@ class Analysis(object):
         mag_tot = -2.5*np.log10(flux_tot) + mag_zero_point
     
         return mag_tot
-    
 
     def ellipticity_from_moments(self, center=None, coordinates=None, **kwargs_selection):
         """Estimates the axis ratio and position angle of the model map 
@@ -571,6 +561,27 @@ class Analysis(object):
 
         return q, phi
 
+    def lensing_information(self, a=16, b=0, 
+                            noise_map=None, arc_mask=None, theta_E=None,
+                            entity_idx_theta_E=0, profile_idx_theta_E=0):
+        """
+        Computes the 'lensing information' defined in Yi Tan et al. 2023, Equations (8) and (9).
+        https://ui.adsabs.harvard.edu/abs/2023arXiv231109307T/abstract
+        """
+        data = self.coolest.observation.pixels.get_pixels()
+        # TODO: subtract the lens light
+        print("WARNING: no lens light subtracted; assuming the data contains only the arcs.")
+        if noise_map is None:
+            raise NotImplementedError("Getting the noise map from the COOLEST instance is yet implemented.")
+        if theta_E is None:
+            mass_profile = self.coolest.lensing_entities[entity_idx_theta_E].mass_model[profile_idx_theta_E]
+            theta_E = mass_profile.parameters['theta_E'].point_estimate.value
+        x, y = self.coordinates.pixel_coordinates
+        I, theta_E, phi_ref, mask = util.lensing_information(
+            data, x, y, theta_E, noise_map, a=a, b=b, arc_mask=arc_mask
+        )
+        return I, theta_E, phi_ref, mask
+
 
     @staticmethod
     def effective_radius(light_map, x, y, outer_radius=10, initial_guess=1, initial_delta_pix=10, n_iter=10):
@@ -632,4 +643,11 @@ class Analysis(object):
             delta=delta/2.
 
         return r_eff, grid_res
+    
+    @staticmethod
+    def _find_nearest(array, value):
+        """subfunction to find nearest closest element in array to value"""
+        array = np.asarray(array)
+        idx = (np.abs(array - value)).argmin()
+        return array[idx]
     
