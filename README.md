@@ -3,7 +3,7 @@
 
 # COOLEST: a standard for strong gravitational lensing studies
 
-![PyPi python support](https://img.shields.io/badge/Python-3.7%20|%203.10-blue)
+![PyPi python support](https://img.shields.io/badge/Python-3.8-blue)
 [![Tests](https://github.com/aymgal/COOLEST/actions/workflows/ci-tests.yml/badge.svg?branch=main)](https://github.com/aymgal/COOLEST/actions/workflows/ci-tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/aymgal/COOLEST/badge.svg)](https://coveralls.io/github/aymgal/COOLEST)
 [![Documentation Status](https://readthedocs.org/projects/coolest/badge/?version=latest)](https://coolest.readthedocs.io/en/latest/?badge=latest)
