@@ -466,7 +466,7 @@ class ParametersPlotter(object):
         self._add_margin_samples = add_multivariate_margin_samples
         self._ns_per_model_margin = num_samples_per_model_margin
         self._color_margin = 'black'
-        self._label_margin = "Marginalized multivariate samples"
+        self._label_margin = "Combined samples"
 
         # self.posterior_bool_list = posterior_bool_list
         # self.param_lens, self.param_source = util.split_lens_source_params(
@@ -511,6 +511,7 @@ class ParametersPlotter(object):
 
         mcsamples = []
         samples_margin, weights_margin = None, None
+        mysample_margin = None
         for i in range(self.num_models):
             chain_file = os.path.join(self.coolest_directories[i],self.coolest_objects[i].meta["chain_file_name"]) # Here get the chain file path for each coolest object
 
@@ -541,7 +542,7 @@ class ParametersPlotter(object):
             columns_to_read = sorted(column_indices) + [num_cols-1]  # add last one for probability weights
             samples = pd.read_csv(chain_file, usecols=columns_to_read, delimiter=',')
         
-            # Re-order columnds to match self.parameter_id_list and labels
+            # Re-order columns to match self.parameter_id_list and labels
             sample_par_values = np.array(samples[self.parameter_id_list])
 
             # If needed, shift samples by a constant
@@ -563,38 +564,33 @@ class ParametersPlotter(object):
             mysample.reweightAddingLogLikes(-np.log(sample_prob_weight))
             mcsamples.append(mysample)
 
-            if self._add_margin_samples: # concatenate samples if required
-                # draw sample indices
-                ns_tot = sample_par_values.shape[0]
-                if self._ns_per_model_margin > ns_tot:
-                    logging.warning(f"The number of samples for model '{self.coolest_names[i]}' "
-                                    f"is smaller than the number of samples needed to perform marginalization!")
-                    ns_draw = ns_tot
-                else:
-                    ns_draw = self._ns_per_model_margin
-                indices = np.random.choice(np.arange(ns_tot, dtype=int), size=ns_draw, replace=False)
-                # concatenate the drawn samples and their weights
+            # if required, aggregate the samples in a "marginalized" posterior
+            if self._add_margin_samples:
                 if i == 0:
-                    samples_margin = np.copy(sample_par_values[indices, :])
-                    weights_margin = np.copy(sample_prob_weight[indices])
+                    mysample_margin = copy.deepcopy(mysample)
                 else:
-                    samples_margin = np.concatenate([samples_margin, sample_par_values[indices, :]], axis=0)
-                    weights_margin = np.concatenate([weights_margin, sample_prob_weight[indices]])
+                    # combine the sample such that the probability mass of each set of samples is the same
+                    mysample_margin = mysample_margin.getCombinedSamplesWithSamples(mysample, sample_weights=(1, 1))
         
         if self._add_margin_samples:
-            # samples_margin = util.resample_multivariate_normal(
-            #     samples_margin, num_samples=10_000 #, ddof=0, aweights=weights_margin,
-            # )
-            mysample_margin = MCSamples(samples=samples_margin, names=self.parameter_id_list, 
-                                        labels=self._label_margin,
-                                        settings=settings_mcsamples)
-            mysample_margin.reweightAddingLogLikes(-np.log(weights_margin))
             mcsamples.append(mysample_margin)
 
-        self.mcsamples = mcsamples
+        self._mcsamples = mcsamples
         self.ref_values = point_estimates
         self.ref_markers = [dict(zip(self.parameter_id_list, values)) for values in self.ref_values]
-                    
+
+    def get_mcsamples_getdist(self, with_margin=False):
+        if not self._add_margin_samples or with_margin:
+            return self._mcsamples
+        else:
+            return self._mcsamples[:-1]
+    
+    def get_margin_mcsamples_getdist(self):
+        if not self._add_margin_samples:
+            return None
+        else:
+            return self._mcsamples[-1]
+    
     def plot_triangle_getdist(self, subplot_size=1, filled_contours=True, angles_range=None, 
                               linewidth_hist=2, linewidth_cont=1, marker_size=15):
         """Corner array of subplots using getdist.triangle_plot method.
@@ -623,8 +619,8 @@ class ParametersPlotter(object):
             = self._prepare_getdist_plot(linewidth_hist, lw_cont=linewidth_cont)
 
         # Make the plot
-        g = plots.get_subplot_plotter(subplot_size=subplot_size)    
-        g.triangle_plot(self.mcsamples,
+        g = plots.get_subplot_plotter(subplot_size=subplot_size)
+        g.triangle_plot(self._mcsamples,
                             params=self.parameter_id_list,
                             legend_labels=legend_labels,
                             filled=filled_contours,
@@ -643,7 +639,8 @@ class ParametersPlotter(object):
                 for j in range(i+1,self.num_params):
                     val_y = self.ref_values[k][j]
                     if val_x is not None and val_y is not None:
-                        g.subplots[j,i].scatter(val_x,val_y,s=marker_size,facecolors='black',color='black',marker=self.markers[k])
+                        g.subplots[j,i].scatter(val_x, val_y, s=marker_size, facecolors='black',
+                                                color='black', marker=self.markers[k])
 
 
         # Set default ranges for angles
@@ -696,7 +693,7 @@ class ParametersPlotter(object):
             legend_ncol = 3
         # Make the plot
         g = plots.get_subplot_plotter(subplot_size=subplot_size)    
-        g.rectangle_plot(x_param_ids, y_param_ids, roots=self.mcsamples,
+        g.rectangle_plot(x_param_ids, y_param_ids, roots=self._mcsamples,
                             legend_labels=legend_labels,
                             filled=filled_contours,
                             colors=colors,
@@ -742,7 +739,7 @@ class ParametersPlotter(object):
             legend_ncol = 3
         # Make the plot
         g = plots.get_subplot_plotter(subplot_size=subplot_size)    
-        g.plots_1d(self.mcsamples,
+        g.plots_1d(self._mcsamples,
                    params=self.parameter_id_list,
                    legend_labels=legend_labels,
                    colors=colors,
