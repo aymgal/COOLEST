@@ -138,7 +138,7 @@ def downsampling(image, factor=1):
 def lensing_information(data_lens_sub, x, y, theta_E, noise_map, center_x_lens=0, center_y_lens=0,
                         a=16, b=0, arc_mask=None):
     """
-    Computes the 'lensing information' defined in Yi Tan et al. 2023, Equations (8) and (9).
+    Computes the 'lensing information' defined in Tan et al. 2023, Equations (8) and (9).
     https://ui.adsabs.harvard.edu/abs/2023arXiv231109307T/abstract
 
     Parameters
