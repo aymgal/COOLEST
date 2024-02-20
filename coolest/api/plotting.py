@@ -592,7 +592,9 @@ class ParametersPlotter(object):
             return self._mcsamples[-1]
     
     def plot_triangle_getdist(self, subplot_size=1, filled_contours=True, angles_range=None, 
-                              linewidth_hist=2, linewidth_cont=1, marker_size=15):
+                              linewidth_hist=2, linewidth_cont=2, linewidth_margin=4,
+                              marker_linewidth=2, marker_size=15, 
+                              axes_labelsize=12, legend_fontsize=14):
         """Corner array of subplots using getdist.triangle_plot method.
 
         Parameters
@@ -615,25 +617,38 @@ class ParametersPlotter(object):
         GetDistPlotter
             Instance of GetDistPlotter corresponding to the figure
         """
-        line_args, contours_lws, contour_ls, colors, legend_labels \
-            = self._prepare_getdist_plot(linewidth_hist, lw_cont=linewidth_cont)
-
+        line_args, contour_lws, contour_ls, colors, legend_labels \
+            = self._prepare_getdist_plot(linewidth_hist, 
+                                         lw_cont=linewidth_cont, 
+                                         lw_margin=linewidth_margin)
+        
+        filled_contours = [filled_contours]*len(self._mcsamples)
+        alphas = [1]*len(self._mcsamples)
+        if self._add_margin_samples:
+            filled_contours[-1] = True
+            # alphas[-1] = 0.7
+    
         # Make the plot
         g = plots.get_subplot_plotter(subplot_size=subplot_size)
-        g.triangle_plot(self._mcsamples,
-                            params=self.parameter_id_list,
-                            legend_labels=legend_labels,
-                            filled=filled_contours,
-                            colors=colors,
-                            line_args=line_args, 
-                            contour_colors=self.colors,
-                            contours_lws=contours_lws,
-                            contour_ls=contour_ls)
+        g.settings.legend_fontsize = legend_fontsize
+        g.settings.axes_labelsize = axes_labelsize
+        g.triangle_plot(
+            self._mcsamples,
+            params=self.parameter_id_list,
+            legend_labels=legend_labels,
+            filled=filled_contours,
+            colors=colors,
+            line_args=line_args,   # TODO: issue that linewidth settings in line_args are being overwritten by contour_lws
+            contour_colors=self.colors,
+            contour_lws=contour_lws,
+            contour_ls=contour_ls,
+            alphas=alphas,
+        )
         
         # Add marker lines and points
         for k in range(0, len(self.ref_values)):
             g.add_param_markers(self.ref_markers[k], color='black', ls=self.linestyles[k], 
-                                lw=(linewidth_cont+linewidth_hist)/2)
+                                lw=marker_linewidth)
             for i in range(0,self.num_params):
                 val_x = self.ref_values[k][i]
                 for j in range(i+1,self.num_params):
@@ -840,16 +855,18 @@ class ParametersPlotter(object):
         plt.show()
         return f, ax
 
-    def _prepare_getdist_plot(self, lw, lw_cont=None):
+    def _prepare_getdist_plot(self, lw, lw_cont=None, lw_margin=None):
+        if lw_margin is None:
+            lw_margin = lw + 2
         line_args = [{'ls':'-', 'lw': lw, 'color': c} for c in self.colors]
         lw_conts = [lw_cont]*self.num_models
         ls_conts = ['-']*self.num_models
         legend_labels = copy.deepcopy(self.coolest_names)
         colors = copy.deepcopy(self.colors)
         if self._add_margin_samples:
-            line_args.append({'ls': '-.', 'lw': lw+1, 'alpha': 0.8, 'color': self._color_margin})
+            line_args.append({'ls': '-.', 'lw': lw_margin, 'alpha': 0.8, 'color': self._color_margin})
             ls_conts.append('-.')
-            if lw_cont is not None: lw_conts.append(lw_cont+1)
+            if lw_cont is not None: lw_conts.append(lw_margin)
             legend_labels.append(self._label_margin)
             colors.append(self._color_margin)
         return line_args, lw_conts, ls_conts, colors, legend_labels
