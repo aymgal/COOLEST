@@ -5,7 +5,8 @@ import numpy as np
 from scipy import special
 
 from coolest.template.classes.profiles.mass import (PEMD as TemplatePEMD,
-                                                    ExternalShear as TemplateExternalShear)
+                                                    ExternalShear as TemplateExternalShear,
+                                                    ConvergenceSheet as TemplateConvergenceSheet)
 from coolest.api.profiles import util
 
 
@@ -151,11 +152,13 @@ class PEMD(BaseMassProfile):
 
 
 class ExternalShear(BaseMassProfile):
+    """
+    Coordinates of the origin for the external shear profile are assumed to be (0., 0.).
+    """ 
 
     _template_class = TemplateExternalShear()
 
     def deflection(self, x, y, gamma_ext=0., phi_ext=0.):
-        """coordinates of the origin for the external shear profile assumed to be (0., 0.)""" 
         phi_ext_ = util.eastofnorth2normalradians(phi_ext)
         gamma1 = gamma_ext * np.cos(2.*phi_ext_)
         gamma2 = gamma_ext * np.sin(2.*phi_ext_)
@@ -173,6 +176,38 @@ class ExternalShear(BaseMassProfile):
         phi_ext_ = util.eastofnorth2normalradians(phi_ext)
         gamma1 = gamma_ext * np.cos(2.*phi_ext_)
         gamma2 = gamma_ext * np.sin(2.*phi_ext_)
+        H_xx = kappa + gamma1
+        H_yy = kappa - gamma1
+        H_xy = gamma2
+        H_yx = H_xy
+        return H_xx, H_xy, H_yx, H_yy
+    
+
+class ConvergenceSheet(BaseMassProfile):
+    """
+    Coordinates of the origin for the convergence sheet are assumed to be (0., 0.).
+    """
+
+    _template_class = TemplateConvergenceSheet()
+
+    def potential(self, x, y, kappa_s=0.):
+        x_ = x # no shift
+        y_ = y # no shift
+        r_ = np.hypot(x_, y_)
+        return 0.5 * kappa_s * r_**2
+    
+    def deflection(self, x, y, kappa_s=0.):
+        x_ = x # no shift
+        y_ = y # no shift
+        return x_ * kappa_s, y_ * kappa_s
+
+    def convergence(self, x, y, kappa_s=0.):
+        return np.full_like(x, kappa_s)
+
+    def hessian(self, x, y, kappa_s=0.):
+        kappa = np.full_like(x, kappa_s)
+        gamma1 = 0.
+        gamma2 = 0.
         H_xx = kappa + gamma1
         H_yy = kappa - gamma1
         H_xy = gamma2

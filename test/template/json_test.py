@@ -49,9 +49,13 @@ class TestJSONSerialization(object):
         # Defines the external shear
         ext_shear = MassField('my lovely external shear', lens_1.redshift,
                               mass_model=MassModel('ExternalShear'))
+        
+        # Defines some convergence sheet
+        conv_sheet = MassField('my mass sheet', lens_1.redshift,
+                               mass_model=MassModel('ConvergenceSheet'))
 
         # Put them in a list, which will also create unique IDs for each profile
-        entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3)
+        entity_list = LensingEntityList(ext_shear, lens_1, source_1, source_2, source_3, conv_sheet)
 
         # Define the origin of the coordinates system
         origin = CoordinatesOrigin('00h11m20.244s', '-08d45m51.48s')  # <- in degrees (2.83435, )

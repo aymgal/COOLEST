@@ -15,6 +15,7 @@ __all__ = [
     'NFW',
     'Chameleon',
     'ExternalShear', 
+    'ConvergenceSheet', 
     'PixelatedRegularGridPotential',
 ]
 SUPPORTED_CHOICES = __all__
@@ -252,6 +253,7 @@ class Chameleon(AnalyticalProfile):
 
 class ExternalShear(AnalyticalProfile):
     """External shear defined with a strength and orientation.
+    The 'origin' of the external shear is by convention fixed to coordinates (0, 0).
     
     This profile is described by the following parameters:
 
@@ -267,6 +269,26 @@ class ExternalShear(AnalyticalProfile):
             'phi_ext': NonLinearParameter("Orientation of external shear",
                                DefinitionRange(min_value=-90., max_value=90.),
                                latex_str=r"$\phi_{\rm ext}$"),
+        }
+        super().__init__(parameters)
+
+
+class ConvergenceSheet(AnalyticalProfile):
+    """Convergence 'sheet', infinite and uniform mass density profile.
+    The 'origin' of the convergence sheet is by convention fixed to coordinates (0, 0).
+    
+    This profile is described by the following parameters:
+
+    - 'kappa_s': convergence of the uniform mass density sheet
+    """
+    
+    def __init__(self):
+        parameters = {
+            'kappa_s': NonLinearParameter(
+                "Convergence value of the uniform mass density sheet",
+                DefinitionRange(min_value=0., max_value=1e8),
+                latex_str=r"$\kappa_{\rm s}$"
+            ),
         }
         super().__init__(parameters)
 
