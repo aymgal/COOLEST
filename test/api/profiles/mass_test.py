@@ -162,6 +162,32 @@ class TestPEMD(object):
 
 class TestExternalShear(object):
 
+    def test_potential(self):
+        # define some coordinates grid
+        n_points = 10
+        x_, y_ = np.linspace(-0.4, 0.2, n_points), np.linspace(-0.3, 0.5, n_points)
+        x, y = np.meshgrid(x_, y_)
+        # x, y = x.flatten(), y.flatten()
+
+        # pick some parameter
+        phi_ext = 22.
+        gamma_ext = 0.08
+        
+        # COOLEST
+        psi = ExternalShear().potential(x, y, phi_ext=phi_ext, gamma_ext=gamma_ext)
+
+        # reference
+        ref = LensModel(['SHEAR_GAMMA_PSI'])
+        kwargs = {
+            'gamma_ext': gamma_ext, 
+            'psi_ext': (phi_ext-90.)*np.pi/180.,
+            'ra_0': 0., 'dec_0': 0.,
+        }
+        psi_ref = ref.potential(x, y, [kwargs])
+
+        # compare
+        npt.assert_almost_equal(psi, psi_ref, decimal=8)
+
     def test_deflection(self):
         # define some coordinates grid
         n_points = 10

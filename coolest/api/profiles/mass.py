@@ -167,6 +167,11 @@ class ExternalShear(BaseMassProfile):
 
     _template_class = TemplateExternalShear()
 
+    def potential(self, x, y, gamma_ext=0., phi_ext=0.):
+        phi_ext_ = util.eastofnorth2normalradians(phi_ext)
+        r, phi = util.cartesian2polar(x, y)
+        return 1. / 2 * gamma_ext * r**2 * np.cos(2. * (phi - phi_ext_))
+
     def deflection(self, x, y, gamma_ext=0., phi_ext=0.):
         phi_ext_ = util.eastofnorth2normalradians(phi_ext)
         gamma1 = gamma_ext * np.cos(2.*phi_ext_)

@@ -6,8 +6,11 @@ from scipy import ndimage
 
 
 
+def degree2radians(phi):
+    return phi * np.pi / 180.
+
 def eastofnorth2normalradians(phi_in):
-    phi_out = (phi_in - 90.) * np.pi / 180.
+    phi_out = degree2radians(phi_in - 90.)
     return phi_out
 
 def shift(x, y, center_x, center_y):
@@ -26,6 +29,11 @@ def shift_rotate_elliptical(x, y, phi_radians, q, center_x, center_y):
     x_shift, y_shift = shift(x, y, center_x, center_y)
     x_trans, y_trans = rotate(x_shift, y_shift, phi_radians)
     return x_trans * np.sqrt(q), y_trans / np.sqrt(q)
+
+def cartesian2polar(x, y):
+    r = np.hypot(x, y)
+    phi = np.arctan2(y, x)
+    return r, phi
 
 
 class CartesianGridInterpolator(object):
