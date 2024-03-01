@@ -69,16 +69,25 @@ class PEMD(BaseMassProfile):
         t = gamma - 1.
         return b, t
 
-    def deflection(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
+    def potential(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
         b, t = self.param_conv(theta_E, q, gamma)
-        
         # shift and rotate
         phi_ = util.eastofnorth2normalradians(phi)
         x_, y_ = util.shift(x, y, center_x, center_y)
         x_, y_ = util.rotate(x_, y_, phi_)
-
+        # deflection angle
         a_x_, a_y_ = self._defl_major_axis(x_, y_, b, t, q)
+        # potential
+        return (x_ * a_x_ + y_ * a_y_) / (2 - t)
 
+    def deflection(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
+        b, t = self.param_conv(theta_E, q, gamma)
+        # shift and rotate
+        phi_ = util.eastofnorth2normalradians(phi)
+        x_, y_ = util.shift(x, y, center_x, center_y)
+        x_, y_ = util.rotate(x_, y_, phi_)
+        # deflection angle
+        a_x_, a_y_ = self._defl_major_axis(x_, y_, b, t, q)
         # rotate back
         a_x, a_y = util.rotate(a_x_, a_y_, - phi_)
         return a_x, a_y
