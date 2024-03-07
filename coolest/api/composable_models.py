@@ -243,6 +243,13 @@ class ComposableMassModel(BaseComposableModel):
                          coolest_directory=coolest_directory,
                          **kwargs_selection)
 
+    def evaluate_potential(self, x, y):
+        """Evaluates the lensing potential field at given coordinates"""
+        psi = np.zeros_like(x)
+        for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
+            psi += profile.potential(x, y, **params)
+        return psi
+    
     def evaluate_deflection(self, x, y):
         """Evaluates the lensing deflection field at given coordinates"""
         alpha_x, alpha_y = np.zeros_like(x), np.zeros_like(x)
