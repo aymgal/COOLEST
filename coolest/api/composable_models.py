@@ -70,7 +70,7 @@ class BaseComposableModel(object):
             profile_selection = 'all'
         entities = coolest_object.lensing_entities
         self.directory = coolest_directory
-        self._load_samples, self._csv_path = False, None
+        self._posterior_bool, self._csv_path = False, None
         if load_posterior_samples:
             metadata = coolest_object.meta
             if self._chain_key not in metadata:
@@ -78,7 +78,7 @@ class BaseComposableModel(object):
                                 f"from COOLEST template, hence no posterior samples "
                                 f"will be loaded.")
             else:
-                self._load_samples = True
+                self._posterior_bool = True
                 self._csv_path = os.path.join(self.directory, metadata[self._chain_key])
         self.profile_list, self.param_list, self.post_param_list, self.info_list \
             = self.get_profiles_and_params(model_type, entities, 
@@ -214,9 +214,6 @@ class BaseComposableModel(object):
                 f"{self._supported_eval_modes} are supported "
                 f"(received '{mode}')."
         )
-        if mode == 'posterior' and not self._load_samples:
-            raise ValueError(f"Selected evaluation mode '{mode}' "
-                             f"but samples have not been loaded.")
 
 
 class ComposableLightModel(BaseComposableModel):
@@ -307,10 +304,10 @@ class ComposableMassModel(BaseComposableModel):
                          load_posterior_samples=load_posterior_samples,
                          **kwargs_selection)
 
-    def evaluate_potential(self, x, y, mode='point_estimate'):
+    def evaluate_potential(self, x, y, mode='point'):
         """Evaluates the lensing potential field at given coordinates"""
         self._check_eval_mode(mode)
-        if mode == 'point':
+        if mode == 'point' or self._posterior_bool is False:
             return self._eval_pot_point(x, y, self.param_list)
         return self._eval_pot_posterior(x, y, self.post_param_list)
 
@@ -321,6 +318,7 @@ class ComposableMassModel(BaseComposableModel):
         return psi
     
     def _eval_pot_posterior(self, x, y, post_param_list):
+        # map the point function at each sample
         mapped = map(partial(self._eval_pot_point, x, y), post_param_list)
         return np.array(list(mapped))
     
