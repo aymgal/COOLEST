@@ -28,6 +28,10 @@ class BaseComposableModel(object):
         COOLEST instance
     coolest_directory : str, optional
         Directory which contains the COOLEST template, by default None
+    load_posterior_samples : bool, optional
+        If True, and if the COOLEST metadata provides it, the constructor will
+        attempt to load the chain file containing posterior samples, in addition
+        to point estimates for each profile parameters. Default is False.
     entity_selection : list, optional
         List of indices of the lensing entities to consider; If None, 
         selects the first entity which has a model of type model_type, by default None
@@ -153,6 +157,7 @@ class BaseComposableModel(object):
                     usecols=[param.id], 
                     delimiter=',',
                 )
+                # TODO: take into account probability weights from nested sampling runs!
                 samples[name] = np.array(column[param.id])
         return parameters, samples
 
@@ -304,12 +309,12 @@ class ComposableMassModel(BaseComposableModel):
                          load_posterior_samples=load_posterior_samples,
                          **kwargs_selection)
 
-    def evaluate_potential(self, x, y, mode='point'):
+    def evaluate_potential(self, x, y, mode='point', num_samples=None):
         """Evaluates the lensing potential field at given coordinates"""
         self._check_eval_mode(mode)
         if mode == 'point' or self._posterior_bool is False:
             return self._eval_pot_point(x, y, self.param_list)
-        return self._eval_pot_posterior(x, y, self.post_param_list)
+        return self._eval_pot_posterior(x, y, self.post_param_list, num_samples)
 
     def _eval_pot_point(self, x, y, param_list):
         psi = np.zeros_like(x)
@@ -317,9 +322,10 @@ class ComposableMassModel(BaseComposableModel):
             psi += profile.potential(x, y, **param_list[k])
         return psi
     
-    def _eval_pot_posterior(self, x, y, post_param_list):
+    def _eval_pot_posterior(self, x, y, post_param_list, num_max):
+        map_list = post_param_list if num_max is None else post_param_list[-num_max:]
         # map the point function at each sample
-        mapped = map(partial(self._eval_pot_point, x, y), post_param_list)
+        mapped = map(partial(self._eval_pot_point, x, y), map_list)
         return np.array(list(mapped))
     
     def evaluate_deflection(self, x, y):
