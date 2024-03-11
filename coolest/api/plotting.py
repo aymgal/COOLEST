@@ -24,6 +24,8 @@ plt.rc('image', interpolation='none', origin='lower') # imshow settings
 # logging settings
 logging.getLogger().setLevel(logging.INFO)
 
+# TODO: separate ParametersPlotter from ModelPlotter to avoid dependencies on getdist
+
 
 class ModelPlotter(object):
     """Create pyplot panels from a lens model stored in the COOLEST format.
