@@ -84,15 +84,14 @@ class BaseComposableModel(object):
             else:
                 self._posterior_bool = True
                 self._csv_path = os.path.join(self.directory, metadata[self._chain_key])
-        self.profile_list, self.param_list, self.post_param_list, self.info_list \
-            = self.get_profiles_and_params(model_type, entities, 
-                                           entity_selection, profile_selection)
+        self.setup_profiles_and_params(model_type, entities, 
+                                        entity_selection, profile_selection)
         self.num_profiles = len(self.profile_list)
         if self.num_profiles == 0:
             raise ValueError("No profile has been selected!")
 
-    def get_profiles_and_params(self, model_type, entities, 
-                                entity_selection, profile_selection):
+    def setup_profiles_and_params(self, model_type, entities, 
+                                  entity_selection, profile_selection):
         profile_list = []
         param_list, post_param_list = [], []
         info_list = []
@@ -117,8 +116,13 @@ class BaseComposableModel(object):
                         param_list.append(params)
                         post_param_list.append(post_params)
                         info_list.append((entity.name, entity.redshift))
-        post_param_list = self._reorganize_post_list(post_param_list)
-        return profile_list, param_list, post_param_list, info_list
+        self.profile_list = profile_list
+        self.param_list = param_list
+        self.info_list = info_list
+        if self._posterior_bool is True:
+            post_param_list, post_weights = self._finalize_post_samples(post_param_list, self._csv_path)
+            self.post_param_list = post_param_list
+            self.post_weights = np.array(post_weights)
 
     def estimate_center(self):
         # TODO: improve this (for now simply considers the first profile that has a center)
@@ -158,7 +162,7 @@ class BaseComposableModel(object):
                     delimiter=',',
                 )
                 # TODO: take into account probability weights from nested sampling runs!
-                samples[name] = np.array(column[param.id])
+                samples[name] = list(column[param.id])
         return parameters, samples
 
     @staticmethod
@@ -183,15 +187,13 @@ class BaseComposableModel(object):
         return parameters, fixed_parameters
     
     @staticmethod
-    def _reorganize_post_list(param_list_of_samples):
+    def _finalize_post_samples(param_list_of_samples, samples_file_path):
         """
         Takes as input the samples grouped at the leaves of the nested container structure,
         and returns a list of items each organized as self.param_list
         """
         num_profiles = len(param_list_of_samples)
         profile_0 = param_list_of_samples[0]
-        if profile_0 is None:  # happens when no samples have been loaded
-            return None
         num_samples = len(profile_0[list(profile_0.keys())[0]])
         samples_of_param_list = [
             [{} for _ in range(num_profiles)] for _ in range(num_samples)
@@ -200,7 +202,16 @@ class BaseComposableModel(object):
             for k in range(num_profiles):
                 for key in param_list_of_samples[k].keys():
                     samples_of_param_list[i][k][key] = param_list_of_samples[k][key][i]
-        return samples_of_param_list
+        # also load and return the probability weights
+        # read just the column corresponding to the parameter ID
+        weights_key = 'probability_weights'
+        column = pd.read_csv(
+            samples_file_path, 
+            usecols=[weights_key], 
+            delimiter=',',
+        )
+        weights_list = list(column[weights_key])
+        return samples_of_param_list, weights_list
 
     @staticmethod
     def _selected(index, selection):
@@ -314,7 +325,8 @@ class ComposableMassModel(BaseComposableModel):
         self._check_eval_mode(mode)
         if mode == 'point' or self._posterior_bool is False:
             return self._eval_pot_point(x, y, self.param_list)
-        return self._eval_pot_posterior(x, y, self.post_param_list, num_samples)
+        elif mode == 'posterior':
+            return self._eval_pot_posterior(x, y, self.post_param_list)
 
     def _eval_pot_point(self, x, y, param_list):
         psi = np.zeros_like(x)
@@ -322,10 +334,9 @@ class ComposableMassModel(BaseComposableModel):
             psi += profile.potential(x, y, **param_list[k])
         return psi
     
-    def _eval_pot_posterior(self, x, y, post_param_list, num_max):
-        map_list = post_param_list if num_max is None else post_param_list[-num_max:]
+    def _eval_pot_posterior(self, x, y, param_list):
         # map the point function at each sample
-        mapped = map(partial(self._eval_pot_point, x, y), map_list)
+        mapped = map(partial(self._eval_pot_point, x, y), param_list)
         return np.array(list(mapped))
     
     def evaluate_deflection(self, x, y):
