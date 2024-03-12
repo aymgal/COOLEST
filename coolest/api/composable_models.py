@@ -342,6 +342,16 @@ class ComposableMassModel(BaseComposableModel):
         mapped = map(partial(self._eval_pot_point, x, y), param_list)
         return np.array(list(mapped))
     
+    def fermat_potential(self, x, y, x_src, y_src, mode='point'):
+        """Computes the Fermat potential for image (x, y) and source position (x_src, y_src)
+        """
+        # gravitational term
+        psi = self.evaluate_potential(x, y, mode=mode)
+        # geometric term
+        geo = ((x - x_src)**2 + (y - y_src)**2) / 2.
+        geo = np.broadcast_to(geo, psi.shape)  # makes sure geo has same shape as psi
+        return geo - psi
+    
     def evaluate_deflection(self, x, y):
         """Evaluates the lensing deflection field at given coordinates"""
         alpha_x, alpha_y = np.zeros_like(x), np.zeros_like(x)
