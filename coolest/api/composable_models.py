@@ -123,6 +123,9 @@ class BaseComposableModel(object):
             post_param_list, post_weights = self._finalize_post_samples(post_param_list, self._csv_path)
             self.post_param_list = post_param_list
             self.post_weights = np.array(post_weights)
+        else:
+            self.post_param_list = None
+            self.post_weights = None
 
     def estimate_center(self):
         # TODO: improve this (for now simply considers the first profile that has a center)
@@ -355,8 +358,8 @@ class ComposableMassModel(BaseComposableModel):
             kappa += profile.convergence(x, y, **params)
         return kappa
 
-    def evaluate_magnification(self, x, y):
-        """Evaluates the lensing magnification at given coordinates"""
+    def evaluate_hessian(self, x, y):
+        """Evaluates the lensing Hessian components at given coordinates"""
         H_xx_sum = np.zeros_like(x)
         H_xy_sum = np.zeros_like(x)
         H_yx_sum = np.zeros_like(x)
@@ -367,7 +370,18 @@ class ComposableMassModel(BaseComposableModel):
             H_xy_sum += H_xy
             H_yx_sum += H_yx
             H_yy_sum += H_yy
-        det_A = (1 - H_xx_sum) * (1 - H_yy_sum) - H_xy_sum*H_yx_sum
+        return H_xx_sum, H_xy_sum, H_yx_sum, H_yy_sum
+    
+    def evaluate_jacobian(self, x, y):
+        """Evaluates the lensing Jacobian (d beta / d theta)  at given coordinates"""
+        H_xx, H_xy, H_yx, H_yy = self.evaluate_hessian(x, y)
+        A = np.array([[1 - H_xx, -H_xy], [-H_yx, 1 - H_yy]])
+        return A
+    
+    def evaluate_magnification(self, x, y):
+        """Evaluates the lensing magnification at given coordinates"""
+        H_xx, H_xy, H_yx, H_yy = self.evaluate_hessian(x, y)
+        det_A = (1 - H_xx) * (1 - H_yy) - H_xy*H_yx
         mu = 1. / det_A
         return mu
 
