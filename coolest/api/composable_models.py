@@ -323,13 +323,13 @@ class ComposableMassModel(BaseComposableModel):
                          load_posterior_samples=load_posterior_samples,
                          **kwargs_selection)
 
-    def evaluate_potential(self, x, y, mode='point', num_samples=None):
+    def evaluate_potential(self, x, y, mode='point', last_n_samples=None):
         """Evaluates the lensing potential field at given coordinates"""
         self._check_eval_mode(mode)
         if mode == 'point' or self._posterior_bool is False:
             return self._eval_pot_point(x, y, self.param_list)
         elif mode == 'posterior':
-            return self._eval_pot_posterior(x, y, self.post_param_list)
+            return self._eval_pot_posterior(x, y, self.post_param_list, last_n_samples)
 
     def _eval_pot_point(self, x, y, param_list):
         psi = np.zeros_like(x)
@@ -337,16 +337,18 @@ class ComposableMassModel(BaseComposableModel):
             psi += profile.potential(x, y, **param_list[k])
         return psi
     
-    def _eval_pot_posterior(self, x, y, param_list):
+    def _eval_pot_posterior(self, x, y, param_list, last_n_samples):
         # map the point function at each sample
-        mapped = map(partial(self._eval_pot_point, x, y), param_list)
+        use_all_samples = last_n_samples is None or last_n_samples <= 0
+        val_list = param_list if use_all_samples else param_list[-last_n_samples:]
+        mapped = map(partial(self._eval_pot_point, x, y), val_list)
         return np.array(list(mapped))
     
-    def fermat_potential(self, x, y, x_src, y_src, mode='point'):
+    def fermat_potential(self, x, y, x_src, y_src, mode='point', last_n_samples=None):
         """Computes the Fermat potential for image (x, y) and source position (x_src, y_src)
         """
         # gravitational term
-        psi = self.evaluate_potential(x, y, mode=mode)
+        psi = self.evaluate_potential(x, y, mode=mode, last_n_samples=last_n_samples)
         # geometric term
         geo = ((x - x_src)**2 + (y - y_src)**2) / 2.
         geo = np.broadcast_to(geo, psi.shape)  # makes sure geo has same shape as psi
