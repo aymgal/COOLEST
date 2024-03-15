@@ -444,7 +444,7 @@ class ParametersPlotter(object):
     
     def __init__(self, parameter_id_list, coolest_objects, coolest_directories=None, coolest_names=None,
                  ref_coolest_objects=None, ref_coolest_directories=None, ref_coolest_names=None,
-                 posterior_bool_list=None, colors=None, 
+                 posterior_bool_list=None, colors=None, linestyles=None,
                  add_multivariate_margin_samples=False, num_samples_per_model_margin=5_000):
         self.parameter_id_list = parameter_id_list
         self.coolest_objects = coolest_objects
@@ -462,13 +462,14 @@ class ParametersPlotter(object):
         if colors is None:
             colors = plt.cm.turbo(np.linspace(0.1, 0.9, self.num_models))
         self.colors = colors
-        self.linestyles = ['--', ':', '-.', '-']
-        self.markers    = ['s', '^', 'o', '*']
+        self.linestyles = linestyles
+        self.ref_linestyles = ['--', ':', '-.', '-']
+        self.ref_markers = ['s', '^', 'o', '*']
 
         self._add_margin_samples = add_multivariate_margin_samples
         self._ns_per_model_margin = num_samples_per_model_margin
         self._color_margin = 'black'
-        self._label_margin = "Combined samples"
+        self._label_margin = "Combined"
 
         # self.posterior_bool_list = posterior_bool_list
         # self.param_lens, self.param_source = util.split_lens_source_params(
@@ -579,7 +580,7 @@ class ParametersPlotter(object):
 
         self._mcsamples = mcsamples
         self.ref_values = point_estimates
-        self.ref_markers = [dict(zip(self.parameter_id_list, values)) for values in self.ref_values]
+        self.ref_values_markers = [dict(zip(self.parameter_id_list, values)) for values in self.ref_values]
 
     def get_mcsamples_getdist(self, with_margin=False):
         if not self._add_margin_samples or with_margin:
@@ -593,10 +594,11 @@ class ParametersPlotter(object):
         else:
             return self._mcsamples[-1]
     
-    def plot_triangle_getdist(self, subplot_size=1, filled_contours=True, angles_range=None, 
+    def plot_triangle_getdist(self, filled_contours=True, angles_range=None, 
                               linewidth_hist=2, linewidth_cont=2, linewidth_margin=4,
                               marker_linewidth=2, marker_size=15, 
-                              axes_labelsize=12, legend_fontsize=14):
+                              axes_labelsize=12, legend_fontsize=14,
+                              **subplot_kwargs):
         """Corner array of subplots using getdist.triangle_plot method.
 
         Parameters
@@ -631,7 +633,7 @@ class ParametersPlotter(object):
             # alphas[-1] = 0.7
     
         # Make the plot
-        g = plots.get_subplot_plotter(subplot_size=subplot_size)
+        g = plots.get_subplot_plotter(**subplot_kwargs)
         g.settings.legend_fontsize = legend_fontsize
         g.settings.axes_labelsize = axes_labelsize
         g.triangle_plot(
@@ -649,7 +651,7 @@ class ParametersPlotter(object):
         
         # Add marker lines and points
         for k in range(0, len(self.ref_values)):
-            g.add_param_markers(self.ref_markers[k], color='black', ls=self.linestyles[k], 
+            g.add_param_markers(self.ref_values_markers[k], color='black', ls=self.ref_linestyles[k], 
                                 lw=marker_linewidth)
             for i in range(0,self.num_params):
                 val_x = self.ref_values[k][i]
@@ -657,7 +659,7 @@ class ParametersPlotter(object):
                     val_y = self.ref_values[k][j]
                     if val_x is not None and val_y is not None:
                         g.subplots[j,i].scatter(val_x, val_y, s=marker_size, facecolors='black',
-                                                color='black', marker=self.markers[k])
+                                                color='black', marker=self.ref_markers[k])
 
 
         # Set default ranges for angles
@@ -684,7 +686,7 @@ class ParametersPlotter(object):
     
     def plot_rectangle_getdist(self, x_param_ids, y_param_ids, subplot_size=1, 
                                legend_ncol=None, filled_contours=True, linewidth=1,
-                               marker_size=15):
+                               marker_size=15, **subplot_kwargs):
         """Array of (2D contours) subplots using getdist.rectangle_plot method.
 
         Parameters
@@ -709,7 +711,7 @@ class ParametersPlotter(object):
         if legend_ncol is None:
             legend_ncol = 3
         # Make the plot
-        g = plots.get_subplot_plotter(subplot_size=subplot_size)    
+        g = plots.get_subplot_plotter(**subplot_kwargs)    
         g.rectangle_plot(x_param_ids, y_param_ids, roots=self._mcsamples,
                             legend_labels=legend_labels,
                             filled=filled_contours,
@@ -717,17 +719,17 @@ class ParametersPlotter(object):
                             legend_ncol=legend_ncol,
                             line_args=line_args, 
                             contour_colors=self.colors)
-        for k in range(len(self.ref_markers)):
-            g.add_param_markers(self.ref_markers[k], color='black', ls=self.linestyles[k], lw=linewidth)
+        for k in range(len(self.ref_values)):
+            g.add_param_markers(self.ref_values_markers[k], color='black', ls=self.ref_linestyles[k], lw=linewidth)
             for j, key_x in enumerate(x_param_ids):
-                val_x = self.ref_markers[k][key_x]
+                val_x = self.ref_values_markers[k][key_x]
                 for i, key_y in enumerate(y_param_ids):
-                    val_y = self.ref_markers[k][key_y]
+                    val_y = self.ref_values_markers[k][key_y]
                     if val_x is not None and val_y is not None:
-                        g.subplots[i, j].scatter(val_x,val_y,s=marker_size,facecolors='black',color='black',marker=self.markers[k])
+                        g.subplots[i, j].scatter(val_x,val_y,s=marker_size,facecolors='black',color='black',marker=self.ref_markers[k])
         return g
     
-    def plot_1d_getdist(self, subplot_size=1, num_columns=None, legend_ncol=None, linewidth=1):
+    def plot_1d_getdist(self, num_columns=None, legend_ncol=None, linewidth=1, **subplot_kwargs):
         """Array of 1D histogram subplots using getdist.plots_1d method.
 
         Parameters
@@ -755,7 +757,7 @@ class ParametersPlotter(object):
         if legend_ncol is None:
             legend_ncol = 3
         # Make the plot
-        g = plots.get_subplot_plotter(subplot_size=subplot_size)    
+        g = plots.get_subplot_plotter(**subplot_kwargs)    
         g.plots_1d(self._mcsamples,
                    params=self.parameter_id_list,
                    legend_labels=legend_labels,
@@ -765,14 +767,14 @@ class ParametersPlotter(object):
                    nx=num_columns, legend_ncol=legend_ncol,
         )
         for k in range(len(self.ref_values)):
-            g.add_param_markers(self.ref_markers[k], color='black', ls=self.linestyles[k], lw=linewidth)
+            g.add_param_markers(self.ref_values_markers[k], color='black', ls=self.ref_linestyles[k], lw=linewidth)
         # for k in range(0, len(self.ref_values)):
         #     # Add vertical and horizontal lines
         #     for i in range(0, self.num_params):
         #         val = self.ref_values[k][i]
         #         ax = g.subplots.flatten()[i]
         #         if val is not None:
-        #             ax.axvline(val, color='black', ls=self.linestyles[k], alpha=1.0, lw=1)
+        #             ax.axvline(val, color='black', ls=self.ref_linestyles[k], alpha=1.0, lw=1)
         return g
 
     def plot_source(self, idx_file=0):
@@ -860,7 +862,7 @@ class ParametersPlotter(object):
     def _prepare_getdist_plot(self, lw, lw_cont=None, lw_margin=None):
         if lw_margin is None:
             lw_margin = lw + 2
-        line_args = [{'ls':'-', 'lw': lw, 'color': c} for c in self.colors]
+        line_args = [{'ls': ls, 'lw': lw, 'color': c} for ls, c in zip(self.linestyles, self.colors)]
         lw_conts = [lw_cont]*self.num_models
         ls_conts = ['-']*self.num_models
         legend_labels = copy.deepcopy(self.coolest_names)
