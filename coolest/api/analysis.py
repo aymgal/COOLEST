@@ -3,7 +3,6 @@ __author__ = 'aymgal', 'mattgomer', 'gvernard'
 import numpy as np
 from astropy.coordinates import SkyCoord
 import logging
-from skimage import measure
 
 from coolest.api.composable_models import *
 from coolest.api import util
@@ -293,7 +292,7 @@ class Analysis(object):
         if out_of_FoV is True:
             logging.warning("Outer limit of integration exceeds FoV; effective radius may not be accurate.")
 
-        r_eff, accuracy = self.effective_radius(
+        r_eff, accuracy = util.effective_radius(
             light_image, x, y, outer_radius=outer_radius, initial_guess=initial_guess, 
             initial_delta_pix=initial_delta_pix, n_iter=n_iter
         )
@@ -385,41 +384,15 @@ class Analysis(object):
         dpix = coordinates.pixel_size
         
         if rmax is None:
-            rmax = math.hypot(extent[0]-extent[1],extent[2]-extent[3])/2.0
+            rmax = np.hypot(extent[0]-extent[1],extent[2]-extent[3])/2.0
 
         if normalize:
             max_image = np.amax(light_image)
             light_image = np.divide(light_image,max_image)
-
-        # Fourier transform image
-        fouriertf = np.fft.fft2(light_image, norm='ortho')
-        # Power spectrum (the square of the signal)
-        absval2 = fouriertf.real**2 + fouriertf.imag**2
-        # Covariance matrix (the inverse fourier transform of the power spectrum)
-        complex_cov = np.fft.fftshift(np.fft.ifft2(absval2, norm='ortho'))
-        cov = complex_cov.real
         
-        # Bin the 2D covariance matrix into radial bins
-        rmin = 0.0
-        dr = (rmax-rmin)/Nbins
-        bins = np.arange(rmin,rmax,dr)
-        vals = [[] for _ in range(len(bins))]
-        # Ni = Nj = the total number of pixels in the image
-        Ni = cov.shape[1]
-        Nj = cov.shape[0]
-        for i in range(0,Ni):
-            for j in range(0,Nj):
-                r = math.hypot((j-Nj/2.0)*dpix,(i-Ni/2.0)*dpix)
-                if r < rmax and i != j:
-                    index = int(math.floor(r/dr))
-                    vals[index].append(cov[i][j])
-                    
-        means = np.zeros(len(bins))                    
-        sdevs = np.zeros(len(bins))
-        for i in range(0,len(bins)):
-            if len(vals[i]) > 0:
-                means[i] = np.mean(vals[i])
-                sdevs[i] = np.std(vals[i])
+        bins, means, sdevs, cov = util.azim_averaged_two_point_correlation(
+            light_image, dpix, rmax, Nbins,
+        )
 
         if return_cov and return_map:
             return bins, means, sdevs, cov, light_image
@@ -536,27 +509,18 @@ class Analysis(object):
         # get an image of the convergence
         if coordinates is None:
             x, y = self.coordinates.pixel_coordinates
-            spacing = self.coordinates.pixel_size
+            pixel_size = self.coordinates.pixel_size
         else:
             x, y = coordinates.pixel_coordinates
-            spacing = coordinates.pixel_size
+            pixel_size = coordinates.pixel_size
         # make sure to evaluate the profile such that it is centered on the image
         x_ = x + center_x
         y_ = y + center_y
         light_image = light_model.evaluate_surface_brightness(x_, y_)
         light_image[np.isnan(light_image)] = 0.
 
-        # compute central momoments
-        mu = measure.moments_central(light_image, order=2, spacing=spacing)
-
-        # use the moments to estimate orientation and ellipticity (https://en.wikipedia.org/wiki/Image_moment)
-        mu_20_ = mu[2, 0] / mu[0, 0]
-        mu_02_ = mu[0, 2] / mu[0, 0]
-        mu_11_ = mu[1, 1] / mu[0, 0]
-        lambda_1 = (mu_20_ + mu_02_) / 2. + np.sqrt(4*mu_11_**2 + (mu_20_ - mu_02_)**2) / 2.
-        lambda_2 = (mu_20_ + mu_02_) / 2. - np.sqrt(4*mu_11_**2 + (mu_20_ - mu_02_)**2) / 2.
-        q = np.sqrt(lambda_2 / lambda_1)  # b/a, axis ratio
-        phi_rad = np.arctan(2. * mu_11_ / (mu_20_ - mu_02_)) / 2.  # position angle
+        # compute the ellipticity and position angle
+        phi_rad, q = util.ellipticity_from_moments(light_image, pixel_size)
         phi = phi_rad * 180./np.pi + 90. # conversion to COOLEST conventions
 
         return q, phi
@@ -581,68 +545,6 @@ class Analysis(object):
             data, x, y, theta_E, noise_map, a=a, b=b, arc_mask=arc_mask
         )
         return I, theta_E, phi_ref, mask
-
-
-    @staticmethod
-    def effective_radius(light_map, x, y, outer_radius=10, initial_guess=1, initial_delta_pix=10, n_iter=10):
-        """Computes the effective radius of the 2D surface brightness profile, 
-        based on a definition similar to the half-light radius.
-        NOTE: This functions assumes that the profile is centered on the grid.
-
-        Parameters
-        ----------
-        light_map : ndarray
-            2D array of the light model
-        x : ndarray
-            x-coordinates associated to the light model
-        y : ndarray
-            y-coordinates associated to the light model
-        outer_radius : int, optional
-            outer limit of integration within which half the light is calculated to estimate the effective radius, by default 10
-        initial_guess : int, optional
-            Initial guess for effective radius in arcsecond, by default 1
-        initial_delta_pix : int, optional
-            Initial step size in pixels before shrinking in future iterations, by default 10
-        n_iter : int, optional
-            Number of iterations, by default 5
-
-        Returns
-        -------
-        (float, float)
-            Effective radius and spacing of the coordinates grid (approximate accuracy)
-
-        Raises
-        ------
-        RuntimeError
-            If integration loop exceeds outer bound before convergence.
-        """
-        #initialize
-        grid_res=np.abs(x[0,0]-x[0,1])
-        initial_delta=grid_res*initial_delta_pix #default inital step size is 10 pixels
-        r_grid=np.hypot(x, y)
-        total_light=np.sum(light_map[r_grid<outer_radius])
-        cumulative_light=np.sum(light_map[r_grid<initial_guess])
-        if cumulative_light < total_light/2: #move outward
-            direction=1
-        elif cumulative_light > total_light/2: #move inward
-            direction=-1
-        else:
-            return initial_guess
-        r_eff=initial_guess
-        delta=initial_delta
-        loopcount=0
-        
-        for n in range(n_iter): #overshoots, turn around and backtrack at higher precision
-            while (total_light/2.-cumulative_light)*direction>0: 
-                if loopcount > 100:
-                    raise RuntimeError('Stuck in very long (possibly infinite) loop')
-                r_eff=r_eff+delta*direction
-                cumulative_light=np.sum(light_map[r_grid<r_eff])
-                loopcount+=1
-            direction=direction*-1
-            delta=delta/2.
-
-        return r_eff, grid_res
     
     @staticmethod
     def _find_nearest(array, value):

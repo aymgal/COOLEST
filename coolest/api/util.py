@@ -2,6 +2,7 @@ __author__ = 'aymgal'
 
 
 import os
+import math
 import numpy as np
 # from astropy.coordinates import SkyCoord
 from skimage import measure
@@ -134,6 +135,146 @@ def downsampling(image, factor=1):
     else:
         raise ValueError(f"Downscaling factor {factor} is not possible with shape ({nx}, {ny})")
 
+
+def effective_radius(light_map, x, y, outer_radius=10, initial_guess=1, initial_delta_pix=10, n_iter=10):
+    """Computes the effective radius of the 2D surface brightness profile, 
+    based on a definition similar to the half-light radius.
+    NOTE: This functions assumes that the profile is centered on the grid.
+
+    Parameters
+    ----------
+    light_map : ndarray
+        2D array of the light model
+    x : ndarray
+        x-coordinates associated to the light model
+    y : ndarray
+        y-coordinates associated to the light model
+    outer_radius : int, optional
+        outer limit of integration within which half the light is calculated to estimate the effective radius, by default 10
+    initial_guess : int, optional
+        Initial guess for effective radius in arcsecond, by default 1
+    initial_delta_pix : int, optional
+        Initial step size in pixels before shrinking in future iterations, by default 10
+    n_iter : int, optional
+        Number of iterations, by default 5
+
+    Returns
+    -------
+    (float, float)
+        Effective radius and spacing of the coordinates grid (approximate accuracy)
+
+    Raises
+    ------
+    RuntimeError
+        If integration loop exceeds outer bound before convergence.
+    """
+    #initialize
+    grid_res=np.abs(x[0,0]-x[0,1])
+    initial_delta=grid_res*initial_delta_pix #default inital step size is 10 pixels
+    r_grid=np.hypot(x, y)
+    total_light=np.sum(light_map[r_grid<outer_radius])
+    cumulative_light=np.sum(light_map[r_grid<initial_guess])
+    if cumulative_light < total_light/2: #move outward
+        direction=1
+    elif cumulative_light > total_light/2: #move inward
+        direction=-1
+    else:
+        return initial_guess
+    r_eff=initial_guess
+    delta=initial_delta
+    loopcount=0
+
+    for n in range(n_iter): #overshoots, turn around and backtrack at higher precision
+        while (total_light/2.-cumulative_light)*direction>0: 
+            if loopcount > 100:
+                raise RuntimeError('Stuck in very long (possibly infinite) loop')
+            r_eff=r_eff+delta*direction
+            cumulative_light=np.sum(light_map[r_grid<r_eff])
+            loopcount+=1
+        direction=direction*-1
+        delta=delta/2.
+
+    return r_eff, grid_res
+            
+
+def ellipticity_from_moments(light_map, pixel_size):
+    # compute central momoments
+    try:
+        # scikit-image version 0.19.3 and older
+        mu = measure.moments_central(light_map, order=2, spacing=(pixel_size, pixel_size))
+    except IndexError:
+        # scikit-image version 0.20.0 and beyond
+        mu = measure.moments_central(light_map, order=2, spacing=pixel_size)
+
+    # use the moments to estimate orientation and ellipticity (https://en.wikipedia.org/wiki/Image_moment)
+    mu_20_ = mu[2, 0] / mu[0, 0]
+    mu_02_ = mu[0, 2] / mu[0, 0]
+    mu_11_ = mu[1, 1] / mu[0, 0]
+    lambda_1 = (mu_20_ + mu_02_) / 2. + np.sqrt(4*mu_11_**2 + (mu_20_ - mu_02_)**2) / 2.
+    lambda_2 = (mu_20_ + mu_02_) / 2. - np.sqrt(4*mu_11_**2 + (mu_20_ - mu_02_)**2) / 2.
+    q = np.sqrt(lambda_2 / lambda_1)  # b/a, axis ratio
+    phi = np.arctan(2. * mu_11_ / (mu_20_ - mu_02_)) / 2.  # position angle
+    return phi, q
+
+
+def azim_averaged_two_point_correlation(light_image, dpix, rmax, Nbins):
+    """
+    The two point correlation function can be obtained from the covariance matrix of an image and the distances between its pixels.
+    By binning the covariance matrix entries in distance (or radial) bins, one can obtain the 1D correlation function.
+    There are two ways to obtain the covariance matrix:
+    1) it is equivalent to the inverse Fourier transform of the power spectrum, and
+    2) by calculating explicitly the covariance between any two pixels
+    Here we use the first way.
+
+    Parameters
+    ----------
+    light_image : 2D ndarray
+        Pixels of the image to analyse.
+    dpix : float
+        Pixel size
+    Nbins : int, optional
+        The number of radial bins to use for converting the 2D covariance matrix into a 1D correlation function.
+    rmax : float, optional
+        A value for the maximum extent of the radial bins. If none is given then it is equal to half the diagonal of the provided image. 
+
+    Returns
+    -------
+    (array, array, array, array)
+        The location, value, uncertainty and covariance matrix 
+        The covariance matrix here is the inverse of fourier transform of power spectrum)
+    """
+    # Fourier transform image
+    fouriertf = np.fft.fft2(light_image, norm='ortho')
+    # Power spectrum (the square of the signal)
+    absval2 = fouriertf.real**2 + fouriertf.imag**2
+    # Covariance matrix (the inverse fourier transform of the power spectrum)
+    complex_cov = np.fft.fftshift(np.fft.ifft2(absval2, norm='ortho'))
+    cov = complex_cov.real
+    
+    # Bin the 2D covariance matrix into radial bins
+    rmin = 0.0
+    dr = (rmax-rmin)/Nbins
+    bins = np.arange(rmin,rmax,dr)
+    vals = [[] for _ in range(len(bins))]
+    # Ni = Nj = the total number of pixels in the image
+    Ni = cov.shape[1]
+    Nj = cov.shape[0]
+    for i in range(0,Ni):
+        for j in range(0,Nj):
+            r = np.hypot((j-Nj/2.0)*dpix,(i-Ni/2.0)*dpix)
+            if r < rmax and i != j:
+                index = int(np.floor(r/dr))
+                vals[index].append(cov[i][j])
+                
+    means = np.zeros(len(bins))                    
+    sdevs = np.zeros(len(bins))
+    for i in range(0,len(bins)):
+        if len(vals[i]) > 0:
+            means[i] = np.mean(vals[i])
+            sdevs[i] = np.std(vals[i])
+
+    return bins, means, sdevs, cov
+    
 
 def lensing_information(data_lens_sub, x, y, theta_E, noise_map, center_x_lens=0, center_y_lens=0,
                         a=16, b=0, arc_mask=None):
