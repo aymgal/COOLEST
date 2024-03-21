@@ -881,7 +881,7 @@ class ParametersPlotter(object):
             lw_margin = lw + 2
         line_args = [{'ls': ls, 'lw': lw, 'color': c} for ls, c in zip(self.linestyles, self.colors)]
         lw_conts = [lw_cont]*self.num_models
-        ls_conts = ['-']*self.num_models
+        ls_conts = self.linestyles
         legend_labels = copy.deepcopy(self.coolest_names)
         colors = copy.deepcopy(self.colors)
         if self._add_margin_samples:
