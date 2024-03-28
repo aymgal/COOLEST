@@ -15,7 +15,7 @@ __all__ = [
     'Chameleon',
     'Uniform',
     'Shapelets',
-    'LensedPS',
+    'PointSource',
     'PixelatedRegularGrid',
     'IrregularGrid',
 ]
@@ -131,30 +131,57 @@ class Shapelets(AnalyticalProfile):
         super().__init__(parameters)
 
         
-class LensedPS(AnalyticalProfile):
-    """Surface brightness of a set of point sources after being lensed. 
+class PointSource(AnalyticalProfile):
+    """Surface brightness of a point source before and/or after being lensed. 
 
     This profile is described by the following parameters:
-    
-    - 'ra_list': list of coordinates along the x axis
-    - 'dec_list': list of coordinates along the y axis
-    - 'amps': list of amplitudes
+    - 'x_intrinsic': the value of the intrinsic, unlensed x-axis position of the source
+    - 'y_intrinsic': the value of the intrinsic, unlensed y-axis position of the source
+    - 'f_intrinsic': the value of the intrinsic, unlensed flux (in data units) of the source
+    - 'x_lensed': list of coordinates along the x axis of the multiple images
+    - 'y_lensed': list of coordinates along the y axis of the multiple images
+    - 'f_lensed': list of fluxes (in data units) of the multiple images
+
+    It also has a property to dynamically check what the point source profile is describing:
+    - 'flag_contains' ('intrinsic','lensed','both', None): 
+      whether the profile contains only the lensed properties, only the intrinsic ones, both, or nothing.
     """
 
     def __init__(self):
-        documentation = "Set of lensed point sources"
+        documentation = "Set of point source and lensed multiple images"
         parameters = {
-            'ra_list': NonLinearParameterSet("RA positions of the lensed point sources",
-                               DefinitionRange(),
-                               latex_str=r"$ra$"),
-            'dec_list': NonLinearParameterSet("DEC positions of the lensed point sources",
-                               DefinitionRange(),
-                               latex_str=r"$dec$"),
-            'amps': LinearParameterSet("Set of amplitude values for the lensed point sources",
-                               DefinitionRange(min_value=0.0),
-                               latex_str=r"$A$"),
+            'x_intrinsic': NonLinearParameter("X-axis position of the intrinsic, unlensed point source",
+                                              DefinitionRange(),
+                                              latex_str=r"$ra$"),
+            'y_intrinsic': NonLinearParameter("Y-axis position of the intrinsic, unlensed point source",
+                                              DefinitionRange(),
+                                              latex_str=r"$dec$"),
+            'f_intrinsic': LinearParameter("Flux (in data units) of the intrinsic, unlensed point source",
+                                           DefinitionRange(min_value=0.0),
+                                           latex_str=r"$A$"),
+            'x_lensed': NonLinearParameterSet("X-axis positions of the multiple images",
+                                              DefinitionRange(),
+                                              latex_str=r"$ra$"),
+            'y_lensed': NonLinearParameterSet("Y-axis positions of the multiple images",
+                                              DefinitionRange(),
+                                              latex_str=r"$dec$"),
+            'f_lensed': LinearParameterSet("Set of flux values (in data units) of the multiple images",
+                                           DefinitionRange(min_value=0.0),
+                                           latex_str=r"$A$"),
         }
         super().__init__(parameters)
+
+    @property
+    def flag_contains(self):
+        flag_int = self.parameters['f_intrinsic'].point_estimate.value is not None
+        flag_len = self.parameters['f_lensed'].point_estimate.value is not None
+        if flag_int and flag_len:
+            return 'both'
+        elif flag_int:
+            return 'intrinsic'
+        elif flag_len:
+            return 'lensed'
+        return None
 
 
 class Uniform(AnalyticalProfile):

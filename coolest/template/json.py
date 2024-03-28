@@ -7,6 +7,7 @@ from coolest.template.standard import COOLEST
 from coolest.template.lazy import *
 from coolest.template.classes.parameter import PointEstimate, PosteriorStatistics, Prior
 from coolest.template.info import all_supported_choices as support
+from coolest.template.validation import Validator
 
 
 __all__ = ['JSONSerializer']
@@ -88,7 +89,7 @@ class JSONSerializer(object):
         with open(json_path, 'w') as f:
             f.write(result)
 
-    def load(self, skip_jsonpickle=False, verbose=True):
+    def load(self, skip_jsonpickle=False, verbose=True, **kwargs_validator):
         """Read the JSON template file and build up the corresponding COOLEST object.
         It will first try to load the '_pyAPI' template if it exists using `jsonpickle`, 
         otherwise it will fall back to reading the pure json template.
@@ -99,6 +100,9 @@ class JSONSerializer(object):
             If True, will not try to read the _pyAPI template with jsonpickle first, by default False
         verbose : bool, optional
             If True, prints useful output for debugging, by default False
+        kwargs_validator : dict, optional
+            Keyword arguments for the validate() method of the Validator 
+            that checks self-consistency of the loaded COOLEST instance.
 
         Returns
         -------
@@ -114,6 +118,9 @@ class JSONSerializer(object):
                 print(f"Template file '{jsonpickle_path}' not found, now trying to read '{json_path}'.")
             instance = self.load_simple(json_path, as_object=True)
         assert isinstance(instance, COOLEST)
+        # check consistency across the whole coolest object
+        validator = Validator(instance, self._json_dir)
+        validator.validate(**kwargs_validator)
         return instance
 
     def load_simple(self, json_path, as_object=True):
@@ -200,39 +207,7 @@ class JSONSerializer(object):
                           instrument,
                           cosmology=cosmology,
                           metadata=metadata)
-
-        # check consistency across the whole coolest object
-        self._validate_global(coolest)
         return coolest
-
-    @staticmethod
-    def _validate_global(coolest):
-        """Performs consistency checks regarding some key properties of the COOLEST object.
-        For instance, it checks that the pixel size of both the observation and
-        the instrument are consistent.
-        The checks performed here are those that cannot be handled by individual 
-        class constructors called during instantiation of the COOLEST object.
-
-        Parameters
-        ----------
-        coolest : COOLEST object
-            Instance of a COOLEST object
-
-        Raises
-        ------
-        ValueError
-            In case observed instrumental pixel sizes are inconsistent
-        """
-        # PIXEL SIZE
-        instru_pix_size = coolest.instrument.pixel_size
-        obs_pix_size = coolest.observation.pixels.pixel_size
-        isclose_bool = math.isclose(instru_pix_size, obs_pix_size,
-                                    rel_tol=1e-09, abs_tol=0.0)
-        if obs_pix_size not in (0, None) and not isclose_bool:
-            raise ValueError(f"Pixel size of observation ({obs_pix_size}) is inconsistent with "
-                             f"the instrument pixel size ({instru_pix_size})")
-
-        # TODO: add extra checks
 
     def _setup_instrument(self, instru_in):
         psf_settings = instru_in.pop('psf')

@@ -531,7 +531,7 @@
   "meta": {},
   "mode": "DOC",
   "observation": {
-    "documentation": "Defines the observation itself, that is the image pixels, \n    the exposure time, the noise model and/or properties, the magnitude \n    zero-point and sky brightness.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Regular 2D Grid instance for the observed / mock data pixels, by default None\n    noise : Noise, optional\n        Instance of a Noise object associated with the modeling \n        of the data pixels, by default None\n    mag_zero_point : float, optional\n        Zero-point magnitude, which corresponds to the 1 electron per second\n        hitting the detecor (given in mag), by default None\n    mag_sky_brightness : float, optional\n        Magnitude due to sky brightness (given in mag per arcsec^2), \n        by default None",
+    "documentation": "Defines the observation itself, that is the image pixels, \n    the exposure time, the noise model and/or properties, the magnitude \n    zero-point and sky brightness.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Regular 2D Grid instance for the observed / mock data pixels, by default None\n    noise : Noise, optional\n        Instance of a Noise object associated with the modeling \n        of the data pixels, by default None\n    mag_zero_point : float, optional\n        Zero-point magnitude, which corresponds to the 1 electron per second\n        hitting the detector (given in mag), by default None\n    mag_sky_brightness : float, optional\n        Magnitude due to sky brightness (given in mag per arcsec^2), \n        by default None",
     "exposure_time": null,
     "mag_sky_brightness": null,
     "mag_zero_point": null,
