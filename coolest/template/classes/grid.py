@@ -94,7 +94,8 @@ class PixelatedRegularGrid(Grid):
                  **kwargs_file) -> None:
         super().__init__(fits_path, **kwargs_file)
         self.set_grid(None, field_of_view_x, field_of_view_y, 
-                      num_pix_x, num_pix_y)
+                      num_pix_x, num_pix_y, 
+                      check_fits_file=kwargs_file.get('check_fits_file', True))
 
     @property
     def shape(self):
@@ -122,7 +123,7 @@ class PixelatedRegularGrid(Grid):
         super().set_grid(fits_path, check_fits_file)
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
-        if self.fits_file.exists():
+        if self.fits_file.exists() and check_fits_file:
             self.num_pix_x, self.num_pix_y = self.read_fits()
             # if number of pixels is also given, check that it is consistent
             if num_pix_x != 0 and self.num_pix_x != num_pix_x:
