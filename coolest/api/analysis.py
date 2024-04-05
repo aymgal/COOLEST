@@ -221,7 +221,7 @@ class Analysis(object):
     def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
                                initial_guess=1, initial_delta_pix=10, 
                                n_iter=10, return_model=False, return_accuracy=False,
-                               **kwargs_selection):
+                               circular_mask_radius=None, **kwargs_selection):
         """Computes the effective radius of the 2D surface brightness profile, 
         based on a definition similar to the half-light radius.
 
@@ -240,6 +240,9 @@ class Analysis(object):
             Initial step size in pixels before shrinking in future iterations, by default 10
         n_iter : int, optional
             Number of iterations, by default 5
+        circular_mask_radius : float, optional
+            If not None, multiply the flux by a circular mask with radius `circular_mask_radius` 
+            to force to zero any flux outside of it.
         return_model : bool, optional
             If True, also returns the surface brightness map used to comouted the radius. By default False.
         return_accuracy : bool, optional
@@ -291,6 +294,14 @@ class Analysis(object):
             out_of_FoV=True
         if out_of_FoV is True:
             logging.warning("Outer limit of integration exceeds FoV; effective radius may not be accurate.")
+
+        if circular_mask_radius is not None:  # circular mask that fills the FoV
+            mask = (np.hypot(x, y) < circular_mask_radius).astype(float)  # 0. and 1. only
+            light_image *= mask
+            # import matplotlib.pyplot as plt
+            # plt.imshow(np.log10(light_image))
+            # plt.show()
+            # raise
 
         r_eff, accuracy = util.effective_radius(
             light_image, x, y, outer_radius=outer_radius, initial_guess=initial_guess, 
@@ -411,7 +422,8 @@ class Analysis(object):
         Parameters
         ----------
         outer_radius : int, optional
-            outer limit of integration within which half the light is calculated to estimate the effective radius, by default 10
+            outer limit of integration within which half the light is calculated 
+            to integrate the flux, by default 10
         no_re_eval : bool, option
             If True, do re-evaluate the light profile (only relevant for pixelated profiles). Default is False.
         center : (float, float), optional
@@ -437,8 +449,9 @@ class Analysis(object):
 
         # get an image of the convergence
         if no_re_eval:
-            light_image = light_model.surface_brightness()
+            light_image, _, coordinates = light_model.surface_brightness(return_extra=True)
             light_image[np.isnan(light_image)] = 0.
+            x, y = coordinates.pixel_coordinates
         else:
             # select a center
             if center is None:
@@ -464,6 +477,10 @@ class Analysis(object):
                              "hence `mag_zero_point` must be provided.")
         else:
             logging.info(f"Using the magnitude zero-point ({mag_zero_point}.)")
+
+        if outer_radius is not None:
+            mask = (np.hypot(x, y) < outer_radius).astype(float)  # 0. and 1. only
+            light_image *= mask
 
         # compute the magnitude
         flux_tot = light_image.sum()
@@ -513,6 +530,7 @@ class Analysis(object):
         else:
             x, y = coordinates.pixel_coordinates
             pixel_size = coordinates.pixel_size
+            
         # make sure to evaluate the profile such that it is centered on the image
         x_ = x + center_x
         y_ = y + center_y
