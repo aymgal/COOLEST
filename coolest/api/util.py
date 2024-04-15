@@ -214,6 +214,8 @@ def ellipticity_from_moments(light_map, pixel_size):
     lambda_2 = (mu_20_ + mu_02_) / 2. - np.sqrt(4*mu_11_**2 + (mu_20_ - mu_02_)**2) / 2.
     q = np.sqrt(lambda_2 / lambda_1)  # b/a, axis ratio
     phi = np.arctan(2. * mu_11_ / (mu_20_ - mu_02_)) / 2.  # position angle
+    if mu_02_ > mu_20_:
+        phi += np.pi  # makes it consistent angles conventions in COOLEST
     return phi, q
 
 
