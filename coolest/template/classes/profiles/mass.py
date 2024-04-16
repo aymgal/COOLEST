@@ -276,6 +276,8 @@ class ExternalShear(AnalyticalProfile):
 class ConvergenceSheet(AnalyticalProfile):
     """Convergence 'sheet', infinite and uniform mass density profile.
     The 'origin' of the convergence sheet is by convention fixed to coordinates (0, 0).
+    The sheet is allowed to be negative, e.g. can describe an arbitrary 
+    mass-sheet transformation.
     
     This profile is described by the following parameters:
 
@@ -286,7 +288,7 @@ class ConvergenceSheet(AnalyticalProfile):
         parameters = {
             'kappa_s': NonLinearParameter(
                 "Convergence value of the uniform mass density sheet",
-                DefinitionRange(min_value=0., max_value=1e8),
+                DefinitionRange(min_value=-1e8, max_value=1e8),
                 latex_str=r"$\kappa_{\rm s}$"
             ),
         }
