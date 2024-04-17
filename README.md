@@ -1,9 +1,9 @@
-<img src="https://github.com/aymgal/COOLEST/blob/main/images/full_logo.png#gh-light-mode-only" width="600" alt="COOLEST logo" />
-<img src="https://github.com/aymgal/COOLEST/blob/main/images/full_logo_dark_bg.png#gh-dark-mode-only" width="600" alt="COOLEST logo" />
+<img src="https://raw.githubusercontent.com/aymgal/COOLEST/main/images/full_logo.png#gh-light-mode-only" width="600" alt="COOLEST logo" />
+<img src="https://raw.githubusercontent.com/aymgal/COOLEST/main/images/full_logo_dark_bg.png#gh-dark-mode-only" width="600" alt="COOLEST logo" />
 
 # Standard for Strong Gravitational Lensing Analyses
 
-![PyPi python support](https://img.shields.io/badge/Python-3.8-blue)
+![PyPi python support](https://img.shields.io/badge/Python-3.11-blue)
 [![Tests](https://github.com/aymgal/COOLEST/actions/workflows/ci-tests.yml/badge.svg?branch=main)](https://github.com/aymgal/COOLEST/actions/workflows/ci-tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/aymgal/COOLEST/badge.svg)](https://coveralls.io/github/aymgal/COOLEST)
 [![Documentation Status](https://readthedocs.org/projects/coolest/badge/?version=latest)](https://coolest.readthedocs.io/en/latest/?badge=latest)

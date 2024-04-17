@@ -6,20 +6,14 @@ and provides some basic information about the package.
 """
 
 # Set the package release version
-version_info = (0, 1, 5)
+version_info = (0, 1, 6)
 __version__ = '.'.join(str(c) for c in version_info)
 
 # Set the package details
-__author__ = 'COOLEST developers'
+__author__ = 'Aymeric Galan & COOLEST contributors'
 __email__ = 'aymeric.galan@gmail.com'
 __year__ = '2021-2024'
-__credits__ = 'COOLEST developers'
+__credits__ = 'COOLEST contributors'
 __url__ = 'https://github.com/aymgal/COOLEST'
 __description__ = 'Standard for Strong Gravitational Lensing Analyses'
-
-# Default package properties
 __license__ = 'GPL-3.0'
-__about__ = ('{} Author: {}, Email: {}, Year: {}, {}'
-             ''.format(__name__, __author__, __email__, __year__,
-                       __description__))
-

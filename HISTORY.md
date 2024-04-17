@@ -1,5 +1,9 @@
 # Official releases
 
+## v0.1.6 (2024-04-17)
+
+- Minor improvements to PyPI release
+
 ## v0.1.3 (2024-04-17)
 
 - First release to PyPI
