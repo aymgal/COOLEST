@@ -1,5 +1,11 @@
 # Official releases
 
+## v0.1.3 (2024-04-17)
+
+- First release to PyPI
+- Add support for a `ConvergenceSheet` mass profile to both `coolest.template` and `coolest.api`
+- Various fixes
+
 ## v0.1.0 (2023-08-02)
 
 - Version corresponding to the JOSS publication
