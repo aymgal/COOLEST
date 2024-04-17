@@ -1,5 +1,5 @@
-<img src="https://github.com/aymgal/COOLEST/blob/main/images/full_logo.png#gh-light-mode-only" width="800" alt="COOLEST logo" />
-<img src="https://github.com/aymgal/COOLEST/blob/main/images/full_logo_dark_bg.png#gh-dark-mode-only" width="800" alt="COOLEST logo" />
+<img src="https://github.com/aymgal/COOLEST/blob/main/images/full_logo.png#gh-light-mode-only" width="600" alt="COOLEST logo" />
+<img src="https://github.com/aymgal/COOLEST/blob/main/images/full_logo_dark_bg.png#gh-dark-mode-only" width="600" alt="COOLEST logo" />
 
 # Standard for Strong Gravitational Lensing Analyses
 
