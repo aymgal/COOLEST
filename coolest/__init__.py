@@ -6,7 +6,7 @@ and provides some basic information about the package.
 """
 
 # Set the package release version
-version_info = (0, 1, 1)
+version_info = (0, 1, 2)
 __version__ = '.'.join(str(c) for c in version_info)
 
 # Set the package details
@@ -18,7 +18,7 @@ __url__ = 'https://github.com/aymgal/COOLEST'
 __description__ = 'Standard for Strong Gravitational Lens Modeling'
 
 # Default package properties
-__license__ = 'MIT'
+__license__ = 'GPL-3.0'
 __about__ = ('{} Author: {}, Email: {}, Year: {}, {}'
              ''.format(__name__, __author__, __email__, __year__,
                        __description__))

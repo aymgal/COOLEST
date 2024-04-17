@@ -1,6 +1,12 @@
-# CHANGELOG
+# Official releases
 
-## 04/10/22
+## v0.1.0 (2023-08-02)
+
+- Version corresponding to the JOSS publication
+
+# Older changes
+
+## 04-10-22
 
 - The `ExternalShear` object has been replaced ba a more general `MassField` object. This is for supporting higher-order lensing fields such as flexion in the future. The two supported types of `LensingEntity` are thus `Galaxy` and `MassField`.
 
@@ -9,7 +15,7 @@
 - The single parameter of the `GaussianPSF` has changed from the standard deviation `std_dev` to the more widely used full width at half maximum `fwhm`.
 
 
-## 14/10/22
+## 14-10-22
 
 ### Major changes:
 
@@ -23,7 +29,7 @@
 - a 'DOC' mode has been added to the root COOLEST class (for usage with the documentation website, see separate repository)
 
 
-## 02/06/22
+## 02-06-22
 
 ### Major changes
 
@@ -44,7 +50,7 @@ These affect the template structure:
 - COOLEST standard now supports two distinct modes: 'MAP' to store model results, and 'MOCK' for simulating an observation
 
 
-##  31/05/22
+##  31-05-22
 
 ### Major changes
 Theese affect the template structure:
