@@ -11,7 +11,6 @@ with open(infopath) as open_file:
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
     readme = f.read()
 
 # Python version
@@ -46,8 +45,9 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     license=release_info['__license__'],
     description=release_info['__about__'],
-    long_description=long_description,
+    long_description=readme,
     long_description_content_type='text/markdown',
+    keywords=["coolest", "lensing", "gravitation", "astrophysics"],
 
     python_requires=python_requires,
     install_requires=install_requires,
