@@ -1,8 +1,10 @@
 # Official releases
 
-## v0.1.7 (2024-04-17)
+## v0.1.8 (2024-04-17)
 
 - Minor improvements to PyPI release
+- Tested Python version increased to 3.11
+- Minimal version of lenstronomy (used for shapelets light profile) increased to 1.11.7
 
 ## v0.1.3 (2024-04-17)
 
