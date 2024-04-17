@@ -13,6 +13,10 @@ this_directory = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     readme = f.read()
 
+# Use the README as long description but remove the second version 
+# of the logo (readable only by GitHub's dark mode interface)
+long_description = readme.replace('<img src="https://raw.githubusercontent.com/aymgal/COOLEST/main/images/full_logo_dark_bg.png#gh-dark-mode-only" width="600" alt="COOLEST logo" />', '')
+
 # Python version
 python_requires = '>=3.8'
 
@@ -45,7 +49,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     license=release_info['__license__'],
     description=release_info['__description__'],
-    long_description=readme,
+    long_description=long_description,
     long_description_content_type='text/markdown',
     keywords=["coolest", "lensing", "gravitation", "astrophysics"],
 
