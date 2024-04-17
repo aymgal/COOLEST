@@ -1,7 +1,7 @@
-<img src="docs/_static/coolest_logo.png#gh-light-mode-only" width="200" alt="COOLEST logo" />
-<img src="docs/_static/coolest_logo_dark_bg.png#gh-dark-mode-only" width="200" alt="COOLEST logo" />
+<img src="https://github.com/aymgal/COOLEST/blob/main/images/full_logo.png#gh-light-mode-only" width="200" alt="COOLEST logo" />
+<img src="https://github.com/aymgal/COOLEST/blob/main/images/full_logo_dark_bg.png#gh-dark-mode-only" width="200" alt="COOLEST logo" />
 
-# COOLEST: a standard for strong gravitational lensing studies
+# Standard for Strong Gravitational Lensing Analyses
 
 ![PyPi python support](https://img.shields.io/badge/Python-3.8-blue)
 [![Tests](https://github.com/aymgal/COOLEST/actions/workflows/ci-tests.yml/badge.svg?branch=main)](https://github.com/aymgal/COOLEST/actions/workflows/ci-tests.yml)

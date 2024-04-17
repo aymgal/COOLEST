@@ -15,7 +15,7 @@ __email__ = 'aymeric.galan@gmail.com'
 __year__ = '2021-2024'
 __credits__ = 'COOLEST developers'
 __url__ = 'https://github.com/aymgal/COOLEST'
-__description__ = 'Standard for Strong Gravitational Lens Modeling'
+__description__ = 'Standard for Strong Gravitational Lensing Analyses'
 
 # Default package properties
 __license__ = 'GPL-3.0'
