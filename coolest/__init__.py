@@ -12,7 +12,7 @@ __version__ = '.'.join(str(c) for c in version_info)
 # Set the package details
 __author__ = 'COOLEST developers'
 __email__ = 'aymeric.galan@gmail.com'
-__year__ = '2021-2023'
+__year__ = '2021-2024'
 __credits__ = 'COOLEST developers'
 __url__ = 'https://github.com/aymgal/COOLEST'
 __description__ = 'Standard for Strong Gravitational Lens Modeling'
