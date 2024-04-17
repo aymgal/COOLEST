@@ -1,2 +1,2 @@
 pytest
-lenstronomy==1.11.3
+lenstronomy==1.11.9

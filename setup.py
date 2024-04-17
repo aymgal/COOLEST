@@ -14,7 +14,7 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     readme = f.read()
 
 # Python version
-python_requires = '>=3.7'
+python_requires = '>=3.8'
 
 # Required packages
 install_requires = [
@@ -27,7 +27,7 @@ install_requires = [
 # Optional packages
 install_optional = [
     'matplotlib>=3.7.0',    # for plotting
-    'lenstronomy>=1.11.0',  # for shapelets light profiles
+    'lenstronomy>=1.11.7',  # for shapelets light profiles
     'ipython',              # for running example notebooks
     'ipykernel',            # notebooks in custom environment
     'getdist>=1.3.2',       # for making corner plots
