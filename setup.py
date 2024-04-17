@@ -44,7 +44,7 @@ setuptools.setup(
     download_url=f"https://github.com/aymgal/coolest/archive/refs/tags/v{version}.tar.gz",
     packages=setuptools.find_packages(),
     license=release_info['__license__'],
-    description=release_info['__about__'],
+    description=release_info['__description__'],
     long_description=readme,
     long_description_content_type='text/markdown',
     keywords=["coolest", "lensing", "gravitation", "astrophysics"],
