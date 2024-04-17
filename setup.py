@@ -34,12 +34,15 @@ install_optional = [
     'getdist>=1.3.2',       # for making corner plots
 ]
 
+version = release_info['__version__']
+
 setuptools.setup(
     name=name,
     author=release_info['__author__'],
     author_email=release_info['__email__'],
-    version=release_info['__version__'],
+    version=version,
     url=release_info['__url__'],
+    download_url=f"https://github.com/aymgal/coolest/archive/refs/tags/v{version}.tar.gz",
     packages=setuptools.find_packages(),
     license=release_info['__license__'],
     description=release_info['__about__'],
