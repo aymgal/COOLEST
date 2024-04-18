@@ -26,6 +26,11 @@ logging.getLogger().setLevel(logging.INFO)
 
 # TODO: separate ParametersPlotter from ModelPlotter to avoid dependencies on getdist
 
+__all__ = [
+    'ModelPlotter',
+    'MultiModelPlotter',
+    'ParametersPlotter',
+]
 
 class ModelPlotter(object):
     """Create pyplot panels from a lens model stored in the COOLEST format.

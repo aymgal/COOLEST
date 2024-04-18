@@ -10,6 +10,10 @@ from coolest.api import util
 # logging settings
 logging.getLogger().setLevel(logging.INFO)
 
+__all__ = [
+    'Analysis',
+]
+
 class Analysis(object):
     """Handles computation of model-independent quantities 
     and other analysis computations.

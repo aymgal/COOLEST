@@ -1,22 +1,13 @@
 # COOLEST API: `coolest.api` submodule
 
+## Analysis with `coolest.api.analysis`
 
-## Analysis: `coolest.api.analysis`
+Based on a `coolest` object, the `Analysis` class handles computation of model-independent quantities, including the Einstein radius, mass density slope, effective radius, axis ratio from central moments, etc. 
 
-- load the content of a COOLEST file
-- perform computations of model-independent quantities:
-    - effective Einstein radius
-    - effective mass density slope
-    - effective (half-light) radius
+## Models: `coolest.api.composable_model`
 
+Based on a `coolest` object, a "composable model" selects the required light and mass model components, and performs lens model computations, including convolution by the PSF, ray-tracing and supersampling. 
 
 ## Plotting: `coolest.api.plotting`
 
-- instantiate an `Analysis` object from a COOLEST file
-- defines general settings for all plots (colors, cmaps, etc...)
-- could have child classes
-    - Obervationlotter(Plotter)
-    - LightPlotter(Plotter)
-        - LensLightPlotter(LightPlotter)
-        - SourcePlotter(LightPlotter)
-    - MassPlotter(Plotter)
+The plotting routines, separated into different classes, allow the user to visualize the lens models, optionally evaluating the model components on different types of grid (`ModelPlotter`, `MultiModelPlotter`), or generate posterior distributions plots (`ParametersPlotter`).
