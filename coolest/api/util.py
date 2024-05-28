@@ -7,8 +7,6 @@ import numpy as np
 # from astropy.coordinates import SkyCoord
 from skimage import measure
 
-from coolest.template.json import JSONSerializer
-
 
 def convert_image_to_data_units(image, mag_tot, mag_zero_point=None, coolest_object=None):
     """
@@ -39,11 +37,12 @@ def convert_image_to_data_units(image, mag_tot, mag_zero_point=None, coolest_obj
     return image_rescaled
 
 
-def get_coolest_object(file_path, verbose=False, **kwargs_serializer):
+def get_coolest_object(file_path, verbose=False, kwargs_validator={}, **kwargs_serializer):
+    from coolest.template.json import JSONSerializer  # prevents circular imports
     if not os.path.isabs(file_path):
         file_path = os.path.abspath(file_path)
     serializer = JSONSerializer(file_path, **kwargs_serializer)
-    return serializer.load(verbose=verbose)
+    return serializer.load(verbose=verbose, **kwargs_validator)
 
 
 def get_coordinates(coolest_object, offset_x=0., offset_y=0.):
