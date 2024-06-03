@@ -10,6 +10,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from scipy.spatial import Voronoi, voronoi_plot_2d
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from matplotlib.cm import ScalarMappable
+from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 
 
 def plot_voronoi(ax, x, y, z, neg_values_as_bad=False, 
@@ -155,7 +156,8 @@ def std_colorbar_residuals(mappable, res_map, vmin, vmax, label=None, fontsize=1
                         label_kwargs=label_kwargs, **colorbar_kwargs)
 
 def nice_colorbar(mappable, ax=None, position='right', pad=0.1, size='5%', label=None, fontsize=12, 
-                  invisible=False, max_nbins=None,
+                  invisible=False, 
+                  #max_nbins=None,
                   divider_kwargs={}, colorbar_kwargs={}, label_kwargs={}):
     divider_kwargs.update({'position': position, 'pad': pad, 'size': size})
     if ax is None:
@@ -165,15 +167,18 @@ def nice_colorbar(mappable, ax=None, position='right', pad=0.1, size='5%', label
     if invisible:
         cax.axis('off')
         return None
-    cb = plt.colorbar(mappable, cax=cax, **colorbar_kwargs)
+    cb = plt.colorbar(
+        mappable, cax=cax, 
+        **colorbar_kwargs
+    )
     if label is not None:
         colorbar_kwargs.pop('label', None)
         cb.set_label(label, fontsize=fontsize, **label_kwargs)
     if position == 'top':
         cax.xaxis.set_ticks_position('top')
-    if max_nbins is not None:
-        cb.locator = ticker.MaxNLocator(nbins=max_nbins)
-        cb.update_ticks()
+    # if max_nbins is not None: # TODO: this leads to strange results
+    #     # cb.locator = ticker.LogLocator(subs=range(10))
+    #     # cb.update_ticks()
     return cb
 
 def nice_colorbar_residuals(mappable, res_map, vmin, vmax, ax=None, position='right', pad=0.1, size='5%', 
@@ -198,6 +203,23 @@ def cax_colorbar(fig, cax, norm=None, cmap=None, mappable=None, label=None, font
     cb = fig.colorbar(mappable=mappable, orientation=orientation, cax=cax)
     if label is not None:
         cb.set_label(label, fontsize=fontsize, **label_kwargs)
+
+def scale_bar(ax, size, unit_suffix='"', loc='lower left', color='#FFFFFFBB', fontsize=12):
+    if size == int(size):
+        label = f"{int(size)}"
+    else:
+        label = f"{size:.1f}"
+    label += unit_suffix
+    artist = AnchoredSizeBar(
+        ax.transData,
+        size, label,
+        loc=loc, label_top=True,
+        pad=0.8, sep=5, 
+        color=color, fontproperties=dict(size=fontsize),
+        frameon=False, size_vertical=0,
+    )
+    ax.add_artist(artist)
+    return artist
 
 def plot_regular_grid(ax, image_, neg_values_as_bad=False, xylim=None, **imshow_kwargs):
     if neg_values_as_bad:

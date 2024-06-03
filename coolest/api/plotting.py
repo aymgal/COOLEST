@@ -63,7 +63,8 @@ class ModelPlotter(object):
         #self.cmap_flux_mod = ListedColormap(cmap_colors)
 
     def plot_data_image(self, ax, norm=None, cmap=None, xylim=None,
-                        neg_values_as_bad=False, add_colorbar=True):
+                        neg_values_as_bad=False, add_colorbar=True, 
+                        add_scalebar=True, scalebar_size=1):
         """plt.imshow panel with the data image"""
         if cmap is None:
             cmap = self.cmap_flux
@@ -75,14 +76,17 @@ class ModelPlotter(object):
                                 neg_values_as_bad=neg_values_as_bad, 
                                 xylim=xylim)
         if add_colorbar:
-            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb = plut.nice_colorbar(im, ax=ax)
             cb.set_label("flux")
+        if add_scalebar:
+            plut.scale_bar(ax, scalebar_size, color='white', loc='lower right')
         return image
 
     def plot_surface_brightness(self, ax, coordinates=None,
                                 extent_irreg=None, norm=None, cmap=None, 
                                 xylim=None, neg_values_as_bad=True,
-                                plot_points_irreg=False, add_colorbar=True,
+                                plot_points_irreg=False, add_colorbar=True, 
+                                add_scalebar=False, scalebar_size=0.4,
                                 kwargs_light=None,
                                 plot_caustics=None, caustics_color='white', caustics_alpha=0.5,
                                 coordinates_lens=None, kwargs_lens_mass=None):
@@ -130,13 +134,17 @@ class ModelPlotter(object):
             for caustic in caustics:
                 ax.plot(caustic[0], caustic[1], lw=1, color=caustics_color, alpha=caustics_alpha)
         if add_colorbar:
-            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb = plut.nice_colorbar(im, ax=ax)
             cb.set_label("flux")
+        if add_scalebar:
+            plut.scale_bar(ax, scalebar_size, color='white', loc='lower right')
         return image, coordinates
 
     def plot_model_image(self, ax,
                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
-                         kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None,
+                         kwargs_source=None, add_colorbar=True,
+                         add_scalebar=True, scalebar_size=1, 
+                         kwargs_lens_mass=None,
                          **model_image_kwargs):
         """plt.imshow panel showing the surface brightness of the (lensed)
         selected lensing entities (see ComposableLensModel docstring)
@@ -153,13 +161,17 @@ class ModelPlotter(object):
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm, xylim=xylim)
         if add_colorbar:
-            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb = plut.nice_colorbar(im, ax=ax)
             cb.set_label("flux")
+        if add_scalebar:
+            plut.scale_bar(ax, scalebar_size, color='white', loc='lower right')
         return image
 
     def plot_model_residuals(self, ax, mask=None,
                              norm=None, cmap=None, xylim=None, add_chi2_label=False, chi2_fontsize=12,
-                             kwargs_source=None, add_colorbar=True, kwargs_lens_mass=None,
+                             kwargs_source=None, add_colorbar=True, 
+                             add_scalebar=True, scalebar_size=1, 
+                             kwargs_lens_mass=None,
                              **model_image_kwargs):
         """plt.imshow panel showing the normalized model residuals image"""
         if cmap is None:
@@ -176,8 +188,10 @@ class ModelPlotter(object):
                                 neg_values_as_bad=False, 
                                 norm=norm, xylim=xylim)
         if add_colorbar:
-            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb = plut.nice_colorbar(im, ax=ax)
             cb.set_label("(data $-$ model) / noise")
+        if add_scalebar:
+            plut.scale_bar(ax, scalebar_size, color='black', loc='lower right')
         if add_chi2_label is True:
             num_constraints = np.size(image) if mask is None else np.sum(mask)
             red_chi2 = np.sum(image**2) / num_constraints
@@ -188,7 +202,9 @@ class ModelPlotter(object):
 
     def plot_convergence(self, ax, coordinates=None,
                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
-                         add_colorbar=True, kwargs_lens_mass=None):
+                         add_colorbar=True, 
+                         add_scalebar=True, scalebar_size=1, 
+                         kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D convergence map associated to the
         selected lensing entities (see ComposableMassModel docstring)
         """
@@ -208,14 +224,17 @@ class ModelPlotter(object):
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm, xylim=xylim)
         if add_colorbar:
-            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb = plut.nice_colorbar(im, ax=ax)
             cb.set_label(r"$\kappa$")
+        if add_scalebar:
+            plut.scale_bar(ax, scalebar_size, color='white', loc='lower right')
         return image
     
     def plot_convergence_diff(
             self, ax, reference_map, relative_error=True,    
             norm=None, cmap=None, xylim=None, coordinates=None,
-            add_colorbar=True, kwargs_lens_mass=None,
+            add_colorbar=True, add_scalebar=True, scalebar_size=1, 
+            kwargs_lens_mass=None,
             plot_crit_lines=False, crit_lines_color='black', crit_lines_alpha=0.5):
         """plt.imshow panel showing the 2D convergence map associated to the
         selected lensing entities (see ComposableMassModel docstring)
@@ -246,13 +265,16 @@ class ModelPlotter(object):
             for cline in critical_lines:
                 ax.plot(cline[0], cline[1], lw=1, color=crit_lines_color, alpha=crit_lines_alpha)
         if add_colorbar:
-            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb = plut.nice_colorbar(im, ax=ax)
             cb.set_label(r"$\kappa$")
+        if add_scalebar:
+            plut.scale_bar(ax, scalebar_size, color='black', loc='lower right')
         return image
 
     def plot_magnification(self, ax, 
                           norm=None, cmap=None, xylim=None,
-                          add_colorbar=True, coordinates=None, kwargs_lens_mass=None):
+                          add_colorbar=True, add_scalebar=True, scalebar_size=1, 
+                          coordinates=None, kwargs_lens_mass=None):
         """plt.imshow panel showing the 2D magnification map associated to the
         selected lensing entities (see ComposableMassModel docstring)
         """
@@ -273,14 +295,17 @@ class ModelPlotter(object):
                                 cmap=cmap, 
                                 norm=norm, xylim=xylim)
         if add_colorbar:
-            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb = plut.nice_colorbar(im, ax=ax)
             cb.set_label(r"$\mu$")
+        if add_scalebar:
+            plut.scale_bar(ax, scalebar_size, color='white', loc='lower right')
         return image
 
     def plot_magnification_diff(
             self, ax, reference_map, relative_error=True,
             norm=None, cmap=None, xylim=None,
-            add_colorbar=True, coordinates=None, kwargs_lens_mass=None):
+            add_colorbar=True, add_scalebar=True, scalebar_size=1, 
+            coordinates=None, kwargs_lens_mass=None):
         """plt.imshow panel showing the (absolute or relative) 
         difference between 2D magnification maps
         """
@@ -305,8 +330,10 @@ class ModelPlotter(object):
                                 cmap=cmap,
                                 norm=norm, xylim=xylim)
         if add_colorbar:
-            cb = plut.nice_colorbar(im, ax=ax, max_nbins=4)
+            cb = plut.nice_colorbar(im, ax=ax)
             cb.set_label(r"$\mu$")
+        if add_scalebar:
+            plut.scale_bar(ax, scalebar_size, color='black', loc='lower right')
         return image
 
 
