@@ -5,6 +5,8 @@ from coolest.template.classes.fits_file import FitsFile
 from coolest.template.classes.observation import Observation
 from coolest.template.classes.psf import *
 from coolest.template.classes.noise import *
+from coolest.template.classes.likelihood_list import DataLikelihoodList
+from coolest.template.classes.likelihood import *
 from coolest.template.classes.instrument import Instrument
 from coolest.template.classes.observation import Observation
 from coolest.template.classes.coordinates import CoordinatesOrigin

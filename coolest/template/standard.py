@@ -6,7 +6,7 @@ from coolest.template.classes.observation import Observation
 from coolest.template.classes.instrument import Instrument
 from coolest.template.classes.lensing_entity_list import LensingEntityList
 from coolest.template.classes.regularization_list import RegularizationList
-from coolest.template.classes.likelihood_list import LikelihoodList
+from coolest.template.classes.likelihood_list import DataLikelihoodList
 from coolest.template.classes.coordinates import CoordinatesOrigin
 from coolest.template.classes.cosmology import Cosmology
 
@@ -91,7 +91,7 @@ class COOLEST(APIBaseObject):
                  observation: Observation,
                  instrument: Instrument,
                  cosmology: Cosmology = None,
-                 # likelihoods: LikelihoodList = None,
+                 likelihoods: DataLikelihoodList = None,
                  # regularizations: RegularizationList = None,
                  metadata: dict = None):
         if mode not in SUPPORTED_MODES:
@@ -104,7 +104,7 @@ class COOLEST(APIBaseObject):
         self.observation = observation
         self.instrument  = instrument
         self.cosmology   = cosmology
-        # self.likelihoods = likelihoods
+        self.likelihoods = likelihoods
         # self.regularizations = regularizations
 
         self.standard = 'COOLEST'

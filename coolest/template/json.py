@@ -178,7 +178,7 @@ class JSONSerializer(object):
         lensing_entities = self._setup_lensing_entities(c['lensing_entities'])
 
         # COSMOLOGY
-        cosmology = self._setup_cosmology(c['cosmology'])
+        cosmology = self._setup_cosmology(c.get('cosmology', None))
 
         # COORDINATES
         coordinates_origin = self._setup_coordinates(c['coordinates_origin'])
@@ -188,6 +188,9 @@ class JSONSerializer(object):
 
         # INSTRUMENT
         instrument = self._setup_instrument(c['instrument'])
+
+        # LIKELIHOODS
+        likelihoods = self._setup_likelihoods(c.get('likelihoods', None))
 
         # METADATA
         metadata = self._check_metadata(c['meta'])
@@ -199,6 +202,7 @@ class JSONSerializer(object):
                           observation,
                           instrument,
                           cosmology=cosmology,
+                          likelihoods=likelihoods,
                           metadata=metadata)
 
         # check consistency across the whole coolest object
@@ -247,11 +251,35 @@ class JSONSerializer(object):
         noise = self._setup_noise(noise_settings)
         obs_out = Observation(pixels=pixels, noise=noise, **obs_in)
         return obs_out
+    
+    def _setup_likelihoods(self, likelihoods_in):
+        if likelihoods_in is None:
+            return None
+        likelihoods_out = []
+        for likelihood_in in likelihoods_in:
+            likelihoods_out.append(self._setup_likelihood(likelihood_in))
+        return DataLikelihoodList(*likelihoods_out)
+    
+    def _setup_likelihood(self, likelihood_in):
+        if likelihood_in['type'] == 'ImagingDataLikelihood':
+            likelihood_out = ImagingDataLikelihood(
+                mask=self._setup_img_ll_mask(likelihood_in['mask'])
+            )
+        else:
+            raise ValueError(f"Supported likelihoods entities are "
+                             f"{support['likelihoods']}")
+        return likelihood_out
+    
+    def _setup_img_ll_mask(self, mask_in):
+        mask_out = self._setup_grid(mask_in, PixelatedRegularGrid)
+        return mask_out
 
     def _setup_coordinates(self, coord_orig_in):
         return CoordinatesOrigin(**coord_orig_in)
 
     def _setup_cosmology(self, cosmology_in):
+        if cosmology_in is None:
+            return None
         return Cosmology(**cosmology_in)
     
     def _setup_lensing_entities(self, entities_in):

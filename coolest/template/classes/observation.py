@@ -51,7 +51,7 @@ class Observation(APIBaseObject):
 
     def check_consistency_with_instrument(self, instrument):
         """Checks that the data image is consistent with instrument properties"""
-        width  = abs(self.pixels.field_of_view_x[1]  - self.pixels.field_of_view_x[0])
+        width  = abs(self.pixels.field_of_view_x[1] - self.pixels.field_of_view_x[0])
         height = abs(self.pixels.field_of_view_y[1] - self.pixels.field_of_view_y[0])
         num_pix_ra = int(width / instrument.pixel_size)
         error_message_ra = f"Field-of-view along RA is inconsistent (data: {self.pixels.num_pix_x}, instrument: {num_pix_ra})."
