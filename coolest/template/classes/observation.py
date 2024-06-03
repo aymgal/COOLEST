@@ -53,10 +53,10 @@ class Observation(APIBaseObject):
         """Checks that the data image is consistent with instrument properties"""
         width  = abs(self.pixels.field_of_view_x[1] - self.pixels.field_of_view_x[0])
         height = abs(self.pixels.field_of_view_y[1] - self.pixels.field_of_view_y[0])
-        num_pix_ra = int(width / instrument.pixel_size)
+        num_pix_ra = round(width / instrument.pixel_size)
         error_message_ra = f"Field-of-view along RA is inconsistent (data: {self.pixels.num_pix_x}, instrument: {num_pix_ra})."
         assert self.pixels.num_pix_x  == num_pix_ra, error_message_ra
-        num_pix_dec = int(height / instrument.pixel_size)
+        num_pix_dec = round(height / instrument.pixel_size)
         error_message_dec = f"Field-of-view along Dec is inconsistent (data: {self.pixels.num_pix_y}, instrument: {num_pix_dec})."
         assert self.pixels.num_pix_y  == num_pix_dec, error_message_dec
         # TODO: check pixel size value?

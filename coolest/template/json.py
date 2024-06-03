@@ -109,6 +109,8 @@ class JSONSerializer(object):
         jsonpickle_path = self.path + self._api_suffix + '.json'
         if os.path.exists(jsonpickle_path) and not skip_jsonpickle:
             instance = self.load_jsonpickle(jsonpickle_path)
+            # TODO: the following line is only for backward compatibility and will soon be removed
+            instance.likelihoods = None
         else:
             if verbose:
                 print(f"Template file '{jsonpickle_path}' not found, now trying to read '{json_path}'.")
@@ -235,8 +237,11 @@ class JSONSerializer(object):
         if obs_pix_size not in (0, None) and not isclose_bool:
             raise ValueError(f"Pixel size of observation ({obs_pix_size}) is inconsistent with "
                              f"the instrument pixel size ({instru_pix_size})")
-
-        # TODO: add extra checks
+        # INSTANCE METHODS
+        coolest.observation.check_consistency_with_instrument(coolest.instrument)
+        if coolest.likelihoods is not None:
+            coolest.likelihoods.check_consistency_with_observation(coolest.observation)
+        # TODO: further standardize these checks (using class methods?)
 
     def _setup_instrument(self, instru_in):
         psf_settings = instru_in.pop('psf')

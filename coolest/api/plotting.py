@@ -178,10 +178,11 @@ class ModelPlotter(object):
             cmap = self.cmap_res
         if norm is None:
             norm = Normalize(-6, 6)
+        ll_mask = self._get_likelihood_mask(mask)
         lens_model = ComposableLensModel(self.coolest, self._directory,
                                          kwargs_selection_source=kwargs_source,
                                          kwargs_selection_lens_mass=kwargs_lens_mass)
-        image, coordinates = lens_model.model_residuals(mask=mask, **model_image_kwargs)
+        image, coordinates = lens_model.model_residuals(mask=ll_mask, **model_image_kwargs)
         extent = coordinates.plt_extent
         ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
                                 cmap=cmap,
@@ -193,7 +194,8 @@ class ModelPlotter(object):
         if add_scalebar:
             plut.scale_bar(ax, scalebar_size, color='black', loc='lower right')
         if add_chi2_label is True:
-            num_constraints = np.size(image) if mask is None else np.sum(mask)
+            num_constraints = np.size(image) if ll_mask is None else np.sum(ll_mask)
+            print("num_constraints", num_constraints)
             red_chi2 = np.sum(image**2) / num_constraints
             ax.text(0.05, 0.05, r'$\chi^2_\nu$='+f'{red_chi2:.2f}', color='black', alpha=1, 
                     fontsize=chi2_fontsize, va='bottom', ha='left', transform=ax.transAxes,
@@ -335,6 +337,20 @@ class ModelPlotter(object):
         if add_scalebar:
             plut.scale_bar(ax, scalebar_size, color='black', loc='lower right')
         return image
+
+    def _get_likelihood_mask(self, user_mask):
+        # TODO: 
+        if self.coolest.likelihoods is None:
+            return None
+        try:
+            img_ll_idx = self.coolest.likelihoods.index('ImagingDataLikelihood')
+        except ValueError:
+            return None
+        img_ll = self.coolest.likelihoods[img_ll_idx]
+        mask = img_ll.get_mask_pixels(directory=self._directory)
+        if mask is None:  # then we use the user-provided mask
+            mask = user_mask
+        return mask
 
 
 class MultiModelPlotter(object):

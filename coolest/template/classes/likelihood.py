@@ -1,5 +1,7 @@
 __author__ = 'aymgal'
 
+import numpy as np
+
 from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.grid import PixelatedRegularGrid
 
@@ -57,15 +59,22 @@ class ImagingDataLikelihood(Likelihood):
                  mask: PixelatedRegularGrid = None,
                 ) -> None:
         self.mask = mask
+        super().__init__()
+    
+    def get_mask_pixels(self, directory=None):
+        pixels = self.mask.get_pixels(directory=directory)
+        # checks that it contains only 0 and 1
+        assert np.all(np.isin(pixels, [0, 1])), "Imaging likelihood is not binary."
+        return pixels
 
     def check_consistency_with_observation(self, observation):
         """Checks that the data image is consistent with instrument properties"""
-        width  = abs(self.pixels.field_of_view_x[1] - self.pixels.field_of_view_x[0])
-        height = abs(self.pixels.field_of_view_y[1] - self.pixels.field_of_view_y[0])
-        num_pix_ra = int(width / observation.pixels.pixel_size)
+        width  = abs(self.mask.field_of_view_x[1] - self.mask.field_of_view_x[0])
+        height = abs(self.mask.field_of_view_y[1] - self.mask.field_of_view_y[0])
+        num_pix_ra = round(width / observation.pixels.pixel_size)
         error_message_ra = f"Field-of-view along RA is inconsistent (data: {num_pix_ra}, likelihood mask: {self.mask.num_pix_x})."
-        assert self.pixels.num_pix_x  == num_pix_ra, error_message_ra
-        num_pix_dec = int(height / observation.pixels.pixel_size)
+        assert self.mask.num_pix_x  == num_pix_ra, error_message_ra
+        num_pix_dec = round(height / observation.pixels.pixel_size)
         error_message_dec = f"Field-of-view along Dec is inconsistent (data: {num_pix_dec}, likelihood mask: {self.mask.num_pix_y})."
-        assert self.pixels.num_pix_y  == num_pix_dec, error_message_dec
+        assert self.mask.num_pix_y  == num_pix_dec, error_message_dec
         # TODO: check pixel size value?
