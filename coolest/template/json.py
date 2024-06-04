@@ -109,8 +109,6 @@ class JSONSerializer(object):
         jsonpickle_path = self.path + self._api_suffix + '.json'
         if os.path.exists(jsonpickle_path) and not skip_jsonpickle:
             instance = self.load_jsonpickle(jsonpickle_path)
-            # TODO: the following line is only for backward compatibility and will soon be removed
-            instance.likelihoods = None
         else:
             if verbose:
                 print(f"Template file '{jsonpickle_path}' not found, now trying to read '{json_path}'.")

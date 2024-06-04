@@ -195,7 +195,6 @@ class ModelPlotter(object):
             plut.scale_bar(ax, scalebar_size, color='black', loc='lower right')
         if add_chi2_label is True:
             num_constraints = np.size(image) if ll_mask is None else np.sum(ll_mask)
-            print("num_constraints", num_constraints)
             red_chi2 = np.sum(image**2) / num_constraints
             ax.text(0.05, 0.05, r'$\chi^2_\nu$='+f'{red_chi2:.2f}', color='black', alpha=1, 
                     fontsize=chi2_fontsize, va='bottom', ha='left', transform=ax.transAxes,
