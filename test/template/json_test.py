@@ -119,7 +119,7 @@ class TestJSONSerialization(object):
         # and btw we also instantiate another JSONSerializer as a test
         serializer_2 = JSONSerializer(template_path, obj=None,
                                       check_external_files=self.check_files)
-        coolest_3 = serializer_2.load(skip_jsonpickle=True)
+        coolest_3 = serializer_2.load(skip_jsonpickle=True, validate=False)  # no validation as it is a dummy json file
         assert isinstance(coolest_3, COOLEST)
 
         # test that the content of the new json file is *exactly* the same as the original one

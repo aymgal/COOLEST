@@ -88,7 +88,7 @@ class JSONSerializer(object):
         with open(json_path, 'w') as f:
             f.write(result)
 
-    def load(self, skip_jsonpickle=False, verbose=True):
+    def load(self, skip_jsonpickle=False, validate=True, verbose=True):
         """Read the JSON template file and build up the corresponding COOLEST object.
         It will first try to load the '_pyAPI' template if it exists using `jsonpickle`, 
         otherwise it will fall back to reading the pure json template.
@@ -114,11 +114,11 @@ class JSONSerializer(object):
         else:
             if verbose:
                 print(f"Template file '{jsonpickle_path}' not found, now trying to read '{json_path}'.")
-            instance = self.load_simple(json_path, as_object=True)
+            instance = self.load_simple(json_path, as_object=True, validate=validate)
         assert isinstance(instance, COOLEST)
         return instance
 
-    def load_simple(self, json_path, as_object=True):
+    def load_simple(self, json_path, as_object=True, validate=True):
         """Read the JSON template file and build up the corresponding COOLEST object. 
 
         Parameters
@@ -137,7 +137,7 @@ class JSONSerializer(object):
             content = json.loads(f.read())
         if not as_object:
             return content  # dictionary
-        return self._json_to_coolest(content)  # COOLEST object
+        return self._json_to_coolest(content, validate)  # COOLEST object
 
     def load_jsonpickle(self, jsonpickle_path):
         """Read the JSON template file and build up the corresponding COOLEST object
@@ -157,7 +157,7 @@ class JSONSerializer(object):
             content = jsonpickle.decode(f.read())
         return content  # COOLEST object
 
-    def _json_to_coolest(self, json_content):
+    def _json_to_coolest(self, json_content, validate):
         """Creates from scratch a COOLEST instance based on the content of a JSON
         file, given as a nested dictionnary.
 
@@ -208,7 +208,8 @@ class JSONSerializer(object):
                           metadata=metadata)
 
         # check consistency across the whole coolest object
-        self._validate_global(coolest)
+        if validate:
+            self._validate_global(coolest)
         return coolest
 
     @staticmethod

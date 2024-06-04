@@ -72,9 +72,9 @@ class ImagingDataLikelihood(Likelihood):
         width  = abs(self.mask.field_of_view_x[1] - self.mask.field_of_view_x[0])
         height = abs(self.mask.field_of_view_y[1] - self.mask.field_of_view_y[0])
         num_pix_ra = round(width / observation.pixels.pixel_size)
-        error_message_ra = f"Field-of-view along RA is inconsistent (data: {num_pix_ra}, likelihood mask: {self.mask.num_pix_x})."
+        error_message_ra = f"Number of pixels along x is inconsistent (data: {num_pix_ra}, likelihood mask: {self.mask.num_pix_x})."
         assert self.mask.num_pix_x  == num_pix_ra, error_message_ra
         num_pix_dec = round(height / observation.pixels.pixel_size)
-        error_message_dec = f"Field-of-view along Dec is inconsistent (data: {num_pix_dec}, likelihood mask: {self.mask.num_pix_y})."
+        error_message_dec = f"Number of pixels along y is inconsistent (data: {num_pix_dec}, likelihood mask: {self.mask.num_pix_y})."
         assert self.mask.num_pix_y  == num_pix_dec, error_message_dec
         # TODO: check pixel size value?
