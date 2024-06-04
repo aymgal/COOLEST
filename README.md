@@ -34,9 +34,20 @@ See the [`example notebooks`](docs/notebooks) directory to generate and manipula
 
 ## Installation of the Python package
 
-The easiest way to install the `coolest` Python package is via the `pip` installer:
+### Latest released version
+
+The easiest way to install the latest version of the `coolest` Python package is via PyPi:
 ```bash
-# clone the latest version
+# Activate your virtual environment before if needed
+
+pip install coolest
+```
+
+### Latest development version
+
+You can also install it from the GitHub repository directly to get access to the latest changes: 
+```bash
+# Clone the latest version
 git clone https://github.com/aymgal/COOLEST.git
 
 # Move to the repo directly
@@ -57,9 +68,6 @@ pip install [-e] ".[opt]"
 ```
 
 You can test the installation by running `python -c "import coolest"` in the terminal, or by running some of the example notebooks from the [documentation](docs/notebooks) directory. Moreover, you can run all unit tests (having `pytest` installed in your environment), with the command `pytest test`.
-
-_There will be soon the possibility to install_ `coolest` _directly from PyPi and Conda._
-
 
 ## Contributing to the COOLEST standard
 
