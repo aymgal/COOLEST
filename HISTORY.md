@@ -1,5 +1,10 @@
 # Official releases
 
+## v0.1.9 (2024-06-06)
+
+- Add initial support for a `likelihoods` JSON entry (_via_ the `DataLikelihoodList` template class). The current use-case is to reference an `ImagingDataLikelihood` that holds the likelihood mask information (stored in a FITS file).
+- Various bug fixes.
+
 ## v0.1.8 (2024-04-17)
 
 - Minor improvements to PyPI release

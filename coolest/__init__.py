@@ -6,7 +6,7 @@ and provides some basic information about the package.
 """
 
 # Set the package release version
-version_info = (0, 1, 8)
+version_info = (0, 1, 9)
 __version__ = '.'.join(str(c) for c in version_info)
 
 # Set the package details
