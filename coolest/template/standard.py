@@ -1,6 +1,7 @@
 __author__ = 'aymgal'
 
 
+import coolest
 from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.observation import Observation
 from coolest.template.classes.instrument import Instrument
@@ -111,6 +112,7 @@ class COOLEST(APIBaseObject):
         if metadata is None:
             metadata = {}
         self.meta = metadata
+        self.meta['coolest.__version__'] = coolest.__version__
 
     @property
     def exclude_keys(self):
