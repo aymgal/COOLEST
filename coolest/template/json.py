@@ -343,17 +343,17 @@ class JSONSerializer(object):
                     self._update_std_parameter(profile_out, name, values)
 
     def _update_grid_parameter(self, profile_out, name, values):
-        if name != 'pixels':
-            raise NotImplementedError("Support for grid parameters other than "
-                                      "'pixels' is not implemented.")
-        if 'Regular' in profile_out.type:
+        if profile_out.type in ('PixelatedRegularGrid', 'PixelatedRegularGridPotential'):
             pixels = self._setup_grid(values, PixelatedRegularGrid)
-            profile_out.parameters['pixels'] = pixels
-        elif 'Irregular' in profile_out.type:
+            profile_out.parameters[name] = pixels
+        elif profile_out.type == 'IrregularGrid':
             pixels = self._setup_grid(values, IrregularGrid)
-            profile_out.parameters['pixels'] = pixels
+            profile_out.parameters[name] = pixels
+        elif profile_out.type == 'PixelatedRegularGridFullyDefined':
+            pixels = self._setup_grid(values, PixelatedRegularGridStack)
+            profile_out.parameters[name] = pixels
         else:
-            raise ValueError(f"Unknown grid profile ({profile_out.type})")
+            raise ValueError(f"Unknown grid profile ('{profile_out.type}') and/or parameter name ('{name}').")
         
     def _update_std_parameter(self, profile_out, name, values):
         pt_estim = PointEstimate(**values['point_estimate'])

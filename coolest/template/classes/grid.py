@@ -2,6 +2,7 @@ __author__ = 'aymgal', 'gvernard'
 
 from typing import Tuple
 import numpy as np
+import numpy.testing as npt
 import warnings
 
 from coolest.template.classes.base import APIBaseObject
@@ -94,7 +95,7 @@ class PixelatedRegularGrid(Grid):
                  **kwargs_file) -> None:
         super().__init__(fits_path, **kwargs_file)
         self.set_grid(None, field_of_view_x, field_of_view_y, 
-                      num_pix_x, num_pix_y, 
+                      num_pix_x=num_pix_x, num_pix_y=num_pix_y, 
                       check_fits_file=kwargs_file.get('check_fits_file', True))
 
     @property
@@ -107,7 +108,8 @@ class PixelatedRegularGrid(Grid):
             return 0.
         pix_size_x = np.abs(self.field_of_view_x[0] - self.field_of_view_x[1]) / self.num_pix_x
         pix_size_y = np.abs(self.field_of_view_y[0] - self.field_of_view_y[1]) / self.num_pix_y
-        assert pix_size_x == pix_size_y, "Regular grid must have square pixels"
+        npt.assert_almost_equal(pix_size_x, pix_size_y, decimal=6, 
+                                err_msg="Regular grid must have square pixels")
         return pix_size_x
 
     def set_grid(self, fits_path, 
@@ -124,7 +126,8 @@ class PixelatedRegularGrid(Grid):
         self.field_of_view_x = field_of_view_x
         self.field_of_view_y = field_of_view_y
         if self.fits_file.exists() and check_fits_file:
-            self.num_pix_x, self.num_pix_y = self.read_fits()
+            shape = self.read_fits()
+            self.num_pix_x, self.num_pix_y = shape[-2], shape[-1]
             # if number of pixels is also given, check that it is consistent
             if num_pix_x != 0 and self.num_pix_x != num_pix_x:
                 raise ValueError("Given number of pixels in x direction "
@@ -145,7 +148,8 @@ class PixelatedRegularGrid(Grid):
         """
         array, header = self.fits_file.read()
         array_shape = array.shape
-        if array_shape != (header['NAXIS1'], header['NAXIS2']):
+        if (len(array_shape) == 2 and array_shape != (header['NAXIS1'], header['NAXIS2']) or 
+            len(array_shape) == 3 and array_shape != (header['NAXIS1'], header['NAXIS2'], header['NAXIS3'])):
             warnings.warn("Image dimensions do not match the FITS header")
         return array_shape
 
@@ -166,6 +170,38 @@ class PixelatedRegularGrid(Grid):
         """
         array, _ = self.fits_file.read(directory=directory)
         return array
+
+
+class PixelatedRegularGridStack(PixelatedRegularGrid):
+
+    def __init__(self,
+                 fits_path: str = None,
+                 field_of_view_x: Tuple[float] = (0, 0),
+                 field_of_view_y: Tuple[float] = (0, 0),
+                 num_pix_x: int = 0, 
+                 num_pix_y: int = 0,
+                 num_stack: int = 0,
+                 **kwargs_file) -> None:
+        Grid.__init__(self, fits_path, **kwargs_file)
+        self.set_grid(None, field_of_view_x, field_of_view_y, 
+                      num_pix_x=num_pix_x, num_pix_y=num_pix_y, num_stack=num_stack,
+                      check_fits_file=kwargs_file.get('check_fits_file', True))
+
+    @property
+    def shape(self):
+        return (self.num_stack, self.num_pix_x, self.num_pix_y)
+
+    def set_grid(self, *args, num_stack=0, **kwargs):
+        super().set_grid(*args, **kwargs)
+        if self.fits_file.exists() and kwargs.get('check_fits_file', True):
+            shape = self.read_fits()
+            self.num_stack = shape[0]
+            # if number of pixels is also given, check that it is consistent
+            if num_stack != 0 and self.num_stack != num_stack:
+                raise ValueError("Number of stacked pixelated grids "
+                                 "is inconsistent with the fits file")
+        else:
+            self.num_stack = num_stack
 
 
 class IrregularGrid(Grid):

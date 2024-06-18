@@ -3,7 +3,8 @@ __author__ = 'aymgal'
 from coolest.template.classes.profile import Profile, AnalyticalProfile
 from coolest.template.classes.parameter import NonLinearParameter
 from coolest.template.classes.parameter import (DefinitionRange,
-                                            PixelatedRegularGridParameter)
+                                                PixelatedRegularGridParameter,
+                                                PixelatedRegularGridStackParameter)
 from coolest.template.classes.grid import PixelatedRegularGrid
 
 
@@ -17,6 +18,7 @@ __all__ = [
     'ExternalShear', 
     'ConvergenceSheet', 
     'PixelatedRegularGridPotential',
+    'PixelatedRegularGridFullyDefined',
 ]
 SUPPORTED_CHOICES = __all__
 
@@ -306,5 +308,29 @@ class PixelatedRegularGridPotential(Profile):
     def __init__(self):
         parameters = {
             'pixels': PixelatedRegularGridParameter("Pixel values")
+        }
+        super().__init__(parameters)
+
+
+class PixelatedRegularGridFullyDefined(Profile):
+    """Full mass model (potential, first and second spatial derivatives) 
+    defined on a grid of regular pixels.
+
+    This profile is described by the following parameters:
+
+    - 'pixels': 2D array of pixel values
+    """
+
+    def __init__(self):
+        parameters = {
+            'pixels': PixelatedRegularGridParameter(
+                "Pixel values for the lens potential"
+            ),
+            'pixels_derivative': PixelatedRegularGridStackParameter(
+                "Pixel values for the first spatial derivative along x and y axes"
+            ),
+            'pixels_hessian': PixelatedRegularGridStackParameter(
+                "Pixel values for the second spatial derivative along the 'xx', 'xy' and 'xy' axes"
+            ),
         }
         super().__init__(parameters)

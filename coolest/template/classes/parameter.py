@@ -4,7 +4,7 @@ from typing import List
 
 from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.probabilities import Prior, PosteriorStatistics
-from coolest.template.classes.grid import PixelatedRegularGrid, IrregularGrid
+from coolest.template.classes.grid import PixelatedRegularGrid, PixelatedRegularGridStack, IrregularGrid
 
 import numpy as np
 
@@ -214,7 +214,7 @@ class NonLinearParameter(Parameter):
 class LinearParameter(Parameter):
     """Define a hyper-parameter of a lens model
     
-    Warning: this class may be removed in the future, as it has adds unncessary abstraction level.
+    Warning: this class may be removed in the future, as it adds an unnecessary abstraction level.
     """
 
     def __init__(self, *args, **kwargs):
@@ -243,7 +243,7 @@ class ParameterSet(Parameter):
 class LinearParameterSet(ParameterSet):
     """Typically for analytical basis sets.
 
-    Warning: this class may be removed in the future, as it has adds unncessary abstraction level.
+    Warning: this class may be removed in the future, as it adds an unnecessary abstraction level.
     """
 
     def __init__(self, *args, **kwargs) -> None:
@@ -253,7 +253,7 @@ class LinearParameterSet(ParameterSet):
 class NonLinearParameterSet(ParameterSet):
     """Typically for position of point sources.
     
-    Warning: this class may be removed in the future, as it has adds unncessary abstraction level."""
+    Warning: this class may be removed in the future, as it adds an unnecessary abstraction level."""
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -261,6 +261,15 @@ class NonLinearParameterSet(ParameterSet):
 
 class PixelatedRegularGridParameter(PixelatedRegularGrid):
     """Typically for pixelated profiles"""
+    # TODO: implement .fixed attribute following the analytical Parameter interface
+
+    def __init__(self, documentation, **kwargs_grid) -> None:
+        self.documentation = documentation
+        super().__init__(**kwargs_grid)
+
+
+class PixelatedRegularGridStackParameter(PixelatedRegularGridStack):
+    """Typically for pixelated profiles that can be cast to a stacking of multiple grids"""
     # TODO: implement .fixed attribute following the analytical Parameter interface
 
     def __init__(self, documentation, **kwargs_grid) -> None:
