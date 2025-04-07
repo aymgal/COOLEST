@@ -12,7 +12,7 @@
   },
   "instrument": {
     "band": "F160W",
-    "documentation": "Defines the instrument used for the observation.\n    This includes the name of the telescope and detector, the filter, \n    the pixel size, the readout noise and the point spread function (PSF).\n\n    Parameters\n    ----------\n    pixel_size : float\n        Size in arcseconds of a single detector pixel.\n    name : str, optional\n        Name of the instrument, by default \"\"\n    band : str, optional\n        Name of the filter, by default \"\"\n    readout_noise : float, optional\n        Readout noise (in electrons), by default 0.\n    psf : PSF, optional\n        Instance of PSF object, by default None",
+    "documentation": "Defines the instrument used for the observation.\n    This includes the name of the telescope and detector, the filter, \n    the pixel size, the readout noise and the point spread function (PSF).\n\n    Parameters\n    ----------\n    pixel_size : float\n        Size in arcseconds of a single detector pixel, by default None.\n    name : str, optional\n        Name of the instrument, by default \"\"\n    band : str, optional\n        Name of the filter, by default \"\"\n    readout_noise : float, optional\n        Readout noise (in electrons) when it is relevant to the instrument, \n        by default None.\n    psf : PSF, optional\n        Instance of PSF object, by default None (i.e. UnspecifiedPSF).",
     "name": "some instrument",
     "pixel_size": 0.08,
     "psf": {
@@ -43,7 +43,7 @@
       "documentation": "Generic field of massive objects, for instance an external shear field.\n\n    Parameters\n    ----------\n    name : str\n        Name associated to that shear component.\n    redshift : float\n        Redshift associated to that shear component, if needed.\n    mass_model : MassModel, optional\n        Mass model of the field, by default None",
       "mass_model": [
         {
-          "documentation": "External shear defined with a strength and orientation.\n    \n    This profile is described by the following parameters:\n\n    - 'gamma_ext': strength of the shear field\n    - 'phi_ext': orientation of the shear field",
+          "documentation": "External shear defined with a strength and orientation.\n    The 'origin' of the external shear is by convention fixed to coordinates (0, 0).\n    \n    This profile is described by the following parameters:\n\n    - 'gamma_ext': strength of the shear field\n    - 'phi_ext': orientation of the shear field",
           "parameters": {
             "gamma_ext": {
               "definition_range": {
@@ -528,10 +528,13 @@
       "type": "Galaxy"
     }
   ],
-  "meta": {},
+  "likelihoods": null,
+  "meta": {
+    "coolest.__version__": "0.1.9"
+  },
   "mode": "DOC",
   "observation": {
-    "documentation": "Defines the observation itself, that is the image pixels, \n    the exposure time, the noise model and/or properties, the magnitude \n    zero-point and sky brightness.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Regular 2D Grid instance for the observed / mock data pixels, by default None\n    noise : Noise, optional\n        Instance of a Noise object associated with the modeling \n        of the data pixels, by default None\n    mag_zero_point : float, optional\n        Zero-point magnitude, which corresponds to the 1 electron per second\n        hitting the detecor (given in mag), by default None\n    mag_sky_brightness : float, optional\n        Magnitude due to sky brightness (given in mag per arcsec^2), \n        by default None",
+    "documentation": "Defines the observation itself, that is the image pixels, \n    the exposure time, the noise model and/or properties, the magnitude \n    zero-point and sky brightness.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Regular 2D Grid instance for the observed / mock data pixels, by default None\n    noise : Noise, optional\n        Instance of a Noise object associated with the modeling \n        of the data pixels, by default None\n    mag_zero_point : float, optional\n        Zero-point magnitude, which corresponds to the 1 electron per second\n        hitting the detector (given in mag), by default None\n    mag_sky_brightness : float, optional\n        Magnitude due to sky brightness (given in mag per arcsec^2), \n        by default None",
     "exposure_time": null,
     "mag_sky_brightness": null,
     "mag_zero_point": null,
