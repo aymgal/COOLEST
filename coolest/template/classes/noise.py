@@ -11,6 +11,7 @@ __all__ = [
     'NoiseRealization',
     'InstrumentalNoise',
     'DrizzledNoise',
+    'UnspecifiedNoise',
 ]
 
 SUPPORTED_CHOICES = list(set(__all__) - {'Noise'})
@@ -124,3 +125,13 @@ class DrizzledNoise(Noise):
         if wht_map is None:
             wht_map = PixelatedRegularGrid()
         super().__init__(ntype, background_rms=background_rms, wht_map=wht_map)
+
+
+class UnspecifiedNoise(Noise):
+    """Noise type that can be used when the noise can not be properly specified,
+    or noise properties are unknown. May be used for e.g. interferometric data.
+    """
+
+    def __init__(self) -> None:
+        ntype = self.__class__.__name__
+        super().__init__(ntype)

@@ -1,9 +1,10 @@
 __author__ = 'aymgal'
 
 from typing import Union
+import math
 
-from coolest.template.classes.grid import PixelatedRegularGrid
-from coolest.template.classes.noise import Noise
+from coolest.template.classes.grid import PixelatedRegularGrid, UnspecifiedGrid
+from coolest.template.classes.noise import Noise, UnspecifiedNoise
 from coolest.template.classes.base import APIBaseObject
 
 
@@ -37,13 +38,13 @@ class Observation(APIBaseObject):
                  # magnification_ratios: list = None
                  ) -> None:
         if pixels is None:
-            pixels = PixelatedRegularGrid()
+            pixels = UnspecifiedGrid()
         self.pixels = pixels
         self.exposure_time = exposure_time
         self.mag_zero_point = mag_zero_point          # magnitude zero-point (corresponds to 1 electron per second on the detector)
         self.mag_sky_brightness = mag_sky_brightness  # sky brightness (magnitude per arcsec^2)
         if noise is None:
-            noise = Noise()
+            noise = UnspecifiedNoise()
         self.noise = noise
         # self.time_delays = time_delays
         # self.magnification_ratios = magnification_ratios
@@ -51,6 +52,16 @@ class Observation(APIBaseObject):
 
     def check_consistency_with_instrument(self, instrument):
         """Checks that the data image is consistent with instrument properties"""
+        instru_pix_size = instrument.pixel_size
+        obs_pix_size = self.pixels.pixel_size
+        if instru_pix_size is None:
+            # when the instrument pixel size is undefined, we don't check anything
+            return
+        isclose_bool = math.isclose(instru_pix_size, obs_pix_size,
+                                    rel_tol=1e-09, abs_tol=0.0)
+        if obs_pix_size not in (0, None) and not isclose_bool:
+            raise ValueError(f"Pixel size of observation ({obs_pix_size}) is inconsistent with "
+                             f"the instrument pixel size ({instru_pix_size})")
         width  = abs(self.pixels.field_of_view_x[1] - self.pixels.field_of_view_x[0])
         height = abs(self.pixels.field_of_view_y[1] - self.pixels.field_of_view_y[0])
         num_pix_ra = round(width / instrument.pixel_size)
