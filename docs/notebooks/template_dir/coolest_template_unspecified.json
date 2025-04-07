@@ -9,29 +9,14 @@
     "astropy_name": "FlatLambdaCDM"
   },
   "instrument": {
-    "band": "F160W",
-    "name": "some instrument",
-    "pixel_size": 0.08,
+    "band": "350 GHz",
+    "name": "interferometric instrument with no PSF",
+    "pixel_size": null,
     "psf": {
       "description": null,
-      "pixels": {
-        "field_of_view_x": [
-          0,
-          0
-        ],
-        "field_of_view_y": [
-          0,
-          0
-        ],
-        "fits_file": {
-          "path": "psf_kernel.fits"
-        },
-        "num_pix_x": 0,
-        "num_pix_y": 0
-      },
-      "type": "PixelatedPSF"
+      "type": "UnspecifiedPSF"
     },
-    "readout_noise": 4
+    "readout_noise": null
   },
   "lensing_entities": [
     {
@@ -40,18 +25,32 @@
           "id": "0-massfield-mass-0-ExternalShear",
           "parameters": {
             "gamma_ext": {
+              "fixed": false,
               "id": "0-massfield-mass-0-ExternalShear-gamma_ext",
               "point_estimate": {
                 "value": 0.07
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "phi_ext": {
+              "fixed": false,
               "id": "0-massfield-mass-0-ExternalShear-phi_ext",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
@@ -71,63 +70,112 @@
           "id": "1-galaxy-light-0-Sersic",
           "parameters": {
             "I_eff": {
+              "fixed": false,
               "id": "1-galaxy-light-0-Sersic-I_eff",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_x": {
+              "fixed": false,
               "id": "1-galaxy-light-0-Sersic-center_x",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_y": {
+              "fixed": false,
               "id": "1-galaxy-light-0-Sersic-center_y",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "n": {
+              "fixed": false,
               "id": "1-galaxy-light-0-Sersic-n",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "phi": {
+              "fixed": false,
               "id": "1-galaxy-light-0-Sersic-phi",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "q": {
+              "fixed": false,
               "id": "1-galaxy-light-0-Sersic-q",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "theta_eff": {
+              "fixed": false,
               "id": "1-galaxy-light-0-Sersic-theta_eff",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
@@ -140,63 +188,112 @@
           "id": "1-galaxy-light-1-Sersic",
           "parameters": {
             "I_eff": {
+              "fixed": false,
               "id": "1-galaxy-light-1-Sersic-I_eff",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_x": {
+              "fixed": false,
               "id": "1-galaxy-light-1-Sersic-center_x",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_y": {
+              "fixed": false,
               "id": "1-galaxy-light-1-Sersic-center_y",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "n": {
+              "fixed": false,
               "id": "1-galaxy-light-1-Sersic-n",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "phi": {
+              "fixed": false,
               "id": "1-galaxy-light-1-Sersic-phi",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "q": {
+              "fixed": false,
               "id": "1-galaxy-light-1-Sersic-q",
               "point_estimate": {
                 "value": 0.89
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "theta_eff": {
+              "fixed": false,
               "id": "1-galaxy-light-1-Sersic-theta_eff",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
@@ -211,27 +308,48 @@
           "id": "1-galaxy-mass-0-PEMD",
           "parameters": {
             "center_x": {
+              "fixed": false,
               "id": "1-galaxy-mass-0-PEMD-center_x",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_y": {
+              "fixed": false,
               "id": "1-galaxy-mass-0-PEMD-center_y",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "gamma": {
+              "fixed": false,
               "id": "1-galaxy-mass-0-PEMD-gamma",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "mean": 2.0,
@@ -240,27 +358,48 @@
               }
             },
             "phi": {
+              "fixed": false,
               "id": "1-galaxy-mass-0-PEMD-phi",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "q": {
+              "fixed": false,
               "id": "1-galaxy-mass-0-PEMD-q",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "theta_E": {
+              "fixed": false,
               "id": "1-galaxy-mass-0-PEMD-theta_E",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
@@ -302,63 +441,112 @@
           "id": "2-galaxy-light-0-Sersic",
           "parameters": {
             "I_eff": {
+              "fixed": false,
               "id": "2-galaxy-light-0-Sersic-I_eff",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_x": {
+              "fixed": false,
               "id": "2-galaxy-light-0-Sersic-center_x",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "center_y": {
+              "fixed": false,
               "id": "2-galaxy-light-0-Sersic-center_y",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "n": {
+              "fixed": false,
               "id": "2-galaxy-light-0-Sersic-n",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "phi": {
+              "fixed": false,
               "id": "2-galaxy-light-0-Sersic-phi",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "q": {
+              "fixed": false,
               "id": "2-galaxy-light-0-Sersic-q",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": null,
+                "median": null,
+                "percentile_16th": null,
+                "percentile_84th": null
               },
               "prior": {
                 "type": null
               }
             },
             "theta_eff": {
+              "fixed": false,
               "id": "2-galaxy-light-0-Sersic-theta_eff",
               "point_estimate": {
                 "value": null
+              },
+              "posterior_stats": {
+                "mean": 0.11,
+                "median": 0.15,
+                "percentile_16th": 0.03,
+                "percentile_84th": 0.05
               },
               "prior": {
                 "type": null
@@ -433,34 +621,22 @@
       "type": "Galaxy"
     }
   ],
+  "likelihoods": null,
   "meta": {
     "coolest.__version__": "0.1.9"
   },
-  "mode": "MOCK",
+  "mode": "MAP",
   "observation": {
     "exposure_time": null,
     "mag_sky_brightness": null,
     "mag_zero_point": null,
     "noise": {
-      "type": "InstrumentalNoise",
-      "with_readout_noise": true,
-      "with_sky_shot_noise": true,
-      "with_target_shot_noise": true
+      "type": "UnspecifiedNoise"
     },
     "pixels": {
-      "field_of_view_x": [
-        0,
-        0
-      ],
-      "field_of_view_y": [
-        0,
-        0
-      ],
       "fits_file": {
-        "path": "obs.fits"
-      },
-      "num_pix_x": 0,
-      "num_pix_y": 0
+        "path": null
+      }
     }
   },
   "standard": "COOLEST"

@@ -83,7 +83,7 @@
                 }
               },
               "id": "0-massfield-mass-0-ExternalShear",
-              "documentation": "External shear defined with a strength and orientation.\n    \n    This profile is described by the following parameters:\n\n    - 'gamma_ext': strength of the shear field\n    - 'phi_ext': orientation of the shear field"
+              "documentation": "External shear defined with a strength and orientation.\n    The 'origin' of the external shear is by convention fixed to coordinates (0, 0).\n    \n    This profile is described by the following parameters:\n\n    - 'gamma_ext': strength of the shear field\n    - 'phi_ext': orientation of the shear field"
             }
           ]
         },
@@ -1104,7 +1104,7 @@
       "with_target_shot_noise": true,
       "documentation": "Noise properties are computed directly based on the observed \n    or modeled flux, and on the Instrument (e.g., readout noise) and \n    Observation (e.g., exposure time, sky brightness, etc.) properties.\n\n    Parameters\n    ----------\n    with_readout_noise : bool, optional\n        If True, the noise includes readout noise from the detector, by default True\n    with_sky_shot_noise : bool, optional\n        If True, the noise includes shot noise from sky background flux \n        (as the Gaussian approximation of the Poisson noise), by default True\n    with_target_shot_noise : bool, optional\n        If True, the noise includes shot noise from the target flux \n        (as the Gaussian approximation of the Poisson noise), by default True"
     },
-    "documentation": "Defines the observation itself, that is the image pixels, \n    the exposure time, the noise model and/or properties, the magnitude \n    zero-point and sky brightness.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Regular 2D Grid instance for the observed / mock data pixels, by default None\n    noise : Noise, optional\n        Instance of a Noise object associated with the modeling \n        of the data pixels, by default None\n    mag_zero_point : float, optional\n        Zero-point magnitude, which corresponds to the 1 electron per second\n        hitting the detecor (given in mag), by default None\n    mag_sky_brightness : float, optional\n        Magnitude due to sky brightness (given in mag per arcsec^2), \n        by default None"
+    "documentation": "Defines the observation itself, that is the image pixels, \n    the exposure time, the noise model and/or properties, the magnitude \n    zero-point and sky brightness.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Regular 2D Grid instance for the observed / mock data pixels, by default None\n    noise : Noise, optional\n        Instance of a Noise object associated with the modeling \n        of the data pixels, by default None\n    mag_zero_point : float, optional\n        Zero-point magnitude, which corresponds to the 1 electron per second\n        hitting the detector (given in mag), by default None\n    mag_sky_brightness : float, optional\n        Magnitude due to sky brightness (given in mag per arcsec^2), \n        by default None"
   },
   "instrument": {
     "py/object": "coolest.template.classes.instrument.Instrument",
@@ -1141,7 +1141,7 @@
       },
       "documentation": "PSF modeled as a 2D image.\n\n    Parameters\n    ----------\n    pixels : PixelatedRegularGrid, optional\n        Grid class that holds pixel values and the extent of \n        the PSF kernel, by default None\n    description : str, optional\n        Any details regarding the way the PSF has been estimated, by default None"
     },
-    "documentation": "Defines the instrument used for the observation.\n    This includes the name of the telescope and detector, the filter, \n    the pixel size, the readout noise and the point spread function (PSF).\n\n    Parameters\n    ----------\n    pixel_size : float\n        Size in arcseconds of a single detector pixel.\n    name : str, optional\n        Name of the instrument, by default \"\"\n    band : str, optional\n        Name of the filter, by default \"\"\n    readout_noise : float, optional\n        Readout noise (in electrons), by default 0.\n    psf : PSF, optional\n        Instance of PSF object, by default None"
+    "documentation": "Defines the instrument used for the observation.\n    This includes the name of the telescope and detector, the filter, \n    the pixel size, the readout noise and the point spread function (PSF).\n\n    Parameters\n    ----------\n    pixel_size : float\n        Size in arcseconds of a single detector pixel, by default None.\n    name : str, optional\n        Name of the instrument, by default \"\"\n    band : str, optional\n        Name of the filter, by default \"\"\n    readout_noise : float, optional\n        Readout noise (in electrons) when it is relevant to the instrument, \n        by default None.\n    psf : PSF, optional\n        Instance of PSF object, by default None (i.e. UnspecifiedPSF)."
   },
   "cosmology": {
     "py/object": "coolest.template.classes.cosmology.Cosmology",
@@ -1150,6 +1150,9 @@
     "astropy_name": "FlatLambdaCDM",
     "documentation": "Defines the cosmological model. \n    Currently, only FlatLambdaCDM from astropy is supported, based on H0 and Omega_m.\n\n    Parameters\n    ----------\n    H0 : float\n        Hubble constant, in km/s/Mpc\n    Om0 : float\n        Matter density at present time\n    astropy_name : str, optional\n        `astropy` model name, by default 'FlatLambdaCDM'"
   },
+  "likelihoods": null,
   "standard": "COOLEST",
-  "meta": {}
+  "meta": {
+    "coolest.__version__": "0.1.9"
+  }
 }

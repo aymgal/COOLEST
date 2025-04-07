@@ -13,12 +13,10 @@ __all__ = [
     'Grid',
     'PixelatedRegularGrid',
     'IrregularGrid',
+    'PixelatedRegularGridStack',
 ]
 
-SUPPORTED_CHOICES = [
-    'PixelatedRegularGrid',
-    'IrregularGrid',
-]
+SUPPORTED_CHOICES = list(set(__all__) - {'Grid'})
 
 
 class Grid(APIBaseObject):
@@ -295,3 +293,27 @@ class IrregularGrid(Grid):
         y = data.field(1)
         z = data.field(2)
         return x, y, z
+
+
+class UnspecifiedGrid(Grid):
+    """Class that represents a generic grid of values, with just (optional)
+    FITS information. This may be used for e.g., as a workaround for storing 
+    other than standard photometric data, such as interferometric data.
+
+    Parameters
+    ----------
+    fits_path : str
+        Optional to some FITS file in which the values (and perhaps the coordinates)
+        are stored. This should be relative to the final COOLEST template file.
+    **kwargs_file : dic, optional
+        Any remaining keyword arguments for FitsFile
+    """
+    
+    def __init__(self, 
+                 fits_path: str = None,
+                 **kwargs_file) -> None:
+        super().__init__(fits_path, **kwargs_file)
+        self.set_grid(
+            fits_path, 
+            check_fits_file=kwargs_file.get('check_fits_file', False)
+        )

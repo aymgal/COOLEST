@@ -1,7 +1,6 @@
 import os
 import json
 import jsonpickle
-import math
 
 from coolest.template.standard import COOLEST
 from coolest.template.lazy import *
@@ -88,7 +87,7 @@ class JSONSerializer(object):
         with open(json_path, 'w') as f:
             f.write(result)
 
-    def load(self, skip_jsonpickle=False, validate=True, verbose=True):
+    def load(self, skip_jsonpickle=False, as_object=True, validate=True, verbose=True):
         """Read the JSON template file and build up the corresponding COOLEST object.
         It will first try to load the '_pyAPI' template if it exists using `jsonpickle`, 
         otherwise it will fall back to reading the pure json template.
@@ -97,6 +96,10 @@ class JSONSerializer(object):
         ----------
         skip_jsonpickle : bool, optional
             If True, will not try to read the _pyAPI template with jsonpickle first, by default False
+        as_object : bool, optional
+            If False, returns the JSON as a plain dictionary instead, by default True
+        validate : bool, optional
+            If True, performs some consistency checks on the COOLEST object, by default True
         verbose : bool, optional
             If True, prints useful output for debugging, by default False
 
@@ -108,12 +111,15 @@ class JSONSerializer(object):
         json_path = self.path + '.json'
         jsonpickle_path = self.path + self._api_suffix + '.json'
         if os.path.exists(jsonpickle_path) and not skip_jsonpickle:
+            if not as_object:
+                raise ValueError("Cannot load the JSON template with jsonpickle as a dictionary")
             instance = self.load_jsonpickle(jsonpickle_path)
         else:
             if verbose:
                 print(f"Template file '{jsonpickle_path}' not found, now trying to read '{json_path}'.")
-            instance = self.load_simple(json_path, as_object=True, validate=validate)
-        assert isinstance(instance, COOLEST)
+            instance = self.load_simple(json_path, as_object=as_object, validate=validate)
+        if as_object:
+            assert isinstance(instance, COOLEST)
         return instance
 
     def load_simple(self, json_path, as_object=True, validate=True):
@@ -124,7 +130,7 @@ class JSONSerializer(object):
         json_path: str
             Path to the json file to be read.
         as_object : bool, optional
-            _description_, by default True
+            If False, returns the JSON as a plain dictionary instead, by default True
 
         Returns
         -------
@@ -228,15 +234,6 @@ class JSONSerializer(object):
         ValueError
             In case observed instrumental pixel sizes are inconsistent
         """
-        # PIXEL SIZE
-        instru_pix_size = coolest.instrument.pixel_size
-        obs_pix_size = coolest.observation.pixels.pixel_size
-        isclose_bool = math.isclose(instru_pix_size, obs_pix_size,
-                                    rel_tol=1e-09, abs_tol=0.0)
-        if obs_pix_size not in (0, None) and not isclose_bool:
-            raise ValueError(f"Pixel size of observation ({obs_pix_size}) is inconsistent with "
-                             f"the instrument pixel size ({instru_pix_size})")
-        # INSTANCE METHODS
         coolest.observation.check_consistency_with_instrument(coolest.instrument)
         if coolest.likelihoods is not None:
             coolest.likelihoods.check_consistency_with_observation(coolest.observation)
