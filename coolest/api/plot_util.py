@@ -11,6 +11,7 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from matplotlib.cm import ScalarMappable
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
+from coolest.api.composable_models import ComposableLensModel
 
 
 def plot_voronoi(ax, x, y, z, neg_values_as_bad=False, 
@@ -272,35 +273,58 @@ def panel_label(ax, text, color, fontsize, alpha=0.8, loc='upper left'):
     ax.text(x, y, text, color=color, fontsize=fontsize, alpha=alpha, 
             ha=ha, va=va, transform=ax.transAxes)
 
-def normalize_across_images(plotter_list, data_model_specifier, **kwargs):
-    # Normalize the colormap across multiple coolest objects
-    # Inputs:
-        # plotter_list: array of plotters (may be contained in mplotter object)
-        # data_model_specifier: array of 0s and 1s; 0 = data, 1 = model. Specifies which set of pixel values should be used when finding global minima and maxima -- data or model
-        # kwargs_source: dictionary of entity selection values for source 
-        # kwargs_lens_mass: dictionary of entity selection values for lens mass
-    # Outputs:
-        # vmin, vmax: global min and max values across all coolest objects in plotter_list for the specified data/model
+def normalize_across_images(plotter_list, data_model_specifier, kwargs_source = None, kwargs_lens_mass = None,
+                            supersampling=5, convolved=True, super_convolution=True):
+    """Calculate the vmin and vmax to normalize the colormap across multiple coolest objects
+
+    Parameters
+    ----------
+    plotter_list: list
+        List of ModelPlotter objects. May be acquired from MultiModelPlotter object
+    data_model_specifier: list
+        List of 0s and 1s; 0 = data, 1 = model. Specifies which set of pixel values should be used
+        when finding global minima and maxima -- data or model
+    kwargs_source: dict
+        Dictionary with "entity_selection" key, same as used in MultiModelPlotters.
+        "Entity_selection" contains list of lists. Selects source entities.
+        Insert dummy None values into dictionary for data.
+    kwargs_lens_mass: dict
+        Dictionary with "entity_selection" key, same as used in MultiModelPlotters.
+        "Entity_selection" contains list of lists. Selects lens mass entities.
+        Insert dummy None values into dictionary for data.
+    supersampling: int
+        Model image generation param
+    convolved: bool
+        Model image generation param
+    super_convolution: bool
+        Model image generation param
+    
+    
+    Returns
+    -------
+    vmin: float
+        global min value across all coolest objects in plotter_list for the specified data/models
+    vmax: float
+        global max value across all coolest objects in plotter_list for the specified data/models    
+    """
+    
     mins = []
     maxes = []
-    if 'kwargs_source' in kwargs:
-        ks_arr = kwargs['kwargs_source']['entity selection']
-        del[kwargs['kwargs_source']]
-    if 'kwargs_lens_mass' in kwargs:
-        km_arr = kwargs['kwargs_lens_mass']['entity selection']
-        del[kwargs['kwargs_lens_mass']]
+    ks_arr = kwargs_source['entity_selection']
+    km_arr = kwargs_lens_mass['entity_selection']
     for plotter, d_or_f, ks, km in zip(plotter_list, data_model_specifier, ks_arr, km_arr):
         # Check if we are finding extrema for data or model
         if d_or_f == 0:
             image = plotter.coolest.observation.pixels.get_pixels(directory=plotter._directory)
         elif d_or_f == 1:
             lens_model = ComposableLensModel(plotter.coolest, plotter._directory,
-                                         kwargs_selection_source=kwargs_source,
-                                         kwargs_selection_lens_mass=kwargs_lens_mass)
-            image, _ = lens_model.model_image(**kwargs)
+                                         kwargs_selection_source=dict(entity_selection=ks),
+                                         kwargs_selection_lens_mass=dict(entity_selection=km))
+            image, _ = lens_model.model_image(supersampling, convolved, super_convolution)
         # Find min and max and append
-        mins.append(min(image))
-        maxes.append(max(image))
-
-    return min(mins), max(maxes)
+        mins.append(np.min(image))
+        maxes.append(np.max(image))
+    vmin = min(mins)
+    vmax = max(maxes)
+    return vmin, vmax
 
