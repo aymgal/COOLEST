@@ -14,4 +14,5 @@ Update a template in 2 ways <03-load_and_update_template.ipynb>
 Plot models side-to-side <04-plot_lens_models.ipynb>
 Surface brightness analysis <05-two_point_correlation.ipynb>
 Corner plot for posteriors <06-make_corner_plot.ipynb>
+Quick DMR and corner plots <07-plot_dmr_and_corner.ipynb>
 ```

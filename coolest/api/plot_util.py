@@ -11,6 +11,13 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from matplotlib.cm import ScalarMappable
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
+import os
+import tarfile
+import tempfile
+import io
+from coolest.api import util
+from coolest.api.analysis import Analysis
+from coolest.api.plotting import ModelPlotter, ParametersPlotter
 
 
 def plot_voronoi(ax, x, y, z, neg_values_as_bad=False, 
@@ -271,3 +278,141 @@ def panel_label(ax, text, color, fontsize, alpha=0.8, loc='upper left'):
         x, y, ha, va = 0.97, 0.03, 'right', 'bottom'
     ax.text(x, y, text, color=color, fontsize=fontsize, alpha=alpha, 
             ha=ha, va=va, transform=ax.transAxes)
+
+def dmr_corner(tar_path, output_dir = None):
+    """Given .tar.gz COOLEST file, plots and optionally saves DMR and corner plots for COOLEST file. Returns dictionary of important extracted information.
+
+    Parameters
+    ----------
+    tar_path : string
+        Path to .tar.gz COOLEST file
+    output_dir : string, optional
+        Path to automatically save DMR and corner plot to if specified, by default None
+    
+    Returns
+    -------
+    results: dictionary
+        Contains useful information about the COOLEST objects
+    """
+    
+    results = {}
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Extract tar.gz archive
+        with tarfile.open(tar_path, "r:gz") as tar:
+            tar.extractall(path=tmpdir)
+
+        
+        # Get path to the extracted JSON file
+        extracted_items = os.listdir(tmpdir)
+        extracted_path = os.path.join(tmpdir, extracted_items[0])
+        if os.path.isdir(extracted_path):
+            extracted_files = os.listdir(extracted_path)
+        else:
+            extracted_files = extracted_items
+            extracted_path = tmpdir  # fallback
+        
+        json_files = [f for f in extracted_files if f.endswith(".json")]
+        if not json_files:
+            raise ValueError("No .json file found in archive.")
+        
+        json_path = os.path.join(extracted_path, json_files[0])
+        target_path = os.path.splitext(json_path)[0]
+
+        # Load COOLEST object
+        coolest_1 = util.get_coolest_object(target_path, verbose=False)
+
+        # Run analysis
+        analysis = Analysis(coolest_1, target_path, supersampling=5)
+
+        coord_orig = util.get_coordinates(coolest_1)
+        coord_src = coord_orig.create_new_coordinates(pixel_scale_factor=0.1, grid_shape=(1.42, 1.42))
+
+        # Extract values
+        r_eff_source = analysis.effective_radius_light(center=(0,0), coordinates=coord_src, outer_radius=1., entity_selection=[2])
+        einstein_radius = analysis.effective_einstein_radius(entity_selection=[0,1])
+
+        results['r_eff_source'] = r_eff_source
+        results['einstein_radius'] = einstein_radius
+        results['lensing_entities'] = [type(le).__name__ for le in coolest_1.lensing_entities]
+        results['source_light_model'] = [type(m).__name__ for m in coolest_1.lensing_entities[2].light_model]
+
+        ### DMR Plot
+        norm = Normalize(-0.005, 0.05)
+        fig, axes = plt.subplots(2, 2, constrained_layout=True)
+        splotter = ModelPlotter(coolest_1, coolest_directory=os.path.dirname(target_path))
+
+        splotter.plot_data_image(axes[0, 0], norm=norm)
+        axes[0, 0].set_title("Observed Data")
+
+        splotter.plot_model_image(
+            axes[0, 1],
+            supersampling=5, convolved=True,
+            kwargs_source=dict(entity_selection=[2]),
+            kwargs_lens_mass=dict(entity_selection=[0, 1]),
+            norm=norm
+        )
+        axes[0, 1].text(0.05, 0.05, f"$\\theta_{{\\rm E}}$ = {einstein_radius:.2f}\"", color='white', fontsize=12,
+                        transform=axes[0, 1].transAxes)
+        axes[0, 1].set_title("Image Model")
+
+        splotter.plot_model_residuals(axes[1, 0], supersampling=5, add_chi2_label=True, chi2_fontsize=12,
+                                      kwargs_source=dict(entity_selection=[2]),
+                                      kwargs_lens_mass=dict(entity_selection=[0, 1]))
+        axes[1, 0].set_title("Normalized Residuals")
+
+        splotter.plot_surface_brightness(axes[1, 1], kwargs_light=dict(entity_selection=[2]),
+                                         norm=norm, coordinates=coord_src)
+        axes[1, 1].text(0.05, 0.05, f"$\\theta_{{\\rm eff}}$ = {r_eff_source:.2f}\"", color='white', fontsize=12,
+                        transform=axes[1, 1].transAxes)
+        axes[1, 1].set_title("Surface Brightness")
+
+        for ax in axes[1]:
+            ax.set_xlabel(r"$x$ (arcsec)")
+            ax.set_ylabel(r"$y$ (arcsec)")
+            
+        if output_dir is not None:
+            dmr_plot_path = os.path.join(output_dir, "dmr_plot.png")
+            plt.savefig(dmr_plot_path, format='png', bbox_inches='tight')
+            results['dmr_plot'] = dmr_plot_path
+        plt.show()
+        plt.close()
+
+        
+
+        
+        ### Corner Plot
+        truth = coolest_1
+        # Only creates corner plot if sampling method was used to create lens model
+        # Otherwise, no chains available for corner plot!
+        if 'chain_file_name' in truth.meta.keys():
+            free_pars = truth.lensing_entities.get_parameter_ids()[:-2]
+            reorder = [2, 3, 4, 5, 6, 0, 1]
+            pars = [free_pars[i] for i in reorder]
+            results['free_parameters'] = pars
+    
+            param_plotter = ParametersPlotter(
+                pars, [truth],
+                coolest_directories=[os.path.dirname(target_path)],
+                coolest_names=["Smooth source"],
+                ref_coolest_objects=[truth],
+                colors=['#7FB6F5', '#E03424'],
+            )
+    
+            settings = {
+                "ignore_rows": 0.0,
+                "fine_bins_2D": 800,
+                "smooth_scale_2D": 0.5,
+                "mult_bias_correction_order": 5
+            }
+            param_plotter.init_getdist(settings_mcsamples=settings)
+            param_plotter.plot_triangle_getdist(filled_contours=True, subplot_size=3)
+            if output_dir is not None:
+                corner_plot_path = os.path.join(output_dir, "corner_plot.png")
+                plt.savefig(corner_plot_path, format='png', bbox_inches='tight')
+                results['corner_plot'] = corner_plot_path
+            plt.close()
+    
+            
+        
+    return results
+
