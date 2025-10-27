@@ -1,5 +1,9 @@
 # Official releases
 
+## v0.1.10 (2025-10-27)
+
+- New functions 
+
 ## v0.1.9 (2024-06-06)
 
 - Add initial support for a `likelihoods` JSON entry (_via_ the `DataLikelihoodList` template class). The current use-case is to reference an `ImagingDataLikelihood` that holds the likelihood mask information (stored in a FITS file).
