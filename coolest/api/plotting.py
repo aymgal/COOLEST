@@ -62,7 +62,7 @@ class ModelPlotter(object):
         #cmap_colors[0,:] = [0.15, 0.15, 0.15, 1.0]  # Set the color of the very first value to gray
         #self.cmap_flux_mod = ListedColormap(cmap_colors)
 
-    def plot_data_image(self, ax, norm=None, cmap=None, xylim=None,
+    def plot_data_image(self, ax, title=None, norm=None, cmap=None, xylim=None,
                         neg_values_as_bad=False, add_colorbar=True, 
                         add_scalebar=True, scalebar_size=1):
         """plt.imshow panel with the data image"""
@@ -71,7 +71,7 @@ class ModelPlotter(object):
         coordinates = util.get_coordinates(self.coolest)
         extent = coordinates.plt_extent
         image = self.coolest.observation.pixels.get_pixels(directory=self._directory)
-        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, 
                                 cmap=cmap, norm=norm,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 xylim=xylim)
@@ -82,7 +82,7 @@ class ModelPlotter(object):
             plut.scale_bar(ax, scalebar_size, color='white', loc='lower right')
         return image
 
-    def plot_surface_brightness(self, ax, coordinates=None,
+    def plot_surface_brightness(self, ax, title = None, coordinates=None,
                                 extent_irreg=None, norm=None, cmap=None, 
                                 xylim=None, neg_values_as_bad=True,
                                 plot_points_irreg=False, add_colorbar=True, 
@@ -111,14 +111,14 @@ class ModelPlotter(object):
             x, y = coordinates.pixel_coordinates
             image = light_model.evaluate_surface_brightness(x, y)
             extent = coordinates.plt_extent
-            ax, im = plut.plot_regular_grid(ax, image, extent=extent, cmap=cmap,
+            ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, cmap=cmap,
                                              neg_values_as_bad=neg_values_as_bad, 
                                              norm=norm, xylim=xylim)
         else:
             values, extent_model, coordinates = light_model.surface_brightness(return_extra=True)
             if isinstance(values, np.ndarray) and len(values.shape) == 2:
                 image = values
-                ax, im = plut.plot_regular_grid(ax, image, extent=extent_model, 
+                ax, im = plut.plot_regular_grid(ax, title, image, extent=extent_model, 
                                         cmap=cmap, 
                                         neg_values_as_bad=neg_values_as_bad,
                                         norm=norm, xylim=xylim)
@@ -126,7 +126,7 @@ class ModelPlotter(object):
                 points = values
                 if xylim is None:
                     xylim = extent_model
-                ax, im = plut.plot_irregular_grid(ax, points, xylim, norm=norm, cmap=cmap, 
+                ax, im = plut.plot_irregular_grid(ax, title, points, xylim, norm=norm, cmap=cmap, 
                                                    neg_values_as_bad=neg_values_as_bad,
                                                    plot_points=plot_points_irreg)
                 image = None
@@ -140,7 +140,7 @@ class ModelPlotter(object):
             plut.scale_bar(ax, scalebar_size, color='white', loc='lower right')
         return image, coordinates
 
-    def plot_model_image(self, ax,
+    def plot_model_image(self, ax, title = None,
                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
                          kwargs_source=None, add_colorbar=True,
                          add_scalebar=True, scalebar_size=1, 
@@ -156,7 +156,7 @@ class ModelPlotter(object):
                                          kwargs_selection_lens_mass=kwargs_lens_mass)
         image, coordinates = lens_model.model_image(**model_image_kwargs)
         extent = coordinates.plt_extent
-        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm, xylim=xylim)
@@ -167,7 +167,7 @@ class ModelPlotter(object):
             plut.scale_bar(ax, scalebar_size, color='white', loc='lower right')
         return image
 
-    def plot_model_residuals(self, ax, mask=None,
+    def plot_model_residuals(self, ax, title = None, mask=None,
                              norm=None, cmap=None, xylim=None, add_chi2_label=False, chi2_fontsize=12,
                              kwargs_source=None, add_colorbar=True, 
                              add_scalebar=True, scalebar_size=1, 
@@ -184,7 +184,7 @@ class ModelPlotter(object):
                                          kwargs_selection_lens_mass=kwargs_lens_mass)
         image, coordinates = lens_model.model_residuals(mask=ll_mask, **model_image_kwargs)
         extent = coordinates.plt_extent
-        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=False, 
                                 norm=norm, xylim=xylim)
@@ -201,7 +201,7 @@ class ModelPlotter(object):
                     bbox={'color': 'white', 'alpha': 0.6})
         return image
 
-    def plot_convergence(self, ax, coordinates=None,
+    def plot_convergence(self, ax, title = None, coordinates=None,
                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
                          add_colorbar=True, 
                          add_scalebar=True, scalebar_size=1, 
@@ -220,7 +220,7 @@ class ModelPlotter(object):
         extent = coordinates.plt_extent
         x, y = coordinates.pixel_coordinates
         image = mass_model.evaluate_convergence(x, y)
-        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, 
                                 cmap=cmap,
                                 neg_values_as_bad=neg_values_as_bad, 
                                 norm=norm, xylim=xylim)
@@ -232,7 +232,7 @@ class ModelPlotter(object):
         return image
     
     def plot_convergence_diff(
-            self, ax, reference_map, relative_error=True,    
+            self, ax, reference_map, title = None, relative_error=True,    
             norm=None, cmap=None, xylim=None, coordinates=None,
             add_colorbar=True, add_scalebar=True, scalebar_size=1, 
             kwargs_lens_mass=None,
@@ -259,7 +259,7 @@ class ModelPlotter(object):
             diff = (reference_map - image) / reference_map
         else:
             diff = reference_map - image
-        ax, im = plut.plot_regular_grid(ax, diff, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, title, diff, extent=extent, 
                                 cmap=cmap, 
                                 norm=norm, xylim=xylim)
         if plot_crit_lines:
@@ -272,7 +272,7 @@ class ModelPlotter(object):
             plut.scale_bar(ax, scalebar_size, color='black', loc='lower right')
         return image
 
-    def plot_magnification(self, ax, 
+    def plot_magnification(self, ax, title = None,
                           norm=None, cmap=None, xylim=None,
                           add_colorbar=True, add_scalebar=True, scalebar_size=1, 
                           coordinates=None, kwargs_lens_mass=None):
@@ -292,7 +292,7 @@ class ModelPlotter(object):
         x, y = coordinates.pixel_coordinates
         extent = coordinates.plt_extent
         image = mass_model.evaluate_magnification(x, y)
-        ax, im = plut.plot_regular_grid(ax, image, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, 
                                 cmap=cmap, 
                                 norm=norm, xylim=xylim)
         if add_colorbar:
@@ -303,7 +303,7 @@ class ModelPlotter(object):
         return image
 
     def plot_magnification_diff(
-            self, ax, reference_map, relative_error=True,
+            self, ax, reference_map, title = None, relative_error=True,
             norm=None, cmap=None, xylim=None,
             add_colorbar=True, add_scalebar=True, scalebar_size=1, 
             coordinates=None, kwargs_lens_mass=None):
@@ -327,7 +327,7 @@ class ModelPlotter(object):
             diff = (reference_map - image) / reference_map
         else:
             diff = reference_map - image
-        ax, im = plut.plot_regular_grid(ax, diff, extent=extent, 
+        ax, im = plut.plot_regular_grid(ax, title, diff, extent=extent, 
                                 cmap=cmap,
                                 norm=norm, xylim=xylim)
         if add_colorbar:
@@ -403,6 +403,8 @@ class MultiModelPlotter(object):
     def _plot_light_multi(self, method_name, axes, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         kwargs_ = copy.deepcopy(kwargs)
+        if 'titles' in kwargs_:
+                del kwargs_['titles']
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
             if ax is None:
@@ -411,26 +413,34 @@ class MultiModelPlotter(object):
                 kwargs_['kwargs_light'] = {k: v[i] for k, v in kwargs['kwargs_light'].items()}
             if 'kwargs_lens_mass' in kwargs:  # used for over-plotting caustics
                 kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
-            image = getattr(plotter, method_name)(ax, **kwargs_)
+            if 'titles' in kwargs:
+                title = kwargs['titles'][i]
+            image = getattr(plotter, method_name)(ax, title, **kwargs_)
             image_list.append(image)
         return image_list
 
     def _plot_mass_multi(self, method_name, axes, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         kwargs_ = copy.deepcopy(kwargs)
+        if 'titles' in kwargs_:
+                del kwargs_['titles']
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
             if ax is None:
                 continue
             if 'kwargs_lens_mass' in kwargs:
                 kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
-            image = getattr(plotter, method_name)(ax, **kwargs_)
+            if 'titles' in kwargs:
+                title = kwargs['titles'][i]
+            image = getattr(plotter, method_name)(ax, title, **kwargs_)
             image_list.append(image)
         return image_list
 
     def _plot_lens_model_multi(self, method_name, axes, *args, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
         kwargs_ = copy.deepcopy(kwargs)
+        if 'titles' in kwargs_:
+                del kwargs_['titles']
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
             if ax is None:
@@ -439,17 +449,24 @@ class MultiModelPlotter(object):
                 kwargs_['kwargs_source'] = {k: v[i] for k, v in kwargs['kwargs_source'].items()}
             if 'kwargs_lens_mass' in kwargs:
                 kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
-            image = getattr(plotter, method_name)(ax, *args, **kwargs_)
+            if 'titles' in kwargs:
+                title = kwargs['titles'][i]
+            image = getattr(plotter, method_name)(ax, title, *args, **kwargs_)
             image_list.append(image)
         return image_list
 
     def _plot_data_multi(self, axes, **kwargs):
         assert len(axes) == self.num_models, "Inconsistent number of subplot axes"
+        kwargs_ = copy.deepcopy(kwargs)
+        if 'titles' in kwargs_:
+                del kwargs_['titles']
         image_list = []
         for i, (ax, plotter) in enumerate(zip(axes, self.plotter_list)):
             if ax is None:
                 continue
-            image = getattr(plotter, 'plot_data_image')(ax, **kwargs)
+            if 'titles' in kwargs:
+                title = kwargs['titles'][i]
+            image = getattr(plotter, 'plot_data_image')(ax, title, **kwargs_)
             image_list.append(image)
         return image_list
 

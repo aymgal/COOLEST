@@ -228,7 +228,7 @@ def scale_bar(ax, size, unit_suffix='"', loc='lower left', color='#FFFFFFBB', fo
     ax.add_artist(artist)
     return artist
 
-def plot_regular_grid(ax, image_, neg_values_as_bad=False, xylim=None, **imshow_kwargs):
+def plot_regular_grid(ax, title, image_, neg_values_as_bad=False, xylim=None, **imshow_kwargs):
     if neg_values_as_bad:
         image = np.copy(image_)
         image[image < 0] = np.nan
@@ -239,9 +239,10 @@ def plot_regular_grid(ax, image_, neg_values_as_bad=False, xylim=None, **imshow_
     set_xy_limits(ax, xylim)
     ax.xaxis.set_major_locator(plt.MaxNLocator(3))
     ax.yaxis.set_major_locator(plt.MaxNLocator(3))
+    ax.set_title(title)
     return ax, im
 
-def plot_irregular_grid(ax, points, xylim, neg_values_as_bad=False,
+def plot_irregular_grid(ax, title, points, xylim, neg_values_as_bad=False,
                             norm=None, cmap=None, plot_points=False):
     x, y, z = points
     im = plot_voronoi(ax, x, y, z, neg_values_as_bad=neg_values_as_bad, 
@@ -252,6 +253,7 @@ def plot_irregular_grid(ax, points, xylim, neg_values_as_bad=False,
     ax.yaxis.set_major_locator(plt.MaxNLocator(3))
     if plot_points:
         ax.scatter(x, y, s=5, c='white', marker='.', alpha=0.4, zorder=2)
+    ax.set_title(title)
     return ax, im
 
 def set_xy_limits(ax, xylim):
@@ -279,6 +281,7 @@ def panel_label(ax, text, color, fontsize, alpha=0.8, loc='upper left'):
     ax.text(x, y, text, color=color, fontsize=fontsize, alpha=alpha, 
             ha=ha, va=va, transform=ax.transAxes)
 
+    
 def dmr_corner(tar_path, output_dir = None):
     """Given .tar.gz COOLEST file, plots and optionally saves DMR and corner plots for COOLEST file. Returns dictionary of important extracted information.
 
@@ -415,4 +418,3 @@ def dmr_corner(tar_path, output_dir = None):
             
         
     return results
-
