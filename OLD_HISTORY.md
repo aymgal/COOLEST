@@ -1,8 +1,6 @@
-# Official releases
+This version history is deprecated, but is kept for practical purposes. Please refer to the [release page](https://https://github.com/aymgal/COOLEST/releases) for the latest release notes.
 
-## v0.1.10 (2025-10-27)
-
-- New functions 
+# Official releases (up to 0.1.9)
 
 ## v0.1.9 (2024-06-06)
 
