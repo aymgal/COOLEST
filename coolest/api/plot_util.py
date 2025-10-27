@@ -11,6 +11,7 @@ from scipy.spatial import Voronoi, voronoi_plot_2d
 from matplotlib.colors import Normalize, LogNorm, TwoSlopeNorm
 from matplotlib.cm import ScalarMappable
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
+from coolest.api.composable_models import ComposableLensModel
 import os
 import tarfile
 import tempfile
@@ -280,6 +281,61 @@ def panel_label(ax, text, color, fontsize, alpha=0.8, loc='upper left'):
         x, y, ha, va = 0.97, 0.03, 'right', 'bottom'
     ax.text(x, y, text, color=color, fontsize=fontsize, alpha=alpha, 
             ha=ha, va=va, transform=ax.transAxes)
+
+def normalize_across_images(plotter_list, data_model_specifier, kwargs_source = None, kwargs_lens_mass = None,
+                            supersampling=5, convolved=True, super_convolution=True):
+    """Calculate the vmin and vmax to normalize the colormap across multiple coolest objects
+
+    Parameters
+    ----------
+    plotter_list: list
+        List of ModelPlotter objects. May be acquired from MultiModelPlotter object
+    data_model_specifier: list
+        List of 0s and 1s; 0 = data, 1 = model. Specifies which set of pixel values should be used
+        when finding global minima and maxima -- data or model
+    kwargs_source: dict
+        Dictionary with "entity_selection" key, same as used in MultiModelPlotters.
+        "Entity_selection" contains list of lists. Selects source entities.
+        Insert dummy None values into dictionary for data.
+    kwargs_lens_mass: dict
+        Dictionary with "entity_selection" key, same as used in MultiModelPlotters.
+        "Entity_selection" contains list of lists. Selects lens mass entities.
+        Insert dummy None values into dictionary for data.
+    supersampling: int
+        Model image generation param
+    convolved: bool
+        Model image generation param
+    super_convolution: bool
+        Model image generation param
+    
+    
+    Returns
+    -------
+    vmin: float
+        global min value across all coolest objects in plotter_list for the specified data/models
+    vmax: float
+        global max value across all coolest objects in plotter_list for the specified data/models    
+    """
+    
+    mins = []
+    maxes = []
+    ks_arr = kwargs_source['entity_selection']
+    km_arr = kwargs_lens_mass['entity_selection']
+    for plotter, d_or_f, ks, km in zip(plotter_list, data_model_specifier, ks_arr, km_arr):
+        # Check if we are finding extrema for data or model
+        if d_or_f == 0:
+            image = plotter.coolest.observation.pixels.get_pixels(directory=plotter._directory)
+        elif d_or_f == 1:
+            lens_model = ComposableLensModel(plotter.coolest, plotter._directory,
+                                         kwargs_selection_source=dict(entity_selection=ks),
+                                         kwargs_selection_lens_mass=dict(entity_selection=km))
+            image, _ = lens_model.model_image(supersampling, convolved, super_convolution)
+        # Find min and max and append
+        mins.append(np.min(image))
+        maxes.append(np.max(image))
+    vmin = min(mins)
+    vmax = max(maxes)
+    return vmin, vmax
 
     
 def dmr_corner(tar_path, output_dir = None):
