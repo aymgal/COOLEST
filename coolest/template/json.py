@@ -106,7 +106,7 @@ class JSONSerializer(object):
             COOLEST object that corresponds to the JSON template
         """
         json_path = self.path + '.json'
-        jsonpickle_path = self.path + self._api_suffix + '.json'
+        jsonpickle_path = self.path.replace(self._api_suffix, '') + self._api_suffix + '.json'
         if os.path.exists(jsonpickle_path) and not skip_jsonpickle:
             instance = self.load_jsonpickle(jsonpickle_path)
         else:
