@@ -15,10 +15,10 @@ from coolest.api.composable_models import ComposableLensModel
 import os
 import tarfile
 import tempfile
+import zipfile
 import io
 from coolest.api import util
 from coolest.api.analysis import Analysis
-from coolest.api.plotting import ModelPlotter, ParametersPlotter
 
 
 def plot_voronoi(ax, x, y, z, neg_values_as_bad=False, 
@@ -353,16 +353,26 @@ def dmr_corner(tar_path, output_dir = None):
     results: dictionary
         Contains useful information about the COOLEST objects
     """
+    from coolest.api.plotting import ModelPlotter, ParametersPlotter  # placed here to avoid circular import
     
     results = {}
     with tempfile.TemporaryDirectory() as tmpdir:
-        # Extract tar.gz archive
-        with tarfile.open(tar_path, "r:gz") as tar:
-            tar.extractall(path=tmpdir)
+            
+        if tar_path[-7:] == '.tar.gz':
+            # Extract tar.gz archive
+            with tarfile.open(tar_path, "r:gz") as tar:
+                tar.extractall(path=tmpdir)
+        elif tar_path[-4:] == '.zip':
+            # Extract zip archive
+            with zipfile.ZipFile(tar_path, 'r') as zipf:
+                zipf.extractall(tmpdir)
+        else:
+            raise ValueError("Target path must point to a .tar.gz or .zip archive.")
 
-        
         # Get path to the extracted JSON file
         extracted_items = os.listdir(tmpdir)
+        if '__MACOSX' in extracted_items:
+            extracted_items.remove('__MACOSX')  # remove macOS artifact folder if present
         extracted_path = os.path.join(tmpdir, extracted_items[0])
         if os.path.isdir(extracted_path):
             extracted_files = os.listdir(extracted_path)
@@ -373,6 +383,8 @@ def dmr_corner(tar_path, output_dir = None):
         json_files = [f for f in extracted_files if f.endswith(".json")]
         if not json_files:
             raise ValueError("No .json file found in archive.")
+        elif len(json_files) > 1:
+            raise ValueError("Multiple .json files found in archive.")
         
         json_path = os.path.join(extracted_path, json_files[0])
         target_path = os.path.splitext(json_path)[0]
