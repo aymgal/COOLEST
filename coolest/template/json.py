@@ -296,6 +296,7 @@ class JSONSerializer(object):
         if entity_in['type'] == 'Galaxy':
             entity_out = Galaxy(entity_in['name'],
                                 entity_in['redshift'],
+                                entity_in['lensed'],
                                 light_model=self._setup_model(entity_in, 'light_model'),
                                 mass_model=self._setup_model(entity_in, 'mass_model'))
         elif entity_in['type'] == 'MassField':

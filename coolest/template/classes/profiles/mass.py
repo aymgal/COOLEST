@@ -5,7 +5,6 @@ from coolest.template.classes.parameter import NonLinearParameter
 from coolest.template.classes.parameter import (DefinitionRange,
                                                 PixelatedRegularGridParameter,
                                                 PixelatedRegularGridStackParameter)
-from coolest.template.classes.grid import PixelatedRegularGrid
 
 
 __all__ = [

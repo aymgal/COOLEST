@@ -22,9 +22,10 @@ class Galaxy(LensingEntity):
     def __init__(self,
                  name: str,
                  redshift: float,
+                 lensed: bool,
                  light_model: LightModel = None,
                  mass_model: MassModel = None) -> None:
-        super().__init__(name, redshift, mass_model=mass_model)
+        super().__init__(name, redshift, lensed=lensed, mass_model=mass_model)
         if light_model is None:
             light_model = LightModel()
         self.light_model = light_model

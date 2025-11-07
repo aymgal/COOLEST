@@ -6,6 +6,7 @@ from scipy import interpolate
 
 from coolest.template.classes.profiles.light import (Sersic as TemplateSersic,
                                                      Shapelets as TemplateShapelets,
+                                                     Uniform as TemplateUniform,
                                                      PixelatedRegularGrid as TemplatePixelatedRegularGrid,
                                                      IrregularGrid as TemplateIrregularGrid)
 from coolest.api.profiles import util
@@ -94,6 +95,21 @@ class Shapelets(BaseLightProfile):
         flux = self._backend.function(x_, y_, amps, n_max, beta, center_x=center_x, center_y=center_y)
         return flux.reshape(*x.shape)
 
+
+class Uniform(BaseLightProfile):
+
+    """Uniform light distribution"""
+
+    _units = 'per_ang'
+    _template_class = TemplateUniform()
+
+    def surface_brightness(self, A=1.):
+        raise ValueError("Uniform surface brightness can only be evaluated")
+
+    def evaluate_surface_brightness(self, x, y, A=1.):
+        """Returns the surface brightness at the given position (x, y)"""
+        return np.full_like(x, A)
+    
 
 class PixelatedRegularGrid(BaseLightProfile):
 

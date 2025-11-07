@@ -22,5 +22,5 @@ class MassField(LensingEntity):
                  name: str,
                  redshift: float,
                  mass_model: MassModel = None) -> None:
-        super().__init__(name, redshift, mass_model=mass_model)
+        super().__init__(name, redshift, lensed=False, mass_model=mass_model)
         

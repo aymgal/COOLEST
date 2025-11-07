@@ -5,6 +5,7 @@ import numpy as np
 from scipy import special
 
 from coolest.template.classes.profiles.mass import (PEMD as TemplatePEMD,
+                                                    SIE as TemplateSIE,
                                                     ExternalShear as TemplateExternalShear,
                                                     ConvergenceSheet as TemplateConvergenceSheet,
                                                     PixelatedRegularGridFullyDefined as TemplatePixRegGridFD)
@@ -163,6 +164,28 @@ class PEMD(BaseMassProfile):
         return H_xx, H_xy, H_yx, H_yy
 
 
+class SIE(BaseMassProfile):
+    """
+    Singular Isothermal Elliptical mass profile.
+    """
+
+    _gamma = 2.  # isothermal slope
+    _template_class = TemplateSIE
+    _backend = PEMD()
+
+    def evaluate_potential(self, x, y, theta_E=1., phi=0., q=1., center_x=0., center_y=0.):
+        return self._backend.evaluate_potential(x, y, theta_E=theta_E, gamma=self._gamma, phi=phi, q=q, center_x=center_x, center_y=center_y)
+    
+    def evaluate_deflection(self, x, y, theta_E=1., phi=0., q=1., center_x=0., center_y=0.):
+        return self._backend.evaluate_deflection(x, y, theta_E=theta_E, gamma=self._gamma, phi=phi, q=q, center_x=center_x, center_y=center_y)
+
+    def evaluate_convergence(self, x, y, theta_E=1., phi=0., q=1., center_x=0., center_y=0.):
+        return self._backend.evaluate_convergence(x, y, theta_E=theta_E, gamma=self._gamma, phi=phi, q=q, center_x=center_x, center_y=center_y)
+    
+    def evaluate_hessian(self, x, y, theta_E=1., phi=0., q=1., center_x=0., center_y=0.):
+        return self._backend.evaluate_hessian(x, y, theta_E=theta_E, gamma=self._gamma, phi=phi, q=q, center_x=center_x, center_y=center_y)
+    
+
 class ExternalShear(BaseMassProfile):
     """
     Coordinates of the origin for the external shear profile are assumed to be (0., 0.).
@@ -254,35 +277,35 @@ class PixelatedRegularGridFullyDefined(BaseMassProfile):
         self._pix_scl_y = np.abs(self._fov_y[0] - self._fov_y[1]) / self._ny
         self._interp_method = interpolation_method
 
-    def potantial(self, pixels=None):
+    def potantial(self, pixels=None, pixels_derivative=None, pixels_hessian=None):
         """Returns the lensing potential"""
         if pixels is None:
             return np.zeros(self._shape)
         return pixels
     
-    def evaluate_potential(self, x, y, pixels=None):
+    def evaluate_potential(self, x, y, pixels=None, pixels_derivative=None, pixels_hessian=None):
         return self._evaluate_pixels(x, y, pixels=pixels)
     
-    def deflection(self, pixels_derivative=None):
+    def deflection(self, pixels=None, pixels_derivative=None, pixels_hessian=None):
         """Returns the deflection angles"""
         if pixels_derivative is None:
             return np.zeros(self._shape)
         return pixels_derivative
     
-    def evaluate_potential(self, x, y, pixels_derivative=None):
+    def evaluate_deflection(self, x, y, pixels=None, pixels_derivative=None, pixels_hessian=None):
         a_x = self._evaluate_pixels(x, y, pixels=pixels_derivative[0])
         a_y = self._evaluate_pixels(x, y, pixels=pixels_derivative[1])
         return a_x, a_y
     
-    def convergence(self, pixels_hessian=None):
+    def convergence(self, pixels=None, pixels_derivative=None, pixels_hessian=None):
         """Returns the deflection angles"""
         if pixels_hessian is None:
             return np.zeros(self._shape)
         return 0.5 * (pixels_hessian[0] + pixels_hessian[2])
     
-    def evaluate_convergence(self, x, y, pixels_hessian=None):
+    def evaluate_convergence(self, x, y, pixels=None, pixels_derivative=None, pixels_hessian=None):
         """Returns the deflection angles"""
-        H = self.evaluate_hessian(x, y, pixels_hessian=pixels_hessian)
+        H = self.evaluate_hessian(x, y, pixels=pixels, pixels_derivative=pixels_derivative, pixels_hessian=pixels_hessian)
         return 0.5 * (H[0] + H[3])
     
     def hessian(self, pixels_hessian=None):
@@ -291,7 +314,7 @@ class PixelatedRegularGridFullyDefined(BaseMassProfile):
             return np.zeros(self._shape)
         return pixels_hessian
     
-    def evaluate_hessian(self, x, y, pixels_hessian=None):
+    def evaluate_hessian(self, x, y, pixels=None, pixels_derivative=None, pixels_hessian=None):
         H_xx = self._evaluate_pixels(x, y, pixels=pixels_hessian[0])
         H_yy = self._evaluate_pixels(x, y, pixels=pixels_hessian[1])
         H_xy = self._evaluate_pixels(x, y, pixels=pixels_hessian[2])

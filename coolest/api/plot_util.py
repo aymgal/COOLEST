@@ -338,7 +338,7 @@ def normalize_across_images(plotter_list, data_model_specifier, kwargs_source = 
     return vmin, vmax
 
     
-def dmr_corner(tar_path, output_dir = None):
+def dmr_corner(tar_path, output_dir=None):
     """Given .tar.gz COOLEST file, plots and optionally saves DMR and corner plots for COOLEST file. Returns dictionary of important extracted information.
 
     Parameters
@@ -420,6 +420,7 @@ def dmr_corner(tar_path, output_dir = None):
             supersampling=5, convolved=True,
             kwargs_source=dict(entity_selection=[2]),
             kwargs_lens_mass=dict(entity_selection=[0, 1]),
+            kwargs_lens_light=dict(entity_selection=[0, 1]),
             norm=norm
         )
         axes[0, 1].text(0.05, 0.05, f"$\\theta_{{\\rm E}}$ = {einstein_radius:.2f}\"", color='white', fontsize=12,
