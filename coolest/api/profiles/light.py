@@ -134,6 +134,7 @@ class PixelatedRegularGrid(BaseLightProfile):
         return coordinates.plt_extent
 
     def get_coordinates(self):
+        # NOTE: could be made a property to avoid re-doing the intanciation several times
         from coolest.api.util import get_coordinates_from_regular_grid
         return get_coordinates_from_regular_grid(self._fov_x, self._fov_y, self._nx, self._ny)
 

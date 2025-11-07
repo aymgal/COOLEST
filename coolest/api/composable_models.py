@@ -171,7 +171,7 @@ class BaseComposableModel(object):
     @staticmethod
     def _get_grid_params(profile_in, fits_dir):
         param_in = profile_in.parameters['pixels']
-        if profile_in.type == 'PixelatedRegularGrid':
+        if 'PixelatedRegularGrid' in profile_in.type:
             data = param_in.get_pixels(directory=fits_dir)
             parameters = {'pixels': data}
             fov_x = param_in.field_of_view_x
@@ -180,7 +180,7 @@ class BaseComposableModel(object):
             npix_y = param_in.num_pix_y
             fixed_parameters = (fov_x, fov_y, npix_x, npix_y)
 
-        elif profile_in.type == 'IrregularGrid':
+        elif 'IrregularGrid' in profile_in.type:
             x, y, z = param_in.get_xyz(directory=fits_dir)
             parameters = {'x': x, 'y': y, 'z': z}
             fov_x = param_in.field_of_view_x
@@ -334,7 +334,7 @@ class ComposableMassModel(BaseComposableModel):
     def _eval_pot_point(self, x, y, param_list):
         psi = np.zeros_like(x)
         for k, profile in enumerate(self.profile_list):
-            psi += profile.potential(x, y, **param_list[k])
+            psi += profile.evaluate_potential(x, y, **param_list[k])
         return psi
     
     def _eval_pot_posterior(self, x, y, param_list, last_n_samples):
@@ -358,7 +358,7 @@ class ComposableMassModel(BaseComposableModel):
         """Evaluates the lensing deflection field at given coordinates"""
         alpha_x, alpha_y = np.zeros_like(x), np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
-            a_x, a_y = profile.deflection(x, y, **params)
+            a_x, a_y = profile.evaluate_deflection(x, y, **params)
             alpha_x += a_x
             alpha_y += a_y
         return alpha_x, alpha_y
@@ -367,7 +367,7 @@ class ComposableMassModel(BaseComposableModel):
         """Evaluates the lensing convergence (i.e., 2D mass density) at given coordinates"""
         kappa = np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
-            kappa += profile.convergence(x, y, **params)
+            kappa += profile.evaluate_convergence(x, y, **params)
         return kappa
 
     def evaluate_hessian(self, x, y):
@@ -377,7 +377,7 @@ class ComposableMassModel(BaseComposableModel):
         H_yx_sum = np.zeros_like(x)
         H_yy_sum = np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
-            H_xx, H_xy, H_yx, H_yy = profile.hessian(x, y, **params)
+            H_xx, H_xy, H_yx, H_yy = profile.evaluate_hessian(x, y, **params)
             H_xx_sum += H_xx
             H_xy_sum += H_xy
             H_yx_sum += H_yx

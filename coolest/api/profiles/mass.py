@@ -6,7 +6,8 @@ from scipy import special
 
 from coolest.template.classes.profiles.mass import (PEMD as TemplatePEMD,
                                                     ExternalShear as TemplateExternalShear,
-                                                    ConvergenceSheet as TemplateConvergenceSheet)
+                                                    ConvergenceSheet as TemplateConvergenceSheet,
+                                                    PixelatedRegularGridFullyDefined as TemplatePixRegGridFD)
 from coolest.api.profiles import util
 
 
@@ -20,22 +21,23 @@ class BaseMassProfile(object):
     profile definitions that are currently split between coolest.template and coolest.api. 
     """
 
+    _units = None
     _template_class = None
 
-    def potential(self, **params):
-        raise NotImplementedError(f"The method potential() is not defined "
+    def evaluate_potential(self, **params):
+        raise NotImplementedError(f"The method evaluate_potential() is not defined "
                                   f"for profile '{self.__class__.__name__}'")
 
-    def deflection(self, **params):
-        raise NotImplementedError(f"The method deflection() is not defined "
+    def evaluate_deflection(self, **params):
+        raise NotImplementedError(f"The method evaluate_deflection() is not defined "
                                   f"for profile '{self.__class__.__name__}'")
 
-    def convergence(self, **params):
-        raise NotImplementedError(f"The method convergence() is not defined "
+    def evaluate_convergence(self, **params):
+        raise NotImplementedError(f"The method evaluate_convergence() is not defined "
                                   f"for profile '{self.__class__.__name__}'")
 
-    def hessian(self, **params):
-        raise NotImplementedError(f"The method hessian() is not defined "
+    def evaluate_hessian(self, **params):
+        raise NotImplementedError(f"The method evaluate_hessian() is not defined "
                                   f"for profile '{self.__class__.__name__}'")
 
     @property
@@ -61,6 +63,7 @@ class PEMD(BaseMassProfile):
     """
 
     # TODO: use parameter values (point estimates, prior, etc...) contained in the template?
+    _units = 'per_ang'
     _template_class = TemplatePEMD()
 
     def param_conv(self, theta_E, q, gamma):
@@ -69,7 +72,7 @@ class PEMD(BaseMassProfile):
         t = gamma - 1.
         return b, t
 
-    def potential(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
+    def evaluate_potential(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
         b, t = self.param_conv(theta_E, q, gamma)
         # shift and rotate
         phi_ = util.eastofnorth2normalradians(phi)
@@ -80,7 +83,7 @@ class PEMD(BaseMassProfile):
         # potential
         return (x_ * a_x_ + y_ * a_y_) / (2 - t)
 
-    def deflection(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
+    def evaluate_deflection(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
         b, t = self.param_conv(theta_E, q, gamma)
         # shift and rotate
         phi_ = util.eastofnorth2normalradians(phi)
@@ -106,7 +109,7 @@ class PEMD(BaseMassProfile):
         a_y_ = np.nan_to_num(alpha.imag, neginf=-1e10, posinf=1e10)
         return a_x_, a_y_
 
-    def convergence(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
+    def evaluate_convergence(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
         """Returns the convergence (kappa) at the given position (x, y)"""
         phi_ = util.eastofnorth2normalradians(phi)
         x_t, y_t = util.shift_rotate_elliptical(x, y, phi_, q, center_x, center_y)
@@ -118,7 +121,7 @@ class PEMD(BaseMassProfile):
         R = np.maximum(R, 1e-9)
         return (2 - t)/2. * (b/R)**t
 
-    def hessian(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
+    def evaluate_hessian(self, x, y, theta_E=1., gamma=2., phi=0., q=1., center_x=0., center_y=0.):
         b, t = self.param_conv(theta_E, q, gamma)
         phi_ = util.eastofnorth2normalradians(phi)
         x_, y_ = util.shift(x, y, center_x, center_y)
@@ -165,14 +168,15 @@ class ExternalShear(BaseMassProfile):
     Coordinates of the origin for the external shear profile are assumed to be (0., 0.).
     """ 
 
+    _units = 'per_ang'
     _template_class = TemplateExternalShear()
 
-    def potential(self, x, y, gamma_ext=0., phi_ext=0.):
+    def evaluate_potential(self, x, y, gamma_ext=0., phi_ext=0.):
         phi_ext_ = util.eastofnorth2normalradians(phi_ext)
         r, phi = util.cartesian2polar(x, y)
         return 1. / 2 * gamma_ext * r**2 * np.cos(2. * (phi - phi_ext_))
 
-    def deflection(self, x, y, gamma_ext=0., phi_ext=0.):
+    def evaluate_deflection(self, x, y, gamma_ext=0., phi_ext=0.):
         phi_ext_ = util.eastofnorth2normalradians(phi_ext)
         gamma1 = gamma_ext * np.cos(2.*phi_ext_)
         gamma2 = gamma_ext * np.sin(2.*phi_ext_)
@@ -182,10 +186,10 @@ class ExternalShear(BaseMassProfile):
         a_y = gamma2 * x_ - gamma1 * y_
         return a_x, a_y
 
-    def convergence(self, x, y, gamma_ext=0., phi_ext=0.):
+    def evaluate_convergence(self, x, y, gamma_ext=0., phi_ext=0.):
         return np.zeros_like(x)
 
-    def hessian(self, x, y, gamma_ext=0., phi_ext=0.):
+    def evaluate_hessian(self, x, y, gamma_ext=0., phi_ext=0.):
         kappa = 0.
         phi_ext_ = util.eastofnorth2normalradians(phi_ext)
         gamma1 = gamma_ext * np.cos(2.*phi_ext_)
@@ -202,23 +206,24 @@ class ConvergenceSheet(BaseMassProfile):
     Coordinates of the origin for the convergence sheet are assumed to be (0., 0.).
     """
 
+    _units = 'per_ang'
     _template_class = TemplateConvergenceSheet()
 
-    def potential(self, x, y, kappa_s=0.):
+    def evaluate_potential(self, x, y, kappa_s=0.):
         x_ = x # no shift
         y_ = y # no shift
         r_ = np.hypot(x_, y_)
         return 0.5 * kappa_s * r_**2
     
-    def deflection(self, x, y, kappa_s=0.):
+    def evaluate_deflection(self, x, y, kappa_s=0.):
         x_ = x # no shift
         y_ = y # no shift
         return x_ * kappa_s, y_ * kappa_s
 
-    def convergence(self, x, y, kappa_s=0.):
+    def evaluate_convergence(self, x, y, kappa_s=0.):
         return np.full_like(x, kappa_s)
 
-    def hessian(self, x, y, kappa_s=0.):
+    def evaluate_hessian(self, x, y, kappa_s=0.):
         kappa = np.full_like(x, kappa_s)
         gamma1 = 0.
         gamma2 = 0.
@@ -227,3 +232,86 @@ class ConvergenceSheet(BaseMassProfile):
         H_xy = gamma2
         H_yx = H_xy
         return H_xx, H_xy, H_yx, H_yy
+
+
+class PixelatedRegularGridFullyDefined(BaseMassProfile):
+
+    """Pixelated lens mass model defined a regular grid by its potential, derivatives and hessian arrays."""
+
+    _units = 'per_pix'
+    _template_class = TemplatePixRegGridFD()
+
+    def __init__(self, field_of_view_x, field_of_view_y, num_pix_x, num_pix_y,
+                 interpolation_method='cubic'):
+        if num_pix_x == 0 or num_pix_y == 0:
+            raise ValueError("Light profile defined on regular grid has zero pixels")
+        self._fov_x = field_of_view_x
+        self._fov_y = field_of_view_y
+        self._nx = num_pix_x
+        self._ny = num_pix_y
+        self._shape = (num_pix_x, num_pix_y)
+        self._pix_scl_x = np.abs(self._fov_x[0] - self._fov_x[1]) / self._nx
+        self._pix_scl_y = np.abs(self._fov_y[0] - self._fov_y[1]) / self._ny
+        self._interp_method = interpolation_method
+
+    def potantial(self, pixels=None):
+        """Returns the lensing potential"""
+        if pixels is None:
+            return np.zeros(self._shape)
+        return pixels
+    
+    def evaluate_potential(self, x, y, pixels=None):
+        return self._evaluate_pixels(x, y, pixels=pixels)
+    
+    def deflection(self, pixels_derivative=None):
+        """Returns the deflection angles"""
+        if pixels_derivative is None:
+            return np.zeros(self._shape)
+        return pixels_derivative
+    
+    def evaluate_potential(self, x, y, pixels_derivative=None):
+        a_x = self._evaluate_pixels(x, y, pixels=pixels_derivative[0])
+        a_y = self._evaluate_pixels(x, y, pixels=pixels_derivative[1])
+        return a_x, a_y
+    
+    def convergence(self, pixels_hessian=None):
+        """Returns the deflection angles"""
+        if pixels_hessian is None:
+            return np.zeros(self._shape)
+        return 0.5 * (pixels_hessian[0] + pixels_hessian[2])
+    
+    def evaluate_convergence(self, x, y, pixels_hessian=None):
+        """Returns the deflection angles"""
+        H = self.evaluate_hessian(x, y, pixels_hessian=pixels_hessian)
+        return 0.5 * (H[0] + H[3])
+    
+    def hessian(self, pixels_hessian=None):
+        """Returns the deflection angles"""
+        if pixels_hessian is None:
+            return np.zeros(self._shape)
+        return pixels_hessian
+    
+    def evaluate_hessian(self, x, y, pixels_hessian=None):
+        H_xx = self._evaluate_pixels(x, y, pixels=pixels_hessian[0])
+        H_yy = self._evaluate_pixels(x, y, pixels=pixels_hessian[1])
+        H_xy = self._evaluate_pixels(x, y, pixels=pixels_hessian[2])
+        H_yx = H_xy
+        return H_xx, H_xy, H_yx, H_yy
+
+    def get_extent(self):
+        coordinates = self.get_coordinates()
+        return coordinates.plt_extent
+
+    def get_coordinates(self):
+        # NOTE: could be made a property to avoid re-doing the intanciation several times
+        from coolest.api.util import get_coordinates_from_regular_grid
+        return get_coordinates_from_regular_grid(self._fov_x, self._fov_y, self._nx, self._ny)
+    
+    def _evaluate_pixels(self, x, y, pixels=None):
+        coordinates = self.get_coordinates()
+        points = coordinates.pixel_axes
+        interp = util.CartesianGridInterpolator(points, pixels, method=self._interp_method)
+        points_eval = np.array([y.ravel(), x.ravel()]).T
+        pixels_eval = interp(points_eval).reshape(*x.shape)
+        return pixels_eval
+    

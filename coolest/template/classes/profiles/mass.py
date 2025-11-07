@@ -330,7 +330,7 @@ class PixelatedRegularGridFullyDefined(Profile):
                 "Pixel values for the first spatial derivative along x and y axes"
             ),
             'pixels_hessian': PixelatedRegularGridStackParameter(
-                "Pixel values for the second spatial derivative along the 'xx', 'xy' and 'xy' axes"
+                "Pixel values for the second spatial derivative along the 'xx', 'yy' and 'xy' axes"
             ),
         }
         super().__init__(parameters)
