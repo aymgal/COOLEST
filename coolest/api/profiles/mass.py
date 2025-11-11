@@ -229,7 +229,7 @@ class ConvergenceSheet(BaseMassProfile):
         H_yx = H_xy
         return H_xx, H_xy, H_yx, H_yy
 
-class BaseMassProfile(object):
+class PixelatedRegularGridFullyDefined(object):
 
     _template_class = TemplatePixelatedRegularGridFullyDefined()
 
