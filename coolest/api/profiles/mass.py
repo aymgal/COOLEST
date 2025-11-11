@@ -6,7 +6,8 @@ from scipy import special
 
 from coolest.template.classes.profiles.mass import (PEMD as TemplatePEMD,
                                                     ExternalShear as TemplateExternalShear,
-                                                    ConvergenceSheet as TemplateConvergenceSheet)
+                                                    ConvergenceSheet as TemplateConvergenceSheet,
+                                                    PixelatedRegularGridFullyDefined as TemplatePixelatedRegularGridFullyDefined)
 from coolest.api.profiles import util
 
 
@@ -226,4 +227,20 @@ class ConvergenceSheet(BaseMassProfile):
         H_yy = kappa - gamma1
         H_xy = gamma2
         H_yx = H_xy
+        return H_xx, H_xy, H_yx, H_yy
+
+class BaseMassProfile(object):
+
+    _template_class = TemplatePixelatedRegularGridFullyDefined()
+
+    def potential(self, **params):
+        return potential
+
+    def deflection(self, **params):
+        return deflection
+
+    def convergence(self, **params):
+        return convergence
+
+    def hessian(self, **params):
         return H_xx, H_xy, H_yx, H_yy
