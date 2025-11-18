@@ -435,14 +435,35 @@ class ComposableLensModel(object):
         self.directory = coolest_directory
         if kwargs_selection_source is None:
             kwargs_selection_source = {}
+            self.lens_mass = [ComposableMassModel(coolest_object, 
+                                             coolest_directory,
+                                             **kwargs_selection_source)]
+        else:
+            self.lens_mass = [ComposableMassModel(coolest_object, 
+                                             coolest_directory,
+                                             dict(entity_selection = km)) for km in kwargs_selection_lens_mass['entity_selection']]
         if kwargs_selection_lens_mass is None:
             kwargs_selection_lens_mass = {}
-        self.lens_mass = ComposableMassModel(coolest_object, 
+            self.lens_mass = [ComposableMassModel(coolest_object, 
                                              coolest_directory,
-                                             **kwargs_selection_lens_mass)
-        self.source = ComposableLightModel(coolest_object, 
+                                             **kwargs_selection_source)]
+        else:
+            self.source = [ComposableLightModel(coolest_object, 
                                           coolest_directory,
-                                          **kwargs_selection_source)
+                                          dict(entity_selection = ks)) for ks in kwargs_selection_source['entity_selection']]
+
+        # TO DO----------------------------------------------------------------
+        # Convert self.lens_mass and self.source into lists of ComposableModels
+        # User will plot much like multiplotter: kwargs_lens_mass = dict(entity_selection = [[0,1], [3,4], [6]])
+        # Where [0,1], [3,4], [6] are entity indexes for lens mass(/optional shear)
+        # Will need to evaluate deflection for each source using all mass models at redshift < source
+        # Maybe sort the mass models by redshift, make list of redshifts, and evaluate combined deflection for any mass
+        # model at reshift lower than source.
+        # ------------------------------------------------------------------------
+        
+        
+        self.mass_redshifts = np.array([lm.info_list[0][1] for lm in self.lens_mass])
+        self.source_redshifts = np.array([lm.info_list[0][1] for lm in self.source])
 
     def model_image(self, supersampling=5, convolved=True, super_convolution=True):
         """generates an image of the lens based on the selected model components"""
@@ -501,11 +522,13 @@ class ComposableLensModel(object):
         return ((data - model) / sigma) * mask, self.coord_obs
 
     def evaluate_lensed_surface_brightness(self, x, y):
-        """Evaluates the surface brightness of a lensed source at given coordinates"""
-        # ray-shooting
+        """Evaluates the surface brightness of all the lensed sources at given coordinates"""
+        # Recursively apply ray shooting to each source and then find lensed image for each source.
+        # For each source, finding total lensing deflection
         x_rs, y_rs = self.ray_shooting(x, y)
-        # evaluates at ray-shooted coordinates
+        # Evaluate source given individual total deflection
         lensed_image = self.source.evaluate_surface_brightness(x_rs, y_rs)
+        # Returned sum sources
         return lensed_image
 
     def ray_shooting(self, x, y):
