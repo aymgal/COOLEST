@@ -363,12 +363,26 @@ class ComposableMassModel(BaseComposableModel):
             alpha_y += a_y
         return alpha_x, alpha_y
 
-    def evaluate_convergence(self, x, y):
+    def evaluate_convergence(self, x, y, mode='point', last_n_samples=None):
         """Evaluates the lensing convergence (i.e., 2D mass density) at given coordinates"""
-        kappa = np.zeros_like(x)
-        for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
-            kappa += profile.convergence(x, y, **params)
-        return kappa
+        self._check_eval_mode(mode)
+        if mode == 'point' or self._posterior_bool is False:
+            return self._eval_conv_point(x, y, self.param_list)
+        elif mode == 'posterior':
+            return self._eval_conv_posterior(x, y, self.post_param_list, last_n_samples)
+
+    def _eval_conv_point(self, x, y, param_list):
+        psi = np.zeros_like(x)
+        for k, profile in enumerate(self.profile_list):
+            psi += profile.convergence(x, y, **param_list[k])
+        return psi
+    
+    def _eval_conv_posterior(self, x, y, param_list, last_n_samples):
+        # map the point function at each sample
+        use_all_samples = last_n_samples is None or last_n_samples <= 0
+        val_list = param_list if use_all_samples else param_list[-last_n_samples:]
+        mapped = map(partial(self._eval_conv_point, x, y), val_list)
+        return np.array(list(mapped))
 
     def evaluate_hessian(self, x, y):
         """Evaluates the lensing Hessian components at given coordinates"""
@@ -402,6 +416,20 @@ class ComposableMassModel(BaseComposableModel):
         alpha_x, alpha_y = self.evaluate_deflection(x, y)
         x_rs, y_rs = x - alpha_x, y - alpha_y
         return x_rs, y_rs
+
+    def shear(self, x, y):
+        """evaluates the reduce shear gamma"""
+        H_xx, H_xy, _, H_yy = self.evaluate_hessian(x, y)
+        gamma1 = 1.0 / 2 * (H_xx - H_yy)
+        gamma2 = H_xy
+        return gamma1, gamma2
+
+    def reduced_shear(self, x, y):
+        """evaluates the reduce shear g = gamma / 1 - kappa"""
+        kappa = self.evaluate_convergence(x, y)
+        gamma1, gamma2 = self.evaluate_convergence(x, y)
+        x_rs, y_rs = x - alpha_x, y - alpha_y
+        return gamma
 
 
 class ComposableLensModel(object):

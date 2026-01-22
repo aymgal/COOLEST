@@ -8,6 +8,7 @@ __all__ = [
     'PSF',
     'PixelatedPSF',
     'GaussianPSF',
+    'UnspecifiedPSF',
 ]
 
 SUPPORTED_CHOICES = list(set(__all__) - {'PSF'})
@@ -75,3 +76,18 @@ class GaussianPSF(PSF):
                  description: str = None) -> None:
         psf_type = self.__class__.__name__
         super().__init__(psf_type, description=description, fwhm=fwhm)
+
+
+class UnspecifiedPSF(PSF):
+    """Can be used when the PSF is not, or can not be specified. May be used
+    with e.g. interferometric data.
+
+    Parameters
+    ----------
+    description : str, optional
+        Any details regarding the way the PSF has been estimated, by default None
+    """
+
+    def __init__(self, description: str = None) -> None:
+        psf_type = self.__class__.__name__
+        super().__init__(psf_type, description=description)

@@ -636,7 +636,10 @@
       "type": "Galaxy"
     }
   ],
-  "meta": {},
+  "likelihoods": null,
+  "meta": {
+    "coolest.__version__": "0.1.9"
+  },
   "mode": "MAP",
   "observation": {
     "exposure_time": null,
