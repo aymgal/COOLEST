@@ -89,7 +89,7 @@ def voronoi_finite_polygons_2d(vor,radius=None):
 
     center = vor.points.mean(axis=0)
     if radius is None:
-        radius = vor.points.ptp().max()
+        radius = np.ptp(vor.points).max()
 
     # Construct a map containing all ridges for a given point
     all_ridges = {}
@@ -418,8 +418,8 @@ def dmr_corner(tar_path, output_dir = None):
         splotter.plot_model_image(
             axes[0, 1],
             supersampling=5, convolved=True,
-            kwargs_source=dict(entity_selection=[2]),
-            kwargs_lens_mass=dict(entity_selection=[0, 1]),
+            kwargs_source=dict(entity_selection=[[2]]),
+            kwargs_lens_mass=dict(entity_selection=[[0, 1]]),
             norm=norm
         )
         axes[0, 1].text(0.05, 0.05, f"$\\theta_{{\\rm E}}$ = {einstein_radius:.2f}\"", color='white', fontsize=12,
@@ -427,8 +427,8 @@ def dmr_corner(tar_path, output_dir = None):
         axes[0, 1].set_title("Image Model")
 
         splotter.plot_model_residuals(axes[1, 0], supersampling=5, add_chi2_label=True, chi2_fontsize=12,
-                                      kwargs_source=dict(entity_selection=[2]),
-                                      kwargs_lens_mass=dict(entity_selection=[0, 1]))
+                                      kwargs_source=dict(entity_selection=[[2]]),
+                                      kwargs_lens_mass=dict(entity_selection=[[0, 1]]))
         axes[1, 0].set_title("Normalized Residuals")
 
         splotter.plot_surface_brightness(axes[1, 1], kwargs_light=dict(entity_selection=[2]),
