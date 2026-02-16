@@ -153,8 +153,9 @@ class JSONSerializer(object):
             COOLEST object that corresponds to the JSON template
         """
         with open(jsonpickle_path, 'r') as f:
-            content = jsonpickle.decode(f.read())
-        return content  # COOLEST object
+            c = jsonpickle.decode(f.read())
+        c = self._fill_missing_props(c)
+        return c  # COOLEST object
 
     def _json_to_coolest(self, json_content, validate):
         """Creates from scratch a COOLEST instance based on the content of a JSON
@@ -438,7 +439,6 @@ class JSONSerializer(object):
         meta_out = meta_in  # TODO: might do more checks here
         return meta_out
 
-
     def _fill_missing_props(self, c):
         """Fills missing properties in the JSON content, if any.
         This is useful to ensure backward compatibility with previous versions of the template.
@@ -453,6 +453,15 @@ class JSONSerializer(object):
         dict
             Updated content of the JSON template file, with missing properties filled in
         """
+        if isinstance(c, dict):
+            c = self._fill_missing_props_dict(c)
+        elif isinstance(c, COOLEST):
+            c = self._fill_missing_props_coolest(c)
+        else:
+            raise ValueError(f"Unsupported type '{type(c)}' for filling missing properties. Supported types are either a JSON dictionary or a COOLEST instance.")
+        return c
+
+    def _fill_missing_props_dict(self, c):
         # Iterate through the lensing entities and add the `'lensed'` property if missing (added in v0.2.0)
         # Since we have to guess when it is not in the template, we use two criterions:
         # - if the entity is a source galaxy, then it is lensed; if it is a lens galaxy or a mass field, then it is not lensed
@@ -472,4 +481,21 @@ class JSONSerializer(object):
                 else:
                     raise ValueError(f"Unknown lensing entity type '{entity['type']}' when trying to fill missing properties.")
         return c
+    
+    def _fill_missing_props_coolest(self, coolest):
+        for entity in coolest.lensing_entities:
+            if not hasattr(entity, 'lensed'):
+                if isinstance(entity, Galaxy):
+                    if entity.mass_model is not None and len(entity.mass_model) > 0:
+                        entity.lensed = False
+                        warnings.warn(f"Warning: the galaxy '{entity.name}' has a mass model, hence it is likely a lens galaxy. Setting 'lensed' to False.")
+                    else:
+                        entity.lensed = True
+                        warnings.warn(f"Warning: the galaxy '{entity.name}' does not have a mass model, hence it is likely a source galaxy. Setting 'lensed' to True.")
+                elif isinstance(entity, MassField):
+                    entity.lensed = False
+                    warnings.warn(f"Warning: the entity '{entity.name}' is a mass field, hence it is likely a lensing mass component. Setting 'lensed' to False.")
+                else:
+                    raise ValueError(f"Unknown lensing entity type '{type(entity)}' when trying to fill missing properties.")
+        return coolest
     
