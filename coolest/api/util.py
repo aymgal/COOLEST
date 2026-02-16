@@ -179,7 +179,7 @@ def effective_radius(light_map, x, y, outer_radius=10, initial_guess=1, initial_
     elif cumulative_light > total_light/2: #move inward
         direction=-1
     else:
-        return initial_guess
+        return initial_guess, grid_res
     r_eff=initial_guess
     delta=initial_delta
     loopcount=0
