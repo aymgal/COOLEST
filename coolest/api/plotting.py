@@ -143,17 +143,23 @@ class ModelPlotter(object):
     def plot_model_image(self, ax, title=None,
                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
                          add_colorbar=True, add_scalebar=True, scalebar_size=1, 
-                         kwargs_lens_mass=None, kwargs_lens_light=None, kwargs_source=None,
+                         auto_selection=False,
+                         kwargs_lens_mass=None, 
+                         kwargs_lens_light=None, 
+                         kwargs_source=None,
                          **model_image_kwargs):
         """plt.imshow panel showing the surface brightness of the (lensed)
         selected lensing entities (see ComposableLensModel docstring)
         """
         if cmap is None:
             cmap = self.cmap_flux
-        lens_model = ComposableLensModel(self.coolest, self._directory,
-                                         kwargs_selection_source=kwargs_source,
-                                         kwargs_selection_lens_mass=kwargs_lens_mass,
-                                         kwargs_selection_lens_light=kwargs_lens_light)
+        lens_model = ComposableLensModel(
+            self.coolest, self._directory,
+            auto_selection=auto_selection,
+            kwargs_selection_source=kwargs_source,
+            kwargs_selection_lens_mass=kwargs_lens_mass,
+            kwargs_selection_lens_light=kwargs_lens_light
+        )
         image, coordinates = lens_model.model_image(**model_image_kwargs)
         extent = coordinates.plt_extent
         ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, 
@@ -449,6 +455,8 @@ class MultiModelPlotter(object):
                 kwargs_['kwargs_source'] = {k: v[i] for k, v in kwargs['kwargs_source'].items()}
             if 'kwargs_lens_mass' in kwargs:
                 kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
+            if 'kwargs_lens_light' in kwargs:
+                kwargs_['kwargs_lens_light'] = {k: v[i] for k, v in kwargs['kwargs_lens_light'].items()}
             if 'titles' in kwargs:
                 title = kwargs['titles'][i]
             image = getattr(plotter, method_name)(ax, title, *args, **kwargs_)
