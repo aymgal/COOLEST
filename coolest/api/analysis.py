@@ -222,10 +222,20 @@ class Analysis(object):
             closest_r = self._find_nearest(r_vec,r_eval) #just takes closest r. Could rebuild it to interpolate.
             return slope[r_vec==closest_r]
 
-    def effective_radius_light(self, outer_radius=10, center=None, coordinates=None,
-                               initial_guess=1, initial_delta_pix=10, 
-                               n_iter=10, return_model=False, return_accuracy=False,
-                               circular_mask_radius=None, **kwargs_selection):
+    def effective_radius_light(
+            self, 
+            outer_radius=10, 
+            center=None, 
+            coordinates=None,
+            no_re_eval=False,
+            initial_guess=1, 
+            initial_delta_pix=10, 
+            n_iter=10, 
+            return_model=False, 
+            return_accuracy=False,
+            circular_mask_radius=None, 
+            **kwargs_selection
+        ):
         """Computes the effective radius of the 2D surface brightness profile, 
         based on a definition similar to the half-light radius.
 
@@ -238,6 +248,8 @@ class Analysis(object):
         coordinates : Coordinates, optional
             Instance of a Coordinates object to be used for the computation.
             If None, will use an instance based on the Instrument, by default None
+        no_re_eval : bool, option
+            If True, do re-evaluate the light profile (only relevant for pixelated profiles). Default is False.
         initial_guess : int, optional
             Initial guess for effective radius in arcsecond, by default 1
         initial_delta_pix : int, optional
@@ -273,15 +285,26 @@ class Analysis(object):
         else:
             center_x, center_y = center
 
-        # get an image of the convergence
-        if coordinates is None:
-            x, y = self.coordinates.pixel_coordinates
-        else:
+        # get an model image
+        if no_re_eval:
+            light_image, _, coordinates = light_model.surface_brightness(return_extra=True)
             x, y = coordinates.pixel_coordinates
-        # make sure to evaluate the profile such that it is centered on the image
-        x_ = x + center_x
-        y_ = y + center_y
-        light_image = light_model.evaluate_surface_brightness(x_, y_)
+        else:
+            # select a center
+            if center is None:
+                center_x, center_y = light_model.estimate_center()
+            else:
+                center_x, center_y = center
+            if coordinates is None:
+                x, y = self.coordinates.pixel_coordinates
+            else:
+                x, y = coordinates.pixel_coordinates
+            # make sure to evaluate the profile such that it is centered on the image
+            x_eval = x + center_x
+            y_eval = y + center_y
+            light_image = light_model.evaluate_surface_brightness(x_eval, y_eval)
+        
+        # clean the image from nans
         light_image[np.isnan(light_image)] = 0.
         
         #if limit of integration exceeds FoV, raise warning
@@ -299,17 +322,24 @@ class Analysis(object):
         if out_of_FoV is True:
             logging.warning("Outer limit of integration exceeds FoV; effective radius may not be accurate.")
 
+        # build a mask if needed
         if circular_mask_radius is not None:  # circular mask that fills the FoV
-            mask = (np.hypot(x, y) < circular_mask_radius).astype(float)  # 0. and 1. only
+            mask = (np.hypot(x - center_x, y - center_y) < circular_mask_radius).astype(float)  # 0. and 1. only
             light_image *= mask
             # import matplotlib.pyplot as plt
-            # plt.imshow(np.log10(light_image))
+            # # plt.imshow(np.log10(light_image))
+            # plt.imshow(mask)
             # plt.show()
             # raise
 
+        # compute the effective radius
         r_eff, accuracy = util.effective_radius(
-            light_image, x, y, outer_radius=outer_radius, initial_guess=initial_guess, 
-            initial_delta_pix=initial_delta_pix, n_iter=n_iter
+            light_image,
+            x, y, 
+            outer_radius=outer_radius, 
+            initial_guess=initial_guess, 
+            initial_delta_pix=initial_delta_pix, 
+            n_iter=n_iter
         )
 
         if return_model and return_accuracy:

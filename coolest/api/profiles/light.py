@@ -6,6 +6,7 @@ from scipy import interpolate
 
 from coolest.template.classes.profiles.light import (Sersic as TemplateSersic,
                                                      Shapelets as TemplateShapelets,
+                                                     Uniform as TemplateUniform,
                                                      PixelatedRegularGrid as TemplatePixelatedRegularGrid,
                                                      IrregularGrid as TemplateIrregularGrid)
 from coolest.api.profiles import util
@@ -95,6 +96,21 @@ class Shapelets(BaseLightProfile):
         return flux.reshape(*x.shape)
 
 
+class Uniform(BaseLightProfile):
+
+    """Uniform light distribution"""
+
+    _units = 'per_ang'
+    _template_class = TemplateUniform()
+
+    def surface_brightness(self, A=1.):
+        raise ValueError("Uniform surface brightness can only be evaluated")
+
+    def evaluate_surface_brightness(self, x, y, A=1.):
+        """Returns the surface brightness at the given position (x, y)"""
+        return np.full_like(x, A)
+    
+
 class PixelatedRegularGrid(BaseLightProfile):
 
     """Pixelated profile on a regular grid"""
@@ -134,6 +150,7 @@ class PixelatedRegularGrid(BaseLightProfile):
         return coordinates.plt_extent
 
     def get_coordinates(self):
+        # NOTE: could be made a property to avoid re-doing the intanciation several times
         from coolest.api.util import get_coordinates_from_regular_grid
         return get_coordinates_from_regular_grid(self._fov_x, self._fov_y, self._nx, self._ny)
 
