@@ -7,6 +7,7 @@ import logging
 from scipy import signal
 import pandas as pd
 from functools import partial
+from copy import deepcopy
 
 from coolest.api import util
 
@@ -22,11 +23,15 @@ def auto_select_entities(coolest_object):
     for i, entity in enumerate(coolest_object.lensing_entities):
         if entity.lensed is True:
             sel_source.append(i)
-            if len(entity.mass_model) > 0:
+            if entity.has_mass_profiles:
+                print("A", i, entity.name, len(entity.mass_model))
                 sel_lens_light.append(i)  # i.e. this entity acts as a lens AND is lensed
         else:
             sel_lens_mass.append(i)
-            if hasattr(entity, 'light_model'):
+            if entity.has_light_profiles:
+                print("B", i, entity.name)
+                if hasattr(entity, 'light_model'):
+                    print(entity.light_model)
                 sel_lens_light.append(i)
     kwargs_sel_source = dict(
         entity_selection=sel_source,
@@ -45,6 +50,10 @@ def auto_select_entities(coolest_object):
         kwargs_sel_lens_mass,
         kwargs_sel_lens_light,
     )
+
+
+def _copy_dict(d):
+    return deepcopy(d) if d is not None else None
 
 
 class BaseComposableModel(object):
@@ -93,25 +102,30 @@ class BaseComposableModel(object):
             profile_selection=None
         ):
         if entity_selection is None:
-            # finds the first entity that has a 'model_type' profile
-            entity_selection = None
-            for i, entity in enumerate(coolest_object.lensing_entities):
-                if model_type == 'light_model' \
-                    and entity.type == 'galaxy' \
-                    and len(entity.light_model) > 0:
-                    entity_selection = [i]
-                    break
-                elif model_type == 'mass_model' \
-                    and len(entity.mass_model) > 0:
-                    entity_selection = [i]
-                    break
-            if entity_selection is None:
-                raise ValueError(f"No lensing entity found for model type '{model_type}'! "
-                                 "Please check the COOLEST template or provide an explicit `entity_selection`.")
-            else:
-                logging.warning(f"Considering profile for lensing entity (index {i})")
+            # In this case this composable model is essentially empty
+            entity_selection = []
+
+            # NOTE: this was the previous behavior: finds the first entity that has a 'model_type' profile
+            # for i, entity in enumerate(coolest_object.lensing_entities):
+            #     if model_type == 'light_model' \
+            #         and entity.type == 'galaxy' \
+            #         and len(entity.light_model) > 0:
+            #         entity_selection = [i]
+            #         break
+            #     elif model_type == 'mass_model' \
+            #         and len(entity.mass_model) > 0:
+            #         entity_selection = [i]
+            #         break
+            # if entity_selection is None:
+            #     raise ValueError(f"No lensing entity found for model type '{model_type}'! "
+            #                      "Please check the COOLEST template or provide an explicit `entity_selection`.")
+            # else:
+            #     logging.warning(f"Considering profile for lensing entity (index {i})")
+        
         if profile_selection is None:
+            # if not specified, we simply consider all profiles from that entity
             profile_selection = 'all'
+
         entities = coolest_object.lensing_entities
         self.directory = coolest_directory
         self._posterior_bool, self._csv_path = False, None
@@ -127,8 +141,6 @@ class BaseComposableModel(object):
         self.setup_profiles_and_params(model_type, entities, 
                                         entity_selection, profile_selection)
         self.num_profiles = len(self.profile_list)
-        if self.num_profiles == 0:
-            raise ValueError("No profile has been selected!")
 
     def setup_profiles_and_params(self, model_type, entities, 
                                   entity_selection, profile_selection):
@@ -463,7 +475,6 @@ class ComposableLensModel(object):
         to a ComposableLightModel for the source, and all entities having `lensed=False`
         will be associated to a ComposableLightModel and ComposableLightModel for the lens
         If False, the user should provide the appropriate keyword arguments in the kwargs_selection_* arguments.
-        Warning: if True, all kwargs_selection_* arguments are overwitten!
     kwargs_selection_lens_mass: dict, optional
         Keyword arguments for ComposableMassModel to select which entities 
         and their profiles to consider for the lens mass model.
@@ -488,28 +499,35 @@ class ComposableLensModel(object):
         self.coolest = coolest_object
         self.coord_obs = util.get_coordinates(self.coolest)
         self.directory = coolest_directory
+        kwargs_source = _copy_dict(kwargs_selection_source)
+        kwargs_lens_mass = _copy_dict(kwargs_selection_lens_mass)
+        kwargs_lens_light = _copy_dict(kwargs_selection_lens_light)
         if auto_selection is True:
             (
-                kwargs_selection_source, 
-                kwargs_selection_lens_mass, 
-                kwargs_selection_lens_light
+                kwargs_source, 
+                kwargs_lens_mass, 
+                kwargs_lens_light
             ) = auto_select_entities(self.coolest)
+            print("Auto-selected the following entities and profiles:")
+            print(f"- source: {kwargs_source}")
+            print(f"- lens mass: {kwargs_lens_mass}")
+            print(f"- lens light: {kwargs_lens_light}")
         else:
             if kwargs_selection_source is None:
-                kwargs_selection_source = {}
+                kwargs_source = {}
             if kwargs_selection_lens_mass is None:
-                kwargs_selection_lens_mass = {}
+                kwargs_lens_mass = {}
             if kwargs_selection_lens_light is None:
-                kwargs_selection_lens_light = {}
+                kwargs_lens_light = {}
         self.lens_mass = ComposableMassModel(coolest_object, 
                                              coolest_directory,
-                                             **kwargs_selection_lens_mass)
+                                             **kwargs_lens_mass)
         self.lens_light = ComposableLightModel(coolest_object, 
                                                coolest_directory,
-                                               **kwargs_selection_lens_light)
+                                               **kwargs_lens_light)
         self.source = ComposableLightModel(coolest_object, 
                                            coolest_directory,
-                                           **kwargs_selection_source)
+                                           **kwargs_source)
 
     def model_image(self, supersampling=5, convolved=True, super_convolution=True):
         """generates an image of the lens based on the selected model components"""

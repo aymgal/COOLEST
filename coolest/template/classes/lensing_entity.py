@@ -46,3 +46,9 @@ class LensingEntity(APIBaseObject):
             mass_model = MassModel()
         self.mass_model = mass_model
         super().__init__()
+
+    @property
+    def has_mass_profiles(self):
+        """Check if the galaxy has mass profiles."""
+        return len(self.mass_model) > 0
+    

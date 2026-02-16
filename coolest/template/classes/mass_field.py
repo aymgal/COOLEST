@@ -23,4 +23,8 @@ class MassField(LensingEntity):
                  redshift: float,
                  mass_model: MassModel = None) -> None:
         super().__init__(name, redshift, lensed=False, mass_model=mass_model)
-        
+    
+    @property
+    def has_light_profiles(self):
+        return False
+    

@@ -29,3 +29,9 @@ class Galaxy(LensingEntity):
         if light_model is None:
             light_model = LightModel()
         self.light_model = light_model
+
+    @property
+    def has_light_profiles(self):
+        """Check if the galaxy has light profiles."""
+        return len(self.light_model) > 0
+    
