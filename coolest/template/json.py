@@ -2,6 +2,7 @@ import os
 import json
 import jsonpickle
 import math
+import warnings
 
 from coolest.template.standard import COOLEST
 from coolest.template.lazy import *
@@ -173,6 +174,9 @@ class JSONSerializer(object):
 
         # MODE
         mode = self._check_mode(c['mode'])
+
+        # Fill missing entries (e.g. due to previous versions of the template)
+        c = self._fill_missing_props(c)
 
         # LENSING ENTITIES {GALAXY, MASSFIELDS}
         lensing_entities = self._setup_lensing_entities(c['lensing_entities'])
@@ -433,3 +437,39 @@ class JSONSerializer(object):
     def _check_metadata(self, meta_in):
         meta_out = meta_in  # TODO: might do more checks here
         return meta_out
+
+
+    def _fill_missing_props(self, c):
+        """Fills missing properties in the JSON content, if any.
+        This is useful to ensure backward compatibility with previous versions of the template.
+
+        Parameters
+        ----------
+        c : dict
+            Content of the JSON template file, as a nested dictionary
+
+        Returns
+        -------
+        dict
+            Updated content of the JSON template file, with missing properties filled in
+        """
+        # Iterate through the lensing entities and add the `'lensed'` property if missing (added in v0.2.0)
+        # Since we have to guess when it is not in the template, we use two criterions:
+        # - if the entity is a source galaxy, then it is lensed; if it is a lens galaxy or a mass field, then it is not lensed
+        # - if the entity has a mass model, then it is likely a lens galaxy or a mass field, hence not lensed; if it does not have a mass model, then it is likely a source galaxy, hence lensed
+        for entity in c['lensing_entities']:
+            if 'lensed' not in entity:
+                if entity['type'] == 'Galaxy':
+                    if 'mass_model' in entity and len(entity['mass_model']) > 0:
+                        entity['lensed'] = False
+                        warnings.warn(f"Warning: the galaxy '{entity['name']}' has a mass model, hence it is likely a lens galaxy. Setting 'lensed' to False.")
+                    else:
+                        entity['lensed'] = True
+                        warnings.warn(f"Warning: the galaxy '{entity['name']}' does not have a mass model, hence it is likely a source galaxy. Setting 'lensed' to True.")
+                elif entity['type'] in ('MassField',):
+                    entity['lensed'] = False
+                    warnings.warn(f"Warning: the entity '{entity['name']}' is a mass field, hence it is likely a lensing mass component. Setting 'lensed' to False.")
+                else:
+                    raise ValueError(f"Unknown lensing entity type '{entity['type']}' when trying to fill missing properties.")
+        return c
+    
