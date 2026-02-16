@@ -322,13 +322,9 @@ class Analysis(object):
         if out_of_FoV is True:
             logging.warning("Outer limit of integration exceeds FoV; effective radius may not be accurate.")
 
-        # coordinates after shifting the center, for the effective radius calculation
-        x_ = x - center_x
-        y_ = y - center_y
-
         # build a mask if needed
         if circular_mask_radius is not None:  # circular mask that fills the FoV
-            mask = (np.hypot(x_, y_) < circular_mask_radius).astype(float)  # 0. and 1. only
+            mask = (np.hypot(x - center_x, y - center_y) < circular_mask_radius).astype(float)  # 0. and 1. only
             light_image *= mask
             # import matplotlib.pyplot as plt
             # # plt.imshow(np.log10(light_image))
@@ -339,8 +335,7 @@ class Analysis(object):
         # compute the effective radius
         r_eff, accuracy = util.effective_radius(
             light_image,
-            x_, 
-            y_, 
+            x, y, 
             outer_radius=outer_radius, 
             initial_guess=initial_guess, 
             initial_delta_pix=initial_delta_pix, 
