@@ -7,12 +7,53 @@ import logging
 from scipy import signal
 import pandas as pd
 from functools import partial
+from copy import deepcopy
 
 from coolest.api import util
 
 
 # logging settings
 logging.getLogger().setLevel(logging.WARNING)
+
+
+def auto_select_entities(coolest_object):
+    sel_source = []
+    sel_lens_light = []
+    sel_lens_mass = []
+    for i, entity in enumerate(coolest_object.lensing_entities):
+        if entity.lensed is True:
+            sel_source.append(i)
+            if entity.has_mass_profiles:
+                print("A", i, entity.name, len(entity.mass_model))
+                sel_lens_light.append(i)  # i.e. this entity acts as a lens AND is lensed
+        else:
+            sel_lens_mass.append(i)
+            if entity.has_light_profiles:
+                print("B", i, entity.name)
+                if hasattr(entity, 'light_model'):
+                    print(entity.light_model)
+                sel_lens_light.append(i)
+    kwargs_sel_source = dict(
+        entity_selection=sel_source,
+        profile_selection='all',
+    )
+    kwargs_sel_lens_mass = dict(
+        entity_selection=sel_lens_mass,
+        profile_selection='all',
+    )
+    kwargs_sel_lens_light = dict(
+        entity_selection=sel_lens_light,
+        profile_selection='all',
+    )
+    return (
+        kwargs_sel_source,
+        kwargs_sel_lens_mass,
+        kwargs_sel_lens_light,
+    )
+
+
+def _copy_dict(d):
+    return deepcopy(d) if d is not None else None
 
 
 class BaseComposableModel(object):
@@ -49,29 +90,42 @@ class BaseComposableModel(object):
     _chain_key = "chain_file_name"
     _supported_eval_modes = ('point', 'posterior')
 
-    def __init__(self, model_type, 
-                 coolest_object, coolest_directory=None, 
-                 load_posterior_samples=False,
-                 entity_selection=None, profile_selection=None):
+    def __init__(
+            self, 
+            model_type, 
+            coolest_object, 
+            coolest_directory=None, 
+            load_posterior_samples=False,
+            
+            # The following are referred to as `kwargs_selection` in children classes
+            entity_selection=None, 
+            profile_selection=None
+        ):
         if entity_selection is None:
-            # finds the first entity that has a 'model_type' profile
-            entity_selection = None
-            for i, entity in enumerate(coolest_object.lensing_entities):
-                if model_type == 'light_model' \
-                    and entity.type == 'galaxy' \
-                    and len(entity.light_model) > 0:
-                    entity_selection = [i]
-                    break
-                elif model_type == 'mass_model' \
-                    and len(entity.mass_model) > 0:
-                    entity_selection = [i]
-                    break
-            if entity_selection is None:
-                raise ValueError("No lensing entity with light profiles have been found")
-            else:
-                logging.warning(f"Found valid profile for lensing entity (index {i}) for model type '{model_type}'")
+            # In this case this composable model is essentially empty
+            entity_selection = []
+
+            # NOTE: this was the previous behavior: finds the first entity that has a 'model_type' profile
+            # for i, entity in enumerate(coolest_object.lensing_entities):
+            #     if model_type == 'light_model' \
+            #         and entity.type == 'galaxy' \
+            #         and len(entity.light_model) > 0:
+            #         entity_selection = [i]
+            #         break
+            #     elif model_type == 'mass_model' \
+            #         and len(entity.mass_model) > 0:
+            #         entity_selection = [i]
+            #         break
+            # if entity_selection is None:
+            #     raise ValueError(f"No lensing entity found for model type '{model_type}'! "
+            #                      "Please check the COOLEST template or provide an explicit `entity_selection`.")
+            # else:
+            #     logging.warning(f"Considering profile for lensing entity (index {i})")
+        
         if profile_selection is None:
+            # if not specified, we simply consider all profiles from that entity
             profile_selection = 'all'
+
         entities = coolest_object.lensing_entities
         self.directory = coolest_directory
         self._posterior_bool, self._csv_path = False, None
@@ -87,8 +141,6 @@ class BaseComposableModel(object):
         self.setup_profiles_and_params(model_type, entities, 
                                         entity_selection, profile_selection)
         self.num_profiles = len(self.profile_list)
-        if self.num_profiles == 0:
-            raise ValueError("No profile has been selected!")
 
     def setup_profiles_and_params(self, model_type, entities, 
                                   entity_selection, profile_selection):
@@ -171,7 +223,7 @@ class BaseComposableModel(object):
     @staticmethod
     def _get_grid_params(profile_in, fits_dir):
         param_in = profile_in.parameters['pixels']
-        if profile_in.type == 'PixelatedRegularGrid':
+        if 'PixelatedRegularGrid' in profile_in.type:
             data = param_in.get_pixels(directory=fits_dir)
             parameters = {'pixels': data}
             fov_x = param_in.field_of_view_x
@@ -179,8 +231,16 @@ class BaseComposableModel(object):
             npix_x = param_in.num_pix_x
             npix_y = param_in.num_pix_y
             fixed_parameters = (fov_x, fov_y, npix_x, npix_y)
+            if profile_in.type == 'PixelatedRegularGridFullyDefined':
+                # NOTE: so far there is only one such profile, so below is not so general code
+                param_in = profile_in.parameters['pixels_derivative']
+                data = param_in.get_pixels(directory=fits_dir)
+                parameters.update({'pixels_derivative': data})
+                param_in = profile_in.parameters['pixels_hessian']
+                data = param_in.get_pixels(directory=fits_dir)
+                parameters.update({'pixels_hessian': data})
 
-        elif profile_in.type == 'IrregularGrid':
+        elif 'IrregularGrid' in profile_in.type:
             x, y, z = param_in.get_xyz(directory=fits_dir)
             parameters = {'x': x, 'y': y, 'z': z}
             fov_x = param_in.field_of_view_x
@@ -244,13 +304,8 @@ class ComposableLightModel(BaseComposableModel):
         COOLEST instance
     coolest_directory : str, optional
         Directory which contains the COOLEST template, by default None
-    entity_selection : list, optional
-        List of indices of the lensing entities to consider; If None, 
-        selects the first entity that has a light model, by default None
-    profile_selection : list, optional
-        List of either lists of indices, or 'all', for selecting which light profile 
-        of a given lensing entity to consider. If None, selects all the 
-        profiles of within the corresponding entity, by default None
+    kwargs_selection : dict, optional
+        Keyword arguments for selecting which entities and profiles to consider, see BaseComposableModel for details.
 
     Raises
     ------
@@ -258,7 +313,12 @@ class ComposableLightModel(BaseComposableModel):
         No valid entity found or no profiles found.
     """
 
-    def __init__(self, coolest_object, coolest_directory=None, **kwargs_selection):
+    def __init__(
+            self, 
+            coolest_object, 
+            coolest_directory=None, 
+            **kwargs_selection,
+        ):
         super().__init__('light_model', coolest_object, 
                          coolest_directory=coolest_directory,
                          **kwargs_selection)
@@ -301,13 +361,8 @@ class ComposableMassModel(BaseComposableModel):
         COOLEST instance
     coolest_directory : str, optional
         Directory which contains the COOLEST template, by default None
-    entity_selection : list, optional
-        List of indices of the lensing entities to consider; If None, 
-        selects the first entity that has a mass model, by default None
-    profile_selection : list, optional
-        List of either lists of indices, or 'all', for selecting which mass profile 
-        of a given lensing entity to consider. If None, selects all the 
-        profiles of within the corresponding entity, by default None
+    kwargs_selection : dict, optional
+        Keyword arguments for selecting which entities and profiles to consider, see BaseComposableModel for details.
 
     Raises
     ------
@@ -334,7 +389,7 @@ class ComposableMassModel(BaseComposableModel):
     def _eval_pot_point(self, x, y, param_list):
         psi = np.zeros_like(x)
         for k, profile in enumerate(self.profile_list):
-            psi += profile.potential(x, y, **param_list[k])
+            psi += profile.evaluate_potential(x, y, **param_list[k])
         return psi
     
     def _eval_pot_posterior(self, x, y, param_list, last_n_samples):
@@ -358,7 +413,7 @@ class ComposableMassModel(BaseComposableModel):
         """Evaluates the lensing deflection field at given coordinates"""
         alpha_x, alpha_y = np.zeros_like(x), np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
-            a_x, a_y = profile.deflection(x, y, **params)
+            a_x, a_y = profile.evaluate_deflection(x, y, **params)
             alpha_x += a_x
             alpha_y += a_y
         return alpha_x, alpha_y
@@ -367,7 +422,7 @@ class ComposableMassModel(BaseComposableModel):
         """Evaluates the lensing convergence (i.e., 2D mass density) at given coordinates"""
         kappa = np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
-            kappa += profile.convergence(x, y, **params)
+            kappa += profile.evaluate_convergence(x, y, **params)
         return kappa
 
     def evaluate_hessian(self, x, y):
@@ -377,7 +432,7 @@ class ComposableMassModel(BaseComposableModel):
         H_yx_sum = np.zeros_like(x)
         H_yy_sum = np.zeros_like(x)
         for k, (profile, params) in enumerate(zip(self.profile_list, self.param_list)):
-            H_xx, H_xy, H_yx, H_yy = profile.hessian(x, y, **params)
+            H_xx, H_xy, H_yx, H_yy = profile.evaluate_hessian(x, y, **params)
             H_xx_sum += H_xx
             H_xy_sum += H_xy
             H_yx_sum += H_yx
@@ -414,13 +469,21 @@ class ComposableLensModel(object):
         COOLEST instance
     coolest_directory : str, optional
         Directory which contains the COOLEST template, by default None
-    entity_selection : list, optional
-        List of indices of the lensing entities to consider; If None, 
-        selects the first entity that has a light/mass model, by default None
-    profile_selection : list, optional
-        List of either lists of indices, or 'all', for selecting which light/mass profile 
-        of a given lensing entity to consider. If None, selects all the 
-        profiles of within the corresponding entity, by default None
+    auto_selection : bool, True
+        If True, will select entities based on their `lensed` attributes.
+        In particular, all entities having a `lensed=True` will be associated 
+        to a ComposableLightModel for the source, and all entities having `lensed=False`
+        will be associated to a ComposableLightModel and ComposableLightModel for the lens
+        If False, the user should provide the appropriate keyword arguments in the kwargs_selection_* arguments.
+    kwargs_selection_lens_mass: dict, optional
+        Keyword arguments for ComposableMassModel to select which entities 
+        and their profiles to consider for the lens mass model.
+    kwargs_selection_lens_light: dict, optional
+        Keyword arguments for ComposableLightModel to select which entities 
+        and their profiles to consider for the lens light model.
+    kwargs_selection_source: dict, optional
+        Keyword arguments for ComposableLightModel to select which entities 
+        and their profiles to consider for the source light model.
 
     Raises
     ------
@@ -429,30 +492,60 @@ class ComposableLensModel(object):
     """
 
     def __init__(self, coolest_object, coolest_directory=None, 
-                 kwargs_selection_source=None, kwargs_selection_lens_mass=None):
+                 auto_selection=True,
+                 kwargs_selection_source=None, 
+                 kwargs_selection_lens_mass=None,
+                 kwargs_selection_lens_light=None):
         self.coolest = coolest_object
         self.coord_obs = util.get_coordinates(self.coolest)
         self.directory = coolest_directory
-        # Build source models: one ComposableLightModel per source entity index if provided,
+        
+        # Apply auto-selection if requested, otherwise use provided kwargs
+        kwargs_source = _copy_dict(kwargs_selection_source)
+        kwargs_lens_mass = _copy_dict(kwargs_selection_lens_mass)
+        kwargs_lens_light = _copy_dict(kwargs_selection_lens_light)
+        
+        if auto_selection is True:
+            (
+                kwargs_source, 
+                kwargs_lens_mass, 
+                kwargs_lens_light
+            ) = auto_select_entities(self.coolest)
+        else:
+            if kwargs_selection_source is None:
+                kwargs_source = {}
+            if kwargs_selection_lens_mass is None:
+                kwargs_lens_mass = {}
+            if kwargs_selection_lens_light is None:
+                kwargs_lens_light = {}
+        
+        # Build source models: one ComposableLightModel per source entity if provided,
         # otherwise create a single ComposableLightModel covering default selection behavior.
+        # Keep source separate from lens_light to allow selective lensing of light models.
         self.source = []
-        if kwargs_selection_source is None or 'entity_selection' not in kwargs_selection_source:
+        self.source_entity_indexes = []
+        if 'entity_selection' not in kwargs_source or kwargs_source['entity_selection'] is None:
             # single default source model (may select first available light entity)
-            self.source = [ComposableLightModel(coolest_object, coolest_directory, **(kwargs_selection_source or {}))]
+            self.source = [ComposableLightModel(coolest_object, coolest_directory, **kwargs_source)]
             self.source_entity_indexes = [None]
         else:
             # expect a list of entity indices or a single index
-            src_sel = kwargs_selection_source['entity_selection']
+            src_sel = kwargs_source['entity_selection']
             if isinstance(src_sel, (list, tuple)) and all(not isinstance(x, (list, tuple)) for x in src_sel):
                 # flat list of entity indices -> create one model per index
                 for idx in src_sel:
                     self.source.append(ComposableLightModel(coolest_object, coolest_directory, **dict(entity_selection=idx)))
-                self.source_entity_indexes = src_sel
+                self.source_entity_indexes = list(src_sel)
             else:
                 # assume list of selections (e.g., [[0],[1]]) create one model per selection
                 for sel in src_sel:
                     self.source.append(ComposableLightModel(coolest_object, coolest_directory, **dict(entity_selection=sel)))
-                self.source_entity_indexes = src_sel
+                self.source_entity_indexes = list(src_sel)
+        
+        # Build lens light and mass models
+        self.lens_light = ComposableLightModel(coolest_object, 
+                                               coolest_directory,
+                                               **dict(entity_selection=kwargs_lens_light))
 
         # Build mass planes by grouping lensing entities that contain mass models by redshift
         mass_entity_indices = [i for i, e in enumerate(self.coolest.lensing_entities) if getattr(e, 'mass_model', None) and len(e.mass_model) > 0]
@@ -549,6 +642,7 @@ class ComposableLensModel(object):
         coord_eval = self.coord_obs.create_new_coordinates(pixel_scale_factor=1./supersampling)
         x, y = coord_eval.pixel_coordinates
         image = self.evaluate_lensed_surface_brightness(x, y)
+        image += self.lens_light.evaluate_surface_brightness(x, y)
         if convolved is True:
             if psf.type != 'PixelatedPSF':
                 raise NotImplementedError
@@ -591,35 +685,36 @@ class ComposableLensModel(object):
         cosmology = self.coolest.cosmology
         # If loaded by jsonpickle, coolest file might not have MultiPlaneBetaList initialized
         # Initialize if so
-        if not hasattr(self.coolest.lensing_entities, 'multiplane_betas'):
-            from coolest.template.classes.lensing_entity_list import MultiPlaneBetaList
-            self.coolest.lensing_entities.multiplane_betas = MultiPlaneBetaList()
+        if not hasattr(self.coolest, 'multiplane_betas'):
+            from coolest.template.classes import multiplane_beta as mltb
+            self.coolest.multiplane_betas = mltb.MultiPlaneBetaList()
         # If there are no mass planes, evaluate sources at observed coordinates
         if not hasattr(self, 'lens_mass_sorted') or len(self.lens_mass_sorted) == 0:
             imgs = [s.evaluate_surface_brightness(x, y) for s in self.source_sorted]
             return np.sum(imgs)
 
-        # Representative entity name for each mass plane (first entity in the plane)
-        plane_names = [self.coolest.lensing_entities[group[0]].name for group in self.mass_entity_indexes_sorted]
+        # Representative plane identifier (redshift string) for each mass plane (first entity in the plane)
+        plane_ids = [f"{self.coolest.lensing_entities[group[0]].redshift:.12g}" for group in self.mass_entity_indexes_sorted]
 
         # Coordinates at each plane: index 0 is observed plane
-        x_def = [x]
-        y_def = [y]
+        x_def = deepcopy([x])
+        y_def = deepcopy([y])
 
         n_planes = len(self.lens_mass_sorted)
         # compute coordinates at successive mass planes
         for j in range(n_planes):
-            x_def_temp = x_def[0]
-            y_def_temp = y_def[0]
+            x_def_temp = deepcopy(x_def[0])
+            y_def_temp = deepcopy(y_def[0])
             for i in range(j):
-                from_name = plane_names[i]
-                to_name = plane_names[j]
-                beta = self.coolest.lensing_entities.resolve_beta(from_name, to_name, cosmology)
-                ax, ay = self.lens_mass_sorted[i].evaluate_deflection(x_def[i], y_def[i])
+                from_id = plane_ids[i]
+                to_id = plane_ids[j]
+                beta = self.coolest.multiplane_betas.resolve_beta(from_id, to_id, self.coolest.lensing_entities, cosmology)
+                ax, ay = self.lens_mass_sorted[i].evaluate_deflection(x_def[i+1], y_def[i+1])
                 x_def_temp -= beta * ax
                 y_def_temp -= beta * ay
             x_def.append(x_def_temp)
             y_def.append(y_def_temp)
+        
 
         # evaluate each source by accumulating deflections up to its plane
         lensed_images = [None] * len(self.source_sorted)
@@ -631,38 +726,45 @@ class ComposableLensModel(object):
                 y_src = y
             else:
                 rs_index = prior_planes[-1]
-                x_src = x_def[0]
-                y_src = y_def[0]
-                # resolve source name for beta queries
-                src_entity_sel = self.source_entity_indexes_sorted[si]
-                if src_entity_sel is None:
-                    src_name = src.info_list[0][0]
+                x_src = x_def[0].copy()
+                y_src = y_def[0].copy()
+                # use redshift-based identifiers for source when querying betas
+                if self.source_entity_indexes_sorted[si] is None:
+                    src_id = f"{z_src:.12g}"
                 else:
-                    if isinstance(src_entity_sel, (list, tuple)):
-                        src_idx = src_entity_sel[0]
+                    if isinstance(self.source_entity_indexes_sorted[si], (list, tuple)):
+                        src_idx = self.source_entity_indexes_sorted[si][0]
                     else:
-                        src_idx = src_entity_sel
-                    src_name = self.coolest.lensing_entities[src_idx].name
+                        src_idx = self.source_entity_indexes_sorted[si]
+                    src_id = f"{self.coolest.lensing_entities[src_idx].redshift:.12g}"
 
                 for i in range(rs_index + 1):
-                    from_name = plane_names[i]
-                    beta = self.coolest.lensing_entities.resolve_beta(from_name, src_name, cosmology)
-                    ax, ay = self.lens_mass_sorted[i].evaluate_deflection(x_def[i], y_def[i])
+                    from_id = plane_ids[i]
+                    beta = self.coolest.multiplane_betas.resolve_beta(from_id, src_id, self.coolest.lensing_entities, cosmology)
+                    ax, ay = self.lens_mass_sorted[i].evaluate_deflection(x_def[i+1], y_def[i+1])
                     x_src -= beta * ax
                     y_src -= beta * ay
+                    import matplotlib.pyplot as plt
+                    lensed_images[si] = src.evaluate_surface_brightness(x_src, y_src)
 
             lensed_images[si] = src.evaluate_surface_brightness(x_src, y_src)
-        
+            
         return np.sum(np.array(lensed_images), axis = 0)
 
     def ray_shooting(self, x, y):
-        """evaluates the lens equation beta = theta - alpha(theta)"""
-        # For single-plane systems delegate to the underlying mass model.
-        # Multiplane ray-shooting is not implemented here; use
-        # `evaluate_lensed_surface_brightness` for multiplane imaging.
-        if hasattr(self, 'lens_mass_sorted') and len(self.lens_mass_sorted) > 1:
-            raise NotImplementedError("Multiplane ray_shooting is not implemented; use evaluate_lensed_surface_brightness")
-        if hasattr(self, 'lens_mass_sorted') and len(self.lens_mass_sorted) == 1:
-            return self.lens_mass_sorted[0].ray_shooting(x, y)
-        # fallback: no mass models
-        return x, y
+        """evaluates the lens equation beta = theta - alpha(theta) for single-plane systems.
+        For multiplane systems, use evaluate_lensed_surface_brightness which properly handles
+        the multiplane deflection with beta coefficients.
+        """
+        if hasattr(self, 'lens_mass_sorted'):
+            # Multiplane system: use sorted mass planes
+            if len(self.lens_mass_sorted) > 1:
+                raise NotImplementedError("Multiplane ray_shooting is not implemented; use evaluate_lensed_surface_brightness")
+            elif len(self.lens_mass_sorted) == 1:
+                return self.lens_mass_sorted[0].ray_shooting(x, y)
+            else:
+                # No mass models
+                return x, y
+        else:
+            # Single mass model (legacy behavior)
+            return self.lens_mass.ray_shooting(x, y)
