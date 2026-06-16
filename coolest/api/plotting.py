@@ -94,9 +94,14 @@ class ModelPlotter(object):
         lensing entity selected via kwargs_light (see ComposableLightModel docstring)"""
         if extent_irreg is not None:
             raise ValueError("`extent_irreg` is deprecated; use `xylim` instead.")
+        
+
         if kwargs_light is None:
-            kwargs_light = {}
-        light_model = ComposableLightModel(self.coolest, self._directory, **kwargs_light)
+            lens_model = ComposableLensModel(self.coolest, self._directory)
+            light_model = lens_model.source
+        else:
+            light_model = ComposableLightModel(self.coolest, self._directory, **kwargs_light)
+        
         if plot_caustics:
             if kwargs_lens_mass is None:
                 raise ValueError("`kwargs_lens_mass` must be provided to compute caustics")
@@ -109,7 +114,10 @@ class ModelPlotter(object):
             cmap = self.cmap_flux
         if coordinates is not None:
             x, y = coordinates.pixel_coordinates
-            image = light_model.evaluate_surface_brightness(x, y)
+            if isinstance(light_model, list):
+                image = np.sum(np.array([lm.evaluate_surface_brightness(x, y) for lm in light_model]),axis = 0)
+            else:
+                image = light_model.evaluate_surface_brightness(x, y)
             extent = coordinates.plt_extent
             ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, cmap=cmap,
                                              neg_values_as_bad=neg_values_as_bad, 
@@ -583,6 +591,8 @@ class ParametersPlotter(object):
                 values = []
                 for par in self.parameter_id_list:
                     param = coolest_obj.lensing_entities.get_parameter_from_id(par)
+                    if par[:4] == 'beta':
+                        param = coolest_obj.multiplane_betas.get_using_param_id(par).beta
                     val = param.point_estimate.value
                     if val is None:
                         values.append(None)
@@ -615,7 +625,10 @@ class ParametersPlotter(object):
             # Set the labels for the parameters in the chain file
             labels = []
             for par_id in self.parameter_id_list:
-                param = self.coolest_objects[i].lensing_entities.get_parameter_from_id(par_id)
+                if par_id[:4] == 'beta':
+                    param = self.coolest_objects[i].multiplane_betas.get_using_param_id(par_id).beta
+                else:
+                    param = self.coolest_objects[i].lensing_entities.get_parameter_from_id(par_id)
                 labels.append(param.latex_str.strip('$'))
 
             # Read parameter values and probability weights

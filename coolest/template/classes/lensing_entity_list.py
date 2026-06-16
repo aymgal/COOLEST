@@ -6,7 +6,6 @@ from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.lensing_entity import LensingEntity
 from coolest.template.classes.parameter import Parameter
 from coolest.template.classes import util
-from astropy.cosmology import FlatLambdaCDM
 
 
 class LensingEntityList(list, APIBaseObject):
@@ -28,18 +27,13 @@ class LensingEntityList(list, APIBaseObject):
     ----------
     *entities : LensingEntity instances
         As many LensingEntity instances as required
-    multiplane_betas : list of beta values between entities
     """
 
-    def __init__(self, *entities: Tuple[LensingEntity], multiplane_betas=None):
+    def __init__(self, *entities: Tuple[LensingEntity]):
         list.__init__(self, entities)
         APIBaseObject.__init__(self)
 
         self._create_all_ids()
-
-        # NEW
-        self.multiplane_betas = multiplane_betas or MultiPlaneBetaList()
-        # self.multiplane_betas = multiplane_betas or MultiPlaneBetaList()
 
     def get_parameters(self, with_name=None, with_fixed=True):
         """Returns the list of either all parameters in the model, 
@@ -118,6 +112,11 @@ class LensingEntityList(list, APIBaseObject):
                             if param.id == param_id:
                                 return param
         # if the following line is reached, then no ID has been found
+        # check multiplane betas
+        for b in getattr(self, 'multiplane_betas', []):
+            bp = getattr(b, 'beta', None)
+            if isinstance(bp, Parameter) and bp.id == param_id:
+                return bp
         return None
         #raise ValueError("Parameter with ID '{param_id}' not found in any lensing entity.")
 
@@ -135,100 +134,3 @@ class LensingEntityList(list, APIBaseObject):
                         for param_name, parameter in profile.parameters.items():
                             param_id = util.parameter_to_id(param_name, profile.id)
                             parameter.id = param_id
-                            
-    def add_beta(self, from_entity_id, to_entity_id, beta):
-        self.multiplane_betas.append(
-            MultiPlaneBeta(from_entity_id, to_entity_id, beta)
-        )
-
-    def get_beta(self, from_entity_id, to_entity_id):
-        entry = self.multiplane_betas.get(from_entity_id, to_entity_id)
-        if entry is None:
-            return None
-        return entry.beta
-
-    def resolve_beta(self, from_entity_id, to_entity_id, cosmology):
-        entry = self.multiplane_betas.get(from_entity_id, to_entity_id)
-    
-        if entry is None or entry.beta == "auto":
-            return self._compute_beta_from_redshifts(from_entity_id, to_entity_id, cosmology)
-    
-        beta = entry.beta
-    
-        if hasattr(beta, "point_estimate"):
-            return beta.point_estimate.value
-    
-        return float(beta)
-
-    def get_entity_by_name(self, entity_id):
-        for e in self:
-            if getattr(e, "name", None) == entity_id:
-                return e
-        raise KeyError(f"Entity ID not found: {entity_id}")
-
-    def _compute_beta_from_redshifts(self, from_id, to_id, cosmology):
-        e_i = self.get_entity_by_name(from_id)
-        e_j = self.get_entity_by_name(to_id)
-    
-        z_i = e_i.redshift
-        z_j = e_j.redshift
-    
-        if z_j <= z_i:
-            raise ValueError("Beta requires increasing redshift ordering")
-    
-        if cosmology.astropy_name != "FlatLambdaCDM":
-                raise NotImplementedError(
-                    f"Astropy cosmology '{self.astropy_name}' not supported"
-                )
-    
-        cm = FlatLambdaCDM(
-                H0=cosmology.H0,
-                Om0=cosmology.Om0)
-        z_n = max(e.redshift for e in self)
-    
-        D_n  = cm.angular_diameter_distance(z_n)
-        D_ij = cm.angular_diameter_distance_z1z2(z_i, z_j)
-        D_in = cm.angular_diameter_distance_z1z2(z_i, z_n)
-        D_j = cm.angular_diameter_distance(z_j)
-    
-        return (D_ij * D_n) / (D_in * D_j)
-
-class MultiPlaneBeta(APIBaseObject):
-    """
-    Defines the lensing coupling coefficient beta between two lensing entities
-    in a multi-plane lens system.
-
-    Parameters
-    ----------
-    from_id : str
-        ID of the foreground lensing entity.
-    to_id : str
-        ID of the background lensing entity (or source).
-    beta : str, float, or Parameter
-        Either:
-        - "auto" to compute from cosmology and redshifts
-        - a fixed float value
-        - a COOLEST Parameter instance
-    """
-
-    def __init__(self, from_id: str, to_id: str, beta):
-        super().__init__()
-        self.from_id = from_id
-        self.to_id = to_id
-        self.beta = beta
-
-
-class MultiPlaneBetaList(list, APIBaseObject):
-    """
-    List of MultiPlaneBeta objects defining all plane-to-plane couplings.
-    """
-
-    def __init__(self, betas=None):
-        list.__init__(self, betas or [])
-        APIBaseObject.__init__(self)
-
-    def get(self, from_id, to_id):
-        for b in self:
-            if b.from_id == from_id and b.to_id == to_id:
-                return b
-        return None

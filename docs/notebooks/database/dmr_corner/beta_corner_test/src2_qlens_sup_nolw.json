@@ -1,0 +1,357 @@
+{
+	"coordinates_origin" : 
+	{
+		"dec" : "+00d00m00s",
+		"ra" : "00h00m00s"
+	},
+	"cosmology" : 
+	{
+		"H0" : 73.0,
+		"Om0" : 0.29999999999999999,
+		"astropy_name" : "FlatLambdaCDM"
+	},
+	"instrument" : 
+	{
+		"band" : "F814W",
+		"name" : "HST-WFPC2",
+		"pixel_size" : 0.10000000000000001,
+		"psf" : 
+		{
+			"description" : "Some PSF",
+			"pixels" : 
+			{
+				"field_of_view_x" : 
+				[
+					0,
+					6.1000000000000005
+				],
+				"field_of_view_y" : 
+				[
+					0,
+					6.1000000000000005
+				],
+				"fits_file" : 
+				{
+					"path" : "supersampled_psf.fits"
+				},
+				"num_pix_x" : 183,
+				"num_pix_y" : 183
+			},
+			"type" : "PixelatedPSF"
+		},
+		"readout_noise" : 6
+	},
+	"lensing_entities" : 
+	[
+		{
+			"light_model" : [],
+			"mass_model" : 
+			[
+				{
+					"parameters" : 
+					{
+						"gamma_ext" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 0.033661788964260232
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"phi_ext" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 10.56151016652079
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						}
+					},
+					"type" : "ExternalShear"
+				}
+			],
+			"name" : "ExternalShear",
+			"redshift" : 0.5,
+			"type" : "MassField"
+		},
+		{
+			"light_model" : [],
+			"mass_model" : 
+			[
+				{
+					"parameters" : 
+					{
+						"center_x" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 0.038002988989294877
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"center_y" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 0.049758295136149489
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"gamma" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 2.0729254744506198
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"phi" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : -11.55885210072131
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"q" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 0.78478509918833961
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						},
+						"theta_E" : 
+						{
+							"point_estimate" : 
+							{
+								"value" : 1.5519819078252119
+							},
+							"posterior_stats" : 
+							{
+								"mean" : null,
+								"median" : null,
+								"percentile_16th" : null,
+								"percentile_84th" : null
+							},
+							"prior" : 
+							{
+								"type" : null
+							}
+						}
+					},
+					"type" : "PEMD"
+				}
+			],
+			"name" : "PEMD",
+			"redshift" : 0.5,
+			"type" : "Galaxy"
+		},
+		{
+			"light_model" : 
+			[
+				{
+					"parameters" : 
+					{
+						"pixels" : 
+						{
+							"field_of_view_x" : 
+							[
+								0,
+								0
+							],
+							"field_of_view_y" : 
+							[
+								0,
+								0
+							],
+							"fits_file" : 
+							{
+								"path" : "src2_qlens_sup_nolw_src.fits"
+							},
+							"num_pix" : 1287
+						}
+					},
+					"type" : "IrregularGrid"
+				}
+			],
+			"mass_model" : [],
+			"name" : "qlens Delaunay source",
+			"redshift" : 1.5,
+			"type" : "Galaxy"
+		}
+	],
+	"multiplane_betas" :
+		[
+			{
+				"from_id" : "0.5",
+				"to_id" : "1.5",
+				"beta" :
+				{
+					"point_estimate" :
+					{
+						"value" : 1
+					},
+					"posterior_stats" :
+					{
+						"mean" : null,
+						"median" : null,
+						"percentile_16th" : null,
+						"percentile_84th" : null
+					},
+					"prior" :
+					{
+						"type" : null
+					}
+				}
+			}
+		],
+	"meta" :
+	{
+		"chain_file_name" : "coolest_chain_qlens.csv"
+	},
+	"mode" : "MAP",
+	"observation" : 
+	{
+		"exposure_time" : 2400,
+		"mag_sky_brightness" : 22.800000000000001,
+		"mag_zero_point" : 22.190000000000001,
+		"noise" : 
+		{
+			"noise_map" : 
+			{
+				"field_of_view_x" : 
+				[
+					-5.0,
+					4.9999999999999964
+				],
+				"field_of_view_y" : 
+				[
+					-5.0,
+					4.9999999999999964
+				],
+				"fits_file" : 
+				{
+					"path" : "HST_WFPC2-F814W_sigma_map.fits"
+				},
+				"num_pix_x" : 100,
+				"num_pix_y" : 100
+			},
+			"type" : "NoiseMap"
+		},
+		"pixels" : 
+		{
+			"field_of_view_x" : 
+			[
+				-5.0,
+				4.9999999999999964
+			],
+			"field_of_view_y" : 
+			[
+				-5.0,
+				4.9999999999999964
+			],
+			"fits_file" : 
+			{
+				"path" : "OBS_HST_WFPC2-F814W.fits"
+			},
+			"num_pix_x" : 100,
+			"num_pix_y" : 100
+		}
+	},
+	"standard" : "COOLEST",
+    "likelihoods": [
+        {
+            "mask": 
+            {
+                "field_of_view_x" : 
+                [
+                    -5.0,
+                    4.9999999999999964
+                ],
+                "field_of_view_y" : 
+                [
+                    -5.0,
+                    4.9999999999999964
+                ],
+                "fits_file" : 
+                {
+                    "path" : "qlens_mask.fits"
+                },
+                "num_pix_x" : 100,
+                "num_pix_y" : 100
+            },
+            "type": "ImagingDataLikelihood"
+        }
+    ]
+}
