@@ -139,3 +139,6 @@ dmypy.json
 mytests
 docs_deposit
 docs/notebooks/database/vkl_paper_*/data
+
+copilot-instructions.md
+docs/notebooks/08-multiplane_plotting.ipynb
