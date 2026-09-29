@@ -101,16 +101,18 @@ class Gaussian(AnalyticalProfile):
         super().__init__(parameters)
 
 class MultiGaussianExpansion(AnalyticalProfile):
-    """Surface brightness described by a 2D Multi-Gaussian Expansion.
-
+    """Surface brightness described by a 2D Multi-Gaussian Expansion (MGE).
+    
+    This profile particularly follows the implementation of the MGE found in He et al. (2024, MNRAS, 532, 2), where an instance of this type of profile corresponds to a set of individual Gaussian components that share the same axis ratio, position angle, and center position. The individual Gaussian widths should be fixed while the amplitudes are solved for linearly.
+    
     This profile is described by the following parameters:
     
-    - 'I': Central intensity amplitude
-    - 'sigma': Standard deviation of the Gaussian
-    - 'q': Axis ratio
-    - 'phi': position angle
-    - 'center_x': position along the x coordinate
-    - 'center_y': position along the y coordinate
+    - 'I': Central intensity amplitude for a component Gaussian
+    - 'sigma': Standard deviation/width of each component Gaussian
+    - 'q': Shared axis ratio of the set of Gaussians
+    - 'phi': Shared position angle of the set of Gaussians
+    - 'center_x': Shared center position along the x coordinate
+    - 'center_y': Shared center position along the y coordinate
     """
     
     def __init__(self):
@@ -118,19 +120,19 @@ class MultiGaussianExpansion(AnalyticalProfile):
             'I': LinearParameterSet("Set of central intensity amplitudes",
                             DefinitionRange(min_value=0.0),
                             latex_str=r"$I_0$"),
-            'sigma': NonLinearParameterSet("Set of standard deviations of the Gaussians",
+            'sigma': NonLinearParameterSet("Standard deviation/width of each component Gaussian",
                                DefinitionRange(min_value=0.0),
                                latex_str=r"$\sigma$"),
-            'q': NonLinearParameterSet("Set of axis ratios",
+            'q': NonLinearParameter("Shared axis ratio of the set of Gaussians",
                                      DefinitionRange(min_value=0.0, max_value=1.0),
                                      latex_str=r"$q$"),
-            'phi': NonLinearParameterSet("Set of position angles",
+            'phi': NonLinearParameter("Shared position angle of the set of Gaussians",
                                      DefinitionRange(min_value=-90., max_value=90.),
                                      latex_str=r"$\phi$"),
-            'center_x': NonLinearParameterSet("Set of profile centers along x coordinates",
+            'center_x': NonLinearParameter("Shared center position along the x coordinate",
                                DefinitionRange(),
                                latex_str=r"$x_0$"),
-            'center_y': NonLinearParameterSet("Set of profile centers along y coordinates",
+            'center_y': NonLinearParameter("Shared center position along the y coordinate",
                                DefinitionRange(),
                                latex_str=r"$y_0$")
         }

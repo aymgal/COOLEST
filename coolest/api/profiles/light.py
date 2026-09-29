@@ -104,10 +104,10 @@ class MultiGaussianExpansion(BaseLightProfile):
         """Returns the surface brightness at the given position (x, y)"""
         brightness = np.zeros_like(x)
         for i in range(len(I)):
-            phi_ = util.eastofnorth2normalradians(phi[i])
-            x_p = np.cos(phi_) * (x - center_x[i]) + np.sin(phi_) * (y - center_y[i])
-            y_p = -np.sin(phi_) * (x - center_x[i]) + np.cos(phi_) * (y - center_y[i])
-            R = np.sqrt(x_p**2 + (y_p/q[i])**2)
+            phi_ = util.eastofnorth2normalradians(phi)
+            x_p = np.cos(phi_) * (x - center_x) + np.sin(phi_) * (y - center_y)
+            y_p = -np.sin(phi_) * (x - center_x) + np.cos(phi_) * (y - center_y)
+            R = np.sqrt(x_p**2 + (y_p/q)**2)
             brightness += I[i] * np.exp(-0.5 * (R/sigma[i])**2)
         return brightness
 
