@@ -277,7 +277,7 @@ class PixelatedRegularGridFullyDefined(BaseMassProfile):
         self._pix_scl_y = np.abs(self._fov_y[0] - self._fov_y[1]) / self._ny
         self._interp_method = interpolation_method
 
-    def potantial(self, pixels=None, pixels_derivative=None, pixels_hessian=None):
+    def potential(self, pixels=None, pixels_derivative=None, pixels_hessian=None):
         """Returns the lensing potential"""
         if pixels is None:
             return np.zeros(self._shape)

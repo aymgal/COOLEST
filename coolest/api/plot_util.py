@@ -356,7 +356,7 @@ def normalize_across_images(
     return vmin, vmax
 
     
-def dmr_corner(tar_path, output_dir=None):
+def dmr_corner(tar_path, output_dir=None, reorder = None):
     """Given .tar.gz COOLEST file, plots and optionally saves DMR and corner plots for COOLEST file. Returns dictionary of important extracted information.
 
     Parameters
@@ -365,6 +365,8 @@ def dmr_corner(tar_path, output_dir=None):
         Path to .tar.gz COOLEST file
     output_dir : string, optional
         Path to automatically save DMR and corner plot to if specified, by default None
+    reorder: list, optional
+        List of integers specifying ordering of parameters in plot. If None, defult ordering is used.
     
     Returns
     -------
@@ -436,21 +438,17 @@ def dmr_corner(tar_path, output_dir=None):
         splotter.plot_model_image(
             axes[0, 1],
             supersampling=5, convolved=True,
-            kwargs_source=dict(entity_selection=[2]),
-            kwargs_lens_mass=dict(entity_selection=[0, 1]),
-            kwargs_lens_light=dict(entity_selection=[0, 1]),
-            norm=norm
+            norm=norm,
+            auto_selection = True
         )
         axes[0, 1].text(0.05, 0.05, f"$\\theta_{{\\rm E}}$ = {einstein_radius:.2f}\"", color='white', fontsize=12,
                         transform=axes[0, 1].transAxes)
         axes[0, 1].set_title("Image Model")
 
-        splotter.plot_model_residuals(axes[1, 0], supersampling=5, add_chi2_label=True, chi2_fontsize=12,
-                                      kwargs_source=dict(entity_selection=[2]),
-                                      kwargs_lens_mass=dict(entity_selection=[0, 1]))
+        splotter.plot_model_residuals(axes[1, 0], supersampling=5, add_chi2_label=True, chi2_fontsize=12)
         axes[1, 0].set_title("Normalized Residuals")
 
-        splotter.plot_surface_brightness(axes[1, 1], kwargs_light=dict(entity_selection=[2]),
+        splotter.plot_surface_brightness(axes[1, 1],
                                          norm=norm, coordinates=coord_src)
         axes[1, 1].text(0.05, 0.05, f"$\\theta_{{\\rm eff}}$ = {r_eff_source:.2f}\"", color='white', fontsize=12,
                         transform=axes[1, 1].transAxes)
@@ -475,9 +473,13 @@ def dmr_corner(tar_path, output_dir=None):
         # Only creates corner plot if sampling method was used to create lens model
         # Otherwise, no chains available for corner plot!
         if 'chain_file_name' in truth.meta.keys():
-            free_pars = truth.lensing_entities.get_parameter_ids()[:-2]
-            reorder = [2, 3, 4, 5, 6, 0, 1]
-            pars = [free_pars[i] for i in reorder]
+            print('Creating corner plot')
+            free_pars = truth.lensing_entities.get_parameter_ids()[:-2] 
+            if len(getattr(truth, 'multiplane_betas', [])) > 0:
+                free_pars += truth.multiplane_betas.get_all_beta_ids()
+            pars = free_pars
+            if reorder is not None:
+                pars = [free_pars[i] for i in reorder]
             results['free_parameters'] = pars
     
             param_plotter = ParametersPlotter(
@@ -500,6 +502,7 @@ def dmr_corner(tar_path, output_dir=None):
                 corner_plot_path = os.path.join(output_dir, "corner_plot.png")
                 plt.savefig(corner_plot_path, format='png', bbox_inches='tight')
                 results['corner_plot'] = corner_plot_path
+            plt.show()
             plt.close()
     
             
