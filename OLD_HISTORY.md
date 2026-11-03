@@ -1,4 +1,4 @@
-This version history is deprecated, but is kept for practical purposes. Please refer to the [release page](https://https://github.com/aymgal/COOLEST/releases) for the latest release notes.
+This version history is deprecated, but is kept for practical purposes. Please refer to the [release page](https://github.com/aymgal/COOLEST/releases) for the latest release notes.
 
 # Official releases (up to 0.1.9)
 

@@ -21,24 +21,24 @@ class TestJSONSerialization(object):
         cosmology = Cosmology(H0=73.0, Om0=0.3)
 
         # Create a couple of source galaxies at different redshifts
-        source_1 = Galaxy('a source galaxy', 2.0,
+        source_1 = Galaxy('a source galaxy', 2.0, lensed=True,
                           light_model=LightModel('Sersic'))
 
-        source_2 = Galaxy('another source', 1.5,
+        source_2 = Galaxy('another source', 1.5, lensed=True,
                           light_model=LightModel('PixelatedRegularGrid'))
         source_2.light_model[0].parameters['pixels'].set_grid('test/test_image.fits',  # absolute path just for unit tests
                                                               field_of_view_x=(-3.0, 1.0),
                                                               field_of_view_y=(-2.0, 2.0),
                                                               check_fits_file=self.check_files)
 
-        source_3 = Galaxy('a VKL source', 1.2,
+        source_3 = Galaxy('a VKL source', 1.2, lensed=True,
                           light_model=LightModel('IrregularGrid'))
         source_3.light_model[0].parameters['pixels'].set_grid('test/test_irreg_grid.fits',  # absolute path just for unit tests
                                                               check_fits_file=self.check_files)
 
 
         # Create a lens galaxy
-        lens_1 = Galaxy('a lens galaxy', 0.5,
+        lens_1 = Galaxy('a lens galaxy', 0.5, lensed=False,
                         light_model=LightModel('Sersic', 'Sersic'),
                         mass_model=MassModel('PEMD', 'PixelatedRegularGridPotential'))
         lens_1.mass_model[1].parameters['pixels'].set_grid('test/test_image.fits',  # absolute path just for unit tests

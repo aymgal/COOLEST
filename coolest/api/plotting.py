@@ -140,20 +140,26 @@ class ModelPlotter(object):
             plut.scale_bar(ax, scalebar_size, color='white', loc='lower right')
         return image, coordinates
 
-    def plot_model_image(self, ax, title = None,
+    def plot_model_image(self, ax, title=None,
                          norm=None, cmap=None, xylim=None, neg_values_as_bad=False,
-                         kwargs_source=None, add_colorbar=True,
-                         add_scalebar=True, scalebar_size=1, 
-                         kwargs_lens_mass=None,
+                         add_colorbar=True, add_scalebar=True, scalebar_size=1, 
+                         auto_selection=False,
+                         kwargs_lens_mass=None, 
+                         kwargs_lens_light=None, 
+                         kwargs_source=None,
                          **model_image_kwargs):
         """plt.imshow panel showing the surface brightness of the (lensed)
         selected lensing entities (see ComposableLensModel docstring)
         """
         if cmap is None:
             cmap = self.cmap_flux
-        lens_model = ComposableLensModel(self.coolest, self._directory,
-                                         kwargs_selection_source=kwargs_source,
-                                         kwargs_selection_lens_mass=kwargs_lens_mass)
+        lens_model = ComposableLensModel(
+            self.coolest, self._directory,
+            auto_selection=auto_selection,
+            kwargs_selection_source=kwargs_source,
+            kwargs_selection_lens_mass=kwargs_lens_mass,
+            kwargs_selection_lens_light=kwargs_lens_light
+        )
         image, coordinates = lens_model.model_image(**model_image_kwargs)
         extent = coordinates.plt_extent
         ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, 
@@ -169,9 +175,10 @@ class ModelPlotter(object):
 
     def plot_model_residuals(self, ax, title = None, mask=None,
                              norm=None, cmap=None, xylim=None, add_chi2_label=False, chi2_fontsize=12,
-                             kwargs_source=None, add_colorbar=True, 
-                             add_scalebar=True, scalebar_size=1, 
+                             kwargs_source=None, 
                              kwargs_lens_mass=None,
+                             kwargs_lens_light=None,
+                             add_colorbar=True, add_scalebar=True, scalebar_size=1,
                              **model_image_kwargs):
         """plt.imshow panel showing the normalized model residuals image"""
         if cmap is None:
@@ -181,7 +188,8 @@ class ModelPlotter(object):
         ll_mask = self._get_likelihood_mask(mask)
         lens_model = ComposableLensModel(self.coolest, self._directory,
                                          kwargs_selection_source=kwargs_source,
-                                         kwargs_selection_lens_mass=kwargs_lens_mass)
+                                         kwargs_selection_lens_mass=kwargs_lens_mass,
+                                         kwargs_selection_lens_light=kwargs_lens_light)
         image, coordinates = lens_model.model_residuals(mask=ll_mask, **model_image_kwargs)
         extent = coordinates.plt_extent
         ax, im = plut.plot_regular_grid(ax, title, image, extent=extent, 
@@ -449,6 +457,8 @@ class MultiModelPlotter(object):
                 kwargs_['kwargs_source'] = {k: v[i] for k, v in kwargs['kwargs_source'].items()}
             if 'kwargs_lens_mass' in kwargs:
                 kwargs_['kwargs_lens_mass'] = {k: v[i] for k, v in kwargs['kwargs_lens_mass'].items()}
+            if 'kwargs_lens_light' in kwargs:
+                kwargs_['kwargs_lens_light'] = {k: v[i] for k, v in kwargs['kwargs_lens_light'].items()}
             if 'titles' in kwargs:
                 title = kwargs['titles'][i]
             image = getattr(plotter, method_name)(ax, title, *args, **kwargs_)

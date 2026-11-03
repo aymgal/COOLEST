@@ -29,7 +29,7 @@ class TestPEMD(object):
         center_y = -0.15
         
         # COOLEST
-        psi = PEMD().potential(x, y,
+        psi = PEMD().evaluate_potential(x, y,
                                     theta_E=theta_E, gamma=gamma, phi=phi, q=q,
                                     center_x=center_x, center_y=center_y)
 
@@ -64,7 +64,7 @@ class TestPEMD(object):
         center_y = -0.15
         
         # COOLEST
-        alpha_x, alpha_y = PEMD().deflection(x, y,
+        alpha_x, alpha_y = PEMD().evaluate_deflection(x, y,
                                     theta_E=theta_E, gamma=gamma, phi=phi, q=q,
                                     center_x=center_x, center_y=center_y)
 
@@ -101,7 +101,7 @@ class TestPEMD(object):
         center_y = -0.15
         
         # COOLEST
-        H_xx, H_xy, _, H_yy = PEMD().hessian(x, y,
+        H_xx, H_xy, _, H_yy = PEMD().evaluate_hessian(x, y,
                                     theta_E=theta_E, gamma=gamma, phi=phi, q=q,
                                     center_x=center_x, center_y=center_y)
 
@@ -139,7 +139,7 @@ class TestPEMD(object):
         center_y = -0.15
         
         # COOLEST
-        result = PEMD().convergence(x, y,
+        result = PEMD().evaluate_convergence(x, y,
                                     theta_E=theta_E, gamma=gamma, phi=phi, q=q,
                                     center_x=center_x, center_y=center_y)
 
@@ -174,7 +174,7 @@ class TestExternalShear(object):
         gamma_ext = 0.08
         
         # COOLEST
-        psi = ExternalShear().potential(x, y, phi_ext=phi_ext, gamma_ext=gamma_ext)
+        psi = ExternalShear().evaluate_potential(x, y, phi_ext=phi_ext, gamma_ext=gamma_ext)
 
         # reference
         ref = LensModel(['SHEAR_GAMMA_PSI'])
@@ -200,7 +200,7 @@ class TestExternalShear(object):
         gamma_ext = 0.08
         
         # COOLEST
-        alpha_x, alpha_y = ExternalShear().deflection(x, y,
+        alpha_x, alpha_y = ExternalShear().evaluate_deflection(x, y,
                                                       phi_ext=phi_ext, 
                                                       gamma_ext=gamma_ext)
 

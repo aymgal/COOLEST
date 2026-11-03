@@ -89,7 +89,7 @@ def voronoi_finite_polygons_2d(vor,radius=None):
 
     center = vor.points.mean(axis=0)
     if radius is None:
-        radius = vor.points.ptp().max()
+        radius = np.ptp(vor.points).max()
 
     # Construct a map containing all ridges for a given point
     all_ridges = {}
@@ -282,8 +282,17 @@ def panel_label(ax, text, color, fontsize, alpha=0.8, loc='upper left'):
     ax.text(x, y, text, color=color, fontsize=fontsize, alpha=alpha, 
             ha=ha, va=va, transform=ax.transAxes)
 
-def normalize_across_images(plotter_list, data_model_specifier, kwargs_source = None, kwargs_lens_mass = None,
-                            supersampling=5, convolved=True, super_convolution=True):
+def normalize_across_images(
+        plotter_list, 
+        data_model_specifier, 
+        auto_selection=False,
+        kwargs_source=None, 
+        kwargs_lens_mass=None,
+        kwargs_lens_light=None,
+        supersampling=5, 
+        convolved=True, 
+        super_convolution=True
+    ):
     """Calculate the vmin and vmax to normalize the colormap across multiple coolest objects
 
     Parameters
@@ -300,6 +309,10 @@ def normalize_across_images(plotter_list, data_model_specifier, kwargs_source = 
     kwargs_lens_mass: dict
         Dictionary with "entity_selection" key, same as used in MultiModelPlotters.
         "Entity_selection" contains list of lists. Selects lens mass entities.
+        Insert dummy None values into dictionary for data.
+    kwargs_lens_light: dict
+        Dictionary with "entity_selection" key, same as used in MultiModelPlotters.
+        "Entity_selection" contains list of lists. Selects lens light entities.
         Insert dummy None values into dictionary for data.
     supersampling: int
         Model image generation param
@@ -319,16 +332,21 @@ def normalize_across_images(plotter_list, data_model_specifier, kwargs_source = 
     
     mins = []
     maxes = []
-    ks_arr = kwargs_source['entity_selection']
-    km_arr = kwargs_lens_mass['entity_selection']
-    for plotter, d_or_f, ks, km in zip(plotter_list, data_model_specifier, ks_arr, km_arr):
+    ks_arr = kwargs_source['entity_selection'] if kwargs_source is not None else [None]*len(plotter_list)
+    km_arr = kwargs_lens_mass['entity_selection'] if kwargs_lens_mass is not None else [None]*len(plotter_list)
+    kl_arr = kwargs_lens_light['entity_selection'] if kwargs_lens_light is not None else [None]*len(plotter_list)
+    for plotter, d_or_f, ks, km, kl in zip(plotter_list, data_model_specifier, ks_arr, km_arr, kl_arr):
         # Check if we are finding extrema for data or model
         if d_or_f == 0:
             image = plotter.coolest.observation.pixels.get_pixels(directory=plotter._directory)
         elif d_or_f == 1:
-            lens_model = ComposableLensModel(plotter.coolest, plotter._directory,
-                                         kwargs_selection_source=dict(entity_selection=ks),
-                                         kwargs_selection_lens_mass=dict(entity_selection=km))
+            lens_model = ComposableLensModel(
+                plotter.coolest, plotter._directory,
+                auto_selection=auto_selection,
+                kwargs_selection_source=dict(entity_selection=ks),
+                kwargs_selection_lens_mass=dict(entity_selection=km),
+                kwargs_selection_lens_light=dict(entity_selection=kl)
+            )
             image, _ = lens_model.model_image(supersampling, convolved, super_convolution)
         # Find min and max and append
         mins.append(np.min(image))
@@ -338,7 +356,7 @@ def normalize_across_images(plotter_list, data_model_specifier, kwargs_source = 
     return vmin, vmax
 
     
-def dmr_corner(tar_path, output_dir = None):
+def dmr_corner(tar_path, output_dir=None):
     """Given .tar.gz COOLEST file, plots and optionally saves DMR and corner plots for COOLEST file. Returns dictionary of important extracted information.
 
     Parameters
@@ -420,6 +438,7 @@ def dmr_corner(tar_path, output_dir = None):
             supersampling=5, convolved=True,
             kwargs_source=dict(entity_selection=[2]),
             kwargs_lens_mass=dict(entity_selection=[0, 1]),
+            kwargs_lens_light=dict(entity_selection=[0, 1]),
             norm=norm
         )
         axes[0, 1].text(0.05, 0.05, f"$\\theta_{{\\rm E}}$ = {einstein_radius:.2f}\"", color='white', fontsize=12,
