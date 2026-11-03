@@ -453,7 +453,7 @@ class ComposableMassModel(BaseComposableModel):
         return mu
 
     def ray_shooting(self, x, y):
-        """evaluates the lens equation beta = theta - alpha(theta)"""
+        """evaluates the lens equation theta* = theta - alpha(theta)"""
         alpha_x, alpha_y = self.evaluate_deflection(x, y)
         x_rs, y_rs = x - alpha_x, y - alpha_y
         return x_rs, y_rs
@@ -499,19 +499,18 @@ class ComposableLensModel(object):
         self.coolest = coolest_object
         self.coord_obs = util.get_coordinates(self.coolest)
         self.directory = coolest_directory
+        
+        # Apply auto-selection if requested, otherwise use provided kwargs
         kwargs_source = _copy_dict(kwargs_selection_source)
         kwargs_lens_mass = _copy_dict(kwargs_selection_lens_mass)
         kwargs_lens_light = _copy_dict(kwargs_selection_lens_light)
+        
         if auto_selection is True:
             (
                 kwargs_source, 
                 kwargs_lens_mass, 
                 kwargs_lens_light
             ) = auto_select_entities(self.coolest)
-            print("Auto-selected the following entities and profiles:")
-            print(f"- source: {kwargs_source}")
-            print(f"- lens mass: {kwargs_lens_mass}")
-            print(f"- lens light: {kwargs_lens_light}")
         else:
             if kwargs_selection_source is None:
                 kwargs_source = {}
@@ -519,16 +518,111 @@ class ComposableLensModel(object):
                 kwargs_lens_mass = {}
             if kwargs_selection_lens_light is None:
                 kwargs_lens_light = {}
-        self.lens_mass = ComposableMassModel(coolest_object, 
-                                             coolest_directory,
-                                             **kwargs_lens_mass)
+        
+        # Build source models: one ComposableLightModel per source entity if provided,
+        # otherwise create a single ComposableLightModel covering default selection behavior.
+        # Keep source separate from lens_light to allow selective lensing of light models.
+        self.source = []
+        self.source_entity_indexes = []
+        if 'entity_selection' not in kwargs_source or kwargs_source['entity_selection'] is None:
+            # single default source model (may select first available light entity)
+            self.source = [ComposableLightModel(coolest_object, coolest_directory, **kwargs_source)]
+            self.source_entity_indexes = [None]
+        else:
+            # expect a list of entity indices or a single index
+            src_sel = kwargs_source['entity_selection']
+            if isinstance(src_sel, (list, tuple)) and all(not isinstance(x, (list, tuple)) for x in src_sel):
+                # flat list of entity indices -> create one model per index
+                for idx in src_sel:
+                    self.source.append(ComposableLightModel(coolest_object, coolest_directory, **dict(entity_selection=idx)))
+                self.source_entity_indexes = list(src_sel)
+            else:
+                # assume list of selections (e.g., [[0],[1]]) create one model per selection
+                for sel in src_sel:
+                    self.source.append(ComposableLightModel(coolest_object, coolest_directory, **dict(entity_selection=sel)))
+                self.source_entity_indexes = list(src_sel)
+        
+        # Build lens light and mass models
         self.lens_light = ComposableLightModel(coolest_object, 
                                                coolest_directory,
-                                               **kwargs_lens_light)
-        self.source = ComposableLightModel(coolest_object, 
-                                           coolest_directory,
-                                           **kwargs_source)
+                                               **dict(entity_selection=kwargs_lens_light))
 
+        # Build mass planes by grouping lensing entities that contain mass models by redshift
+        mass_entity_indices = [i for i, e in enumerate(self.coolest.lensing_entities) if getattr(e, 'mass_model', None) and len(e.mass_model) > 0]
+        # if user provided explicit grouping via kwargs_selection_lens_mass['entity_selection'], prefer that grouping
+        mass_planes_entity_indexes = []
+        if kwargs_selection_lens_mass is not None and 'entity_selection' in kwargs_selection_lens_mass:
+            sel = kwargs_selection_lens_mass['entity_selection']
+            # normalize to list of lists
+            if isinstance(sel, (list, tuple)) and all(isinstance(s, (list, tuple)) for s in sel):
+                mass_planes_entity_indexes = [list(s) for s in sel]
+            else:
+                mass_planes_entity_indexes = [list(sel)]
+        else:
+            # automatic grouping by redshift (sorted ascending)
+            # collect (index, redshift) and sort by redshift
+            idx_z = sorted([(i, self.coolest.lensing_entities[i].redshift) for i in mass_entity_indices], key=lambda x: x[1])
+            tol = 1e-8
+            current_group = []
+            current_z = None
+            for i, z in idx_z:
+                if current_z is None:
+                    current_group = [i]
+                    current_z = z
+                elif abs(z - current_z) <= tol:
+                    current_group.append(i)
+                else:
+                    mass_planes_entity_indexes.append(current_group)
+                    current_group = [i]
+                    current_z = z
+            if current_group:
+                mass_planes_entity_indexes.append(current_group)
+
+        # create ComposableMassModel per mass plane
+        self.lens_mass = []
+        for group in mass_planes_entity_indexes:
+            # pass a selection that includes all indices in the group
+            self.lens_mass.append(ComposableMassModel(coolest_object, coolest_directory, **dict(entity_selection=group)))
+        # store plane entity index mapping and plane redshifts
+        self.mass_entity_indexes_sorted = mass_planes_entity_indexes
+        self.mass_redshifts_sorted = [self.coolest.lensing_entities[g[0]].redshift for g in mass_planes_entity_indexes]
+        # sort planes by redshift (should already be sorted)
+        sort_idx = sorted(range(len(self.mass_redshifts_sorted)), key=lambda k: self.mass_redshifts_sorted[k])
+        self.mass_entity_indexes_sorted = [self.mass_entity_indexes_sorted[k] for k in sort_idx]
+        self.mass_redshifts_sorted = [self.mass_redshifts_sorted[k] for k in sort_idx]
+        self.lens_mass_sorted = [self.lens_mass[k] for k in sort_idx]
+
+        # finalize source arrays and sort by redshift
+        # get source redshifts by using the entity index if available, otherwise fallback to model info
+        src_redshifts = []
+        for idx, src in zip(self.source_entity_indexes, self.source):
+            if idx is None:
+                # try to read from model info_list
+                try:
+                    src_redshifts.append(src.info_list[0][1])
+                except Exception:
+                    src_redshifts.append(float('inf'))
+            else:
+                # single index or list -> take first entity's redshift
+                if isinstance(idx, (list, tuple)):
+                    src_idx = idx[0]
+                else:
+                    src_idx = idx
+                src_redshifts.append(self.coolest.lensing_entities[src_idx].redshift)
+
+        src_sort_idx = sorted(range(len(src_redshifts)), key=lambda k: src_redshifts[k])
+        self.source_sorted = [self.source[k] for k in src_sort_idx]
+        self.source_redshifts_sorted = [src_redshifts[k] for k in src_sort_idx]
+        self.source_entity_indexes_sorted = [self.source_entity_indexes[k] for k in src_sort_idx]
+    '''    
+        self.betas = self.get_betas()
+
+    def get_betas(self)
+        if(self.coolest.???betas_list??? not empty):
+            get betas from chains file
+        else
+            calculate betas using redshift astropy
+    '''     
     def model_image(self, supersampling=5, convolved=True, super_convolution=True):
         """generates an image of the lens based on the selected model components"""
         obs = self.coolest.observation
@@ -587,14 +681,90 @@ class ComposableLensModel(object):
         return ((data - model) / sigma) * mask, self.coord_obs
 
     def evaluate_lensed_surface_brightness(self, x, y):
-        """Evaluates the surface brightness of a lensed source at given coordinates"""
-        # ray-shooting
-        x_rs, y_rs = self.ray_shooting(x, y)
-        # evaluates at ray-shooted coordinates
-        lensed_image = self.source.evaluate_surface_brightness(x_rs, y_rs)
-        return lensed_image
+        """Evaluates the surface brightness of all the lensed sources at given coordinates"""
+        cosmology = self.coolest.cosmology
+        # If loaded by jsonpickle, coolest file might not have MultiPlaneBetaList initialized
+        # Initialize if so
+        if not hasattr(self.coolest, 'multiplane_betas'):
+            from coolest.template.classes import multiplane_beta as mltb
+            self.coolest.multiplane_betas = mltb.MultiPlaneBetaList()
+        # If there are no mass planes, evaluate sources at observed coordinates
+        if not hasattr(self, 'lens_mass_sorted') or len(self.lens_mass_sorted) == 0:
+            imgs = [s.evaluate_surface_brightness(x, y) for s in self.source_sorted]
+            return np.sum(imgs)
+
+        # Representative plane identifier (redshift string) for each mass plane (first entity in the plane)
+        plane_ids = [f"{self.coolest.lensing_entities[group[0]].redshift:.12g}" for group in self.mass_entity_indexes_sorted]
+
+        # Coordinates at each plane: index 0 is observed plane
+        x_def = deepcopy([x])
+        y_def = deepcopy([y])
+
+        n_planes = len(self.lens_mass_sorted)
+        # compute coordinates at successive mass planes
+        for j in range(n_planes):
+            x_def_temp = deepcopy(x_def[0])
+            y_def_temp = deepcopy(y_def[0])
+            for i in range(j):
+                from_id = plane_ids[i]
+                to_id = plane_ids[j]
+                beta = self.coolest.multiplane_betas.resolve_beta(from_id, to_id, self.coolest.lensing_entities, cosmology)
+                ax, ay = self.lens_mass_sorted[i].evaluate_deflection(x_def[i+1], y_def[i+1])
+                x_def_temp -= beta * ax
+                y_def_temp -= beta * ay
+            x_def.append(x_def_temp)
+            y_def.append(y_def_temp)
+        
+
+        # evaluate each source by accumulating deflections up to its plane
+        lensed_images = [None] * len(self.source_sorted)
+        for si, src in enumerate(self.source_sorted):
+            z_src = self.source_redshifts_sorted[si]
+            prior_planes = [k for k, z in enumerate(self.mass_redshifts_sorted) if z < z_src]
+            if len(prior_planes) == 0:
+                x_src = x
+                y_src = y
+            else:
+                rs_index = prior_planes[-1]
+                x_src = x_def[0].copy()
+                y_src = y_def[0].copy()
+                # use redshift-based identifiers for source when querying betas
+                if self.source_entity_indexes_sorted[si] is None:
+                    src_id = f"{z_src:.12g}"
+                else:
+                    if isinstance(self.source_entity_indexes_sorted[si], (list, tuple)):
+                        src_idx = self.source_entity_indexes_sorted[si][0]
+                    else:
+                        src_idx = self.source_entity_indexes_sorted[si]
+                    src_id = f"{self.coolest.lensing_entities[src_idx].redshift:.12g}"
+
+                for i in range(rs_index + 1):
+                    from_id = plane_ids[i]
+                    beta = self.coolest.multiplane_betas.resolve_beta(from_id, src_id, self.coolest.lensing_entities, cosmology)
+                    ax, ay = self.lens_mass_sorted[i].evaluate_deflection(x_def[i+1], y_def[i+1])
+                    x_src -= beta * ax
+                    y_src -= beta * ay
+                    import matplotlib.pyplot as plt
+                    lensed_images[si] = src.evaluate_surface_brightness(x_src, y_src)
+
+            lensed_images[si] = src.evaluate_surface_brightness(x_src, y_src)
+            
+        return np.sum(np.array(lensed_images), axis = 0)
 
     def ray_shooting(self, x, y):
-        """evaluates the lens equation beta = theta - alpha(theta)"""
-        return self.lens_mass.ray_shooting(x, y)
-    
+        """evaluates the lens equation beta = theta - alpha(theta) for single-plane systems.
+        For multiplane systems, use evaluate_lensed_surface_brightness which properly handles
+        the multiplane deflection with beta coefficients.
+        """
+        if hasattr(self, 'lens_mass_sorted'):
+            # Multiplane system: use sorted mass planes
+            if len(self.lens_mass_sorted) > 1:
+                raise NotImplementedError("Multiplane ray_shooting is not implemented; use evaluate_lensed_surface_brightness")
+            elif len(self.lens_mass_sorted) == 1:
+                return self.lens_mass_sorted[0].ray_shooting(x, y)
+            else:
+                # No mass models
+                return x, y
+        else:
+            # Single mass model (legacy behavior)
+            return self.lens_mass.ray_shooting(x, y)

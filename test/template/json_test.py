@@ -104,7 +104,7 @@ class TestJSONSerialization(object):
                           entity_list,
                           observation, 
                           instrument, 
-                          cosmology)
+                          cosmology = cosmology)
         
         # export as JSON file
         template_path = os.path.join(os.getcwd(), self.template_name)

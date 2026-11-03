@@ -6,7 +6,8 @@ import warnings
 
 from coolest.template.standard import COOLEST
 from coolest.template.lazy import *
-from coolest.template.classes.parameter import PointEstimate, PosteriorStatistics, Prior
+from coolest.template.classes.parameter import PointEstimate, PosteriorStatistics, Prior, Parameter
+from coolest.template.classes.multiplane_beta import MultiPlaneBetaList
 from coolest.template.info import all_supported_choices as support
 
 
@@ -197,6 +198,9 @@ class JSONSerializer(object):
         # LIKELIHOODS
         likelihoods = self._setup_likelihoods(c.get('likelihoods', None))
 
+        # MULTIPLANE BETAS
+        multiplane_betas = self._setup_multiplane_betas(c.get('multiplane_betas', None))
+
         # METADATA
         metadata = self._check_metadata(c['meta'])
 
@@ -206,6 +210,7 @@ class JSONSerializer(object):
                           lensing_entities,
                           observation,
                           instrument,
+                          multiplane_betas=multiplane_betas,
                           cosmology=cosmology,
                           likelihoods=likelihoods,
                           metadata=metadata)
@@ -282,6 +287,51 @@ class JSONSerializer(object):
     def _setup_img_ll_mask(self, mask_in):
         mask_out = self._setup_grid(mask_in, PixelatedRegularGrid)
         return mask_out
+
+    def _setup_multiplane_betas(self, betas_in):
+        if betas_in is None:
+            return MultiPlaneBetaList()
+        betas_out = []
+        for beta_in in betas_in:
+            from_id = beta_in['from_id']
+            to_id = beta_in['to_id']
+            beta_val = beta_in['beta']
+            # beta_val can be a float, 'auto', or a dict with Parameter structure
+            if isinstance(beta_val, dict):
+                # It's a Parameter structure
+                beta_param = self._setup_beta_parameter(beta_val)
+                from coolest.template.classes.multiplane_beta import MultiPlaneBeta
+                betas_out.append(MultiPlaneBeta(from_id, to_id, beta_param))
+            else:
+                # It's a float or 'auto' string
+                from coolest.template.classes.multiplane_beta import MultiPlaneBeta
+                betas_out.append(MultiPlaneBeta(from_id, to_id, beta_val))
+        return MultiPlaneBetaList(betas_out)
+
+    def _setup_beta_parameter(self, param_dict):
+        """Create a Parameter object from a beta dict (from JSON)."""
+        # Extract point estimate
+        pt_estim_dict = param_dict.get('point_estimate', {})
+        pt_estim = PointEstimate(**pt_estim_dict)
+        
+        # Extract posterior stats
+        post_stats_dict = param_dict.get('posterior_stats', {})
+        post_stats = PosteriorStatistics(**post_stats_dict)
+        
+        # Extract prior
+        prior_dict = param_dict.get('prior', {})
+        prior = Prior(**prior_dict)
+        
+        # Create and return Parameter
+        param = Parameter(
+            documentation=param_dict.get('documentation', ''),
+            point_estimate=pt_estim,
+            posterior_stats=post_stats,
+            prior=prior,
+            units=param_dict.get('units', None),
+            fixed=param_dict.get('fixed', False)
+        )
+        return param
 
     def _setup_coordinates(self, coord_orig_in):
         return CoordinatesOrigin(**coord_orig_in)

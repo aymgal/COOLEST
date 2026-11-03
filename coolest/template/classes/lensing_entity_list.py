@@ -32,6 +32,7 @@ class LensingEntityList(list, APIBaseObject):
     def __init__(self, *entities: Tuple[LensingEntity]):
         list.__init__(self, entities)
         APIBaseObject.__init__(self)
+
         self._create_all_ids()
 
     def get_parameters(self, with_name=None, with_fixed=True):
@@ -111,6 +112,11 @@ class LensingEntityList(list, APIBaseObject):
                             if param.id == param_id:
                                 return param
         # if the following line is reached, then no ID has been found
+        # check multiplane betas
+        for b in getattr(self, 'multiplane_betas', []):
+            bp = getattr(b, 'beta', None)
+            if isinstance(bp, Parameter) and bp.id == param_id:
+                return bp
         return None
         #raise ValueError("Parameter with ID '{param_id}' not found in any lensing entity.")
 

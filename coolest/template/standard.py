@@ -6,6 +6,7 @@ from coolest.template.classes.base import APIBaseObject
 from coolest.template.classes.observation import Observation
 from coolest.template.classes.instrument import Instrument
 from coolest.template.classes.lensing_entity_list import LensingEntityList
+from coolest.template.classes.multiplane_beta import MultiPlaneBetaList
 from coolest.template.classes.regularization_list import RegularizationList
 from coolest.template.classes.likelihood_list import DataLikelihoodList
 from coolest.template.classes.coordinates import CoordinatesOrigin
@@ -74,8 +75,12 @@ class COOLEST(APIBaseObject):
         Instance of a Observation object.
     instrument : Instrument
         Instance of a Instrument object.
+    multiplane_betas : MultiPlaneBetaList, optional
+        Instance of a MultiPlaneBetaList object defining plane-to-plane couplings, by default None
     cosmology : Cosmology, optional
         Instance of a Cosmology object, by default None
+    likelihoods : DataLikelihoodList, optional
+        Instance of a DataLikelihoodList object, by default None
     metadata : dict, optional
         Any additional data to be stored in the COOLEST format, by default None
 
@@ -91,6 +96,7 @@ class COOLEST(APIBaseObject):
                  lensing_entities: LensingEntityList,
                  observation: Observation,
                  instrument: Instrument,
+                 multiplane_betas: MultiPlaneBetaList = None,
                  cosmology: Cosmology = None,
                  likelihoods: DataLikelihoodList = None,
                  # regularizations: RegularizationList = None,
@@ -104,6 +110,7 @@ class COOLEST(APIBaseObject):
         self.lensing_entities = lensing_entities
         self.observation = observation
         self.instrument  = instrument
+        self.multiplane_betas = multiplane_betas if multiplane_betas is not None else MultiPlaneBetaList()
         self.cosmology   = cosmology
         self.likelihoods = likelihoods
         # self.regularizations = regularizations
