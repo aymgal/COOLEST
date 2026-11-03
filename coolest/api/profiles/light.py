@@ -8,7 +8,9 @@ from coolest.template.classes.profiles.light import (Sersic as TemplateSersic,
                                                      Shapelets as TemplateShapelets,
                                                      Uniform as TemplateUniform,
                                                      PixelatedRegularGrid as TemplatePixelatedRegularGrid,
-                                                     IrregularGrid as TemplateIrregularGrid)
+                                                     IrregularGrid as TemplateIrregularGrid,
+                                                     Gaussian as TemplateGaussian,
+                                                     MultiGaussianExpansion as TemplateMultiGaussianExpansion)
 from coolest.api.profiles import util
 
 
@@ -70,6 +72,45 @@ class Sersic(BaseLightProfile):
         x_t, y_t = util.shift_rotate_elliptical(x, y, phi_, q, center_x, center_y)
         bn = 1.9992*n - 0.3271
         return I_eff * np.exp( - bn * ( (np.sqrt(x_t**2+y_t**2) / theta_eff )**(1./n) -1. ) )
+
+class Gaussian(BaseLightProfile):
+
+    """2D Gaussian Profile"""
+
+    _units = 'per_ang'
+    _template_class = TemplateGaussian()
+
+    def surface_brightness(self, I=1., sigma=0.1, q=1., phi=0., center_x=0., center_y=0.):
+        raise ValueError("Gaussian surface brightness can only be evaluated")
+
+    def evaluate_surface_brightness(self, x, y, I = 1, sigma = 0.1, q = 1, phi = 0, center_x=0., center_y=0.):
+        """Returns the surface brightness at the given position (x, y)"""
+        phi_ = util.eastofnorth2normalradians(phi)
+        x_p = np.cos(phi_) * (x - center_x) + np.sin(phi_) * (y - center_y)
+        y_p = -np.sin(phi_) * (x - center_x) + np.cos(phi_) * (y - center_y)
+        R = np.sqrt(x_p**2 + (y_p/q)**2)
+        return I * np.exp(-0.5 * (R/sigma)**2)
+
+class MultiGaussianExpansion(BaseLightProfile):
+
+    """2D Multi-Gaussian Expansion"""
+
+    _units = 'per_ang'
+    _template_class = TemplateMultiGaussianExpansion()
+
+    def surface_brightness(self, I=1., sigma=0.1, q=1., phi=0., center_x=0., center_y=0.):
+        raise ValueError("Multi-Gaussian Expansion surface brightness can only be evaluated")
+
+    def evaluate_surface_brightness(self, x, y, I = 1, sigma = 0.1, q = 1, phi = 0, center_x=0., center_y=0.):
+        """Returns the surface brightness at the given position (x, y)"""
+        brightness = np.zeros_like(x)
+        for i in range(len(I)):
+            phi_ = util.eastofnorth2normalradians(phi)
+            x_p = np.cos(phi_) * (x - center_x) + np.sin(phi_) * (y - center_y)
+            y_p = -np.sin(phi_) * (x - center_x) + np.cos(phi_) * (y - center_y)
+            R = np.sqrt(x_p**2 + (y_p/q)**2)
+            brightness += I[i] * np.exp(-0.5 * (R/sigma[i])**2)
+        return brightness
 
 
 class Shapelets(BaseLightProfile):
