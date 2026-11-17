@@ -64,11 +64,12 @@ class Sersic(BaseLightProfile):
     def surface_brightness(self, I_eff=1., theta_eff=2., n=4., phi=0., q=1., center_x=0., center_y=0.):
         raise ValueError("Sersic surface brightness can only be evaluated")
 
-    def evaluate_surface_brightness(self, x, y, I_eff=1., theta_eff=2., n=4., phi=0., q=1., center_x=0., center_y=0.):
+    def evaluate_surface_brightness(self, x, y, I_eff=1., theta_eff=2., n=4., phi=0., q=1., center_x=0., center_y=0., sersic_constant_truncation=0):
         """Returns the surface brightness at the given position (x, y)"""
         phi_ = util.eastofnorth2normalradians(phi)
         x_t, y_t = util.shift_rotate_elliptical(x, y, phi_, q, center_x, center_y)
-        bn = 1.9992*n - 0.3271
+        expansion = [4/405., 46/25515., 131/1148175., -2194697/30690717750.]
+        bn = 2*n - 1/3. + sum([expansion[i]/(n**(i+1)) for i in range(sersic_constant_truncation)])
         return I_eff * np.exp( - bn * ( (np.sqrt(x_t**2+y_t**2) / theta_eff )**(1./n) -1. ) )
 
 

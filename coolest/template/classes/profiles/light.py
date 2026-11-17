@@ -6,7 +6,7 @@ from coolest.template.classes.parameter import (NonLinearParameter,
                                                 LinearParameterSet, 
                                                 NonLinearParameterSet,
                                                 PixelatedRegularGridParameter,
-                                                IrregularGridParameter)
+                                                IrregularGridParameter, HyperParameter)
 from coolest.template.classes.parameter import DefinitionRange
 
 
@@ -34,6 +34,8 @@ class Sersic(AnalyticalProfile):
     - 'phi': position angle
     - 'center_x': position along the x coordinate
     - 'center_y': position along the y coordinate
+    - 'sersic_constant_truncation': (hyperparameter) number of correction terms after 2n - 1/3 to include in the expansion for b_n
+        of the form b_n = 2n - 1/3 + sum_{i=1}^{N} c_i / n^i, where N is the truncation order and c_i are the expansion coefficients.
     """
     
     def __init__(self):
@@ -58,7 +60,12 @@ class Sersic(AnalyticalProfile):
                                latex_str=r"$x_0$"),
             'center_y': NonLinearParameter("Profile center along y coordinates",
                                DefinitionRange(),
-                               latex_str=r"$y_0$")
+                               latex_str=r"$y_0$"),
+            'sersic_constant_truncation': HyperParameter("Number of correction terms after 2n - 1/3 to include in the Sersic constant b_n expansion",
+                               DefinitionRange(min_value=0, max_value=4),
+                               point_estimate=0,
+                               fixed=True,
+                               latex_str=r"$N_{\rm trunc}$")
         }
         super().__init__(parameters)
 
