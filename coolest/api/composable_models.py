@@ -10,6 +10,7 @@ from functools import partial
 from copy import deepcopy
 
 from coolest.api import util
+from coolest.template.classes.parameter import HyperParameter
 
 
 # logging settings
@@ -208,7 +209,10 @@ class BaseComposableModel(object):
         parameters = {}  # best-fit values
         samples = {} if samples_file_path else None  # posterior samples
         for name, param in profile_in.parameters.items():
-            parameters[name] = param.point_estimate.value
+            value = param.point_estimate.value
+            if isinstance(param, HyperParameter) and value is None:
+                continue
+            parameters[name] = value
             if samples is not None:
                 # read just the column corresponding to the parameter ID
                 column = pd.read_csv(
